@@ -20,6 +20,7 @@
   font-size: 18px;
   font-weight: 700;
   background-color: #fff100;
+  transition: all 0.3s linear;
 }
 .container-login .form-login .btn-log:hover {
   color: #fff;
