@@ -18,7 +18,7 @@ const Login = () => {
             </div>
 
             <div className="inputs-btns">
-              <input className='input-login' type="email" name="email-login" id="email-login" placeholder="Email" required autoComplete='off' />
+              <input className='input-login input-login-email' type="email" name="email-login" id="email-login" placeholder="Email" required autoComplete='off' />
 
               <input className='input-login' type="password" name="passaword-login" id="passaword-login" placeholder="Senha" required/>
               

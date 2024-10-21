@@ -9,7 +9,7 @@
 
     .form-login {
         min-height: 100vh;
-        min-width: 510px;
+        width: 510px; max-width: 510px;
 
         display: flex;
         flex-direction: column;
@@ -82,6 +82,10 @@
                     &:hover {
                         background-color: #f5f5f5;
                     }
+                }
+
+                .input-login-email {
+                    text-transform: lowercase;
                 }
 
                 .btn-log {

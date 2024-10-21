@@ -7,7 +7,8 @@
 }
 .container-login .form-login {
   min-height: 100vh;
-  min-width: 510px;
+  width: 510px;
+  max-width: 510px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -61,6 +62,9 @@
 }
 .container-login .form-login .logo-inputs .inputs-btns .input-login:hover {
   background-color: #f5f5f5;
+}
+.container-login .form-login .logo-inputs .inputs-btns .input-login-email {
+  text-transform: lowercase;
 }
 .container-login .form-login .logo-inputs .inputs-btns .btn-log {
   background-color: #fff;
