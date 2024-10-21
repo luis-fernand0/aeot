@@ -1,3 +1,6 @@
+import * as React from 'react'
+import { Link } from 'react-router-dom'
+
 import '../style/login_page/login.css'
 
 const Login = () => {
@@ -10,22 +13,27 @@ const Login = () => {
           <div className="logo-inputs">
 
             <div className='logo-title'>
-              <img src="../../public/placeholder_logo.png" alt="logo-aeot" />
+            <img src="../../public/placeholder_logo.png" alt="logo-aeot" />
               <h1 className='title-login'>Entre</h1>
             </div>
 
             <div className="inputs-btns">
-              <input className='input-login' type="email" name="email" id="" placeholder="Email" required autoComplete='off' />
+              <input className='input-login' type="email" name="email-login" id="email-login" placeholder="Email" required autoComplete='off' />
 
-              <input className='input-login' type="password" name="passaword" id="" placeholder="Senha" required/>
-
-              <button className='btn-log btn-create'>Crie sua conta</button>
-              <button className='btn-log btn-esqueceu'>Esqueceu a senha?</button>
+              <input className='input-login' type="password" name="passaword-login" id="passaword-login" placeholder="Senha" required/>
+              
+              <Link to={'/cadastro'}>
+                <button type='button' className='btn-log btn-create'>Crie sua conta</button>
+              </Link>
+              
+              <button type='button' className='btn-log btn-esqueceu'>Esqueceu a senha?</button>
             </div>
 
           </div>
 
-          <button className='btn-log btn-login' type="submit">Login</button>
+          <Link to={'/home'}>
+            <button className='btn-log btn-login' type="submit">Login</button>
+          </Link>
 
         </form >
 
