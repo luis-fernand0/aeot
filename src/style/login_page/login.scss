@@ -86,6 +86,9 @@
 
                 .input-login-email {
                     text-transform: lowercase;
+                    &::placeholder {
+                        text-transform: capitalize;
+                    }
                 }
 
                 .btn-log {

@@ -66,6 +66,12 @@
 .container-login .form-login .logo-inputs .inputs-btns .input-login-email {
   text-transform: lowercase;
 }
+.container-login .form-login .logo-inputs .inputs-btns .input-login-email::-moz-placeholder {
+  text-transform: capitalize;
+}
+.container-login .form-login .logo-inputs .inputs-btns .input-login-email::placeholder {
+  text-transform: capitalize;
+}
 .container-login .form-login .logo-inputs .inputs-btns .btn-log {
   background-color: #fff;
   margin-bottom: 15px;

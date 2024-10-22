@@ -80,7 +80,6 @@
                         text-transform: capitalize;
                     }
                 }
-
                 .input-cadastro-email {
                     text-transform: lowercase;
                     &::placeholder {
@@ -118,6 +117,54 @@
                         &::placeholder {
                             text-transform: capitalize;
                         }
+                    }
+                }
+                
+                .span {
+                    padding-left: 15px;
+
+                    color: rgb(231, 84, 84);
+                    font-size: 10px;
+                }
+                .hidden-span {
+                    display: none;
+                }
+                .div-pass-cadastro {
+                    display: flex;
+                    flex-flow: row;
+                    position: relative;
+                    
+                    .input-cadastro-pass {
+                        width: 100%;
+                        
+                        border-top-right-radius: 0;
+                        border-bottom-right-radius: 0;
+                    }
+                    
+                    .pass-reveal {
+                        width: 55px;
+                        height: 55px;
+                        
+                        background-color: #f5f5f5;
+                        
+                        border: none;
+                        border-radius: 15px;
+                        border-top-left-radius: 0;
+                        border-bottom-left-radius: 0;
+    
+                        box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
+                        
+                        font-size: 18px;
+                        .eye-icon {
+                            color: #acaaaa;
+                        }
+                        .hidden {
+                            display: none;
+                        }
+                    }
+
+                    .alert-pass {
+                        border:1px solid red;
                     }
                 }
             }
