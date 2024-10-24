@@ -79,7 +79,7 @@ const Cadastro = () => {
     return (
         <>
             <div className="container-cadastro">
-                <img className='logo-aeot-cadastro' src="../../public/logo_AEOT.png" alt="logo-aeot" />
+                <img className='logo-aeot-cadastro' src="/logo_AEOT.png" alt="logo-aeot" />
 
                 <form className="form-cadastro" action="">
                     <div className='cadastro-full'>
