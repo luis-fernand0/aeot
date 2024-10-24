@@ -7,6 +7,7 @@ import { faEye, faEyeSlash, faArrowLeftLong } from '@fortawesome/free-solid-svg-
 import '../style/cadastro_page/cadastro.css'
 
 const Cadastro = () => {
+
     function checkPhone(event) {
         let input = event.target
 
@@ -39,7 +40,7 @@ const Cadastro = () => {
             } else {
                 element.type = 'password'
             }
-            
+
         }
     }
     function checkPass() {
@@ -67,7 +68,7 @@ const Cadastro = () => {
         }
     }
 
-    function formatPlate (event) {
+    function formatPlate(event) {
         var plate = event.target
         var plateValue = plate.value.replace(/([A-z0-9]{3})(\d[A-j0-9]\d{2})/, '$1-$2')
         plate.value = plateValue
@@ -98,16 +99,16 @@ const Cadastro = () => {
                             <input className='input-cadastro input-cadastro-email' type="email" name="email-cadastro" id="email-cadastro" placeholder='Email' required autoComplete='off' />
 
                             <div className='placa-modelo'>
-                                <input onChange={(event) => {formatPlate(event)}} className='input-cadastro-veiculo' type="text" name="placa-veiculo" id="placa-veiculo" placeholder='Placa' required autoComplete='off' maxLength={8} />
+                                <input onChange={(event) => { formatPlate(event) }} className='input-cadastro-veiculo' type="text" name="placa-veiculo" id="placa-veiculo" placeholder='Placa' required autoComplete='off' maxLength={8} />
 
                                 <input className='input-cadastro-veiculo' type="text" name="modelo-veiculo" id="modelo-veiculo" placeholder='Modelo/Cor' required autoComplete='off' />
                             </div>
 
                             <span className='span hidden-span'>AS SENHAS DEVEM SER IGUAIS*</span>
                             <div className='div-pass-cadastro'>
-                                <input onBlur={() => {checkPass()}}   className='input-cadastro input-cadastro-pass' type="password" name="passaword-cadastro" id="passaword-cadastro" minLength={8} placeholder='Senha' required />
+                                <input onBlur={() => { checkPass() }} className='input-cadastro input-cadastro-pass' type="password" name="passaword-cadastro" id="passaword-cadastro" minLength={8} placeholder='Senha' required />
 
-                                <button onClick={() => {revealPass()}} type='button' className='pass-reveal'>
+                                <button onClick={() => { revealPass() }} type='button' className='pass-reveal'>
                                     <FontAwesomeIcon className='eye-icon eye-icon-hidden hidden' icon={faEyeSlash} />
                                     <FontAwesomeIcon className='eye-icon eye-icon-show' icon={faEye} />
                                 </button>
@@ -115,11 +116,11 @@ const Cadastro = () => {
 
                             <span className='span hidden-span'>AS SENHAS DEVEM SER IGUAIS*</span>
                             <div className='div-pass-cadastro' >
-                                <input onBlur={() => {checkPass()}}  className='input-cadastro input-cadastro-pass' type="password" name="passaword-cadastro-check" id="passaword-cadastro-chek" placeholder='Confirme sua senha' minLength={8} required />
-                                <button onClick={() => {revealPass()}} type='button' className='pass-reveal'>
+                                <input onBlur={() => { checkPass() }} className='input-cadastro input-cadastro-pass' type="password" name="passaword-cadastro-check" id="passaword-cadastro-chek" placeholder='Confirme sua senha' minLength={8} required />
+                                <button onClick={() => { revealPass() }} type='button' className='pass-reveal'>
                                     <FontAwesomeIcon className='eye-icon eye-icon-hidden hidden' icon={faEyeSlash} />
                                     <FontAwesomeIcon className='eye-icon eye-icon-show' icon={faEye} />
-                                </button>   
+                                </button>
                             </div>
 
                         </div>
