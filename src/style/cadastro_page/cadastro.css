@@ -1,11 +1,15 @@
 .container-cadastro {
   height: auto;
   padding: 20px 0 20px 0;
-  background-color: #fff100;
+  background-color: #f3df2b;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.container-cadastro .logo-aeot-cadastro {
+  width: 320px;
+  height: 180px;
 }
 .container-cadastro .form-cadastro {
   max-width: 585px;

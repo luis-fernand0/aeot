@@ -13,7 +13,7 @@ const Login = () => {
           <div className="logo-inputs">
 
             <div className='logo-title'>
-            <img src="../../public/placeholder_logo.png" alt="logo-aeot" />
+              <img className='logo-aeot-login' src="../../public/logo_AEOT.png" alt="logo-aeot" />
               <h1 className='title-login'>Entre</h1>
             </div>
 

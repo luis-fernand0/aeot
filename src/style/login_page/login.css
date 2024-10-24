@@ -39,6 +39,10 @@
   flex-direction: column;
   align-items: center;
 }
+.container-login .form-login .logo-inputs .logo-title .logo-aeot-login {
+  width: 320px;
+  height: 180px;
+}
 .container-login .form-login .logo-inputs .logo-title .title-login {
   margin: 15px 0 15px 0;
 }
