@@ -37,9 +37,9 @@ const Login = () => {
             </div>
 
             <div className="inputs-btns">
-              <input className='input-login input-login-email' type="email" name="email-login" id="email-login" placeholder="Email" required autoComplete='off' />
+              <input className='input-login input-login-email' type="email" name="email_login" id="email-login" placeholder="Email" required autoComplete='off' />
 
-              <input className='input-login' type="password" name="passaword-login" id="password-login" placeholder="Senha" required/>
+              <input className='input-login' type="password" name="password_login" id="password-login" placeholder="Senha" required/>
               
               <Link to={'/cadastro'}>
                 <button type='button' className='btn-log btn-create'>Crie sua conta</button>
