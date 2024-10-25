@@ -4,11 +4,30 @@ import { Link } from 'react-router-dom'
 import '../style/login_page/login.css'
 
 const Login = () => {
+
+  async function hundleSubmit (event) {
+    event.preventDefault()
+
+    const myForm = document.getElementById('myFormLogin')
+    const formData = new FormData(myForm)
+    const data = Object.fromEntries(formData)
+    console.log(data)
+
+    const response = await fetch ('http://localhost:3000/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+
+  }
+
   return (
     <>
       <div className="container-login">
 
-        <form className='form-login' action="">
+        <form id='myFormLogin' onSubmit={(event) => {hundleSubmit(event)}} className='form-login' action="localhost:3000/" method='POST'>
 
           <div className="logo-inputs">
 
@@ -20,7 +39,7 @@ const Login = () => {
             <div className="inputs-btns">
               <input className='input-login input-login-email' type="email" name="email-login" id="email-login" placeholder="Email" required autoComplete='off' />
 
-              <input className='input-login' type="password" name="passaword-login" id="passaword-login" placeholder="Senha" required/>
+              <input className='input-login' type="password" name="passaword-login" id="password-login" placeholder="Senha" required/>
               
               <Link to={'/cadastro'}>
                 <button type='button' className='btn-log btn-create'>Crie sua conta</button>
@@ -31,9 +50,9 @@ const Login = () => {
 
           </div>
 
-          <Link to={'/home'}>
+          {/* <Link to={'/home'}> */}
             <button className='btn-log btn-login' type="submit">Login</button>
-          </Link>
+          {/* </Link> */}
 
         </form >
 
