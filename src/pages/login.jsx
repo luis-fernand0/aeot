@@ -20,6 +20,15 @@ const Login = () => {
       },
       body: JSON.stringify(data)
     })
+    console.log(response.status)
+    if(response.status != 200) {
+      document.querySelector('.span-login').classList.remove('span-login-hidden')
+    } else {
+      document.querySelector('.span-login').classList.add('span-login-hidden')
+      sessionStorage.setItem('userLogado', true)
+      window.location.replace('http://localhost:5173/home')
+    }
+
 
   }
 
@@ -36,6 +45,7 @@ const Login = () => {
               <h1 className='title-login'>Entre</h1>
             </div>
 
+            <span className='span-login span-login-hidden'>EMAIL OU SENHA INCORRETOS!</span>
             <div className="inputs-btns">
               <input className='input-login input-login-email' type="email" name="email_login" id="email-login" placeholder="Email" required autoComplete='off' />
 
@@ -50,9 +60,7 @@ const Login = () => {
 
           </div>
 
-          {/* <Link to={'/home'}> */}
-            <button className='btn-log btn-login' type="submit">Login</button>
-          {/* </Link> */}
+          <button className='btn-log btn-login' type="submit">Login</button>        
 
         </form >
 
