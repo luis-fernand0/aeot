@@ -81,7 +81,7 @@ const Cadastro = () => {
             <div className="container-cadastro">
                 <img className='logo-aeot-cadastro' src="/logo_AEOT.png" alt="logo-aeot" />
 
-                <form className="form-cadastro" action="">
+                <form className="form-cadastro" action="localhost:3000/cadastro" method='POST'>
                     <div className='cadastro-full'>
 
                         <div className='title-arrow'>
@@ -99,7 +99,7 @@ const Cadastro = () => {
                             <input className='input-cadastro input-cadastro-email' type="email" name="email-cadastro" id="email-cadastro" placeholder='Email' required autoComplete='off' />
 
                             <div className='placa-modelo'>
-                                <input onChange={(event) => { formatPlate(event) }} className='input-cadastro-veiculo' type="text" name="placa-veiculo" id="placa-veiculo" placeholder='Placa' required autoComplete='off' maxLength={8} />
+                                <input onChange={(event) => { formatPlate(event) }} className='input-cadastro-veiculo' type="text" name="placa-veiculo" id="placa-veiculo" placeholder='Placa' required autoComplete='off' maxLength={6} />
 
                                 <input className='input-cadastro-veiculo' type="text" name="modelo-veiculo" id="modelo-veiculo" placeholder='Modelo/Cor' required autoComplete='off' />
                             </div>
