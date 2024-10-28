@@ -1,0 +1,36 @@
+.container-home {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container-home .header-home {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.container-home .header-home .header-btn {
+  background-color: transparent;
+  width: 50px;
+  height: 50px;
+  border: none;
+}
+.container-home .header-home .header-btn .icon-header-btn {
+  height: 30px;
+  color: gray;
+}
+.container-home .title-home {
+  width: 100%;
+  text-align: center;
+}
+.container-home .btns-ul {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container-home .btns-ul .btns-fuel-services {
+  background-color: red;
+  width: 100%;
+}/*# sourceMappingURL=home.css.map */

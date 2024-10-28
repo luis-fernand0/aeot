@@ -11,7 +11,6 @@ const Login = () => {
     const myForm = document.getElementById('myFormLogin')
     const formData = new FormData(myForm)
     const data = Object.fromEntries(formData)
-    console.log(data)
 
     const response = await fetch ('http://localhost:3000/', {
       method: 'POST',
