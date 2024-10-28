@@ -76,12 +76,30 @@ const Cadastro = () => {
         return plate
     }
 
+    async function hundleSubmit(event) {
+        event.preventDefault()
+
+        const myForm = document.getElementById('myFormCadastro')
+        const formData = new FormData(myForm)
+        const data = Object.fromEntries(formData)
+
+        const response = await fetch('http://localhost:3000/cadastro', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        console.log(response)
+    }
+
+
     return (
         <>
             <div className="container-cadastro">
                 <img className='logo-aeot-cadastro' src="/logo_AEOT.png" alt="logo-aeot" />
 
-                <form className="form-cadastro" action="localhost:3000/cadastro" method='POST'>
+                <form onSubmit={(event) => { hundleSubmit(event) }} id='myFormCadastro' className="form-cadastro" action="localhost:3000/cadastro" method='POST'>
                     <div className='cadastro-full'>
 
                         <div className='title-arrow'>
@@ -96,17 +114,17 @@ const Cadastro = () => {
 
                             <input onChange={(event) => { checkPhone(event) }} className='input-cadastro' type="tel" name="telefone" id="input-tel" placeholder='Telefone' required autoComplete='off' maxLength={15} />
 
-                            <input className='input-cadastro input-cadastro-email' type="email" name="email-cadastro" id="email-cadastro" placeholder='Email' required autoComplete='off' />
+                            <input className='input-cadastro input-cadastro-email' type="email" name="email_cadastro" id="email-cadastro" placeholder='Email' required autoComplete='off' />
 
                             <div className='placa-modelo'>
-                                <input onChange={(event) => { formatPlate(event) }} className='input-cadastro-veiculo' type="text" name="placa-veiculo" id="placa-veiculo" placeholder='Placa' required autoComplete='off' maxLength={6} />
+                                <input onChange={(event) => { formatPlate(event) }} className='input-cadastro-veiculo' type="text" name="placa_veiculo" id="placa-veiculo" placeholder='Placa' required autoComplete='off' maxLength={8} />
 
-                                <input className='input-cadastro-veiculo' type="text" name="modelo-veiculo" id="modelo-veiculo" placeholder='Modelo/Cor' required autoComplete='off' />
+                                <input className='input-cadastro-veiculo' type="text" name="modelo_veiculo" id="modelo-veiculo" placeholder='Modelo/Cor' required autoComplete='off' />
                             </div>
 
                             <span className='span hidden-span'>AS SENHAS DEVEM SER IGUAIS*</span>
                             <div className='div-pass-cadastro'>
-                                <input onBlur={() => { checkPass() }} className='input-cadastro input-cadastro-pass' type="password" name="passaword-cadastro" id="passaword-cadastro" minLength={8} placeholder='Senha' required />
+                                <input onBlur={() => { checkPass() }} className='input-cadastro input-cadastro-pass' type="password" name="passaword_cadastro" id="passaword-cadastro" minLength={6} placeholder='Senha' required />
 
                                 <button onClick={() => { revealPass() }} type='button' className='pass-reveal'>
                                     <FontAwesomeIcon className='eye-icon eye-icon-hidden hidden' icon={faEyeSlash} />
@@ -116,7 +134,7 @@ const Cadastro = () => {
 
                             <span className='span hidden-span'>AS SENHAS DEVEM SER IGUAIS*</span>
                             <div className='div-pass-cadastro' >
-                                <input onBlur={() => { checkPass() }} className='input-cadastro input-cadastro-pass' type="password" name="passaword-cadastro-check" id="passaword-cadastro-chek" placeholder='Confirme sua senha' minLength={8} required />
+                                <input onBlur={() => { checkPass() }} className='input-cadastro input-cadastro-pass' type="password" name="passaword_cadastro_check" id="passaword-cadastro-chek" placeholder='Confirme sua senha' minLength={6} required />
                                 <button onClick={() => { revealPass() }} type='button' className='pass-reveal'>
                                     <FontAwesomeIcon className='eye-icon eye-icon-hidden hidden' icon={faEyeSlash} />
                                     <FontAwesomeIcon className='eye-icon eye-icon-show' icon={faEye} />
