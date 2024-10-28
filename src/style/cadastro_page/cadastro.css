@@ -158,6 +158,17 @@
   flex-direction: column;
   padding: 0 15px 0 15px;
 }
+.container-cadastro .form-cadastro .cadastro-full .container-btn-cadastro .span {
+  color: red;
+  font-size: 12px;
+  padding-left: 15px;
+}
+.container-cadastro .form-cadastro .cadastro-full .container-btn-cadastro .hidden-alert {
+  display: none;
+}
+.container-cadastro .form-cadastro .cadastro-full .container-btn-cadastro .input-foto-print {
+  display: none;
+}
 .container-cadastro .form-cadastro .cadastro-full .container-btn-cadastro .btn-cadastro {
   height: 45px;
   margin-bottom: 15px;
@@ -170,6 +181,9 @@
 }
 .container-cadastro .form-cadastro .cadastro-full .container-btn-cadastro .btn-cadastro:hover {
   background-color: #fff100;
+}
+.container-cadastro .form-cadastro .cadastro-full .container-btn-cadastro .btn-cadastro-check {
+  background-color: #00ff73;
 }
 .container-cadastro .form-cadastro .cadastro-full .container-btn-cadastro .btn-criar-cadastro {
   background-color: #fff100;

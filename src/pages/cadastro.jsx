@@ -76,6 +76,19 @@ const Cadastro = () => {
         return plate
     }
 
+    function anexarFoto(nomeFoto) {
+        document.getElementById(nomeFoto).click()
+    }
+    function checkFoto(event, nomeFoto, nomeSpan) {
+        if (event.target.value === '') {
+            document.querySelector(`.${nomeFoto}`).classList.remove('btn-cadastro-check')
+            document.querySelector(`#${nomeSpan}`).classList.remove('hidden-alert')
+        } else {
+            document.querySelector(`.${nomeFoto}`).classList.add('btn-cadastro-check')
+            document.querySelector(`#${nomeSpan}`).classList.add('hidden-alert')
+        }
+    }
+
     async function hundleSubmit(event) {
         event.preventDefault()
 
@@ -144,11 +157,15 @@ const Cadastro = () => {
                         </div>
 
                         <div className='container-btn-cadastro'>
-                            <button className='btn-cadastro' type="button">
+                            <span id='span_foto_cnh' className='span hidden-alert'>É NECESSARIO ADICIONAR UMA FOTO DA CNH E UM PRINT DO APP DE MOBILIDADE*</span>
+                            <input onChange={(event) => {checkFoto(event, 'foto_cnh', 'span_foto_cnh')}} required type="file" className='input-foto-print' name="foto_cnh" id="foto_cnh" accept='image/*'/>
+                            <button onClick={() => {anexarFoto('foto_cnh')}} className='btn-cadastro foto_cnh' type="button">
                                 Anexar CNH
                             </button>
 
-                            <button className='btn-cadastro' type="button">
+                            <span id='span_print' className='span hidden-alert'>É NECESSARIO ADICIONAR UMA FOTO DA CNH E UM PRINT DO APP DE MOBILIDADE*</span>
+                            <input onChange={(event) => {checkFoto(event, 'print_app', 'span_print')}} required type="file" className='input-foto-print' name="print_app" id="print_app" accept='image/*' />
+                            <button onClick={() => {anexarFoto('print_app')}} className='btn-cadastro print_app' type="button">
                                 Anexar print de APP de mobilidade
                             </button>
 

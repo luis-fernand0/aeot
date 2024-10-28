@@ -194,9 +194,22 @@
 
                 padding: 0 15px 0 15px;
 
+                .span {
+                    color: red;
+                    font-size: 12px;
+                    padding-left: 15px;
+                }
+                .hidden-alert {
+                    display: none;
+                }
+
+                .input-foto-print {
+                    display: none;
+                }
+
                 .btn-cadastro {
                     height: 45px;
-
+                    
                     margin-bottom: 15px;
                     
                     border: none;
@@ -208,12 +221,16 @@
                     &:hover {
                         background-color: #fff100;
                     }
-
+                    
                     font-size: 16px;
-
+                    
                     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
                 }
-
+                
+                .btn-cadastro-check {
+                    background-color: #00ff73;
+                }
+                
                 .btn-criar-cadastro {
                     background-color: #fff100;
                     &:hover {
