@@ -6,6 +6,8 @@ import { faEye, faEyeSlash, faArrowLeftLong } from '@fortawesome/free-solid-svg-
 
 import '../style/cadastro_page/cadastro.css'
 
+const urlCadastro = import.meta.env.VITE_URL_CADASTRO;
+
 const Cadastro = () => {
 
     function checkPhone(event) {
@@ -96,7 +98,7 @@ const Cadastro = () => {
         const formData = new FormData(myForm)
         const data = Object.fromEntries(formData)
 
-        const response = await fetch('http://localhost:3000/cadastro', {
+        const response = await fetch(`${urlCadastro}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -112,7 +114,7 @@ const Cadastro = () => {
             <div className="container-cadastro">
                 <img className='logo-aeot-cadastro' src="/logo_AEOT.png" alt="logo-aeot" />
 
-                <form onSubmit={(event) => { hundleSubmit(event) }} id='myFormCadastro' className="form-cadastro" action="localhost:3000/cadastro" method='POST'>
+                <form onSubmit={(event) => { hundleSubmit(event) }} id='myFormCadastro' className="form-cadastro" action={urlCadastro} method='POST'>
                     <div className='cadastro-full'>
 
                         <div className='title-arrow'>

@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom'
 
 import '../style/login_page/login.css'
 
+const urlSite = import.meta.env.VITE_URL_AEOT_SITE;
+const urlLogin = import.meta.env.VITE_URL_LOGIN;
+
 const Login = () => {
 
   async function hundleSubmit (event) {
@@ -12,7 +15,7 @@ const Login = () => {
     const formData = new FormData(myForm)
     const data = Object.fromEntries(formData)
 
-    const response = await fetch ('http://localhost:3000/', {
+    const response = await fetch (`${urlLogin}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -25,7 +28,7 @@ const Login = () => {
     } else {
       document.querySelector('.span-login').classList.add('span-login-hidden')
       sessionStorage.setItem('userLogado', true)
-      window.location.replace('http://localhost:5173/home')
+      window.location.replace(`${urlSite}home`)
     }
 
 
@@ -35,7 +38,7 @@ const Login = () => {
     <>
       <div className="container-login">
 
-        <form id='myFormLogin' onSubmit={(event) => {hundleSubmit(event)}} className='form-login' action="localhost:3000/" method='POST'>
+        <form id='myFormLogin' onSubmit={(event) => {hundleSubmit(event)}} className='form-login' action={urlLogin} method='POST'>
 
           <div className="logo-inputs">
 

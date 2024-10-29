@@ -3,11 +3,13 @@ import { faArrowLeft, faGasPump, faUser, faLock } from '@fortawesome/free-solid-
 
 import '../style/home_page/home.css'
 
+const urlSite = import.meta.env.VITE_URL_AEOT_SITE; 
+
 const Home = () => {
-  var usuarioLogado = sessionStorage.getItem('userLogado');  
+  var usuarioLogado = sessionStorage.getItem('userLogado'); 
 
   if (!usuarioLogado) {
-    window.location.replace('http://localhost:5173/')
+    window.location.replace(`${urlSite}`)
   }
 
 
