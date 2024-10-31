@@ -10,21 +10,27 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Cadastro from './pages/cadastro.jsx'
 import Login from './pages/login.jsx'
 import Home from './pages/home.jsx'
+import PerfilUser from './pages/perfil_user.jsx'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Login />
+    element: <Login/>
   },
 
   {
     path: '/cadastro',
-    element: <Cadastro />
+    element: <Cadastro/>
   },
 
   {
     path: '/home',
-    element: <Home />
+    element: <Home/>
+  },
+
+  {
+    path: '/perfil',
+    element: <PerfilUser/>
   }
 ])
 
