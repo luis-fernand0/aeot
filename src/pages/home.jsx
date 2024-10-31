@@ -1,6 +1,4 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeft, faGasPump, faUser, faLock } from '@fortawesome/free-solid-svg-icons'
-
+import Header from '../components/header';
 import '../style/home_page/home.css'
 
 const urlSite = import.meta.env.VITE_URL_AEOT_SITE;
@@ -16,23 +14,7 @@ const Home = () => {
   return (
     <>
       <div className="container-home">
-        <header className="header-home">
-          <button className='header-btn' type="button">
-            <FontAwesomeIcon className='icon-header-btn' icon={faArrowLeft} />
-          </button>
-
-          <button className='header-btn' type="button">
-            <FontAwesomeIcon className='icon-header-btn' icon={faUser} />
-          </button>
-
-          <button className='header-btn' type="button">
-            <FontAwesomeIcon className='icon-header-btn' icon={faGasPump} />
-          </button>
-
-          <button className='header-btn' type="button">
-            <FontAwesomeIcon className='icon-header-btn' icon={faLock} />
-          </button>
-        </header>
+        <Header/>
 
         <h2 className='title-home'>Todos os anuncios</h2>
 
