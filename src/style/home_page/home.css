@@ -1,8 +1,9 @@
 .container-home {
-  height: 100vh;
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #f5f5f5;
 }
 .container-home .header-home {
   width: 100%;
@@ -16,13 +17,18 @@
   height: 50px;
   border: none;
 }
+.container-home .header-home .header-btn:hover .icon-header-btn {
+  transform: scale(0.8);
+}
 .container-home .header-home .header-btn .icon-header-btn {
+  transition: all 0.5s;
   height: 30px;
   color: gray;
 }
 .container-home .title-home {
   width: 100%;
   text-align: center;
+  margin: 20px 0 20px 0;
 }
 .container-home .btns-ul {
   width: 100%;
@@ -31,6 +37,39 @@
   align-items: center;
 }
 .container-home .btns-ul .btns-fuel-services {
-  background-color: red;
   width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+}
+.container-home .btns-ul .btns-fuel-services .btn-option {
+  width: 50%;
+  background-color: transparent;
+  border: none;
+  text-align: center;
+  font-size: 22px;
+  color: #57636c;
+  transition: all 0.2s;
+}
+.container-home .btns-ul .btns-fuel-services .btn-option:hover {
+  border-bottom: 5px solid #fff100;
+}
+.container-home .btns-ul .ul-gas-station {
+  background-color: #fff;
+  height: 100vh;
+  max-width: 665px;
+  margin: 30px 0 20px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.container-home .btns-ul .ul-gas-station .gas-station {
+  display: flex;
+  flex-flow: row nowrap;
+}
+.container-home .btns-ul .ul-gas-station .gas-station .info-gas-station {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin-left: 10px;
 }/*# sourceMappingURL=home.css.map */
