@@ -1,0 +1,28 @@
+.header-home {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    
+    .header-btn {
+        background-color: transparent;
+        width: 50px;
+        height: 50px;
+
+        border: none;
+        &:hover {
+            .icon-header-btn{
+                transform: scale(0.80);
+            }
+        }
+        
+        .icon-header-btn {
+            transition: all 0.5s;
+
+            height: 30px;
+
+            color: gray;
+        }
+    }
+}
