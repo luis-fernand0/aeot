@@ -26,7 +26,6 @@ const Header = () => {
                     <FontAwesomeIcon className='icon-header-btn' icon={faLock} />
                 </button>
             </header>
-
         </>
     )
 }
