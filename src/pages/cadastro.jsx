@@ -96,16 +96,15 @@ const Cadastro = () => {
 
         const myForm = document.getElementById('myFormCadastro')
         const formData = new FormData(myForm)
-        const data = Object.fromEntries(formData)
+
+        // for(const [key, value] of formData.entries()) {
+        //     console.log(`${key}`, value)
+        // }
 
         const response = await fetch(`${urlCadastro}`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+            body: formData
         })
-        console.log(response)
     }
 
 
