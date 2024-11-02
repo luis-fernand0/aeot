@@ -8,13 +8,10 @@ const Header = () => {
     return (
         <>
             <header className="header-home">
-                <button className='header-btn' type="button">
-                    <FontAwesomeIcon className='icon-header-btn' icon={faArrowLeft} />
-                </button>
 
                 <Link to={'/perfil'}>
                     <button className='header-btn' type="button">
-                        <FontAwesomeIcon className='icon-header-btn' icon={faUser} />
+                        <FontAwesomeIcon className='icon-header-btn' icon={faUser} /> Meu cartão de visita
                     </button>
                 </Link>
 
