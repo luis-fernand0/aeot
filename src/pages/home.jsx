@@ -1,20 +1,34 @@
+import { useEffect, useState } from 'react';
 import Header from '../components/header';
 import '../style/home_page/home.css'
 
 const urlSite = import.meta.env.VITE_URL_AEOT_SITE;
+const urlDatas = import.meta.env.VITE_URL_DATAS
 
 const Home = () => {
-  var usuarioLogado = sessionStorage.getItem('userLogado');
+  const [postos, setPostos] = useState()
 
+  var usuarioLogado = sessionStorage.getItem('userLogado');
   if (!usuarioLogado) {
     window.location.replace(`${urlSite}`)
   }
 
+  async function gasStation() {
+    const url = `${urlDatas}`
+    const response = await fetch(url)
+    const data = await response.json()
+
+    setPostos(data)
+  }
+
+  useEffect(() => {
+    gasStation()
+  }, [])
 
   return (
     <>
       <div className="container-home">
-        <Header/>
+        <Header />
 
         <h2 className='title-home'>Todos os anuncios</h2>
 
@@ -25,85 +39,28 @@ const Home = () => {
           </div>
 
           <ul className='ul-gas-station'>
-            <li className='gas-station'>
-              <img className='img-gas-station' src="https://placehold.co/200" alt="imagem-do-posto-de-gasolina"/>
-              <div className='info-gas-station'>
-                <h3 className='title-gas-station'>
-                  Lorem, ipsum dolor sit amet
-                </h3>
 
-                <p className='endereco-gas-station'>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat, labore molestias nisi deleniti quasi qui, laborum dolore necessitatibus nostrum ratione tenetur
-                </p>
+            {postos && postos.map((posto) =>
+              <li className='gas-station' key={posto.cod_posto}>
+                <img className='img-gas-station' src="https://placehold.co/200" alt="imagem-do-posto-de-gasolina" />
+                <div className='info-gas-station'>
+                  <h3 className='title-gas-station'>
+                    {posto.nome}
+                  </h3>
 
-                <p className='combustiveis-gas-station'>
-                  ETANOL: R$ 00
-                </p>
-                <p className='combustiveis-gas-station'>
-                  GASOLINA: R$ 00
-                </p>
-              </div>
-            </li>
+                  <p className='endereco-gas-station'>
+                    {posto.endereco}
+                  </p>
 
-            <li className='gas-station'>
-              <img className='img-gas-station' src="https://placehold.co/200" alt="imagem-do-posto-de-gasolina"/>
-              <div className='info-gas-station'>
-                <h3 className='title-gas-station'>
-                  Lorem, ipsum dolor sit amet
-                </h3>
-
-                <p className='endereco-gas-station'>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat, labore molestias nisi deleniti quasi qui, laborum dolore necessitatibus nostrum ratione tenetur
-                </p>
-
-                <p className='combustiveis-gas-station'>
-                  ETANOL: R$ 00
-                </p>
-                <p className='combustiveis-gas-station'>
-                  GASOLINA: R$ 00
-                </p>
-              </div>
-            </li>
-
-            <li className='gas-station'>
-              <img className='img-gas-station' src="https://placehold.co/200" alt="imagem-do-posto-de-gasolina"/>
-              <div className='info-gas-station'>
-                <h3 className='title-gas-station'>
-                  Lorem, ipsum dolor sit amet
-                </h3>
-
-                <p className='endereco-gas-station'>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat, labore molestias nisi deleniti quasi qui, laborum dolore necessitatibus nostrum ratione tenetur
-                </p>
-
-                <p className='combustiveis-gas-station'>
-                  ETANOL: R$ 00
-                </p>
-                <p className='combustiveis-gas-station'>
-                  GASOLINA: R$ 00
-                </p>
-              </div>
-            </li>
-
-            <li className='gas-station'>
-              <img className='img-gas-station' src="https://placehold.co/200" alt="imagem-do-posto-de-gasolina"/>
-              <div className='info-gas-station'>
-                <h3 className='title-gas-station'>
-                  Lorem, ipsum dolor sit amet
-                </h3>
-
-                <p className='endereco-gas-station'>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat, labore molestias nisi deleniti quasi qui, laborum dolore necessitatibus nostrum ratione tenetur
-                </p>
-
-                <p className='combustiveis-gas-station'>
-                  ETANOL: R$ 00
-                </p>
-                <p className='combustiveis-gas-station'>
-                  GASOLINA: R$ 00
-                </p>
-              </div>
-            </li>
+                  <p className='combustiveis-gas-station'>
+                    ETANOL: R$ {posto.preco_etanol}
+                  </p>
+                  <p className='combustiveis-gas-station'>
+                    GASOLINA: R$ {posto.preco_gasolina}
+                  </p>
+                </div>
+              </li>
+            )}
           </ul>
         </div>
 
