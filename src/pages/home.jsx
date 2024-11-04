@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Header from '../components/header';
 import '../style/home_page/home.css'
 
-const urlSite = import.meta.env.VITE_URL_AEOT_SITE;
+const urlSite = import.meta.env.VITE_URL_AEOT_SITE
 const urlDatas = import.meta.env.VITE_URL_DATAS
 
 const Home = () => {
