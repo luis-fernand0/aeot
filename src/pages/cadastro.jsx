@@ -94,6 +94,17 @@ const Cadastro = () => {
     async function hundleSubmit(event) {
         event.preventDefault()
 
+        //CHECANDO SE O USUARIO ADICIONOU TODAS AS FOTOS
+        const checkFotos = document.querySelectorAll('.input-foto-print')
+        for (let i = 0; i < checkFotos.length; i++) {
+            const element = checkFotos[i];
+            const nameAtribute = element.getAttribute('name')
+            //ADICIONANDO O ALERTA E BLOQUEANDO O ENVIO
+            if (element.value.length === 0) {
+                return document.querySelector(`#span_${nameAtribute}`).classList.remove('hidden-alert')
+            }
+        }
+
         const myForm = document.getElementById('myFormCadastro')
         const formData = new FormData(myForm)
 
@@ -158,16 +169,23 @@ const Cadastro = () => {
                         </div>
 
                         <div className='container-btn-cadastro'>
-                            <span id='span_foto_cnh' className='span hidden-alert'>É NECESSARIO ADICIONAR UMA FOTO DA CNH E UM PRINT DO APP DE MOBILIDADE*</span>
-                            <input onChange={(event) => {checkFoto(event, 'foto_cnh', 'span_foto_cnh')}} required type="file" className='input-foto-print' name="foto_cnh" id="foto_cnh" accept='image/*'/>
-                            <button onClick={() => {anexarFoto('foto_cnh')}} className='btn-cadastro foto_cnh' type="button">
+                            <span id='span_foto_user' className='span hidden-alert'>É NECESSARIO ADICIONAR UMA FOTO DE PERFIL, CNH E UM PRINT DO APP DE MOBILIDADE*</span>
+                            <input onChange={(event) => { checkFoto(event, 'foto_user', 'span_foto_user') }} type="file" className='input-foto-print' name="foto_user" id="foto_user" accept='image/*' />
+                            <button onClick={() => { anexarFoto('foto_user') }} className='btn-cadastro foto_user' type="button">
+                                Anexar Foto de Perfil
+                            </button>
+
+
+                            <span id='span_foto_cnh' className='span hidden-alert'>É NECESSARIO ADICIONAR UMA FOTO DE PERFIL, CNH E UM PRINT DO APP DE MOBILIDADE*</span>
+                            <input onChange={(event) => { checkFoto(event, 'foto_cnh', 'span_foto_cnh') }} type="file" className='input-foto-print' name="foto_cnh" id="foto_cnh" accept='image/*' />
+                            <button onClick={() => { anexarFoto('foto_cnh') }} className='btn-cadastro foto_cnh' type="button">
                                 Anexar CNH
                             </button>
 
-                            <span id='span_print' className='span hidden-alert'>É NECESSARIO ADICIONAR UMA FOTO DA CNH E UM PRINT DO APP DE MOBILIDADE*</span>
-                            <input onChange={(event) => {checkFoto(event, 'print_app', 'span_print')}} required type="file" className='input-foto-print' name="print_app" id="print_app" accept='image/*' />
-                            <button onClick={() => {anexarFoto('print_app')}} className='btn-cadastro print_app' type="button">
-                                Anexar print de APP de mobilidade
+                            <span id='span_print_app' className='span hidden-alert'>É NECESSARIO ADICIONAR UMA FOTO DE PERFIL, CNH E UM PRINT DO APP DE MOBILIDADE*</span>
+                            <input onChange={(event) => { checkFoto(event, 'print_app', 'span_print_app') }} type="file" className='input-foto-print' name="print_app" id="print_app" accept='image/*' />
+                            <button onClick={() => { anexarFoto('print_app') }} className='btn-cadastro print_app' type="button">
+                                Anexar print do APP de mobilidade
                             </button>
 
                             <button className='btn-cadastro btn-criar-cadastro' type="submit">
