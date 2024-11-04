@@ -21,6 +21,12 @@ const Home = () => {
     setPostos(data)
   }
 
+  function checkButton(event, nomeBtn) {
+    if (event.target.classList.contains('checked')) {
+      console.log(event.target.classList.contains('checked'))
+    }
+  }
+
   useEffect(() => {
     gasStation()
   }, [])
@@ -34,8 +40,8 @@ const Home = () => {
 
         <div className='btns-ul'>
           <div className='btns-fuel-services'>
-            <button className='btn-option btn-combustivel' type="button">Combustivel</button>
-            <button className='btn-option btn-services' type="button">Serviços</button>
+            <button onClick={(event) => {checkButton(event, 'btn-combustivel')}} className='btn-option btn-combustivel checked' type="button">Combustivel</button>
+            <button onClick={(event) => {checkButton(event, 'btn-services')}} className='btn-option btn-services' type="button">Serviços</button>
           </div>
 
           <ul className='ul-gas-station'>

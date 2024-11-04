@@ -34,6 +34,9 @@
 .container-home .btns-ul .btns-fuel-services .btn-option:hover {
   border-bottom: 5px solid #fff100;
 }
+.container-home .btns-ul .btns-fuel-services .checked {
+  border-bottom: 5px solid #fff100;
+}
 .container-home .btns-ul .ul-gas-station {
   background-color: #fff;
   height: auto;
