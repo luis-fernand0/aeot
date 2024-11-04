@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeft, faGasPump, faUser, faLock } from '@fortawesome/free-solid-svg-icons'
+import { faGasPump, faUser, faLock } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
 
 import '../style/header_component/header.css'
@@ -10,8 +10,9 @@ const Header = () => {
             <header className="header-home">
 
                 <Link to={'/perfil'}>
-                    <button className='header-btn' type="button">
-                        <FontAwesomeIcon className='icon-header-btn' icon={faUser} /> Meu cartão de visita
+                    <button className='header-btn header-btn-perfil' type="button">
+                        <FontAwesomeIcon className='icon-header-btn' icon={faUser} /> 
+                        Cartão de visita
                     </button>
                 </Link>
 
