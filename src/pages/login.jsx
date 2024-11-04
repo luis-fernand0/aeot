@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, replace } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 import '../style/login_page/login.css'
 
@@ -7,6 +8,8 @@ const urlSite = import.meta.env.VITE_URL_AEOT_SITE;
 const urlLogin = import.meta.env.VITE_URL_LOGIN;
 
 const Login = () => {
+
+  const navigate = useNavigate()
 
   async function hundleSubmit (event) {
     event.preventDefault()
@@ -22,16 +25,15 @@ const Login = () => {
       },
       body: JSON.stringify(data)
     })
-    console.log(response.status)
+    const dataResponse = await response.json()
+    
     if(response.status != 200) {
       document.querySelector('.span-login').classList.remove('span-login-hidden')
     } else {
       document.querySelector('.span-login').classList.add('span-login-hidden')
       sessionStorage.setItem('userLogado', true)
-      window.location.replace(`${urlSite}home`)
+      navigate(`/home/${dataResponse.cod_driver}`, {replace: true})
     }
-
-
   }
 
   return (
