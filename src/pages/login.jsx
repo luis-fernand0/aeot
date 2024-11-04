@@ -26,7 +26,7 @@ const Login = () => {
       body: JSON.stringify(data)
     })
     const dataResponse = await response.json()
-    
+
     if(response.status != 200) {
       document.querySelector('.span-login').classList.remove('span-login-hidden')
     } else {
