@@ -1,0 +1,26 @@
+.container-perfil {
+  display: flex;
+  flex-direction: column;
+}
+.container-perfil .container-logo-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 10%;
+  height: 50px;
+  background-color: #fff100;
+  position: relative;
+}
+.container-perfil .container-logo-title .container-logo {
+  position: absolute;
+}
+.container-perfil .container-logo-title .container-logo .logo-aeot-perfil {
+  width: 150px;
+}
+.container-perfil .foto-user-datas {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}/*# sourceMappingURL=perfil_user.css.map */
