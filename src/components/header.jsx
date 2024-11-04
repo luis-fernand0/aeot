@@ -1,15 +1,17 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGasPump, faUser, faLock } from '@fortawesome/free-solid-svg-icons'
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import '../style/header_component/header.css'
 
 const Header = () => {
+    const { cod_driver } = useParams()
+
     return (
         <>
             <header className="header-home">
 
-                <Link to={'/perfil'}>
+                <Link to={`/perfil/${cod_driver}`}>
                     <button className='header-btn header-btn-perfil' type="button">
                         <FontAwesomeIcon className='icon-header-btn' icon={faUser} /> 
                         Cartão de visita
