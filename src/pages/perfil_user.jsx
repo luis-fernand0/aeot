@@ -11,7 +11,6 @@ const PerfilUser = () => {
     const { cod_driver } = useParams()
 
     async function callInfoUser () {
-        console.log(cod_driver)
         const response = await fetch(`${urlData}`, {
             method: 'POST',
             headers: {
@@ -32,22 +31,24 @@ const PerfilUser = () => {
             <div className="container-perfil">
                 <Header />
 
-                <div className="container-logo-title">
-                    <div className="container-logo">
-                        <img className="logo-aeot-perfil" src="/logo_AEOT.png" alt="aeot-logo" />
-                    </div>
-                    {/* <p>Aplicativo Enche o Tanque</p> */}
-                </div>
+                {dataUser && (
+                    <>
+                        <div className="container-logo-title">
+                            <div className="container-logo">
+                                <img className="logo-aeot-perfil" src="/logo_AEOT.png" alt="aeot-logo" />
+                            </div>
+                            {/* <p>Aplicativo Enche o Tanque</p> */}
+                        </div><div className="foto-user-datas">
+                            <img className="foto-user" src="https://placehold.co/250x400" alt="" />
 
-                <div className="foto-user-datas">
-                    <img className="foto-user" src="https://placehold.co/250x400" alt="" />
-
-                    <div className="data-user-perfil">
-                        <p className="data-user">Nome:</p>
-                        <p className="data-user">Veiculo:</p>
-                        <p className="data-user" >Placa:</p>
-                    </div>
-                </div>
+                            <div className="data-user-perfil">
+                                <p className="data-user">Nome: {dataUser.full_name}</p>
+                                <p className="data-user">Veiculo: {dataUser.car_plate}</p>
+                                <p className="data-user">Placa: {dataUser.car_plate}</p>
+                            </div>
+                        </div>
+                    </>
+                )}
             </div>
         </>
     )
