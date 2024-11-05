@@ -7,29 +7,38 @@ const urlDatas = import.meta.env.VITE_URL_DATAS
 
 const Home = () => {
   const [postos, setPostos] = useState()
+  const [categoria, setCategoria] = useState(`postos`)
 
   var usuarioLogado = sessionStorage.getItem('userLogado');
   if (!usuarioLogado) {
     window.location.replace(`${urlSite}`)
   }
 
+  const typeCategoria = {
+    categoria: categoria
+  }
   async function gasStation() {
     const url = `${urlDatas}`
-    const response = await fetch(url)
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(typeCategoria)
+    })
     const data = await response.json()
 
+    console.log(data)
     setPostos(data)
   }
 
-  function checkButton(event, nomeBtn) {
-    if (event.target.classList.contains('checked')) {
-      console.log(event.target.classList.contains('checked'))
-    }
+  function checkButton(btnClicado) {
+    setCategoria(btnClicado)
   }
 
   useEffect(() => {
     gasStation()
-  }, [])
+  }, [categoria])
 
   return (
     <>
@@ -40,13 +49,13 @@ const Home = () => {
 
         <div className='btns-ul'>
           <div className='btns-fuel-services'>
-            <button onClick={(event) => {checkButton(event, 'btn-combustivel')}} className='btn-option btn-combustivel checked' type="button">Combustivel</button>
-            <button onClick={(event) => {checkButton(event, 'btn-services')}} className='btn-option btn-services' type="button">Serviços</button>
+            <button onClick={() => { checkButton('postos') }} className={`btn-option btn-combustivel ${categoria === 'postos' ? 'checked' : ''}`} type="button">Combustivel</button>
+            <button onClick={() => { checkButton('anuncios') }} className={`btn-option btn-services ${categoria === 'anuncios' ? 'checked' : ''}`} type="button">Serviços</button>
           </div>
 
           <ul className='ul-gas-station'>
 
-            {postos && postos.map((posto) =>
+            {categoria === 'postos' && postos && postos.map((posto) =>
               <li className='gas-station' key={posto.cod_posto}>
                 <img className='img-gas-station' src="https://placehold.co/200" alt="imagem-do-posto-de-gasolina" />
                 <div className='info-gas-station'>
@@ -64,6 +73,32 @@ const Home = () => {
                   <p className='combustiveis-gas-station'>
                     GASOLINA: R$ {posto.preco_gasolina}
                   </p>
+                </div>
+              </li>
+            )}
+
+            {categoria === 'anuncios' && postos && postos.map((anuncio) =>
+              <li className='gas-station' key={anuncio.cod_anuncio}>
+                <img className='img-gas-station' src="https://placehold.co/200" alt="imagem-do-posto-de-gasolina" />
+                <div className='info-gas-station'>
+                  <h3 className='title-gas-station'>
+                    {anuncio.titulo_anuncio}
+                  </h3>
+
+                  <p className='endereco-gas-station'>
+                    {anuncio.descricao}
+                  </p>
+
+                  <p className='endereco-gas-station'>
+                    {anuncio.endereco}
+                  </p>
+
+                  {/* <p className='combustiveis-gas-station'>
+                    ETANOL: R$ {anuncio.preco_etanol}
+                  </p>
+                  <p className='combustiveis-gas-station'>
+                    GASOLINA: R$ {anuncio.preco_gasolina}
+                  </p> */}
                 </div>
               </li>
             )}
