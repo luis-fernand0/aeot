@@ -31,6 +31,8 @@
   align-items: center;
 }
 .container-perfil .foto-user-datas .foto-user-container .foto-user {
+  width: 200px;
+  height: 200px;
   border-radius: 100px;
 }
 .container-perfil .foto-user-datas .data-user-perfil {
