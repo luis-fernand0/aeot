@@ -4,7 +4,6 @@ import { Navigate, useNavigate } from 'react-router-dom'
 
 import '../style/login_page/login.css'
 
-const urlSite = import.meta.env.VITE_URL_AEOT_SITE;
 const urlLogin = import.meta.env.VITE_URL_LOGIN;
 
 const Login = () => {
