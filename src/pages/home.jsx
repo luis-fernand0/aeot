@@ -28,7 +28,6 @@ const Home = () => {
     })
     const data = await response.json()
 
-    console.log(data)
     setPostos(data)
   }
 
@@ -53,17 +52,17 @@ const Home = () => {
             <button onClick={() => { checkButton('anuncios') }} className={`btn-option btn-services ${categoria === 'anuncios' ? 'checked' : ''}`} type="button">Serviços</button>
           </div>
 
-          <ul className='ul-gas-station'>
+          <ul className='ul-gas-services'>
 
             {categoria === 'postos' && postos && postos.map((posto) =>
-              <li className='gas-station' key={posto.cod_posto}>
-                <img className='img-gas-station' src="https://placehold.co/200" alt="imagem-do-posto-de-gasolina" />
-                <div className='info-gas-station'>
-                  <h3 className='title-gas-station'>
+              <li className='gas-services' key={posto.cod_posto}>
+                <img className='img-gas-services' src={posto.foto} alt="imagem-do-posto-de-gasolina" />
+                <div className='info-gas-services'>
+                  <h3 className='title-gas-services'>
                     {posto.nome}
                   </h3>
 
-                  <p className='endereco-gas-station'>
+                  <p className='endereco-gas-services'>
                     {posto.endereco}
                   </p>
 
@@ -78,18 +77,18 @@ const Home = () => {
             )}
 
             {categoria === 'anuncios' && postos && postos.map((anuncio) =>
-              <li className='gas-station' key={anuncio.cod_anuncio}>
-                <img className='img-gas-station' src="https://placehold.co/200" alt="imagem-do-posto-de-gasolina" />
-                <div className='info-gas-station'>
-                  <h3 className='title-gas-station'>
+              <li className='gas-services' key={anuncio.cod_anuncio}>
+                <img className='img-gas-services' src={anuncio.foto} alt="imagem-do-anuncio/serviço" />
+                <div className='info-gas-services'>
+                  <h3 className='title-gas-services'>
                     {anuncio.titulo_anuncio}
                   </h3>
 
-                  <p className='endereco-gas-station'>
+                  <p className='descricao-services'>
                     {anuncio.descricao}
                   </p>
 
-                  <p className='endereco-gas-station'>
+                  <p className='endereco-gas-services'>
                     {anuncio.endereco}
                   </p>
 
