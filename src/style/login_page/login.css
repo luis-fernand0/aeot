@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 15px 0 15px 0;
+  padding: 15px 15px 15px 15px;
 }
 .container-login .form-login {
   min-height: 100vh;
@@ -40,8 +40,7 @@
   align-items: center;
 }
 .container-login .form-login .logo-inputs .logo-title .logo-aeot-login {
-  width: 320px;
-  height: 180px;
+  width: 220px;
 }
 .container-login .form-login .logo-inputs .logo-title .title-login {
   margin: 15px 0 15px 0;
