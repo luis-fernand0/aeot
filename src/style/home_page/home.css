@@ -37,36 +37,47 @@
 .container-home .btns-ul .btns-fuel-services .checked {
   border-bottom: 5px solid #fff100;
 }
-.container-home .btns-ul .ul-gas-station {
+.container-home .btns-ul .ul-gas-services {
   background-color: #fff;
   height: auto;
   max-width: 665px;
   margin: 30px 0 20px 0;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-.container-home .btns-ul .ul-gas-station .gas-station {
+.container-home .btns-ul .ul-gas-services .gas-services {
   display: flex;
   flex-flow: row nowrap;
   margin-bottom: 30px;
+  cursor: pointer;
 }
-.container-home .btns-ul .ul-gas-station .gas-station .img-gas-station {
+.container-home .btns-ul .ul-gas-services .gas-services .img-gas-services {
+  width: 150px;
+  height: 150px;
   border-radius: 20px;
 }
-.container-home .btns-ul .ul-gas-station .gas-station .info-gas-station {
+.container-home .btns-ul .ul-gas-services .gas-services .info-gas-services {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  width: 150px;
+  height: 150px;
   margin-left: 10px;
 }
-.container-home .btns-ul .ul-gas-station .gas-station .info-gas-station .title-gas-station {
+.container-home .btns-ul .ul-gas-services .gas-services .info-gas-services .title-gas-services {
   font-size: 18px;
   font-weight: 500;
 }
-.container-home .btns-ul .ul-gas-station .gas-station .info-gas-station .endereco-gas-station {
+.container-home .btns-ul .ul-gas-services .gas-services .info-gas-services .endereco-gas-services {
   font-size: 15px;
 }
-.container-home .btns-ul .ul-gas-station .gas-station .info-gas-station .combustiveis-gas-station {
+.container-home .btns-ul .ul-gas-services .gas-services .info-gas-services .combustiveis-gas-station {
   font-size: 15px;
+}
+.container-home .btns-ul .ul-gas-services .gas-services .info-gas-services .descricao-services, .container-home .btns-ul .ul-gas-services .gas-services .info-gas-services .endereco-gas-services, .container-home .btns-ul .ul-gas-services .gas-services .info-gas-services .title-gas-services {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }/*# sourceMappingURL=home.css.map */

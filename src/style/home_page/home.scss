@@ -41,6 +41,7 @@
                 color: #57636c;
 
                 transition: all 0.2s;
+
                 &:hover {
                     border-bottom: 5px solid #fff100;
                 }
@@ -51,45 +52,60 @@
             }
         }
 
-        .ul-gas-station{
+        .ul-gas-services {
             background-color: #fff;
 
             height: auto;
             max-width: 665px;
 
             margin: 30px 0 20px 0;
+            padding: 20px;
 
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            .gas-station {
+
+            .gas-services {
                 display: flex;
                 flex-flow: row nowrap;
 
                 margin-bottom: 30px;
+                cursor: pointer;
 
-                .img-gas-station {
+                .img-gas-services {
+                    width: 150px;
+                    height: 150px;
+
                     border-radius: 20px;
                 }
-
-                .info-gas-station {
+                
+                .info-gas-services {
                     display: flex;
                     flex-direction: column;
                     justify-content: space-evenly;
-
+                    
+                    width: 150px;
+                    height: 150px;
+                    
                     margin-left: 10px;
 
-                    .title-gas-station {
+                    .title-gas-services {
                         font-size: 18px;
                         font-weight: 500;
                     }
 
-                    .endereco-gas-station {
+                    .endereco-gas-services {
+                        font-size: 15px;
+                    }
+                    
+                    .combustiveis-gas-station {
                         font-size: 15px;
                     }
 
-                    .combustiveis-gas-station {
-                        font-size: 15px;
+                    .descricao-services, .endereco-gas-services, .title-gas-services {
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        overflow: hidden;
                     }
                 }
             }
