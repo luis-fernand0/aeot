@@ -1,7 +1,32 @@
+import { useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
+
 import Header from "../components/header"
 import '../style/perfil_user_page/perfil_user.css'
 
+const urlData = import.meta.env.VITE_URL_DATAS_USER
+
 const PerfilUser = () => {
+    const [dataUser, setDataUser] = useState()
+    const { cod_driver } = useParams()
+
+    async function callInfoUser () {
+        console.log(cod_driver)
+        const response = await fetch(`${urlData}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ "cod_driver": `${cod_driver}`})
+        })
+        const data = await response.json()
+
+        setDataUser(data)
+    }
+
+    useEffect(() => {
+        callInfoUser()
+    }, [])
     return (
         <>
             <div className="container-perfil">
@@ -15,12 +40,12 @@ const PerfilUser = () => {
                 </div>
 
                 <div className="foto-user-datas">
-                    <img src="https://placehold.co/250x400" alt="" />
+                    <img className="foto-user" src="https://placehold.co/250x400" alt="" />
 
                     <div className="data-user-perfil">
-                        <p>Nome:</p>
-                        <p>Veiculo:</p>
-                        <p>Placa:</p>
+                        <p className="data-user">Nome:</p>
+                        <p className="data-user">Veiculo:</p>
+                        <p className="data-user" >Placa:</p>
                     </div>
                 </div>
             </div>
