@@ -41,7 +41,7 @@ const PerfilUser = () => {
                         </div>
                         <div className="foto-user-datas">
                             <div className="foto-user-container">
-                                <img className="foto-user" src="https://placehold.co/200x200" alt="" />
+                                <img className="foto-user" src={dataUser.foto} alt="" />
                             </div>
 
                             <div className="data-user-perfil">
