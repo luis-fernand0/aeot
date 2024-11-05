@@ -42,9 +42,17 @@ const PerfilUser = () => {
                             <img className="foto-user" src="https://placehold.co/250x400" alt="" />
 
                             <div className="data-user-perfil">
-                                <p className="data-user">Nome: {dataUser.full_name}</p>
-                                <p className="data-user">Veiculo: {dataUser.car_plate}</p>
-                                <p className="data-user">Placa: {dataUser.car_plate}</p>
+                                <p className="data-user">Nome: 
+                                    <span className="data-user-span"> {dataUser.full_name}</span>
+                                </p>
+
+                                <p className="data-user">Veiculo: 
+                                    <span className="data-user-span"> {dataUser.car_model}</span>
+                                </p>
+
+                                <p className="data-user">Placa: 
+                                    <span className="data-user-span"> {dataUser.car_plate}</span>
+                                </p>
                             </div>
                         </div>
                     </>
