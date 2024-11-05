@@ -28,8 +28,19 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: space-evenly;
+        
+        .foto-user-container {
+            width: 100%;
+            height: 50%;
 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .foto-user {
+                border-radius: 100px;
+            }
+        }
+        
         .data-user-perfil {
             width: 100%;
             height: 20%;
