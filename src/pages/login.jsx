@@ -25,8 +25,12 @@ const Login = () => {
       body: JSON.stringify(data)
     })
     const dataResponse = await response.json()
-
+    console.log(dataResponse)
     if(response.status != 200) {
+      if (response.status === 403) {
+        document.querySelectorAll('.span-login')[1].classList.remove('span-login-hidden-aprovado')
+        return
+      }
       document.querySelector('.span-login').classList.remove('span-login-hidden')
     } else {
       document.querySelector('.span-login').classList.add('span-login-hidden')
@@ -49,6 +53,7 @@ const Login = () => {
             </div>
 
             <span className='span-login span-login-hidden'>EMAIL OU SENHA INCORRETOS!</span>
+            <span className='span-login span-login-hidden-aprovado'>O SEU CADASTRO AINDA NÃO FOI APROVADO</span>
             <div className="inputs-btns">
               <input className='input-login input-login-email' type="email" name="email_login" id="email-login" placeholder="Email" required autoComplete='off' />
 
