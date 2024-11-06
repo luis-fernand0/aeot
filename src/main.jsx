@@ -11,6 +11,7 @@ import Cadastro from './pages/cadastro.jsx'
 import Login from './pages/login.jsx'
 import Home from './pages/home.jsx'
 import PerfilUser from './pages/perfil_user.jsx'
+import EsqueceuSenha from './pages/esqueceu_senha.jsx'
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,11 @@ const router = createBrowserRouter([
   {
     path: '/perfil/:cod_driver',
     element: <PerfilUser/>
+  },
+
+  {
+    path: '/esqueceu_senha',
+    element: <EsqueceuSenha/>
   }
 ])
 
