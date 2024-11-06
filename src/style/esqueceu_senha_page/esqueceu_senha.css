@@ -1,0 +1,99 @@
+.form-esqueceu-senha {
+  background-color: #f3df2b;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.form-esqueceu-senha .div-email-pass-esqueceu-senha {
+  background-color: #fff;
+  width: 320px;
+  height: auto;
+  padding: 25px 0 25px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+}
+.form-esqueceu-senha .div-email-pass-esqueceu-senha .arrow-esqueceu-senha {
+  font-size: 24px;
+  color: black;
+  text-decoration: none;
+  transition: all 0.2s linear;
+  margin-bottom: 20px;
+}
+.form-esqueceu-senha .div-email-pass-esqueceu-senha .arrow-esqueceu-senha:hover {
+  transform: scale(0.8);
+}
+.form-esqueceu-senha .div-email-pass-esqueceu-senha .input-esqueceu-senha {
+  background-color: #f5f5f5;
+  width: calc(100% - 55px);
+  height: 55px;
+  margin-bottom: 25px;
+  padding-left: 15px;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
+  font-size: 18px;
+}
+.form-esqueceu-senha .div-email-pass-esqueceu-senha .input-esqueceu-senha:focus {
+  outline: none;
+  border: 2px solid #4b39ef;
+}
+.form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+.form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha .input-esqueceu-senha-pass {
+  width: auto;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha .pass-reveal-esqueceu-senha {
+  width: 55px;
+  height: 55px;
+  background-color: #f5f5f5;
+  border: none;
+  border-radius: 15px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
+  font-size: 18px;
+}
+.form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha .pass-reveal-esqueceu-senha .eye-icon {
+  color: #acaaaa;
+}
+.form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha .pass-reveal-esqueceu-senha .hidden {
+  display: none;
+}
+.form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha .span-esqueceu-senha {
+  width: calc(100% - 55px);
+  padding-left: 15px;
+  color: rgb(231, 84, 84);
+  font-size: 10px;
+}
+.form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha .hidden-span-esqueceu-senha {
+  display: none;
+}
+.form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha .alert-pass-esqueceu-senha {
+  border: 1px solid red;
+}
+.form-esqueceu-senha .div-email-pass-esqueceu-senha .btn-trocar-senha {
+  height: 45px;
+  width: calc(100% - 55px);
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 10px;
+  background-color: #fff100;
+  transition: all 0.5s linear;
+  font-size: 16px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
+}
+.form-esqueceu-senha .div-email-pass-esqueceu-senha .btn-trocar-senha:hover {
+  color: #fff;
+  background-color: #14181b;
+}/*# sourceMappingURL=esqueceu_senha.css.map */
