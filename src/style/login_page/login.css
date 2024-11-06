@@ -51,6 +51,9 @@
 .container-login .form-login .logo-inputs .span-login-hidden {
   display: none;
 }
+.container-login .form-login .logo-inputs .span-login-hidden-aprovado {
+  display: none;
+}
 .container-login .form-login .logo-inputs .inputs-btns {
   width: 100%;
   display: flex;
