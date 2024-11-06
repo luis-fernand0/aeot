@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGasPump, faUser, faLock } from '@fortawesome/free-solid-svg-icons'
+import { faGasPump, faUser, faLock, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { Link, useParams } from 'react-router-dom';
 
 import '../style/header_component/header.css'
@@ -17,6 +17,10 @@ const Header = () => {
                         Cartão de visita
                     </button>
                 </Link>
+
+                <button className='header-btn header-btn-perfil' type='button'>
+                    <FontAwesomeIcon className='icon-header-btn' icon={faPlus} />
+                </button>
 
                 <button className='header-btn' type="button">
                     <FontAwesomeIcon className='icon-header-btn' icon={faGasPump} />
