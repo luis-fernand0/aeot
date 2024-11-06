@@ -149,7 +149,7 @@ const Cadastro = () => {
 
                             <span className='span hidden-span'>AS SENHAS DEVEM SER IGUAIS*</span>
                             <div className='div-pass-cadastro'>
-                                <input onBlur={() => { checkPass() }} className='input-cadastro input-cadastro-pass' type="password" name="passaword_cadastro" id="passaword-cadastro" minLength={6} placeholder='Senha' required />
+                                <input onBlur={() => { checkPass() }} className='input-cadastro input-cadastro-pass' type="password" name="password_cadastro" id="password-cadastro" minLength={6} placeholder='Senha' required />
 
                                 <button onClick={() => { revealPass() }} type='button' className='pass-reveal'>
                                     <FontAwesomeIcon className='eye-icon eye-icon-hidden hidden' icon={faEyeSlash} />
@@ -159,7 +159,7 @@ const Cadastro = () => {
 
                             <span className='span hidden-span'>AS SENHAS DEVEM SER IGUAIS*</span>
                             <div className='div-pass-cadastro' >
-                                <input onBlur={() => { checkPass() }} className='input-cadastro input-cadastro-pass' type="password" name="passaword_cadastro_check" id="passaword-cadastro-chek" placeholder='Confirme sua senha' minLength={6} required />
+                                <input onBlur={() => { checkPass() }} className='input-cadastro input-cadastro-pass' type="password" name="password_cadastro_check" id="password-cadastro-chek" placeholder='Confirme sua senha' minLength={6} required />
                                 <button onClick={() => { revealPass() }} type='button' className='pass-reveal'>
                                     <FontAwesomeIcon className='eye-icon eye-icon-hidden hidden' icon={faEyeSlash} />
                                     <FontAwesomeIcon className='eye-icon eye-icon-show' icon={faEye} />
