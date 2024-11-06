@@ -63,7 +63,9 @@ const Login = () => {
                 <button type='button' className='btn-log btn-create'>Crie sua conta</button>
               </Link>
               
-              <button type='button' className='btn-log btn-esqueceu'>Esqueceu a senha?</button>
+              <Link to={'/esqueceu_senha'}>
+                <button type='button' className='btn-log btn-esqueceu'>Esqueceu a senha?</button>
+              </Link>
             </div>
 
           </div>
