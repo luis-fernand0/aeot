@@ -24,8 +24,6 @@ const EsqueceuSenha = () => {
         const span = document.querySelectorAll('.span-esqueceu-senha')
         const pass = password[0]
         const confirmpass = password[1]
-        console.log(pass)
-        console.log(confirmpass)
 
         if (pass.value === confirmpass.value) {
             pass.classList.remove('alert-pass-esqueceu-senha')
