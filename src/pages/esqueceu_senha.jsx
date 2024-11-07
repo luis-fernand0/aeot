@@ -5,12 +5,13 @@ import { Link } from 'react-router-dom'
 
 import '../style/esqueceu_senha_page/esqueceu_senha.css'
 
+const urlEsqueceuSenha = import.meta.env.VITE_URL_ESQUECEU_SENHA
+
 const EsqueceuSenha = () => {
     const [viewPass, setViewPass] = useState({
         'senha-atual': false,
         'esqueceu-senha-pass': false
     })
-
     const revealPass = (inputId) => {
         setViewPass((prevState) => ({
             ...prevState,
@@ -45,9 +46,25 @@ const EsqueceuSenha = () => {
         }
     }
 
+    async function submitForm(event) {
+        event.preventDefault()
+
+        const myForm = document.getElementById('myFormEsqueceuSenha')
+        const formData = new FormData(myForm)
+        const data = Object.fromEntries(formData)
+
+        const response = await fetch(urlEsqueceuSenha, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
+        })
+    }
+
     return (
         <>
-            <form className='form-esqueceu-senha' action="">
+            <form id='myFormEsqueceuSenha' className='form-esqueceu-senha' onSubmit={(event) => { submitForm(event) }}>
                 <div className='div-email-pass-esqueceu-senha'>
                     <Link to={'/'}>
                         <FontAwesomeIcon className='arrow-esqueceu-senha' icon={faArrowLeftLong} />
