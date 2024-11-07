@@ -18,9 +18,11 @@ const Header = () => {
                     </button>
                 </Link>
 
-                <button className='header-btn header-btn-perfil' type='button'>
-                    <FontAwesomeIcon className='icon-header-btn' icon={faPlus} />
-                </button>
+                <Link to={`/cadastros_pendentes`}>
+                    <button className='header-btn header-btn-perfil' type='button'>
+                        <FontAwesomeIcon className='icon-header-btn' icon={faPlus} />
+                    </button>
+                </Link>
 
                 <button className='header-btn' type="button">
                     <FontAwesomeIcon className='icon-header-btn' icon={faGasPump} />
