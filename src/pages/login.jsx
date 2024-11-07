@@ -25,7 +25,6 @@ const Login = () => {
       body: JSON.stringify(data)
     })
     const dataResponse = await response.json()
-    console.log(dataResponse)
     if(response.status != 200) {
       if (response.status === 403) {
         document.querySelectorAll('.span-login')[1].classList.remove('span-login-hidden-aprovado')
@@ -43,7 +42,7 @@ const Login = () => {
     <>
       <div className="container-login">
 
-        <form id='myFormLogin' onSubmit={(event) => {hundleSubmit(event)}} className='form-login' action={urlLogin} method='POST'>
+        <form id='myFormLogin' onSubmit={(event) => {hundleSubmit(event)}} className='form-login'>
 
           <div className="logo-inputs">
 
