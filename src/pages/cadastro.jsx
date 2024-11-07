@@ -124,7 +124,7 @@ const Cadastro = () => {
             <div className="container-cadastro">
                 <img className='logo-aeot-cadastro' src="/logo_AEOT.png" alt="logo-aeot" />
 
-                <form onSubmit={(event) => { hundleSubmit(event) }} id='myFormCadastro' className="form-cadastro" action={urlCadastro} method='POST'>
+                <form onSubmit={(event) => { hundleSubmit(event) }} id='myFormCadastro' className="form-cadastro">
                     <div className='cadastro-full'>
 
                         <div className='title-arrow'>
