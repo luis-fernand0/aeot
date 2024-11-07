@@ -91,6 +91,10 @@ const Cadastro = () => {
         }
     }
 
+    function closeWindowResponse(btnClose) {
+        document.querySelector(`.${btnClose}`).classList.add('container-response-cadastro-hidden')
+    }
+
     async function hundleSubmit(event) {
         event.preventDefault()
 
@@ -108,22 +112,44 @@ const Cadastro = () => {
         const myForm = document.getElementById('myFormCadastro')
         const formData = new FormData(myForm)
 
-        // for(const [key, value] of formData.entries()) {
-        //     console.log(`${key}`, value)
-        // }
-
         const response = await fetch(`${urlCadastro}`, {
             method: 'POST',
             body: formData
         })
+        const dataResponse = await response.json()
+        if (response != 200) {
+            const element = document.querySelector('.container-response-cadastro')
+            element.classList.remove('container-response-cadastro-hidden')
+            
+            const textResponse = document.querySelector('.response-text-cadastro')
+            console.log(dataResponse.message)
+            textResponse.innerHTML = dataResponse.message
+        }
     }
-
 
     return (
         <>
             <div className="container-cadastro">
                 <img className='logo-aeot-cadastro' src="/logo_AEOT.png" alt="logo-aeot" />
 
+                <div className='container-response-cadastro container-response-cadastro-hidden'>
+                    <div className='container-info-response'>
+                        <div className='div-close-alert-response-cadastro'>
+                            <button onClick={() => { closeWindowResponse('container-response-cadastro') }} className='btn-close-alert-response-cadastro'>
+                                X
+                            </button>
+                        </div>
+                        <div className='container-text-cadastro'>
+                            <p className='response-text-cadastro'></p>
+
+                            <Link to={'/'}>
+                                <button className='btn-response-cadastro'>
+                                    Retornar pagina de login!
+                                </button>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
                 <form onSubmit={(event) => { hundleSubmit(event) }} id='myFormCadastro' className="form-cadastro">
                     <div className='cadastro-full'>
 
