@@ -10,14 +10,14 @@ const Login = () => {
 
   const navigate = useNavigate()
 
-  async function hundleSubmit (event) {
+  async function hundleSubmit(event) {
     event.preventDefault()
 
     const myForm = document.getElementById('myFormLogin')
     const formData = new FormData(myForm)
     const data = Object.fromEntries(formData)
 
-    const response = await fetch (`${urlLogin}`, {
+    const response = await fetch(`${urlLogin}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -25,16 +25,20 @@ const Login = () => {
       body: JSON.stringify(data)
     })
     const dataResponse = await response.json()
-    if(response.status != 200) {
+    if (response.status != 200) {
       if (response.status === 403) {
-        document.querySelectorAll('.span-login')[1].classList.remove('span-login-hidden-aprovado')
+        const spanElement = document.querySelector('.span-login')
+        spanElement.classList.remove('span-login-hidden')
+        spanElement.innerHTML = response.statusText || response.message
         return
       }
-      document.querySelector('.span-login').classList.remove('span-login-hidden')
+      const spanElement = document.querySelector('.span-login')
+      spanElement.classList.remove('span-login-hidden')
+      spanElement.innerHTML = response.statusText || response.message
     } else {
       document.querySelector('.span-login').classList.add('span-login-hidden')
       sessionStorage.setItem('userLogado', true)
-      navigate(`/home/${dataResponse.cod_driver}`, {replace: true})
+      navigate(`/home/${dataResponse.cod_driver}`, { replace: true })
     }
   }
 
@@ -42,7 +46,7 @@ const Login = () => {
     <>
       <div className="container-login">
 
-        <form id='myFormLogin' onSubmit={(event) => {hundleSubmit(event)}} className='form-login'>
+        <form id='myFormLogin' onSubmit={(event) => { hundleSubmit(event) }} className='form-login'>
 
           <div className="logo-inputs">
 
@@ -51,17 +55,16 @@ const Login = () => {
               <h1 className='title-login'>Entre</h1>
             </div>
 
-            <span className='span-login span-login-hidden'>EMAIL OU SENHA INCORRETOS!</span>
-            <span className='span-login span-login-hidden-aprovado'>O SEU CADASTRO AINDA NÃO FOI APROVADO</span>
+            <span className='span-login span-login-hidden'></span>
             <div className="inputs-btns">
               <input className='input-login input-login-email' type="email" name="email_login" id="email-login" placeholder="Email" required autoComplete='off' />
 
-              <input className='input-login' type="password" name="password_login" id="password-login" placeholder="Senha" required/>
-              
+              <input className='input-login' type="password" name="password_login" id="password-login" placeholder="Senha" required />
+
               <Link to={'/cadastro'}>
                 <button type='button' className='btn-log btn-create'>Crie sua conta</button>
               </Link>
-              
+
               <Link to={'/esqueceu_senha'}>
                 <button type='button' className='btn-log btn-esqueceu'>Esqueceu a senha?</button>
               </Link>
@@ -69,7 +72,7 @@ const Login = () => {
 
           </div>
 
-          <button className='btn-log btn-login' type="submit">Login</button>        
+          <button className='btn-log btn-login' type="submit">Login</button>
 
         </form >
 
