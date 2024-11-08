@@ -117,7 +117,7 @@ const Cadastro = () => {
             body: formData
         })
         const dataResponse = await response.json()
-        if (response != 200) {
+        if (response.status != 200 || response.status === 200) {
             const element = document.querySelector('.container-response-cadastro')
             element.classList.remove('container-response-cadastro-hidden')
             
@@ -144,7 +144,7 @@ const Cadastro = () => {
 
                             <Link to={'/'}>
                                 <button className='btn-response-cadastro'>
-                                    Retornar pagina de login!
+                                    Retornar para a pagina de login!
                                 </button>
                             </Link>
                         </div>
