@@ -1,142 +1,231 @@
-.form-esqueceu-senha {
-    background-color: #f3df2b;
-    width: 100%;
-    height: 100vh;
+.container-esqueceu-senha {
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    .container-response-esqueceu-senha {
+        position: absolute;
+        z-index: 1;
 
-    .div-email-pass-esqueceu-senha {
-        background-color: #fff;
+        background-color: rgba(0, 0, 0, 0.253);
 
-        width: 320px;
-        height: auto;
+        width: 100%;
+        height: 100%;
 
-        padding: 25px 0 25px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .container-info-response-esqueceu-senha {
+            background-color: #ffffff;
+
+            width: 50%;
+            height: 30%;
+
+            border-radius: 15px;
+
+            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.384);
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+
+            .div-close-alert-response-esqueceu-senha {
+                width: 100%;
+
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+
+                .btn-close-alert-response-esqueceu-senha {
+                    background-color: transparent;
+
+                    border: none;
+
+                    width: 50px;
+                    height: 50px;
+                }
+            }
+
+            .container-text-esqueceu-senha {
+                height: 100%;
+                width: 100%;
+
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+                align-items: center;
+
+                .response-text-esqueceu-senha {
+                    width: 60%;
+
+                    text-align: center;
+                }
+
+                .btn-response-esqueceu-senha {
+                    width: 100%;
+                    min-height: 45px;
+
+                    padding: 10px;
+
+                    background-color: #f3df2b;
+
+                    border: none;
+                    border-radius: 15px;
+
+                    transition: all 0.5s;
+
+                    &:hover {
+                        background-color: #14181b;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+
+    .container-response-esqueceu-senha-hidden {
+        display: none;
+    }
+
+    .form-esqueceu-senha {
+        background-color: #f3df2b;
+        width: 100%;
+        height: 100vh;
 
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
 
-        border-radius: 15px;
+        .div-email-pass-esqueceu-senha {
+            background-color: #fff;
 
-        .arrow-esqueceu-senha {
-            font-size: 24px;
-            color: black;
-            text-decoration: none;
+            width: 320px;
+            height: auto;
 
-            transition: all 0.2s linear;
+            padding: 25px 0 25px 0;
 
-            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
 
-            &:hover {
-                transform: scale(0.80);
-            }
-        }
-
-        .input-esqueceu-senha {
-            background-color: #f5f5f5;
-
-            width: calc(100% - 55px);
-            height: 55px;
-
-            margin-bottom: 25px;
-            padding-left: 15px;
-
-            border: none;
             border-radius: 15px;
 
-            box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
+            .arrow-esqueceu-senha {
+                font-size: 24px;
+                color: black;
+                text-decoration: none;
 
-            font-size: 18px;
+                transition: all 0.2s linear;
 
-            &:focus {
-                outline: none;
+                margin-bottom: 20px;
 
-                border: 2px solid #4b39ef;
-            }
-        }
-
-        .div-pass-esqueceu-senha {
-            display: flex;
-            flex-flow: row wrap;
-            justify-content: center;
-
-            .input-esqueceu-senha-pass {
-                width: auto;
-
-                border-top-right-radius: 0;
-                border-bottom-right-radius: 0;
+                &:hover {
+                    transform: scale(0.80);
+                }
             }
 
-            .pass-reveal-esqueceu-senha {
-                width: 55px;
+            .input-esqueceu-senha {
+                background-color: #f5f5f5;
+
+                width: calc(100% - 55px);
                 height: 55px;
 
-                background-color: #f5f5f5;
+                margin-bottom: 25px;
+                padding-left: 15px;
 
                 border: none;
                 border-radius: 15px;
-                border-top-left-radius: 0;
-                border-bottom-left-radius: 0;
 
                 box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
 
                 font-size: 18px;
 
-                .eye-icon {
-                    color: #acaaaa;
+                &:focus {
+                    outline: none;
+
+                    border: 2px solid #4b39ef;
+                }
+            }
+
+            .div-pass-esqueceu-senha {
+                display: flex;
+                flex-flow: row wrap;
+                justify-content: center;
+
+                .input-esqueceu-senha-pass {
+                    width: auto;
+
+                    border-top-right-radius: 0;
+                    border-bottom-right-radius: 0;
                 }
 
-                .hidden {
+                .pass-reveal-esqueceu-senha {
+                    width: 55px;
+                    height: 55px;
+
+                    background-color: #f5f5f5;
+
+                    border: none;
+                    border-radius: 15px;
+                    border-top-left-radius: 0;
+                    border-bottom-left-radius: 0;
+
+                    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
+
+                    font-size: 18px;
+
+                    .eye-icon {
+                        color: #acaaaa;
+                    }
+
+                    .hidden {
+                        display: none;
+                    }
+                }
+
+                .span-esqueceu-senha {
+                    width: calc(100% - 55px);
+
+                    padding-left: 15px;
+
+                    color: rgb(231, 84, 84);
+                    font-size: 10px;
+                }
+
+                .hidden-span-esqueceu-senha {
                     display: none;
                 }
+
+                .alert-pass-esqueceu-senha {
+                    border: 1px solid red;
+                }
             }
 
-            .span-esqueceu-senha {
+            .btn-trocar-senha {
+                height: 45px;
                 width: calc(100% - 55px);
 
-                padding-left: 15px;
+                margin-bottom: 15px;
 
-                color: rgb(231, 84, 84);
-                font-size: 10px;
-            }
+                border: none;
+                border-radius: 10px;
 
-            .hidden-span-esqueceu-senha {
-                display: none;
-            }
+                background-color: #fff100;
 
-            .alert-pass-esqueceu-senha {
-                border: 1px solid red;
+                transition: all 0.5s linear;
+
+                &:hover {
+                    color: #fff;
+
+                    background-color: #14181b;
+                }
+
+                font-size: 16px;
+
+                box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
             }
         }
 
-        .btn-trocar-senha {
-            height: 45px;
-            width: calc(100% - 55px);
-
-            margin-bottom: 15px;
-
-            border: none;
-            border-radius: 10px;
-
-            background-color: #fff100;
-
-            transition: all 0.5s linear;
-
-            &:hover {
-                color: #fff;
-
-                background-color: #14181b;
-            }
-
-            font-size: 16px;
-
-            box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
-        }
     }
-
 }

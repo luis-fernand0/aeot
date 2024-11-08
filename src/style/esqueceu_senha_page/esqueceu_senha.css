@@ -1,4 +1,65 @@
-.form-esqueceu-senha {
+.container-esqueceu-senha .container-response-esqueceu-senha {
+  position: absolute;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.253);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container-esqueceu-senha .container-response-esqueceu-senha .container-info-response-esqueceu-senha {
+  background-color: #ffffff;
+  width: 50%;
+  height: 30%;
+  border-radius: 15px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.384);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.container-esqueceu-senha .container-response-esqueceu-senha .container-info-response-esqueceu-senha .div-close-alert-response-esqueceu-senha {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.container-esqueceu-senha .container-response-esqueceu-senha .container-info-response-esqueceu-senha .div-close-alert-response-esqueceu-senha .btn-close-alert-response-esqueceu-senha {
+  background-color: transparent;
+  border: none;
+  width: 50px;
+  height: 50px;
+}
+.container-esqueceu-senha .container-response-esqueceu-senha .container-info-response-esqueceu-senha .container-text-esqueceu-senha {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.container-esqueceu-senha .container-response-esqueceu-senha .container-info-response-esqueceu-senha .container-text-esqueceu-senha .response-text-esqueceu-senha {
+  width: 60%;
+  text-align: center;
+}
+.container-esqueceu-senha .container-response-esqueceu-senha .container-info-response-esqueceu-senha .container-text-esqueceu-senha .btn-response-esqueceu-senha {
+  width: 100%;
+  min-height: 45px;
+  padding: 10px;
+  background-color: #f3df2b;
+  border: none;
+  border-radius: 15px;
+  transition: all 0.5s;
+}
+.container-esqueceu-senha .container-response-esqueceu-senha .container-info-response-esqueceu-senha .container-text-esqueceu-senha .btn-response-esqueceu-senha:hover {
+  background-color: #14181b;
+  color: #fff;
+}
+.container-esqueceu-senha .container-response-esqueceu-senha-hidden {
+  display: none;
+}
+.container-esqueceu-senha .form-esqueceu-senha {
   background-color: #f3df2b;
   width: 100%;
   height: 100vh;
@@ -7,7 +68,7 @@
   justify-content: center;
   align-items: center;
 }
-.form-esqueceu-senha .div-email-pass-esqueceu-senha {
+.container-esqueceu-senha .form-esqueceu-senha .div-email-pass-esqueceu-senha {
   background-color: #fff;
   width: 320px;
   height: auto;
@@ -18,17 +79,17 @@
   align-items: center;
   border-radius: 15px;
 }
-.form-esqueceu-senha .div-email-pass-esqueceu-senha .arrow-esqueceu-senha {
+.container-esqueceu-senha .form-esqueceu-senha .div-email-pass-esqueceu-senha .arrow-esqueceu-senha {
   font-size: 24px;
   color: black;
   text-decoration: none;
   transition: all 0.2s linear;
   margin-bottom: 20px;
 }
-.form-esqueceu-senha .div-email-pass-esqueceu-senha .arrow-esqueceu-senha:hover {
+.container-esqueceu-senha .form-esqueceu-senha .div-email-pass-esqueceu-senha .arrow-esqueceu-senha:hover {
   transform: scale(0.8);
 }
-.form-esqueceu-senha .div-email-pass-esqueceu-senha .input-esqueceu-senha {
+.container-esqueceu-senha .form-esqueceu-senha .div-email-pass-esqueceu-senha .input-esqueceu-senha {
   background-color: #f5f5f5;
   width: calc(100% - 55px);
   height: 55px;
@@ -39,21 +100,21 @@
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
   font-size: 18px;
 }
-.form-esqueceu-senha .div-email-pass-esqueceu-senha .input-esqueceu-senha:focus {
+.container-esqueceu-senha .form-esqueceu-senha .div-email-pass-esqueceu-senha .input-esqueceu-senha:focus {
   outline: none;
   border: 2px solid #4b39ef;
 }
-.form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha {
+.container-esqueceu-senha .form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
 }
-.form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha .input-esqueceu-senha-pass {
+.container-esqueceu-senha .form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha .input-esqueceu-senha-pass {
   width: auto;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
-.form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha .pass-reveal-esqueceu-senha {
+.container-esqueceu-senha .form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha .pass-reveal-esqueceu-senha {
   width: 55px;
   height: 55px;
   background-color: #f5f5f5;
@@ -64,25 +125,25 @@
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
   font-size: 18px;
 }
-.form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha .pass-reveal-esqueceu-senha .eye-icon {
+.container-esqueceu-senha .form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha .pass-reveal-esqueceu-senha .eye-icon {
   color: #acaaaa;
 }
-.form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha .pass-reveal-esqueceu-senha .hidden {
+.container-esqueceu-senha .form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha .pass-reveal-esqueceu-senha .hidden {
   display: none;
 }
-.form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha .span-esqueceu-senha {
+.container-esqueceu-senha .form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha .span-esqueceu-senha {
   width: calc(100% - 55px);
   padding-left: 15px;
   color: rgb(231, 84, 84);
   font-size: 10px;
 }
-.form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha .hidden-span-esqueceu-senha {
+.container-esqueceu-senha .form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha .hidden-span-esqueceu-senha {
   display: none;
 }
-.form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha .alert-pass-esqueceu-senha {
+.container-esqueceu-senha .form-esqueceu-senha .div-email-pass-esqueceu-senha .div-pass-esqueceu-senha .alert-pass-esqueceu-senha {
   border: 1px solid red;
 }
-.form-esqueceu-senha .div-email-pass-esqueceu-senha .btn-trocar-senha {
+.container-esqueceu-senha .form-esqueceu-senha .div-email-pass-esqueceu-senha .btn-trocar-senha {
   height: 45px;
   width: calc(100% - 55px);
   margin-bottom: 15px;
@@ -93,7 +154,7 @@
   font-size: 16px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
 }
-.form-esqueceu-senha .div-email-pass-esqueceu-senha .btn-trocar-senha:hover {
+.container-esqueceu-senha .form-esqueceu-senha .div-email-pass-esqueceu-senha .btn-trocar-senha:hover {
   color: #fff;
   background-color: #14181b;
 }/*# sourceMappingURL=esqueceu_senha.css.map */
