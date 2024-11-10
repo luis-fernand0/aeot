@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import '../style/new_driver_page/new_driver.css'
 
 const url = import.meta.env.VITE_URL_DATAS_USER_PENDENTES
+const urlAtualizar = import.meta.env.VITE_URL_APROVAR_USER
 
 const NewDrivers = () => {
     const [infoDrivers, setInfoDrivers] = useState()
@@ -30,13 +31,23 @@ const NewDrivers = () => {
     };
 
     async function callUser() {
-        const response = await fetch (url)
+        const response = await fetch(url)
         const data = await response.json()
         setInfoDrivers(data)
-        console.log(data)
+        setCont(infoDrivers.length)
     }
 
-    useEffect (() => {
+    async function aprovarCadastro(aprovado, email) {
+        const response = await fetch(urlAtualizar, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({'aprovado': aprovado, 'email': email})
+        })
+    }
+
+    useEffect(() => {
         callUser()
     }, [])
 
@@ -119,10 +130,10 @@ const NewDrivers = () => {
                             </div>
 
                             <div className='div-btn-newdriver'>
-                                <button className="btn-response-newdriver btn-response-newdriver-yes">
+                                <button onClick={ () => {aprovarCadastro(true, driverDetails.email)} } className="btn-response-newdriver btn-response-newdriver-yes">
                                     Aprovado!
                                 </button>
-                                <button className="btn-response-newdriver btn-response-newdriver-no">
+                                <button onClick={ () => {aprovarCadastro(false)} } className="btn-response-newdriver btn-response-newdriver-no">
                                     Negado!
                                 </button>
                             </div>
