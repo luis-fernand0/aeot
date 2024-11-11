@@ -3,9 +3,11 @@ import React, { useState, useEffect } from 'react';
 import '../style/new_driver_page/new_driver.css'
 
 const url = import.meta.env.VITE_URL_DATAS_USER_PENDENTES
+const urlAtualizar = import.meta.env.VITE_URL_APROVAR_USER
 
 const NewDrivers = () => {
     const [infoDrivers, setInfoDrivers] = useState()
+    const [contDriver, setContDriver] = useState()
     const [showModal, setShowModal] = useState(false);
     const [showImageModal, setShowImageModal] = useState(false);
     const [driverDetails, setDriverDetails] = useState(null);
@@ -30,14 +32,40 @@ const NewDrivers = () => {
     };
 
     async function callUser() {
-        const response = await fetch (url)
+        const response = await fetch(url)
         const data = await response.json()
         setInfoDrivers(data)
-        console.log(data)
+        // setContDriver(infoDrivers.length)
     }
 
-    useEffect (() => {
+    async function aprovarCadastro(aprovado, email, cod_driver) {
+        console.log(aprovado, email, cod_driver)
+        // const response = await fetch(urlAtualizar, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({ 'aprovado': aprovado, 'email': email })
+        // })
+    }
+
+    useEffect(() => {
         callUser()
+        // infoDrivers.push({
+        //     "cod_driver": 712,
+        //     "full_name": "teste06",
+        //     "email": "teste06@gmail.com",
+        //     "pass": "$2b$10$a3ABlHwnh1e5TGPtMnrxRu5myULwMTcl6.G75q/eOl1v3QvGCSWNe",
+        //     "phone": "(12) 34567-8987",
+        //     "car_plate": "brd-2314",
+        //     "car_model": "hrv prata",
+        //     "foto": "https://aeotnew.s3.amazonaws.com/FotosUser/1730904477971-1726226143377000.jpg",
+        //     "fotocnh": "https://aeotnew.s3.amazonaws.com/AnexosCadastro/1730904477971-1726226149183000.jpg",
+        //     "printappmobi": "https://aeotnew.s3.amazonaws.com/AnexosCadastro/1730904477979-1726230475362000.jpg",
+        //     "created_at": "2024-11-06T14:48:01.928Z",
+        //     "verificado": false
+        // })
+        console.log(infoDrivers)
     }, [])
 
     return (
@@ -119,10 +147,10 @@ const NewDrivers = () => {
                             </div>
 
                             <div className='div-btn-newdriver'>
-                                <button className="btn-response-newdriver btn-response-newdriver-yes">
+                                <button onClick={() => { aprovarCadastro(true, driverDetails.email, driverDetails.indexOf(driverDetails.cod_driver)) }} className="btn-response-newdriver btn-response-newdriver-yes">
                                     Aprovado!
                                 </button>
-                                <button className="btn-response-newdriver btn-response-newdriver-no">
+                                <button onClick={() => { aprovarCadastro(false) }} className="btn-response-newdriver btn-response-newdriver-no">
                                     Negado!
                                 </button>
                             </div>
