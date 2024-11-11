@@ -17,7 +17,7 @@ const Login = () => {
     const formData = new FormData(myForm)
     const data = Object.fromEntries(formData)
 
-    const response = await fetch(`${urlLogin}`, {
+    const response = await fetch(urlLogin, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
