@@ -72,7 +72,11 @@ const Cadastro = () => {
 
     function formatPlate(event) {
         var plate = event.target
-        var plateValue = plate.value.replace(/([A-z0-9]{3})(\d[A-j0-9]\d{2})/, '$1-$2')
+        // Remove todos os caracteres que não são letras ou números
+        var plateValue = plate.value.replace(/[^A-Za-z0-9]/g, '');
+        if (plateValue.length > 3) {
+            plateValue = plateValue.slice(0, 3) + '-' + plateValue.slice(3);
+        }
         plate.value = plateValue
 
         return plate
@@ -120,7 +124,7 @@ const Cadastro = () => {
         if (response.status != 200 || response.status === 200) {
             const element = document.querySelector('.container-response-cadastro')
             element.classList.remove('container-response-cadastro-hidden')
-            
+
             const textResponse = document.querySelector('.response-text-cadastro')
             console.log(dataResponse.message)
             textResponse.innerHTML = dataResponse.message
