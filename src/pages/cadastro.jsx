@@ -10,6 +10,21 @@ const urlCadastro = import.meta.env.VITE_URL_CADASTRO;
 
 const Cadastro = () => {
 
+    const [modeloCor, setModeloCor] = useState('');
+    const [erroModeloCor, setErroModeloCor] = useState(false);
+
+    // Função para validar se o input contém pelo menos duas palavras
+    const validarModeloCor = (valor) => {
+        const regex = /^\w+\s+\w+/; // Verifica se há pelo menos duas palavras separadas por um espaço
+        setErroModeloCor(!regex.test(valor));
+    };
+
+    const handleChangeModeloCor = (event) => {
+        const valor = event.target.value;
+        setModeloCor(valor);
+        validarModeloCor(valor);
+    };
+
     function checkPhone(event) {
         let input = event.target
 
@@ -102,6 +117,12 @@ const Cadastro = () => {
     async function hundleSubmit(event) {
         event.preventDefault()
 
+        if (erroModeloCor) {
+            document.getElementById('span-modelo').classList.remove('hidden-span')
+            return;
+        } else {
+            document.getElementById('span-modelo').classList.add('hidden-span')
+        }
         //CHECANDO SE O USUARIO ADICIONOU TODAS AS FOTOS
         const checkFotos = document.querySelectorAll('.input-foto-print')
         for (let i = 0; i < checkFotos.length; i++) {
@@ -174,7 +195,8 @@ const Cadastro = () => {
                             <div className='placa-modelo'>
                                 <input onChange={(event) => { formatPlate(event) }} className='input-cadastro-veiculo' type="text" name="placa_veiculo" id="placa-veiculo" placeholder='Placa' required autoComplete='off' maxLength={8} />
 
-                                <input className='input-cadastro-veiculo' type="text" name="modelo_veiculo" id="modelo-veiculo" placeholder='Modelo/Cor' required autoComplete='off' />
+                                <span id='span-modelo' className='span hidden-span'>PORFAVOR INSIRA MODELO E COR DO VEICULO EXEMPLO: ONIX PRETO*</span>
+                                <input onChange={(e) => {handleChangeModeloCor(e)}} className='input-cadastro-veiculo' type="text" name="modelo_veiculo" id="modelo-veiculo" placeholder='Modelo/Cor' required autoComplete='off' />
                             </div>
 
                             <span className='span hidden-span'>AS SENHAS DEVEM SER IGUAIS*</span>
