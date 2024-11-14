@@ -9,26 +9,23 @@ const Home = () => {
   const [postos, setPostos] = useState()
   const [categoria, setCategoria] = useState(`postos`)
 
-  var usuarioLogado = sessionStorage.getItem('userLogado');
-  if (!usuarioLogado) {
-    window.location.replace(`${urlSite}`)
-  }
+  const tokenUser = localStorage.getItem('token');
 
   const typeCategoria = {
     categoria: categoria
   }
   async function gasStation() {
-    const url = `${urlDatas}`
-    const response = await fetch(url, {
+    const response = await fetch(urlDatas, {
       method: 'POST',
       headers: {
+        'Authorization': `Bearer ${tokenUser}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(typeCategoria)
     })
     const data = await response.json()
 
-    setPostos(data)
+    setPostos(data.infoGasStation)
   }
 
   function checkButton(btnClicado) {
