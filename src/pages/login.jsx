@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Link, replace } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Navigate, useNavigate } from 'react-router-dom'
 
 import '../style/login_page/login.css'
@@ -25,7 +25,6 @@ const Login = () => {
       body: JSON.stringify(data)
     })
     const dataResponse = await response.json()
-    console.log(dataResponse)
     if (response.status != 200) {
       if (response.status === 403) {
         const spanElement = document.querySelector('.span-login')
