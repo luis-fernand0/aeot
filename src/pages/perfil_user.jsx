@@ -6,17 +6,19 @@ import '../style/perfil_user_page/perfil_user.css'
 
 const urlData = import.meta.env.VITE_URL_DATAS_USER
 
+const tokenUser = localStorage.getItem('token');
+
 const PerfilUser = () => {
     const [dataUser, setDataUser] = useState()
     const { cod_driver } = useParams()
 
     async function callInfoUser() {
         const response = await fetch(`${urlData}`, {
-            method: 'POST',
+            method: 'GET',
             headers: {
+                'Authorization': `Bearer ${tokenUser}`,
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ "cod_driver": `${cod_driver}` })
+            }
         })
         const data = await response.json()
 
