@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { Navigate, useNavigate } from 'react-router-dom'
+
 
 import Header from "../components/header"
 import '../style/perfil_user_page/perfil_user.css'
@@ -10,7 +11,10 @@ const tokenUser = localStorage.getItem('token');
 
 const PerfilUser = () => {
     const [dataUser, setDataUser] = useState()
-    const { cod_driver } = useParams()
+
+    const tokenUser = localStorage.getItem('token');
+
+    const navigate = useNavigate()
 
     async function callInfoUser() {
         const response = await fetch(`${urlData}`, {
@@ -21,6 +25,9 @@ const PerfilUser = () => {
             }
         })
         const data = await response.json()
+        if (response.status === 403) {
+            navigate('/', { replace: true })
+        }
 
         setDataUser(data)
     }
