@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom'
+
 import Header from '../components/header';
 import '../style/home_page/home.css'
 
@@ -8,6 +10,8 @@ const urlDatas = import.meta.env.VITE_URL_DATAS
 const Home = () => {
   const [postos, setPostos] = useState()
   const [categoria, setCategoria] = useState(`postos`)
+
+  const navigate = useNavigate()
 
   const tokenUser = localStorage.getItem('token');
 
@@ -24,6 +28,9 @@ const Home = () => {
       body: JSON.stringify(typeCategoria)
     })
     const data = await response.json()
+    if(response.status === 403) {
+      navigate('/', { replace: true })
+    }
 
     setPostos(data.infoGasStation)
   }
