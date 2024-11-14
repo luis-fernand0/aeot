@@ -25,6 +25,7 @@ const Login = () => {
       body: JSON.stringify(data)
     })
     const dataResponse = await response.json()
+    console.log(dataResponse)
     if (response.status != 200) {
       if (response.status === 403) {
         const spanElement = document.querySelector('.span-login')
@@ -37,8 +38,8 @@ const Login = () => {
       spanElement.innerHTML = response.statusText || response.message
     } else {
       document.querySelector('.span-login').classList.add('span-login-hidden')
-      sessionStorage.setItem('userLogado', true)
-      navigate(`/home/${dataResponse.cod_driver}`, { replace: true })
+      localStorage.setItem('token', dataResponse.token_user)
+      navigate(`/home/${dataResponse.cod_driver}`)
     }
   }
 
