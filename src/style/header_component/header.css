@@ -5,6 +5,9 @@
   justify-content: space-around;
   margin-bottom: 50px;
 }
+.header-home .header-btn-hidden {
+  display: none;
+}
 .header-home .header-btn {
   background-color: transparent;
   width: 50px;
