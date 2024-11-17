@@ -11,7 +11,7 @@ const Header = () => {
         <>
             <header className="header-home">
 
-                <Link to={`/perfil/${cod_driver}`}>
+                <Link to={`/perfil`}>
                     <button className='header-btn header-btn-perfil' type="button">
                         <FontAwesomeIcon className='icon-header-btn' icon={faUser} /> 
                         Cartão de visita
