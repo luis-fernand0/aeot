@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom'
 
 import '../style/new_driver_page/new_driver.css'
 
@@ -11,6 +12,10 @@ const NewDrivers = () => {
     const [showImageModal, setShowImageModal] = useState(false);
     const [driverDetails, setDriverDetails] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
+
+    const navigate = useNavigate()
+
+    const tokenUser = localStorage.getItem('token');
 
     const handleOpenModal = (driver) => {
         setDriverDetails(driver);
@@ -31,7 +36,16 @@ const NewDrivers = () => {
     };
 
     async function callUser() {
-        const response = await fetch(url)
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${tokenUser}`,
+                'Content-Type': 'application/json'
+            }
+        })
+        if (response.status === 403) {
+            navigate('/home', {replace: true})
+        }
         const data = await response.json()
         setInfoDrivers(data)
     }
