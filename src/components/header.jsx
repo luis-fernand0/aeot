@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import '../style/header_component/header.css'
 
 const Header = () => {
-    const { cod_driver } = useParams()
+    const typeUser = localStorage.getItem('type_user')
 
     return (
         <>
@@ -18,8 +18,8 @@ const Header = () => {
                     </button>
                 </Link>
 
-                <Link to={`/cadastros_pendentes`}>
-                    <button className='header-btn header-btn-perfil' type='button'>
+                <Link to={`/cadastros_pendentes`} className={`${typeUser === 'user' ? 'header-btn-hidden': '' }`}>
+                    <button className='header-btn' type='button'>
                         <FontAwesomeIcon className='icon-header-btn' icon={faPlus} />
                     </button>
                 </Link>
