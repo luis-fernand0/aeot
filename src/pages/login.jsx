@@ -38,6 +38,7 @@ const Login = () => {
     } else {
       document.querySelector('.span-login').classList.add('span-login-hidden')
       localStorage.setItem('token', dataResponse.token_user)
+      localStorage.setItem('type_user', dataResponse.datas_user.type_user)
       navigate(`/home`)
     }
   }
