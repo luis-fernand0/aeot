@@ -26,12 +26,12 @@ const router = createBrowserRouter([
   },
 
   {
-    path: '/home/:cod_driver',
+    path: '/home',
     element: <Home/>
   },
 
   {
-    path: '/perfil/:cod_driver',
+    path: '/perfil',
     element: <PerfilUser/>
   },
 
