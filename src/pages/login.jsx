@@ -38,7 +38,7 @@ const Login = () => {
     } else {
       document.querySelector('.span-login').classList.add('span-login-hidden')
       localStorage.setItem('token', dataResponse.token_user)
-      navigate(`/home/${dataResponse.cod_driver}`)
+      navigate(`/home`)
     }
   }
 
