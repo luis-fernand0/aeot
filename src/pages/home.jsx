@@ -71,10 +71,10 @@ const Home = () => {
                   </p>
 
                   <p className='combustiveis-gas-station'>
-                    ETANOL: R$ {posto.preco_etanol}
+                    ETANOL: R$ {posto.etanol}
                   </p>
                   <p className='combustiveis-gas-station'>
-                    GASOLINA: R$ {posto.preco_gasolina}
+                    GASOLINA: R$ {posto.gasolina}
                   </p>
                 </div>
               </li>
