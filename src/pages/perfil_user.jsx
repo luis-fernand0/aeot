@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 
 import Header from "../components/header"
@@ -11,8 +11,6 @@ const tokenUser = localStorage.getItem('token');
 
 const PerfilUser = () => {
     const [dataUser, setDataUser] = useState()
-
-    const tokenUser = localStorage.getItem('token');
 
     const navigate = useNavigate()
 
