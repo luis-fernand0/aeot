@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import Header from '../components/header';
 import '../style/home_page/home.css'
 
-const urlSite = import.meta.env.VITE_URL_AEOT_SITE
 const urlDatas = import.meta.env.VITE_URL_DATAS
 
 const Home = () => {
