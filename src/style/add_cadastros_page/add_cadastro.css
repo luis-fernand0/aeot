@@ -1,0 +1,18 @@
+.container-btns-add-cadastro {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.container-btns-add-cadastro .btn-add-cadastro {
+  margin-bottom: 25px;
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  font-weight: 500;
+  transition: 0.2s linear;
+}
+.container-btns-add-cadastro .btn-add-cadastro:hover {
+  border-bottom: 2px solid #fff100;
+}/*# sourceMappingURL=add_cadastro.css.map */
