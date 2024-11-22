@@ -35,7 +35,7 @@ const NewDrivers = () => {
         setShowImageModal(false);
     };
 
-    async function callUser() {
+    async function callUsers() {
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -63,7 +63,7 @@ const NewDrivers = () => {
     }
 
     useEffect(() => {
-        callUser()
+        callUsers()
     }, [])
 
     return (
