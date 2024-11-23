@@ -59,7 +59,7 @@ const Home = () => {
 
             {categoria === 'postos' && postos && postos.map((posto) =>
               <li className='gas-services' key={posto.cod_posto}>
-                <img className='img-gas-services' src={posto.foto} alt="imagem-do-posto-de-gasolina" />
+                <img className='img-gas-services' src={`https://aeotnew.s3.amazonaws.com/${posto.foto}`} alt="imagem-do-posto-de-gasolina" />
                 <div className='info-gas-services'>
                   <h3 className='title-gas-services'>
                     {posto.nome}
@@ -81,7 +81,7 @@ const Home = () => {
 
             {categoria === 'anuncios' && postos && postos.map((anuncio) =>
               <li className='gas-services' key={anuncio.cod_anuncio}>
-                <img className='img-gas-services' src={anuncio.foto} alt="imagem-do-anuncio/serviço" />
+                <img className='img-gas-services' src={`https://aeotnew.s3.amazonaws.com/${anuncio.foto}`} alt="imagem-do-anuncio/serviço" />
                 <div className='info-gas-services'>
                   <h3 className='title-gas-services'>
                     {anuncio.titulo_anuncio}
@@ -94,13 +94,6 @@ const Home = () => {
                   <p className='endereco-gas-services'>
                     {anuncio.endereco}
                   </p>
-
-                  {/* <p className='combustiveis-gas-station'>
-                    ETANOL: R$ {anuncio.preco_etanol}
-                  </p>
-                  <p className='combustiveis-gas-station'>
-                    GASOLINA: R$ {anuncio.preco_gasolina}
-                  </p> */}
                 </div>
               </li>
             )}
