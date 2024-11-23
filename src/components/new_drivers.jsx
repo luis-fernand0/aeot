@@ -58,7 +58,7 @@ const NewDrivers = () => {
             },
             body: JSON.stringify({ 'aprovado': aprovado, 'email': email })
         })
-        callUser()
+        callUsers()
         handleCloseModal()
     }
 
@@ -162,7 +162,7 @@ const NewDrivers = () => {
                 <div className="container-image-modal">
                     <div className="image-modal-content">
                         <button onClick={handleCloseImageModal} className="btn-close-image-modal">X</button>
-                        <img src={selectedImage} alt="Imagem ampliada" className="image-modal-view" />
+                        <img src={`https://aeotnew.s3.amazonaws.com/${selectedImage}`} alt="Imagem ampliada" className="image-modal-view" />
                     </div>
                 </div>
             )}
