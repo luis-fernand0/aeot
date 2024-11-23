@@ -13,6 +13,7 @@ import Login from './pages/login.jsx'
 import Home from './pages/home.jsx'
 import PerfilUser from './pages/perfil_user.jsx'
 import NewDrivers from './components/new_drivers.jsx'
+import EditPerfil from './components/edit_perfil.jsx'
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,11 @@ const router = createBrowserRouter([
   {
     path: '/cadastros_pendentes',
     element: <NewDrivers/>
+  },
+
+  {
+    path: '/editar_perfil',
+    element: <EditPerfil/>
   }
 ])
 
