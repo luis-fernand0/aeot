@@ -47,7 +47,7 @@ const PerfilUser = () => {
                         </div>
                         <div className="foto-user-datas">
                             <div className="foto-user-container">
-                                <img className="foto-user" src={`https://aeotnew.s3.amazonaws.com/${dataUser.foto}`} alt="" />
+                                <img className="foto-user" src={`https://aeotnew.s3.amazonaws.com/${dataUser.foto}`} alt="foto_user" />
                             </div>
 
                             <div className="data-user-perfil">
