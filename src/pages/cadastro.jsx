@@ -92,6 +92,10 @@ const Cadastro = () => {
         if (plateValue.length > 3) {
             plateValue = plateValue.slice(0, 3) + '-' + plateValue.slice(3);
         }
+        if (plateValue.length > 8) {
+            plateValue = plateValue.slice(0, 8);
+        }
+
         plate.value = plateValue
 
         return plate
@@ -196,7 +200,7 @@ const Cadastro = () => {
                                 <input onChange={(event) => { formatPlate(event) }} className='input-cadastro-veiculo' type="text" name="placa_veiculo" id="placa-veiculo" placeholder='Placa' required autoComplete='off' maxLength={8} />
 
                                 <span id='span-modelo' className='span hidden-span'>PORFAVOR INSIRA MODELO E COR DO VEICULO EXEMPLO: ONIX PRETO*</span>
-                                <input onChange={(e) => {handleChangeModeloCor(e)}} className='input-cadastro-veiculo' type="text" name="modelo_veiculo" id="modelo-veiculo" placeholder='Modelo/Cor' required autoComplete='off' />
+                                <input onChange={(e) => { handleChangeModeloCor(e) }} className='input-cadastro-veiculo' type="text" name="modelo_veiculo" id="modelo-veiculo" placeholder='Modelo/Cor' required autoComplete='off' />
                             </div>
 
                             <span className='span hidden-span'>AS SENHAS DEVEM SER IGUAIS*</span>
