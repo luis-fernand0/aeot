@@ -17,6 +17,7 @@ const Home = () => {
   const typeCategoria = {
     categoria: categoria
   }
+  
   async function gasStation() {
     const response = await fetch(urlDatas, {
       method: 'POST',
