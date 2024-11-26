@@ -11,10 +11,11 @@ const urlDatas = import.meta.env.VITE_URL_DATAS
 const Home = () => {
   const [postos, setPostos] = useState()
   const [categoria, setCategoria] = useState(`postos`)
+
   const [infoPostos, setInfoPosto] = useState()
   const [openModal, setOpenModal] = useState(false)
   const [editCombustivel, setEditCombustivel] = useState(false)
-  const [inputValue, setInputValue] = useState()
+  const [inputInfo, setInputInfo] = useState({})
 
   const navigate = useNavigate()
 
@@ -57,9 +58,24 @@ const Home = () => {
     }
   }
 
-  function modalEditCombustivel(valorCombustivel) {
+  function modalEditCombustivel(valorCombustivel, typeCombustivel) {
+    const sobreCombustivel = {
+      'valor_combustivel': valorCombustivel,
+      'type_combustivel': typeCombustivel
+    }
     setEditCombustivel(true)
-    setInputValue(valorCombustivel)
+    setInputInfo(sobreCombustivel)
+  }
+
+  function checkInput(e) {
+    var input = e.target
+    var inputValue = input.value.replace(/^(\d+)(\d{2})$/, '$1.$2')
+
+    if(inputValue.length === 1) {
+      input.value = ''
+    }
+
+    input.value = inputValue
   }
 
   useEffect(() => {
@@ -147,7 +163,7 @@ const Home = () => {
                   <p id='valor-etanol' className='modal-combustivel-posto'>
                     Etanol: R$ {infoPostos.etanol}
                   </p>
-                  <button onClick={() => { modalEditCombustivel(infoPostos.etanol) }} type="button" className='modal-edit-combustivel'>
+                  <button onClick={() => { modalEditCombustivel(infoPostos.etanol, 'etanol') }} type="button" className='modal-edit-combustivel'>
                     <FontAwesomeIcon className='pen-icon' icon={faPen} />
                   </button>
                 </div>
@@ -155,7 +171,7 @@ const Home = () => {
                   <p id='valor-gasolina' className='modal-combustivel-posto'>
                     Gasolina: R$ {infoPostos.gasolina}
                   </p>
-                  <button onClick={() => { modalEditCombustivel(infoPostos.gasolina) }} type="button" className='modal-edit-combustivel'>
+                  <button onClick={() => { modalEditCombustivel() }} type="button" className='modal-edit-combustivel'>
                     <FontAwesomeIcon className='pen-icon' icon={faPen} />
                   </button>
                 </div>
@@ -173,7 +189,11 @@ const Home = () => {
                 </button>
               </div>
               <div className='container-input-edit-combustivel'>
-                <input type="number" value={inputValue}/>
+                <input type="number"
+                  name={inputInfo.type_combustivel === 'etanol' ? 'etanol' : 'gasolina'}
+                  id={inputInfo.type_combustivel === 'etanol' ? 'etanol' : 'gasolina'}
+                  placeholder={inputInfo.valor_combustivel}
+                  onChange={(e) => { checkInput(e) }} />
                 <button type="button">Salvar</button>
               </div>
             </div>
