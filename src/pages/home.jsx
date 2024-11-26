@@ -14,6 +14,7 @@ const Home = () => {
   const [infoPostos, setInfoPosto] = useState()
   const [openModal, setOpenModal] = useState(false)
   const [editCombustivel, setEditCombustivel] = useState(false)
+  const [inputValue, setInputValue] = useState()
 
   const navigate = useNavigate()
 
@@ -56,8 +57,9 @@ const Home = () => {
     }
   }
 
-  function modalEditCombustivel() {
+  function modalEditCombustivel(valorCombustivel) {
     setEditCombustivel(true)
+    setInputValue(valorCombustivel)
   }
 
   useEffect(() => {
@@ -142,18 +144,18 @@ const Home = () => {
                 <p className='info-posto posto-endereco'>{infoPostos.endereco}</p>
 
                 <div className='container-edit-combustivel-modal'>
-                  <p className='modal-combustivel-posto'>
+                  <p id='valor-etanol' className='modal-combustivel-posto'>
                     Etanol: R$ {infoPostos.etanol}
                   </p>
-                  <button onClick={() => { modalEditCombustivel() }} type="button" className='modal-edit-combustivel'>
+                  <button onClick={() => { modalEditCombustivel(infoPostos.etanol) }} type="button" className='modal-edit-combustivel'>
                     <FontAwesomeIcon className='pen-icon' icon={faPen} />
                   </button>
                 </div>
-                <div>
-                  <p className='modal-combustivel-posto'>
+                <div className='container-edit-combustivel-modal'>
+                  <p id='valor-gasolina' className='modal-combustivel-posto'>
                     Gasolina: R$ {infoPostos.gasolina}
                   </p>
-                  <button onClick={() => { modalEditCombustivel() }} type="button" className='modal-edit-combustivel'>
+                  <button onClick={() => { modalEditCombustivel(infoPostos.gasolina) }} type="button" className='modal-edit-combustivel'>
                     <FontAwesomeIcon className='pen-icon' icon={faPen} />
                   </button>
                 </div>
@@ -171,7 +173,7 @@ const Home = () => {
                 </button>
               </div>
               <div className='container-input-edit-combustivel'>
-                <input type="number" />
+                <input type="number" value={inputValue}/>
                 <button type="button">Salvar</button>
               </div>
             </div>
