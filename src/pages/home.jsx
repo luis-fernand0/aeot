@@ -1,18 +1,27 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faXmark, faPen } from '@fortawesome/free-solid-svg-icons'
 
 import Header from '../components/header';
 import '../style/home_page/home.css'
 
 const urlDatas = import.meta.env.VITE_URL_DATAS
+const urlEditCombustivel = import.meta.env.VITE_URL_ATUALIZAR_COMBUSTIVEL
 
 const Home = () => {
   const [postos, setPostos] = useState()
   const [categoria, setCategoria] = useState(`postos`)
 
+  const [infoPostos, setInfoPosto] = useState()
+  const [openModal, setOpenModal] = useState(false)
+  const [editCombustivel, setEditCombustivel] = useState(false)
+  const [inputInfo, setInputInfo] = useState({})
+
   const navigate = useNavigate()
 
   const tokenUser = localStorage.getItem('token');
+  const typeUser = localStorage.getItem('type_user')
 
   const typeCategoria = {
     categoria: categoria
@@ -28,15 +37,72 @@ const Home = () => {
       body: JSON.stringify(typeCategoria)
     })
     const data = await response.json()
-    if(response.status === 403) {
+    if (response.status === 403) {
       navigate('/', { replace: true })
     }
-
     setPostos(data.infoGasStation)
   }
 
   function checkButton(btnClicado) {
     setCategoria(btnClicado)
+  }
+
+  function callModal(posto) {
+    setInfoPosto(posto)
+    setOpenModal(true)
+  }
+
+  function closeModal(modal) {
+    if (modal === 'editar_posto') {
+      setOpenModal(false)
+    } else {
+      setEditCombustivel(false)
+    }
+  }
+
+  function modalEditCombustivel(valorCombustivel, typeCombustivel) {
+    const sobreCombustivel = {
+      'valor_combustivel': valorCombustivel,
+      'type_combustivel': typeCombustivel
+    }
+    setEditCombustivel(true)
+    setInputInfo(sobreCombustivel)
+  }
+
+  function checkInput(e) {
+    var input = e.target
+    var inputValue = input.value.replace(/^(\d+)(\d{2})$/, '$1.$2')
+
+    if (inputValue.length === 1) {
+      input.value = ''
+    }
+    if (inputValue.length > 4) {
+      inputValue = inputValue.slice(0, 4)
+    }
+
+    input.value = inputValue
+  }
+
+  async function editarCombustivel(combustivel, posto) {
+    const valor = document.getElementById(combustivel).value
+
+    const response = await fetch(urlEditCombustivel, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${tokenUser}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        combustivel: combustivel,
+        valor: valor,
+        cod_posto: posto
+      })
+    })
+    const data = await response.json()
+    if (response.status === 403) {
+      navigate('/', { replace: true })
+    }
+    setEditCombustivel(false)
   }
 
   useEffect(() => {
@@ -59,7 +125,7 @@ const Home = () => {
           <ul className='ul-gas-services'>
 
             {categoria === 'postos' && postos && postos.map((posto) =>
-              <li className='gas-services' key={posto.cod_posto}>
+              <li onClick={() => { callModal(posto) }} className='gas-services' key={posto.cod_posto}>
                 <img className='img-gas-services' src={`https://aeotnew.s3.amazonaws.com/${posto.foto}`} alt="imagem-do-posto-de-gasolina" />
                 <div className='info-gas-services'>
                   <h3 className='title-gas-services'>
@@ -101,7 +167,75 @@ const Home = () => {
           </ul>
         </div>
 
+        {openModal && (
+          <div id='editar_posto' className='container-modal-edit-posto'>
 
+            <div className='modal-edit-posto'>
+
+              <div className='container-close-modal'>
+                <button onClick={() => { closeModal('editar_posto') }} type="button" className='btn-close-modal'>
+                  <FontAwesomeIcon className='x-icon' icon={faXmark} />
+                </button>
+              </div>
+
+              <div className="container-title-foto">
+                <h1 className='title-modal-posto'>{infoPostos.nome}</h1>
+                <img src={`https://aeotnew.s3.amazonaws.com/${infoPostos.foto}`} alt="foto_posto de gasolina" className='foto-modal-posto' />
+              </div>
+              <div className="container-sobre-posto">
+                <p className='info-posto posto-descricao'>{infoPostos.descricao}</p>
+                <p className='info-posto posto-endereco'>{infoPostos.endereco}</p>
+
+                <div className='container-edit-combustivel-modal'>
+                  <p id='valor-etanol' className='modal-combustivel-posto'>
+                    Etanol: R$ {infoPostos.etanol}
+                  </p>
+                  <button
+                    onClick={() => { modalEditCombustivel(infoPostos.etanol, 'etanol') }} 
+                    type="button" 
+                    className={`${typeUser === 'user' ? 'modal-edit-combustivel-hidden' : 'modal-edit-combustivel'}`}>
+                    <FontAwesomeIcon className='pen-icon' icon={faPen} />
+                  </button>
+                </div>
+                <div className='container-edit-combustivel-modal'>
+                  <p id='valor-gasolina' className='modal-combustivel-posto'>
+                    Gasolina: R$ {infoPostos.gasolina}
+                  </p>
+                  <button
+                    onClick={() => { modalEditCombustivel(infoPostos.gasolina, 'gasolina') }} type="button"
+                    className={`${typeUser === 'user' ? 'modal-edit-combustivel-hidden' : 'modal-edit-combustivel'}`}>
+                    <FontAwesomeIcon className='pen-icon' icon={faPen} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {editCombustivel && (
+          <div id='editar_combustivel' className='container-modal-edit-combustivel'>
+            <div className='modal-edit-combustivel'>
+              <div className='container-close-modal'>
+                <button onClick={() => { closeModal('editar_combustivel') }} type="button" className='btn-close-modal'>
+                  <FontAwesomeIcon className='x-icon' icon={faXmark} />
+                </button>
+              </div>
+              <div className='container-input-edit-combustivel'>
+                <input type="number"
+                  name={inputInfo.type_combustivel === 'etanol' ? 'etanol' : 'gasolina'}
+                  id={inputInfo.type_combustivel === 'etanol' ? 'etanol' : 'gasolina'}
+                  placeholder={inputInfo.valor_combustivel}
+                  onChange={(e) => { checkInput(e) }} />
+                <button
+                  className='btn-edit-combustivel'
+                  type="button"
+                  onClick={() => { editarCombustivel(inputInfo.type_combustivel === 'etanol' ? 'etanol' : 'gasolina', infoPostos.cod_posto) }}>
+                  Salvar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   )
