@@ -94,7 +94,7 @@
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
+  z-index: 2;
 }
 .container-modal-edit-posto .modal-edit-posto {
   background-color: #fff;
@@ -162,6 +162,9 @@
 .container-modal-edit-posto .modal-edit-posto .container-sobre-posto .container-edit-combustivel-modal .modal-edit-combustivel:hover {
   background-color: #45a049;
 }
+.container-modal-edit-posto .modal-edit-posto .container-sobre-posto .container-edit-combustivel-modal .modal-edit-combustivel-hidden {
+  display: none;
+}
 
 .container-modal-edit-combustivel {
   position: fixed;
@@ -173,7 +176,7 @@
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 999;
+  z-index: 3;
 }
 .container-modal-edit-combustivel .modal-edit-combustivel {
   background-color: #fff;
@@ -200,7 +203,7 @@
 .container-modal-edit-combustivel .modal-edit-combustivel .container-input-edit-combustivel {
   margin-top: 20px;
 }
-.container-modal-edit-combustivel .modal-edit-combustivel .container-input-edit-combustivel input {
+.container-modal-edit-combustivel .modal-edit-combustivel .container-input-edit-combustivel #etanol, .container-modal-edit-combustivel .modal-edit-combustivel .container-input-edit-combustivel #gasolina {
   width: 80%;
   padding: 10px;
   margin-bottom: 10px;
@@ -208,11 +211,11 @@
   border-radius: 5px;
   font-size: 1rem;
 }
-.container-modal-edit-combustivel .modal-edit-combustivel .container-input-edit-combustivel input:focus {
+.container-modal-edit-combustivel .modal-edit-combustivel .container-input-edit-combustivel #etanol:focus, .container-modal-edit-combustivel .modal-edit-combustivel .container-input-edit-combustivel #gasolina:focus {
   outline: none;
   border-color: #4CAF50;
 }
-.container-modal-edit-combustivel .modal-edit-combustivel .container-input-edit-combustivel button {
+.container-modal-edit-combustivel .modal-edit-combustivel .container-input-edit-combustivel .btn-edit-combustivel {
   background-color: #4CAF50;
   color: #fff;
   border: none;
@@ -221,7 +224,7 @@
   font-size: 1rem;
   cursor: pointer;
 }
-.container-modal-edit-combustivel .modal-edit-combustivel .container-input-edit-combustivel button:hover {
+.container-modal-edit-combustivel .modal-edit-combustivel .container-input-edit-combustivel .btn-edit-combustivel:hover {
   background-color: #45a049;
 }
 
