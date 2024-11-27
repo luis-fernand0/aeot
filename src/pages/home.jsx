@@ -7,6 +7,7 @@ import Header from '../components/header';
 import '../style/home_page/home.css'
 
 const urlDatas = import.meta.env.VITE_URL_DATAS
+const urlEditCombustivel = import.meta.env.VITE_URL_ATUALIZAR_COMBUSTIVEL
 
 const Home = () => {
   const [postos, setPostos] = useState()
@@ -20,6 +21,7 @@ const Home = () => {
   const navigate = useNavigate()
 
   const tokenUser = localStorage.getItem('token');
+  const typeUser = localStorage.getItem('type_user')
 
   const typeCategoria = {
     categoria: categoria
@@ -37,7 +39,6 @@ const Home = () => {
     if (response.status === 403) {
       navigate('/', { replace: true })
     }
-
     setPostos(data.infoGasStation)
   }
 
@@ -71,11 +72,36 @@ const Home = () => {
     var input = e.target
     var inputValue = input.value.replace(/^(\d+)(\d{2})$/, '$1.$2')
 
-    if(inputValue.length === 1) {
+    if (inputValue.length === 1) {
       input.value = ''
+    }
+    if (inputValue.length > 4) {
+      inputValue = inputValue.slice(0, 4)
     }
 
     input.value = inputValue
+  }
+
+  async function editarCombustivel(combustivel, posto) {
+    const valor = document.getElementById(combustivel).value
+
+    const response = await fetch(urlEditCombustivel, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${tokenUser}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        combustivel: combustivel,
+        valor: valor,
+        cod_posto: posto
+      })
+    })
+    const data = await response.json()
+    if (response.status === 403) {
+      navigate('/', { replace: true })
+    }
+    setEditCombustivel(false)
   }
 
   useEffect(() => {
@@ -163,7 +189,10 @@ const Home = () => {
                   <p id='valor-etanol' className='modal-combustivel-posto'>
                     Etanol: R$ {infoPostos.etanol}
                   </p>
-                  <button onClick={() => { modalEditCombustivel(infoPostos.etanol, 'etanol') }} type="button" className='modal-edit-combustivel'>
+                  <button
+                    onClick={() => { modalEditCombustivel(infoPostos.etanol, 'etanol') }} 
+                    type="button" 
+                    className={`${typeUser === 'user' ? 'modal-edit-combustivel-hidden' : 'modal-edit-combustivel'}`}>
                     <FontAwesomeIcon className='pen-icon' icon={faPen} />
                   </button>
                 </div>
@@ -171,7 +200,9 @@ const Home = () => {
                   <p id='valor-gasolina' className='modal-combustivel-posto'>
                     Gasolina: R$ {infoPostos.gasolina}
                   </p>
-                  <button onClick={() => { modalEditCombustivel() }} type="button" className='modal-edit-combustivel'>
+                  <button
+                    onClick={() => { modalEditCombustivel(infoPostos.gasolina, 'gasolina') }} type="button"
+                    className={`${typeUser === 'user' ? 'modal-edit-combustivel-hidden' : 'modal-edit-combustivel'}`}>
                     <FontAwesomeIcon className='pen-icon' icon={faPen} />
                   </button>
                 </div>
@@ -194,7 +225,12 @@ const Home = () => {
                   id={inputInfo.type_combustivel === 'etanol' ? 'etanol' : 'gasolina'}
                   placeholder={inputInfo.valor_combustivel}
                   onChange={(e) => { checkInput(e) }} />
-                <button type="button">Salvar</button>
+                <button
+                  className='btn-edit-combustivel'
+                  type="button"
+                  onClick={() => { editarCombustivel(inputInfo.type_combustivel === 'etanol' ? 'etanol' : 'gasolina', infoPostos.cod_posto) }}>
+                  Salvar
+                </button>
               </div>
             </div>
           </div>
