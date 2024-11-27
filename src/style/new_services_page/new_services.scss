@@ -1,0 +1,149 @@
+.container-form-arrow {
+    background-color: #fff100;
+
+    min-height: 100vh;
+    height: auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    .container-arrow-icon {
+        width: 100%;
+
+        padding: 15px;
+
+        font-size: 24px;
+    }
+
+    .container-btns {
+        width: 100%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .tipo-cadastro {
+            height: 40px;
+            width: 50%;
+
+            background-color: #fff;
+
+            border: none;
+            transition: 0.3s all;
+
+            &:hover {
+                border-bottom: 5px solid #fff100;
+            }
+        }
+
+        .checked {
+            border-bottom: 5px solid #d3ca26;
+        }
+    }
+
+    .container-forms {
+        background-color: #fff;
+
+        margin: 20px;
+
+        height: 100%;
+
+        border-radius: 15px;
+
+        box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.342);
+
+        padding: 20px;
+
+        .form-cadastrar-posto-servico {
+            height: 100%;
+
+            .cadastrar-posto,
+            .cadastrar-servico {
+                height: 100%;
+
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+
+                .input-info,
+                .text-area-descricao {
+                    background-color: #f5f5f5;
+
+                    height: 40px;
+                    width: 100%;
+
+                    padding-left: 15px;
+
+                    margin-bottom: 15px;
+
+                    border: none;
+                    border-radius: 15px;
+
+                    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
+
+                    font-size: 15px;
+
+                    &:focus {
+                        outline: none;
+
+                        border: 2px solid #4b39ef;
+                    }
+                }
+
+                .text-area-descricao {
+                    padding: 15px;
+
+                    height: 100px;
+
+                    font-size: 16px;
+
+                    resize: none;
+                }
+
+                .text-info {
+                    margin-bottom: 15px;
+                }
+
+                .container-inputs-combutiveis {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+
+                .input-add-foto {
+                    display: none;
+                }
+
+                .btn-foto,
+                .btn-criar {
+                    height: 35px;
+
+                    margin-bottom: 15px;
+
+                    border: none;
+                    border-radius: 10px;
+
+                    background-color: #fff100;
+
+                    font-size: 16px;
+                    
+                    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
+
+                    transition: 0.5s linear;
+
+                    &:hover {
+                        color: #fff;
+
+                        background-color: #14181b;
+                    }
+                }
+
+                .btn-foto {
+                    background-color: #fff1a1;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,117 @@
+.container-form-arrow {
+  background-color: #fff100;
+  min-height: 100vh;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+.container-form-arrow .container-arrow-icon {
+  width: 100%;
+  padding: 15px;
+  font-size: 24px;
+}
+.container-form-arrow .container-btns {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container-form-arrow .container-btns .tipo-cadastro {
+  height: 40px;
+  width: 50%;
+  background-color: #fff;
+  border: none;
+  transition: 0.3s all;
+}
+.container-form-arrow .container-btns .tipo-cadastro:hover {
+  border-bottom: 5px solid #fff100;
+}
+.container-form-arrow .container-btns .checked {
+  border-bottom: 5px solid #d3ca26;
+}
+.container-form-arrow .container-forms {
+  background-color: #fff;
+  margin: 20px;
+  height: 100%;
+  border-radius: 15px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.342);
+  padding: 20px;
+}
+.container-form-arrow .container-forms .form-cadastrar-posto-servico {
+  height: 100%;
+}
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto,
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .input-info,
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .text-area-descricao,
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .input-info,
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .text-area-descricao {
+  background-color: #f5f5f5;
+  height: 40px;
+  width: 100%;
+  padding-left: 15px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
+  font-size: 15px;
+}
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .input-info:focus,
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .text-area-descricao:focus,
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .input-info:focus,
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .text-area-descricao:focus {
+  outline: none;
+  border: 2px solid #4b39ef;
+}
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .text-area-descricao,
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .text-area-descricao {
+  padding: 15px;
+  height: 100px;
+  font-size: 16px;
+  resize: none;
+}
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .text-info,
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .text-info {
+  margin-bottom: 15px;
+}
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .container-inputs-combutiveis,
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .container-inputs-combutiveis {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .input-add-foto,
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .input-add-foto {
+  display: none;
+}
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .btn-foto,
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .btn-criar,
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .btn-foto,
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .btn-criar {
+  height: 35px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 10px;
+  background-color: #fff100;
+  font-size: 16px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
+  transition: 0.5s linear;
+}
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .btn-foto:hover,
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .btn-criar:hover,
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .btn-foto:hover,
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .btn-criar:hover {
+  color: #fff;
+  background-color: #14181b;
+}
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .btn-foto,
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .btn-foto {
+  background-color: #fff1a1;
+}/*# sourceMappingURL=new_services.css.map */
