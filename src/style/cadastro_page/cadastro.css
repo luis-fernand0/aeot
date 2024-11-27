@@ -186,6 +186,9 @@
 .container-cadastro .form-cadastro .cadastro-full .datas-user .hidden-span {
   display: none;
 }
+.container-cadastro .form-cadastro .cadastro-full .datas-user .hidden-span-modelo {
+  display: none;
+}
 .container-cadastro .form-cadastro .cadastro-full .datas-user .div-pass-cadastro {
   display: flex;
   flex-flow: row;
