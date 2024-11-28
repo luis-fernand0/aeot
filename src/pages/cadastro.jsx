@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash, faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
 
 import Loading from '../components/loading'
+import { checkPhone } from '../functions/checkPhone';
+
 import '../style/cadastro_page/cadastro.css'
 
 const urlCadastro = import.meta.env.VITE_URL_CADASTRO;
@@ -31,22 +33,8 @@ const Cadastro = () => {
         validarModeloCor(valor);
     };
 
-    function checkPhone(event) {
-        let input = event.target
-
-        input.value = maskPhone(input.value)
-
-    }
-    function maskPhone(value) {
-        if (!value) return ""
-
-        value = value.replace(/\D/g, '')
-        value = value.replace(/(\d{2})(\d)/, "($1) $2")
-        value = value.replace(/(\d)(\d{4})$/, "$1-$2")
-
-        return value
-    }
-
+    const callCheckPhone = (e) => checkPhone(e)
+    
     function revealPass() {
         const element = document.querySelectorAll(`.eye-icon`)
 
@@ -208,7 +196,8 @@ const Cadastro = () => {
                         <div className='datas-user'>
                             <input className='input-cadastro input-cadastro-nome' type="text" name="name" id="input-name" placeholder='Nome' required autoComplete='off' />
 
-                            <input onChange={(event) => { checkPhone(event) }} className='input-cadastro' type="tel" name="telefone" id="input-tel" placeholder='Telefone' required autoComplete='off' maxLength={15} />
+                            <input 
+                            onChange={(e) => { callCheckPhone(e) }} className='input-cadastro' type="tel" name="telefone" id="input-tel" placeholder='Telefone' required autoComplete='off' maxLength={15}/>
 
                             <input className='input-cadastro input-cadastro-email' type="email" name="email_cadastro" id="email-cadastro" placeholder='Email' required autoComplete='off' />
 
