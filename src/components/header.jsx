@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGasPump, faUser, faLock, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 
 import '../style/header_component/header.css'
 
