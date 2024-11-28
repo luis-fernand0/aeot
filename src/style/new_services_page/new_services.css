@@ -87,6 +87,18 @@
   flex-direction: column;
   align-items: center;
 }
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .span-alert,
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .span-alert {
+  font-size: 10px;
+  color: rgb(231, 84, 84);
+  width: 250px;
+  margin-bottom: 5px;
+  padding-left: 15px;
+}
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .hidden-span-alert,
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .hidden-span-alert {
+  display: none;
+}
 .container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .input-add-foto,
 .container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .input-add-foto {
   display: none;
@@ -114,4 +126,8 @@
 .container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .btn-foto,
 .container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .btn-foto {
   background-color: #fff1a1;
+}
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .checked-foto,
+.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .checked-foto {
+  background-color: #00ff73;
 }/*# sourceMappingURL=new_services.css.map */

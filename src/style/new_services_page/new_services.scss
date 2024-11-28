@@ -112,6 +112,21 @@
                     align-items: center;
                 }
 
+                .span-alert {
+                    font-size: 10px;
+                    color: rgb(231, 84, 84);
+
+                    width: 250px;
+
+                    margin-bottom: 5px;
+
+                    padding-left: 15px;
+                }
+
+                .hidden-span-alert {
+                    display: none;
+                }
+
                 .input-add-foto {
                     display: none;
                 }
@@ -142,6 +157,10 @@
 
                 .btn-foto {
                     background-color: #fff1a1;
+                }
+
+                .checked-foto {
+                    background-color: #00ff73;
                 }
             }
         }
