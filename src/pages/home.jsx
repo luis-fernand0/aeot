@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faPen } from '@fortawesome/free-solid-svg-icons'
 
 import Header from '../components/header';
+import { checkValor } from '../functions/checkValor';
+
 import '../style/home_page/home.css'
 
 const urlDatas = import.meta.env.VITE_URL_DATAS
@@ -26,7 +28,7 @@ const Home = () => {
   const typeCategoria = {
     categoria: categoria
   }
-  
+
   async function gasStation() {
     const response = await fetch(urlDatas, {
       method: 'POST',
@@ -69,19 +71,7 @@ const Home = () => {
     setInputInfo(sobreCombustivel)
   }
 
-  function checkInput(e) {
-    var input = e.target
-    var inputValue = input.value.replace(/^(\d+)(\d{2})$/, '$1.$2')
-
-    if (inputValue.length === 1) {
-      input.value = ''
-    }
-    if (inputValue.length > 4) {
-      inputValue = inputValue.slice(0, 4)
-    }
-
-    input.value = inputValue
-  }
+  const callCheckValor = (e) => checkValor(e)
 
   async function editarCombustivel(combustivel, posto) {
     const valor = document.getElementById(combustivel).value
@@ -191,8 +181,8 @@ const Home = () => {
                     Etanol: R$ {infoPostos.etanol}
                   </p>
                   <button
-                    onClick={() => { modalEditCombustivel(infoPostos.etanol, 'etanol') }} 
-                    type="button" 
+                    onClick={() => { modalEditCombustivel(infoPostos.etanol, 'etanol') }}
+                    type="button"
                     className={`${typeUser === 'user' ? 'modal-edit-combustivel-hidden' : 'modal-edit-combustivel'}`}>
                     <FontAwesomeIcon className='pen-icon' icon={faPen} />
                   </button>
@@ -221,11 +211,12 @@ const Home = () => {
                 </button>
               </div>
               <div className='container-input-edit-combustivel'>
-                <input type="number"
+                <input
+                  type="text"
                   name={inputInfo.type_combustivel === 'etanol' ? 'etanol' : 'gasolina'}
                   id={inputInfo.type_combustivel === 'etanol' ? 'etanol' : 'gasolina'}
                   placeholder={inputInfo.valor_combustivel}
-                  onChange={(e) => { checkInput(e) }} />
+                  onChange={(e) => { callCheckValor(e) }} />
                 <button
                   className='btn-edit-combustivel'
                   type="button"
