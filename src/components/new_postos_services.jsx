@@ -3,79 +3,54 @@ import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
 
-import { validarCnpj } from '../functions/validarCnpj';
+import { validarCnpj } from '../functions/validarCnpj'
+import { checkPhone } from '../functions/checkPhone'
+import { checkValor } from '../functions/checkValor'
+import { maskCnpj } from '../functions/maskCnpj';
+
+import Loading from './loading'
 import '../style/new_services_page/new_services.css'
 
 const apiKey = import.meta.env.VITE_URL_API_CNPJ_KEY
 
 const NewPostosServices = () => {
   const [categoria, setCategoria] = useState('postos')
-  const [infoCnpj, setInfoCnpj] = useState()
+  // const [infoCnpj, setInfoCnpj] = useState()
   const [cnpjValid, setCnpjValid] = useState(false)
   const [cnpj, setCnpj] = useState()
 
+  const [loading, setLoading] = useState(false)
+
   function callValidation(e) {
     const cnpj = e.target.value
+
     setCnpj(cnpj)
     setCnpjValid(validarCnpj(cnpj))
-  }
-  function maskCnpj(e) {
-    var cnpj = e.target
-    var cnpjValue = cnpj.value.replace(/[^0-9]/g, '')
-    if (cnpjValue.length > 2) {
-      cnpjValue = cnpjValue.slice(0, 2) + '.' + cnpjValue.slice(2);
-    }
-    if (cnpjValue.length > 6) {
-      cnpjValue = cnpjValue.slice(0, 6) + '.' + cnpjValue.slice(6);
-    }
-    if (cnpjValue.length > 10) {
-      cnpjValue = cnpjValue.slice(0, 10) + '/' + cnpjValue.slice(10); // Barra
-    }
-    if (cnpjValue.length > 15) {
-      cnpjValue = cnpjValue.slice(0, 15) + '-' + cnpjValue.slice(15); // Hífen
-    }
-    if (cnpjValue.length > 18) {
-      cnpjValue = cnpjValue.slice(0, 18)
-    }
-    cnpj.value = cnpjValue
 
-    return cnpj
-  }
-
-  function checkPhone(e) {
-    let input = e.target
-    let inputValue = input.value
-
-    if (inputValue.length > 15) {
-      inputValue = inputValue.slice(0, 15)
-    }
-    input.value = inputValue
-
-    input.value = maskPhone(input.value)
-    return input
-
-
-  }
-  function maskPhone(value) {
-    if (!value) return ""
-
-    value = value.replace(/\D/g, '')
-    value = value.replace(/(\d{2})(\d)/, "($1) $2")
-    value = value.replace(/(\d)(\d{4})$/, "$1-$2")
-
-    return value
-  }
-
-  function addFoto(input) {
-    document.getElementById(input).click()
-  }
-  function verificarFoto(e, inputId, btnId) {
-    if (e.target.value === '') {
-      document.querySelector(`.${inputId}`).classList.remove('hidden-span-alert')
-      document.querySelector(`#${btnId}`).classList.remove('checked-foto')
+    if (!validarCnpj(cnpj)) {
+      document.querySelector('.alert-cnpj').classList.remove('hidden-span-alert')
     } else {
-      document.querySelector(`.${inputId}`).classList.add('hidden-span-alert')
+      document.querySelector('.alert-cnpj').classList.add('hidden-span-alert')
+    }
+  }
+
+  const callMaskCnpj = (e) => maskCnpj(e)
+
+  const callCheckPhone = (e) => checkPhone(e)
+
+  const callCheckValor = (e) => checkValor(e)
+
+  function addFoto(input) {document.getElementById(input).click()}
+  function verificarFoto(inputId, span, btnId) {
+    const inputFoto = document.getElementById(inputId).value
+    if (inputFoto === '') {
+      document.querySelector(`.${span}`).classList.remove('hidden-span-alert')
+      document.querySelector(`#${btnId}`).classList.remove('checked-foto')
+      return false
+    } else {
+      document.querySelector(`.${span}`).classList.add('hidden-span-alert')
       document.querySelector(`#${btnId}`).classList.add('checked-foto')
+      return true
     }
   }
 
@@ -94,10 +69,9 @@ const NewPostosServices = () => {
       }
     })
     const data = await response.json()
-    setInfoCnpj(data.address)
+    // setInfoCnpj(data.address)
     addValue(data.address)
   }
-
   function addValue(infoCnpj) {
     let inputAddress = document.getElementById('endereco')
 
@@ -108,13 +82,34 @@ const NewPostosServices = () => {
 
     inputAddress.value = `${infoCnpj.street}, ${infoCnpj.number}, ${infoCnpj.district}`
   }
-  
+
+  async function hundleSubmit(e) {
+    e.preventDefault()
+    setLoading(true)
+
+    if (!verificarFoto('foto-posto', 'alert-foto', 'btn-foto-posto') ||
+        !cnpjValid) {
+      setLoading(false)
+      return console.log('É necessario preencher todos os campos')
+    }
+
+    try {
+      console.log(e.target)
+    } catch (err) {
+      console.log(err)
+    } finally {
+      setLoading(false)
+    }
+
+  }
+
   useEffect(() => {
     buscarCnpj(cnpjValid, cnpj)
   }, [cnpjValid, cnpj])
 
   return (
     <>
+      <Loading loading={loading} />
       <div className='container-form-arrow'>
         <div className='container-arrow-icon'>
           <FontAwesomeIcon className='arrow-icon' icon={faArrowLeftLong} />
@@ -134,10 +129,10 @@ const NewPostosServices = () => {
         </div>
 
         <div className="container-forms">
-          <form className="form-cadastrar-posto-servico">
+          <form onSubmit={(e) => { hundleSubmit(e) }} className="form-cadastrar-posto-servico">
 
             {categoria === 'postos' && (
-              <div className='cadastrar-posto'>
+              <div id='form-cadastro-posto' className='cadastrar-posto'>
                 <input
                   id='nome'
                   name="nome"
@@ -146,7 +141,9 @@ const NewPostosServices = () => {
                   placeholder="Nome do Posto"
                   required />
 
-                <span>*CPNJ INFORMADO NÃO É VALIDO!</span>
+                <span className='span-alert hidden-span-alert alert-cnpj'>
+                  *CPNJ INFORMADO NÃO É VALIDO!
+                </span>
                 <input
                   id='cnpj'
                   name="cnpj"
@@ -155,7 +152,7 @@ const NewPostosServices = () => {
                   placeholder="CNPJ"
                   required
                   maxLength={18}
-                  onChange={(e) => { maskCnpj(e) }}
+                  onChange={(e) => { callMaskCnpj(e) }}
                   onBlur={(e) => { callValidation(e) }} />
 
                 <textarea
@@ -171,7 +168,7 @@ const NewPostosServices = () => {
                   className="input-info input-info-posto"
                   type="text"
                   placeholder="Endereço"
-                  required/>
+                  required />
 
                 <input
                   id='telefone'
@@ -180,31 +177,34 @@ const NewPostosServices = () => {
                   type="tel"
                   placeholder="Telefone"
                   required
-                  onChange={(e) => { checkPhone(e) }}
+                  onChange={(e) => { callCheckPhone(e) }}
                   maxLength={15} />
 
                 <p className='text-info'>Tipo de combustivel que deseja trabalhar</p>
                 <div className='container-inputs-combutiveis'>
 
                   <input
+                    onChange={(e) => { callCheckValor(e) }}
                     id='etanol'
                     className='input-add-combustivel input-info'
                     name="etanol"
-                    type="number"
+                    type="text"
                     placeholder="Etanol" />
 
                   <input
+                    onChange={(e) => { callCheckValor(e) }}
                     id='gasolina'
                     className='input-add-combustivel input-info'
                     name="gasolina"
-                    type="number"
+                    type="text"
                     placeholder="Gasolina" />
 
                   <input
+                    onChange={(e) => { callCheckValor(e) }}
                     id='diesel'
                     className='input-add-combustivel input-info'
                     name="diesel"
-                    type="number"
+                    type="text"
                     placeholder="Diesel" />
                 </div>
 
@@ -212,13 +212,12 @@ const NewPostosServices = () => {
                   *É NECESSARIO QUE ANEXE UMA FOTO DO POSTO DE GASOLINA!
                 </span>
                 <input
-                  onChange={(e) => { verificarFoto(e, 'alert-foto', 'btn-foto-posto') }}
+                  onChange={() => { verificarFoto('foto-posto', 'alert-foto', 'btn-foto-posto') }}
                   id='foto-posto'
                   className='input-add-foto'
                   name="foto"
                   type="file"
-                  accept="image/*"
-                  required />
+                  accept="image/*"/>
                 <button
                   onClick={() => { addFoto('foto-posto') }}
                   id='btn-foto-posto'
@@ -228,7 +227,7 @@ const NewPostosServices = () => {
                 </button>
                 <button
                   className="btn-criar"
-                  type="button">
+                  type="submit">
                   CRIAR
                 </button>
               </div>
