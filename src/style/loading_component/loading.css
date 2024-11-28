@@ -1,0 +1,27 @@
+@keyframes loading {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.container-loading {
+  background-color: rgba(0, 0, 0, 0.253);
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container-loading .loading {
+  width: 90px;
+  height: 90px;
+  background-color: transparent;
+  border: 10px solid #fff;
+  border-right-color: transparent;
+  border-radius: 100%;
+  animation: loading 1s infinite ease-in-out;
+}/*# sourceMappingURL=loading.css.map */

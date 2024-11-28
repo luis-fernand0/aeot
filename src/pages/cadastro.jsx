@@ -1,27 +1,33 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash, faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
 
+import Loading from '../components/loading'
 import '../style/cadastro_page/cadastro.css'
 
 const urlCadastro = import.meta.env.VITE_URL_CADASTRO;
 
 const Cadastro = () => {
 
-    const [modeloCor, setModeloCor] = useState('');
     const [erroModeloCor, setErroModeloCor] = useState(false);
 
+    const [loading, setLoading] = useState(false)
+
     // Função para validar se o input contém pelo menos duas palavras
-    const validarModeloCor = (valor) => {
-        const regex = /^\w+\s+\w+/; // Verifica se há pelo menos duas palavras separadas por um espaço
-        setErroModeloCor(!regex.test(valor));
+    const validarModeloCor = () => {
+        if (!erroModeloCor) {
+            document.getElementById('span-modelo').classList.remove('hidden-span-modelo')
+        } else {
+            document.getElementById('span-modelo').classList.add('hidden-span-modelo')
+        }
     };
 
     const handleChangeModeloCor = (event) => {
         const valor = event.target.value;
-        setModeloCor(valor);
+        const regex = /^\w+\s+\w+/;
+        setErroModeloCor(regex.test(valor));
         validarModeloCor(valor);
     };
 
@@ -92,6 +98,10 @@ const Cadastro = () => {
         if (plateValue.length > 3) {
             plateValue = plateValue.slice(0, 3) + '-' + plateValue.slice(3);
         }
+        if (plateValue.length > 8) {
+            plateValue = plateValue.slice(0, 8);
+        }
+
         plate.value = plateValue
 
         return plate
@@ -116,44 +126,54 @@ const Cadastro = () => {
 
     async function hundleSubmit(event) {
         event.preventDefault()
-
-        if (erroModeloCor) {
-            document.getElementById('span-modelo').classList.remove('hidden-span')
-            return;
-        } else {
-            document.getElementById('span-modelo').classList.add('hidden-span')
-        }
-        //CHECANDO SE O USUARIO ADICIONOU TODAS AS FOTOS
-        const checkFotos = document.querySelectorAll('.input-foto-print')
-        for (let i = 0; i < checkFotos.length; i++) {
-            const element = checkFotos[i];
-            const nameAtribute = element.getAttribute('name')
-            //ADICIONANDO O ALERTA E BLOQUEANDO O ENVIO
-            if (element.value.length === 0) {
-                return document.querySelector(`#span_${nameAtribute}`).classList.remove('hidden-alert')
+        setLoading(true)
+        try {
+            if (!erroModeloCor) {
+                document.getElementById('span-modelo').classList.remove('hidden-span-modelo')
+                return;
+            } else {
+                document.getElementById('span-modelo').classList.add('hidden-span-modelo')
             }
-        }
+            //CHECANDO SE O USUARIO ADICIONOU TODAS AS FOTOS
+            const checkFotos = document.querySelectorAll('.input-foto-print')
+            for (let i = 0; i < checkFotos.length; i++) {
+                const element = checkFotos[i];
+                const nameAtribute = element.getAttribute('name')
+                //ADICIONANDO O ALERTA E BLOQUEANDO O ENVIO
+                if (element.value.length === 0) {
+                    return document.querySelector(`#span_${nameAtribute}`).classList.remove('hidden-alert')
+                }
+            }
 
-        const myForm = document.getElementById('myFormCadastro')
-        const formData = new FormData(myForm)
+            const myForm = document.getElementById('myFormCadastro')
+            const formData = new FormData(myForm)
 
-        const response = await fetch(`${urlCadastro}`, {
-            method: 'POST',
-            body: formData
-        })
-        const dataResponse = await response.json()
-        if (response.status != 200 || response.status === 200) {
-            const element = document.querySelector('.container-response-cadastro')
-            element.classList.remove('container-response-cadastro-hidden')
+            const response = await fetch(`${urlCadastro}`, {
+                method: 'POST',
+                body: formData
+            })
+            const dataResponse = await response.json()
+            if (response.status != 200 || response.status === 200) {
+                const element = document.querySelector('.container-response-cadastro')
+                element.classList.remove('container-response-cadastro-hidden')
 
-            const textResponse = document.querySelector('.response-text-cadastro')
-            console.log(dataResponse.message)
-            textResponse.innerHTML = dataResponse.message
+                const textResponse = document.querySelector('.response-text-cadastro')
+                console.log(dataResponse.message)
+                textResponse.innerHTML = dataResponse.message
+            }
+        } catch (err) {
+            console.error('Erro na requisição:', err);
+
+            const textResponse = document.querySelector('.response-text-cadastro');
+            textResponse.innerHTML = 'Ocorreu um erro inesperado. Tente novamente mais tarde.';
+        } finally {
+            setLoading(false)
         }
     }
 
     return (
         <>
+            <Loading loading={loading} />
             <div className="container-cadastro">
                 <img className='logo-aeot-cadastro' src="/logo_AEOT.png" alt="logo-aeot" />
 
@@ -195,8 +215,8 @@ const Cadastro = () => {
                             <div className='placa-modelo'>
                                 <input onChange={(event) => { formatPlate(event) }} className='input-cadastro-veiculo' type="text" name="placa_veiculo" id="placa-veiculo" placeholder='Placa' required autoComplete='off' maxLength={8} />
 
-                                <span id='span-modelo' className='span hidden-span'>PORFAVOR INSIRA MODELO E COR DO VEICULO EXEMPLO: ONIX PRETO*</span>
-                                <input onChange={(e) => {handleChangeModeloCor(e)}} className='input-cadastro-veiculo' type="text" name="modelo_veiculo" id="modelo-veiculo" placeholder='Modelo/Cor' required autoComplete='off' />
+                                <span id='span-modelo' className='span hidden-span-modelo'>PORFAVOR INSIRA MODELO E COR DO VEICULO EXEMPLO: ONIX PRETO*</span>
+                                <input onChange={(e) => { handleChangeModeloCor(e) }} className='input-cadastro-veiculo' type="text" name="modelo_veiculo" id="modelo-veiculo" placeholder='Modelo/Cor' required autoComplete='off' />
                             </div>
 
                             <span className='span hidden-span'>AS SENHAS DEVEM SER IGUAIS*</span>

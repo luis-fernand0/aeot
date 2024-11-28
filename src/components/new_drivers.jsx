@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import '../style/new_driver_page/new_driver.css'
 
@@ -35,7 +35,7 @@ const NewDrivers = () => {
         setShowImageModal(false);
     };
 
-    async function callUser() {
+    async function callUsers() {
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -58,12 +58,12 @@ const NewDrivers = () => {
             },
             body: JSON.stringify({ 'aprovado': aprovado, 'email': email })
         })
-        callUser()
+        callUsers()
         handleCloseModal()
     }
 
     useEffect(() => {
-        callUser()
+        callUsers()
     }, [])
 
     return (
@@ -162,7 +162,7 @@ const NewDrivers = () => {
                 <div className="container-image-modal">
                     <div className="image-modal-content">
                         <button onClick={handleCloseImageModal} className="btn-close-image-modal">X</button>
-                        <img src={selectedImage} alt="Imagem ampliada" className="image-modal-view" />
+                        <img src={`https://aeotnew.s3.amazonaws.com/${selectedImage}`} alt="Imagem ampliada" className="image-modal-view" />
                     </div>
                 </div>
             )}
