@@ -12,6 +12,13 @@
   padding: 15px;
   font-size: 24px;
 }
+.container-form-arrow .container-arrow-icon .arrow-icon {
+  color: black;
+  transition: 0.3s linear;
+}
+.container-form-arrow .container-arrow-icon .arrow-icon:hover {
+  transform: scale(0.8);
+}
 .container-form-arrow .container-btns {
   width: 100%;
   display: flex;
@@ -39,20 +46,20 @@
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.342);
   padding: 20px;
 }
-.container-form-arrow .container-forms .form-cadastrar-posto-servico {
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio {
   height: 100%;
 }
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto,
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico {
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio {
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .input-info,
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .text-area-descricao,
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .input-info,
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .text-area-descricao {
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .input-info,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .text-area-descricao,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .input-info,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .text-area-descricao {
   background-color: #f5f5f5;
   height: 40px;
   width: 100%;
@@ -63,50 +70,50 @@
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
   font-size: 15px;
 }
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .input-info:focus,
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .text-area-descricao:focus,
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .input-info:focus,
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .text-area-descricao:focus {
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .input-info:focus,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .text-area-descricao:focus,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .input-info:focus,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .text-area-descricao:focus {
   outline: none;
   border: 2px solid #4b39ef;
 }
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .text-area-descricao,
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .text-area-descricao {
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .text-area-descricao,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .text-area-descricao {
   padding: 15px;
   height: 100px;
   font-size: 16px;
   resize: none;
 }
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .text-info,
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .text-info {
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .text-info,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .text-info {
   margin-bottom: 15px;
 }
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .container-inputs-combutiveis,
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .container-inputs-combutiveis {
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .container-inputs-combutiveis,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .container-inputs-combutiveis {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .span-alert,
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .span-alert {
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .span-alert,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .span-alert {
   font-size: 10px;
   color: rgb(231, 84, 84);
   width: 250px;
   margin-bottom: 5px;
   padding-left: 15px;
 }
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .hidden-span-alert,
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .hidden-span-alert {
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .hidden-span-alert,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .hidden-span-alert {
   display: none;
 }
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .input-add-foto,
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .input-add-foto {
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .input-add-foto,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .input-add-foto {
   display: none;
 }
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .btn-foto,
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .btn-criar,
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .btn-foto,
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .btn-criar {
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .btn-foto,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .btn-criar,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .btn-foto,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .btn-criar {
   height: 35px;
   margin-bottom: 15px;
   border: none;
@@ -116,18 +123,18 @@
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
   transition: 0.5s linear;
 }
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .btn-foto:hover,
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .btn-criar:hover,
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .btn-foto:hover,
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .btn-criar:hover {
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .btn-foto:hover,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .btn-criar:hover,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .btn-foto:hover,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .btn-criar:hover {
   color: #fff;
   background-color: #14181b;
 }
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .btn-foto,
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .btn-foto {
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .btn-foto,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .btn-foto {
   background-color: #fff1a1;
 }
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-posto .checked-foto,
-.container-form-arrow .container-forms .form-cadastrar-posto-servico .cadastrar-servico .checked-foto {
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .checked-foto,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .checked-foto {
   background-color: #00ff73;
 }/*# sourceMappingURL=new_services.css.map */
