@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
@@ -12,14 +13,18 @@ import Loading from './loading'
 import '../style/new_services_page/new_services.css'
 
 const apiKey = import.meta.env.VITE_URL_API_CNPJ_KEY
+const urlCadastrar = import.meta.env.VITE_URL_CADASTRAR_POSTO_SERVICO
 
 const NewPostosServices = () => {
   const [categoria, setCategoria] = useState('postos')
-  // const [infoCnpj, setInfoCnpj] = useState()
   const [cnpjValid, setCnpjValid] = useState(false)
   const [cnpj, setCnpj] = useState()
 
   const [loading, setLoading] = useState(false)
+
+  const tokenUser = localStorage.getItem('token');
+
+  const navigate = useNavigate()
 
   function callValidation(e) {
     const cnpj = e.target.value
@@ -40,7 +45,7 @@ const NewPostosServices = () => {
 
   const callCheckValor = (e) => checkValor(e)
 
-  function addFoto(input) {document.getElementById(input).click()}
+  function addFoto(input) { document.getElementById(input).click() }
   function verificarFoto(inputId, span, btnId) {
     const inputFoto = document.getElementById(inputId).value
     if (inputFoto === '') {
@@ -69,7 +74,6 @@ const NewPostosServices = () => {
       }
     })
     const data = await response.json()
-    // setInfoCnpj(data.address)
     addValue(data.address)
   }
   function addValue(infoCnpj) {
@@ -87,20 +91,36 @@ const NewPostosServices = () => {
     e.preventDefault()
     setLoading(true)
 
-    if (!verificarFoto('foto-posto', 'alert-foto', 'btn-foto-posto') ||
-        !cnpjValid) {
-      setLoading(false)
-      return console.log('É necessario preencher todos os campos')
+    // if (!verificarFoto('foto-posto', 'alert-foto', 'btn-foto-posto') ||
+    //   !cnpjValid) {
+    //   setLoading(false)
+    //   return console.log('É necessario preencher todos os campos')
+    // }
+    const myForm = document.getElementById('form-cadastro')
+    const formData = new FormData(myForm)
+    formData.append('categoria', [categoria])
+
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
     }
 
     try {
-      console.log(e.target)
+      const response = await fetch(urlCadastrar, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${tokenUser}`
+        },
+        body: formData
+      })
+      if (response.status === 403) {
+        navigate('/', { replace: true })
+      }
+      const data = await response.json()
     } catch (err) {
       console.log(err)
     } finally {
       setLoading(false)
     }
-
   }
 
   useEffect(() => {
@@ -112,7 +132,9 @@ const NewPostosServices = () => {
       <Loading loading={loading} />
       <div className='container-form-arrow'>
         <div className='container-arrow-icon'>
-          <FontAwesomeIcon className='arrow-icon' icon={faArrowLeftLong} />
+          <Link to={'/adicionar_cadastros'}>
+            <FontAwesomeIcon className='arrow-icon' icon={faArrowLeftLong} />
+          </Link>
         </div>
 
         <div className='container-btns'>
@@ -121,18 +143,18 @@ const NewPostosServices = () => {
             type="button">
             Cadastrar Posto
           </button>
-          <button onClick={() => { setCategoria('servico') }}
-            className={`tipo-cadastro ${categoria === 'servico' ? 'checked' : ''}`}
+          <button onClick={() => { setCategoria('anuncios') }}
+            className={`tipo-cadastro ${categoria === 'anuncios' ? 'checked' : ''}`}
             type="button">
             Cadastrar Serviço
           </button>
         </div>
 
         <div className="container-forms">
-          <form onSubmit={(e) => { hundleSubmit(e) }} className="form-cadastrar-posto-servico">
+          <form id='form-cadastro' onSubmit={(e) => { hundleSubmit(e) }} className="form-cadastrar-posto-anuncio">
 
             {categoria === 'postos' && (
-              <div id='form-cadastro-posto' className='cadastrar-posto'>
+              <div className='cadastrar-posto'>
                 <input
                   id='nome'
                   name="nome"
@@ -208,16 +230,16 @@ const NewPostosServices = () => {
                     placeholder="Diesel" />
                 </div>
 
-                <span className='span-alert hidden-span-alert alert-foto'>
+                <span className='span-alert hidden-span-alert alert-foto-posto'>
                   *É NECESSARIO QUE ANEXE UMA FOTO DO POSTO DE GASOLINA!
                 </span>
                 <input
-                  onChange={() => { verificarFoto('foto-posto', 'alert-foto', 'btn-foto-posto') }}
+                  onChange={() => { verificarFoto('foto-posto', 'alert-foto-posto', 'btn-foto-posto') }}
                   id='foto-posto'
                   className='input-add-foto'
-                  name="foto"
+                  name="foto_posto"
                   type="file"
-                  accept="image/*"/>
+                  accept="image/*" />
                 <button
                   onClick={() => { addFoto('foto-posto') }}
                   id='btn-foto-posto'
@@ -233,19 +255,26 @@ const NewPostosServices = () => {
               </div>
             )}
 
-            {categoria === 'servico' && (
-              <div className='cadastrar-servico'>
+            {categoria === 'anuncios' && (
+              <div className='cadastrar-anuncio'>
                 <input
                   name="titulo_anuncio"
-                  className="input-info input-info-servico"
+                  className="input-info input-info-anuncio"
                   type="text"
-                  placeholder="Nome do serviço" />
-
+                  placeholder="Nome do serviço"
+                  required />
+                <span className='span-alert hidden-span-alert alert-cnpj'>
+                  *CPNJ INFORMADO NÃO É VALIDO!
+                </span>
                 <input
                   name="cnpj"
-                  className="input-info input-info-servico"
-                  type="number"
-                  placeholder="CNPJ" />
+                  className="input-info input-info-anuncio"
+                  type="text"
+                  placeholder="CNPJ"
+                  maxLength={18}
+                  onChange={(e) => { callMaskCnpj(e) }}
+                  onBlur={(e) => { callValidation(e) }}
+                  required />
 
                 <textarea
                   name="descricao"
@@ -255,55 +284,68 @@ const NewPostosServices = () => {
 
                 <input
                   name="endereco"
-                  className="input-info input-info-servico"
+                  className="input-info input-info-anuncio"
                   type="text"
-                  placeholder="Endereço" />
+                  placeholder="Endereço"
+                  required />
 
                 <input
                   name="telefone"
-                  className="input-info input-info-servico"
+                  className="input-info input-info-anuncio"
                   type="tel"
-                  placeholder="Telefone" />
+                  placeholder="Telefone"
+                  required
+                  onChange={(e) => { callCheckPhone(e) }}
+                  maxLength={15} />
 
                 <p className='text-info'>Tipo de combustivel que deseja trabalhar</p>
                 <div className='container-inputs-combutiveis'>
 
                   <input
+                    onChange={(e) => { callCheckValor(e) }}
                     id='etanol'
                     className='input-add-combustivel input-info'
                     name="etanol"
-                    type="number"
+                    type="text"
                     placeholder="Etanol" />
 
                   <input
+                    onChange={(e) => { callCheckValor(e) }}
                     id='gasolina'
                     className='input-add-combustivel input-info'
                     name="gasolina"
-                    type="number"
+                    type="text"
                     placeholder="Gasolina" />
 
                   <input
+                    onChange={(e) => { callCheckValor(e) }}
                     id='diesel'
                     className='input-add-combustivel input-info'
                     name="diesel"
-                    type="number"
+                    type="text"
                     placeholder="Diesel" />
                 </div>
 
+                <span className='span-alert hidden-span-alert alert-foto-anuncio'>
+                  *É NECESSARIO QUE ANEXE UMA FOTO DO SEU PONTO DE SERVIÇO!
+                </span>
                 <input
-                  id='foto-posto'
+                  id='foto-anuncio'
                   className='input-add-foto'
-                  name="foto"
+                  name="foto_anuncio"
                   type="file"
-                  accept="image/*" />
+                  accept="image/*"
+                  onChange={() => { verificarFoto('foto-anuncio', 'alert-foto-anuncio', 'btn-foto-anuncio') }} />
                 <button
-                  className="btn-foto btn-foto-serviço"
+                  onClick={() => { addFoto('foto-anuncio') }}
+                  id='btn-foto-anuncio'
+                  className="btn-foto btn-foto-anuncio"
                   type="button">
                   Foto do seu ponto de serviço!
                 </button>
                 <button
                   className="btn-criar"
-                  type="button">
+                  type="submit">
                   CRIAR
                 </button>
               </div>
