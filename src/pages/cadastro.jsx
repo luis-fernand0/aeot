@@ -165,9 +165,9 @@ const Cadastro = () => {
             console.error('Erro na requisição:', err);
 
             const element = document.querySelector('.container-response-cadastro')
-            element.classList.remove('container-response-cadastro-hidden')
-            
             const textResponse = document.querySelector('.response-text-cadastro');
+         
+            element.classList.remove('container-response-cadastro-hidden')
             textResponse.innerHTML = `Ocorreu um erro inesperado. Tente novamente mais tarde.` + err.message;
         } finally {
             setLoading(false)
