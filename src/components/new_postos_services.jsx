@@ -13,7 +13,7 @@ import Loading from './loading'
 import '../style/new_services_page/new_services.css'
 
 const apiKey = import.meta.env.VITE_URL_API_CNPJ_KEY
-const urlCadastrar = import.meta.env.VITE_URL_CADASTRAR_POSTO_SERVICO
+const urlCadastrar = import.meta.env.VITE_URL_CADASTRAR_POSTO_ANUNCIO
 
 const NewPostosServices = () => {
   const [categoria, setCategoria] = useState('postos')
@@ -52,11 +52,10 @@ const NewPostosServices = () => {
       document.querySelector(`.${span}`).classList.remove('hidden-span-alert')
       document.querySelector(`#${btnId}`).classList.remove('checked-foto')
       return false
-    } else {
-      document.querySelector(`.${span}`).classList.add('hidden-span-alert')
-      document.querySelector(`#${btnId}`).classList.add('checked-foto')
-      return true
-    }
+    } 
+    document.querySelector(`.${span}`).classList.add('hidden-span-alert')
+    document.querySelector(`#${btnId}`).classList.add('checked-foto')
+    return true
   }
 
   async function buscarCnpj(cnpjValid, cnpj) {
