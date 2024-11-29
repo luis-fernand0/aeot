@@ -10,8 +10,8 @@ const Login = () => {
 
   const navigate = useNavigate()
 
-  async function hundleSubmit(event) {
-    event.preventDefault()
+  function enviarForm() {hundleSubmit()}
+  async function hundleSubmit() {
 
     const myForm = document.getElementById('myFormLogin')
     const formData = new FormData(myForm)
@@ -47,7 +47,7 @@ const Login = () => {
     <>
       <div className="container-login">
 
-        <form id='myFormLogin' onSubmit={(event) => { hundleSubmit(event) }} className='form-login'>
+        <form id='myFormLogin' className='form-login'>
 
           <div className="logo-inputs">
 
@@ -73,7 +73,7 @@ const Login = () => {
 
           </div>
 
-          <button className='btn-log btn-login' type="submit">Login</button>
+          <button onClick={() => { enviarForm() }} className='btn-log btn-login' type="button">Login</button>
           <p className='text-version'>1.0.0</p>
 
         </form >
