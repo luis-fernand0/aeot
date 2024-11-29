@@ -19,6 +19,7 @@ const NewPostosServices = () => {
   const [categoria, setCategoria] = useState('postos')
   const [cnpjValid, setCnpjValid] = useState(false)
   const [cnpj, setCnpj] = useState()
+  const [fotoValid, setFotoValid] = useState(false)
 
   const [loading, setLoading] = useState(false)
 
@@ -51,11 +52,13 @@ const NewPostosServices = () => {
     if (inputFoto === '') {
       document.querySelector(`.${span}`).classList.remove('hidden-span-alert')
       document.querySelector(`#${btnId}`).classList.remove('checked-foto')
-      return false
-    } 
+      setFotoValid(false)
+      return
+    }
     document.querySelector(`.${span}`).classList.add('hidden-span-alert')
     document.querySelector(`#${btnId}`).classList.add('checked-foto')
-    return true
+    setFotoValid(true)
+    return
   }
 
   async function buscarCnpj(cnpjValid, cnpj) {
@@ -86,15 +89,18 @@ const NewPostosServices = () => {
     inputAddress.value = `${infoCnpj.street}, ${infoCnpj.number}, ${infoCnpj.district}`
   }
 
+  function closeWindowResponse(btnClose) {
+    document.querySelector(`.${btnClose}`).classList.add('container-response-cadastro-hidden')
+  }
+
   async function hundleSubmit(e) {
     e.preventDefault()
     setLoading(true)
 
-    // if (!verificarFoto('foto-posto', 'alert-foto', 'btn-foto-posto') ||
-    //   !cnpjValid) {
-    //   setLoading(false)
-    //   return console.log('É necessario preencher todos os campos')
-    // }
+    if (!fotoValid || !cnpjValid) {
+      setLoading(false)
+      return console.log('É necessario preencher todos os campos')
+    }
     const myForm = document.getElementById('form-cadastro')
     const formData = new FormData(myForm)
     formData.append('categoria', [categoria])
@@ -114,9 +120,23 @@ const NewPostosServices = () => {
       if (response.status === 403) {
         navigate('/', { replace: true })
       }
-      const data = await response.json()
+      const dataResponse = await response.json()
+      if (response.status != 200 || response.status === 200) {
+        const element = document.querySelector('.container-response-cadastro')
+        element.classList.remove('container-response-cadastro-hidden')
+
+        const textResponse = document.querySelector('.response-text-cadastro')
+        console.log(dataResponse.message)
+        textResponse.innerHTML = dataResponse.message
+      }
     } catch (err) {
-      console.log(err)
+      console.error('Erro na requisição:', err);
+
+      const element = document.querySelector('.container-response-cadastro')
+      const textResponse = document.querySelector('.response-text-cadastro');
+
+      element.classList.remove('container-response-cadastro-hidden')
+      textResponse.innerHTML = `Ocorreu um erro inesperado. Tente novamente mais tarde.` + err.message;
     } finally {
       setLoading(false)
     }
@@ -130,6 +150,24 @@ const NewPostosServices = () => {
     <>
       <Loading loading={loading} />
       <div className='container-form-arrow'>
+        <div className='container-response-cadastro container-response-cadastro-hidden'>
+          <div className='container-info-response'>
+            <div className='div-close-alert-response-cadastro'>
+              <button onClick={() => { closeWindowResponse('container-response-cadastro') }} className='btn-close-alert-response-cadastro'>
+                X
+              </button>
+            </div>
+            <div className='container-text-cadastro'>
+              <p className='response-text-cadastro'></p>
+
+              <Link to={'/'}>
+                <button className='btn-response-cadastro'>
+                  Retornar para a pagina de login!
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
         <div className='container-arrow-icon'>
           <Link to={'/adicionar_cadastros'}>
             <FontAwesomeIcon className='arrow-icon' icon={faArrowLeftLong} />
