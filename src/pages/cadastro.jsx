@@ -124,8 +124,8 @@ const Cadastro = () => {
         document.querySelector(`.${btnClose}`).classList.add('container-response-cadastro-hidden')
     }
 
-    async function hundleSubmit(event) {
-        event.preventDefault()
+    function enviarForm() {hundleSubmit()}
+    async function hundleSubmit() {
         setLoading(true)
         try {
             if (!erroModeloCor) {
@@ -198,7 +198,7 @@ const Cadastro = () => {
                         </div>
                     </div>
                 </div>
-                <form onSubmit={(event) => { hundleSubmit(event) }} id='myFormCadastro' className="form-cadastro">
+                <form id='myFormCadastro' className="form-cadastro">
                     <div className='cadastro-full'>
 
                         <div className='title-arrow'>
@@ -263,7 +263,7 @@ const Cadastro = () => {
                                 Anexar print do APP de mobilidade
                             </button>
 
-                            <button className='btn-cadastro btn-criar-cadastro' type="submit">
+                            <button onClick={() => { enviarForm() }} className='btn-cadastro btn-criar-cadastro' type="button">
                                 CRIAR!
                             </button>
                         </div>
