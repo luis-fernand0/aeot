@@ -5,7 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash, faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
 
 import Loading from '../components/loading'
+import ModalResponse from '../components/modalResponse'
 import { checkPhone } from '../functions/checkPhone';
+import { verificarFoto } from '../functions/verificarFoto'
 
 import '../style/cadastro_page/cadastro.css'
 
@@ -14,8 +16,12 @@ const urlCadastro = import.meta.env.VITE_URL_CADASTRO;
 const Cadastro = () => {
 
     const [erroModeloCor, setErroModeloCor] = useState(false);
+    const [fotoValid, setFotoValid] = useState(false)
 
     const [loading, setLoading] = useState(false)
+
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
 
     // Função para validar se o input contém pelo menos duas palavras
     const validarModeloCor = () => {
@@ -34,7 +40,7 @@ const Cadastro = () => {
     };
 
     const callCheckPhone = (e) => checkPhone(e)
-    
+
     function revealPass() {
         const element = document.querySelectorAll(`.eye-icon`)
 
@@ -95,42 +101,22 @@ const Cadastro = () => {
         return plate
     }
 
-    function anexarFoto(nomeFoto) {
-        document.getElementById(nomeFoto).click()
-    }
-    function checkFoto(event, nomeFoto, nomeSpan) {
-        if (event.target.value === '') {
-            document.querySelector(`.${nomeFoto}`).classList.remove('btn-cadastro-check')
-            document.querySelector(`#${nomeSpan}`).classList.remove('hidden-alert')
-        } else {
-            document.querySelector(`.${nomeFoto}`).classList.add('btn-cadastro-check')
-            document.querySelector(`#${nomeSpan}`).classList.add('hidden-alert')
-        }
+    function anexarFoto(nomeFoto) { document.getElementById(nomeFoto).click() }
+    function callVerificarFoto(inputId, span, btnId) {
+        setFotoValid(verificarFoto(inputId, span, btnId))
     }
 
-    function closeWindowResponse(btnClose) {
-        document.querySelector(`.${btnClose}`).classList.add('container-response-cadastro-hidden')
-    }
-
-    function enviarForm() {hundleSubmit()}
+    function enviarForm() { hundleSubmit() }
     async function hundleSubmit() {
         setLoading(true)
         try {
-            if (!erroModeloCor) {
-                document.getElementById('span-modelo').classList.remove('hidden-span-modelo')
-                return;
-            } else {
-                document.getElementById('span-modelo').classList.add('hidden-span-modelo')
-            }
-            //CHECANDO SE O USUARIO ADICIONOU TODAS AS FOTOS
-            const checkFotos = document.querySelectorAll('.input-foto-print')
-            for (let i = 0; i < checkFotos.length; i++) {
-                const element = checkFotos[i];
-                const nameAtribute = element.getAttribute('name')
-                //ADICIONANDO O ALERTA E BLOQUEANDO O ENVIO
-                if (element.value.length === 0) {
-                    return document.querySelector(`#span_${nameAtribute}`).classList.remove('hidden-alert')
-                }
+            if (!erroModeloCor || !fotoValid) {
+                setModalMessage('É necessario preencher todos os dados!')
+                setModalVisible(true)
+
+                setLoading(false)
+
+                return
             }
 
             const myForm = document.getElementById('myFormCadastro')
@@ -142,21 +128,12 @@ const Cadastro = () => {
             })
             const dataResponse = await response.json()
             if (response.status != 200 || response.status === 200) {
-                const element = document.querySelector('.container-response-cadastro')
-                element.classList.remove('container-response-cadastro-hidden')
-
-                const textResponse = document.querySelector('.response-text-cadastro')
-                console.log(dataResponse.message)
-                textResponse.innerHTML = dataResponse.message
+                setModalMessage(dataResponse.message)
+                setModalVisible(true)
             }
         } catch (err) {
-            console.error('Erro na requisição:', err);
-
-            const element = document.querySelector('.container-response-cadastro')
-            const textResponse = document.querySelector('.response-text-cadastro');
-         
-            element.classList.remove('container-response-cadastro-hidden')
-            textResponse.innerHTML = `Ocorreu um erro inesperado. Tente novamente mais tarde.` + err.message;
+            setModalMessage(`Ocorreu um erro inesperado. Tente novamente mais tarde.` + err.message)
+            setModalVisible(true)
         } finally {
             setLoading(false)
         }
@@ -165,27 +142,16 @@ const Cadastro = () => {
     return (
         <>
             <Loading loading={loading} />
+            <ModalResponse
+                isVisible={isModalVisible}
+                onClose={() => setModalVisible(false)}
+                message={modalMessage}
+                buttonText="Retornar para a página de login"
+                redirectTo="/"
+            />
             <div className="container-cadastro">
                 <img className='logo-aeot-cadastro' src="/logo_AEOT.png" alt="logo-aeot" />
 
-                <div className='container-response-cadastro container-response-cadastro-hidden'>
-                    <div className='container-info-response'>
-                        <div className='div-close-alert-response-cadastro'>
-                            <button onClick={() => { closeWindowResponse('container-response-cadastro') }} className='btn-close-alert-response-cadastro'>
-                                X
-                            </button>
-                        </div>
-                        <div className='container-text-cadastro'>
-                            <p className='response-text-cadastro'></p>
-
-                            <Link to={'/'}>
-                                <button className='btn-response-cadastro'>
-                                    Retornar para a pagina de login!
-                                </button>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
                 <form id='myFormCadastro' className="form-cadastro">
                     <div className='cadastro-full'>
 
@@ -199,8 +165,8 @@ const Cadastro = () => {
                         <div className='datas-user'>
                             <input className='input-cadastro input-cadastro-nome' type="text" name="name" id="input-name" placeholder='Nome' required autoComplete='off' />
 
-                            <input 
-                            onChange={(e) => { callCheckPhone(e) }} className='input-cadastro' type="tel" name="telefone" id="input-tel" placeholder='Telefone' required autoComplete='off' maxLength={15}/>
+                            <input
+                                onChange={(e) => { callCheckPhone(e) }} className='input-cadastro' type="tel" name="telefone" id="input-tel" placeholder='Telefone' required autoComplete='off' maxLength={15} />
 
                             <input className='input-cadastro input-cadastro-email' type="email" name="email_cadastro" id="email-cadastro" placeholder='Email' required autoComplete='off' />
 
@@ -233,22 +199,55 @@ const Cadastro = () => {
                         </div>
 
                         <div className='container-btn-cadastro'>
-                            <span id='span_foto_user' className='span hidden-alert'>É NECESSARIO ADICIONAR UMA FOTO DE PERFIL, CNH E UM PRINT DO APP DE MOBILIDADE*</span>
-                            <input onChange={(event) => { checkFoto(event, 'foto_user', 'span_foto_user') }} type="file" className='input-foto-print' name="foto_user" id="foto_user" accept='image/*' />
-                            <button onClick={() => { anexarFoto('foto_user') }} className='btn-cadastro foto_user' type="button">
+                            <span className='span-alert hidden-span-alert alert-foto'>
+                                *É NECESSARIO ADICIONAR UMA FOTO DE PERFIL!
+                            </span>
+                            <input
+                                onChange={() => { callVerificarFoto('foto_user', 'alert-foto', 'btn-foto-user') }}
+                                type="file"
+                                className='input-foto-print'
+                                name="foto_user"
+                                id="foto_user"
+                                accept='image/*' />
+                            <button
+                                onClick={() => { anexarFoto('foto_user') }}
+                                id='btn-foto-user'
+                                className='btn-cadastro foto_user'
+                                type="button">
                                 Anexar Foto de Perfil
                             </button>
 
 
-                            <span id='span_foto_cnh' className='span hidden-alert'>É NECESSARIO ADICIONAR UMA FOTO DE PERFIL, CNH E UM PRINT DO APP DE MOBILIDADE*</span>
-                            <input onChange={(event) => { checkFoto(event, 'foto_cnh', 'span_foto_cnh') }} type="file" className='input-foto-print' name="foto_cnh" id="foto_cnh" accept='image/*' />
-                            <button onClick={() => { anexarFoto('foto_cnh') }} className='btn-cadastro foto_cnh' type="button">
+                            <span className='span-alert hidden-span-alert alert-cnh'>
+                                *É NECESSARIO ADICIONAR UMA FOTO DA CNH!
+                            </span>
+                            <input
+                                onChange={() => { callVerificarFoto('foto_cnh', 'alert-cnh', 'btn-foto-cnh') }} type="file"
+                                className='input-foto-print'
+                                name="foto_cnh" id="foto_cnh"
+                                accept='image/*' />
+                            <button
+                                onClick={() => { anexarFoto('foto_cnh') }}
+                                id='btn-foto-cnh'
+                                className='btn-cadastro foto_cnh'
+                                type="button">
                                 Anexar CNH
                             </button>
 
-                            <span id='span_print_app' className='span hidden-alert'>É NECESSARIO ADICIONAR UMA FOTO DE PERFIL, CNH E UM PRINT DO APP DE MOBILIDADE*</span>
-                            <input onChange={(event) => { checkFoto(event, 'print_app', 'span_print_app') }} type="file" className='input-foto-print' name="print_app" id="print_app" accept='image/*' />
-                            <button onClick={() => { anexarFoto('print_app') }} className='btn-cadastro print_app' type="button">
+                            <span className='span-alert hidden-span-alert alert-print-app'>
+                                *É NECESSARIO ADICIONAR UM PRINT DO APP DE MOBILIDADE!
+                            </span>
+                            <input
+                                onChange={() => { callVerificarFoto('print_app', 'alert-print-app', 'btn-print-app') }} type="file"
+                                className='input-foto-print'
+                                name="print_app"
+                                id="print_app"
+                                accept='image/*' />
+                            <button
+                                onClick={() => { anexarFoto('print_app') }}
+                                id='btn-print-app'
+                                className='btn-cadastro print_app'
+                                type="button">
                                 Anexar print do APP de mobilidade
                             </button>
 
