@@ -7,9 +7,11 @@ import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
 import { validarCnpj } from '../functions/validarCnpj'
 import { checkPhone } from '../functions/checkPhone'
 import { checkValor } from '../functions/checkValor'
-import { maskCnpj } from '../functions/maskCnpj';
+import { maskCnpj } from '../functions/maskCnpj'
+import { verificarFoto } from '../functions/verificarFoto';
 
 import Loading from './loading'
+import ModalResponse from './modalResponse';
 import '../style/new_services_page/new_services.css'
 
 const apiKey = import.meta.env.VITE_URL_API_CNPJ_KEY
@@ -22,6 +24,9 @@ const NewPostosServices = () => {
   const [fotoValid, setFotoValid] = useState(false)
 
   const [loading, setLoading] = useState(false)
+
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   const tokenUser = localStorage.getItem('token');
 
@@ -47,18 +52,8 @@ const NewPostosServices = () => {
   const callCheckValor = (e) => checkValor(e)
 
   function addFoto(input) { document.getElementById(input).click() }
-  function verificarFoto(inputId, span, btnId) {
-    const inputFoto = document.getElementById(inputId).value
-    if (inputFoto === '') {
-      document.querySelector(`.${span}`).classList.remove('hidden-span-alert')
-      document.querySelector(`#${btnId}`).classList.remove('checked-foto')
-      setFotoValid(false)
-      return
-    }
-    document.querySelector(`.${span}`).classList.add('hidden-span-alert')
-    document.querySelector(`#${btnId}`).classList.add('checked-foto')
-    setFotoValid(true)
-    return
+  const callVerificarFoto = (inputId, span, btnId) => {
+    setFotoValid(verificarFoto(inputId, span, btnId))
   }
 
   async function buscarCnpj(cnpjValid, cnpj) {
@@ -89,17 +84,17 @@ const NewPostosServices = () => {
     inputAddress.value = `${infoCnpj.street}, ${infoCnpj.number}, ${infoCnpj.district}`
   }
 
-  function closeWindowResponse(btnClose) {
-    document.querySelector(`.${btnClose}`).classList.add('container-response-cadastro-hidden')
-  }
-
   async function hundleSubmit(e) {
     e.preventDefault()
     setLoading(true)
 
     if (!fotoValid || !cnpjValid) {
+      setModalMessage('É necessario preencher todos os dados!')
+      setModalVisible(true)
+
       setLoading(false)
-      return console.log('É necessario preencher todos os campos')
+
+      return
     }
     const myForm = document.getElementById('form-cadastro')
     const formData = new FormData(myForm)
@@ -122,21 +117,12 @@ const NewPostosServices = () => {
       }
       const dataResponse = await response.json()
       if (response.status != 200 || response.status === 200) {
-        const element = document.querySelector('.container-response-cadastro')
-        element.classList.remove('container-response-cadastro-hidden')
-
-        const textResponse = document.querySelector('.response-text-cadastro')
-        console.log(dataResponse.message)
-        textResponse.innerHTML = dataResponse.message
+        setModalMessage(dataResponse.message)
+        setModalVisible(true)
       }
     } catch (err) {
-      console.error('Erro na requisição:', err);
-
-      const element = document.querySelector('.container-response-cadastro')
-      const textResponse = document.querySelector('.response-text-cadastro');
-
-      element.classList.remove('container-response-cadastro-hidden')
-      textResponse.innerHTML = `Ocorreu um erro inesperado. Tente novamente mais tarde.` + err.message;
+      setModalMessage(`Ocorreu um erro inesperado. Tente novamente mais tarde.` + err.message)
+      setModalVisible(true)
     } finally {
       setLoading(false)
     }
@@ -149,25 +135,15 @@ const NewPostosServices = () => {
   return (
     <>
       <Loading loading={loading} />
+      <ModalResponse
+        isVisible={isModalVisible}
+        onClose={() => setModalVisible(false)}
+        message={modalMessage}
+        buttonText="Ir para HOME!"
+        redirectTo="/home"
+      />
       <div className='container-form-arrow'>
-        <div className='container-response-cadastro container-response-cadastro-hidden'>
-          <div className='container-info-response'>
-            <div className='div-close-alert-response-cadastro'>
-              <button onClick={() => { closeWindowResponse('container-response-cadastro') }} className='btn-close-alert-response-cadastro'>
-                X
-              </button>
-            </div>
-            <div className='container-text-cadastro'>
-              <p className='response-text-cadastro'></p>
 
-              <Link to={'/'}>
-                <button className='btn-response-cadastro'>
-                  Retornar para a pagina de login!
-                </button>
-              </Link>
-            </div>
-          </div>
-        </div>
         <div className='container-arrow-icon'>
           <Link to={'/adicionar_cadastros'}>
             <FontAwesomeIcon className='arrow-icon' icon={faArrowLeftLong} />
@@ -271,7 +247,7 @@ const NewPostosServices = () => {
                   *É NECESSARIO QUE ANEXE UMA FOTO DO POSTO DE GASOLINA!
                 </span>
                 <input
-                  onChange={() => { verificarFoto('foto-posto', 'alert-foto-posto', 'btn-foto-posto') }}
+                  onChange={() => { callVerificarFoto('foto-posto', 'alert-foto-posto', 'btn-foto-posto') }}
                   id='foto-posto'
                   className='input-add-foto'
                   name="foto_posto"
@@ -372,7 +348,7 @@ const NewPostosServices = () => {
                   name="foto_anuncio"
                   type="file"
                   accept="image/*"
-                  onChange={() => { verificarFoto('foto-anuncio', 'alert-foto-anuncio', 'btn-foto-anuncio') }} />
+                  onChange={() => { callVerificarFoto('foto-anuncio', 'alert-foto-anuncio', 'btn-foto-anuncio') }} />
                 <button
                   onClick={() => { addFoto('foto-anuncio') }}
                   id='btn-foto-anuncio'
