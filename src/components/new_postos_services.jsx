@@ -159,7 +159,7 @@ const NewPostosServices = () => {
           <button onClick={() => { setCategoria('anuncios') }}
             className={`tipo-cadastro ${categoria === 'anuncios' ? 'checked' : ''}`}
             type="button">
-            Cadastrar Serviço
+            Cadastrar Anuncio
           </button>
         </div>
 
@@ -274,7 +274,7 @@ const NewPostosServices = () => {
                   name="titulo_anuncio"
                   className="input-info input-info-anuncio"
                   type="text"
-                  placeholder="Nome do serviço"
+                  placeholder="Nome do anuncio"
                   required />
                 <span className='span-alert hidden-span-alert alert-cnpj'>
                   *CPNJ INFORMADO NÃO É VALIDO!
@@ -311,34 +311,6 @@ const NewPostosServices = () => {
                   onChange={(e) => { callCheckPhone(e) }}
                   maxLength={15} />
 
-                <p className='text-info'>Tipo de combustivel que deseja trabalhar</p>
-                <div className='container-inputs-combutiveis'>
-
-                  <input
-                    onChange={(e) => { callCheckValor(e) }}
-                    id='etanol'
-                    className='input-add-combustivel input-info'
-                    name="etanol"
-                    type="text"
-                    placeholder="Etanol" />
-
-                  <input
-                    onChange={(e) => { callCheckValor(e) }}
-                    id='gasolina'
-                    className='input-add-combustivel input-info'
-                    name="gasolina"
-                    type="text"
-                    placeholder="Gasolina" />
-
-                  <input
-                    onChange={(e) => { callCheckValor(e) }}
-                    id='diesel'
-                    className='input-add-combustivel input-info'
-                    name="diesel"
-                    type="text"
-                    placeholder="Diesel" />
-                </div>
-
                 <span className='span-alert hidden-span-alert alert-foto-anuncio'>
                   *É NECESSARIO QUE ANEXE UMA FOTO DO SEU PONTO DE SERVIÇO!
                 </span>
@@ -354,7 +326,7 @@ const NewPostosServices = () => {
                   id='btn-foto-anuncio'
                   className="btn-foto btn-foto-anuncio"
                   type="button">
-                  Foto do seu ponto de serviço!
+                  Foto do anuncio!
                 </button>
                 <button
                   className="btn-criar"
