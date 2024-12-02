@@ -132,6 +132,9 @@ const Home = () => {
                   <p className='combustiveis-gas-station'>
                     GASOLINA: R$ {posto.gasolina}
                   </p>
+                  <p className='combustiveis-gas-station'>
+                    DIESEL: R$ {posto.diesel}
+                  </p>
                 </div>
               </li>
             )}
@@ -187,12 +190,24 @@ const Home = () => {
                     <FontAwesomeIcon className='pen-icon' icon={faPen} />
                   </button>
                 </div>
+
                 <div className='container-edit-combustivel-modal'>
                   <p id='valor-gasolina' className='modal-combustivel-posto'>
                     Gasolina: R$ {infoPostos.gasolina}
                   </p>
                   <button
                     onClick={() => { modalEditCombustivel(infoPostos.gasolina, 'gasolina') }} type="button"
+                    className={`${typeUser === 'user' ? 'modal-edit-combustivel-hidden' : 'modal-edit-combustivel'}`}>
+                    <FontAwesomeIcon className='pen-icon' icon={faPen} />
+                  </button>
+                </div>
+
+                <div className='container-edit-combustivel-modal'>
+                  <p id='valor-diesel' className='modal-combustivel-posto'>
+                    Diesel: R$ {infoPostos.diesel}
+                  </p>
+                  <button
+                    onClick={() => { modalEditCombustivel(infoPostos.diesel, 'diesel') }} type="button"
                     className={`${typeUser === 'user' ? 'modal-edit-combustivel-hidden' : 'modal-edit-combustivel'}`}>
                     <FontAwesomeIcon className='pen-icon' icon={faPen} />
                   </button>
@@ -212,15 +227,16 @@ const Home = () => {
               </div>
               <div className='container-input-edit-combustivel'>
                 <input
+                  className='input-edit-combustivel'
                   type="text"
-                  name={inputInfo.type_combustivel === 'etanol' ? 'etanol' : 'gasolina'}
-                  id={inputInfo.type_combustivel === 'etanol' ? 'etanol' : 'gasolina'}
+                  name={inputInfo.type_combustivel}
+                  id={inputInfo.type_combustivel}
                   placeholder={inputInfo.valor_combustivel}
                   onChange={(e) => { callCheckValor(e) }} />
                 <button
                   className='btn-edit-combustivel'
                   type="button"
-                  onClick={() => { editarCombustivel(inputInfo.type_combustivel === 'etanol' ? 'etanol' : 'gasolina', infoPostos.cod_posto) }}>
+                  onClick={() => { editarCombustivel(inputInfo.type_combustivel, infoPostos.cod_posto) }}>
                   Salvar
                 </button>
               </div>
