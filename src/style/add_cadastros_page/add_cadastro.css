@@ -5,7 +5,26 @@
   justify-content: center;
   align-items: center;
 }
-.container-btns-add-cadastro .btn-add-cadastro {
+.container-btns-add-cadastro .container-arrow-icon {
+  width: 100%;
+  padding: 15px;
+  font-size: 24px;
+}
+.container-btns-add-cadastro .container-arrow-icon .arrow-icon {
+  color: black;
+  transition: 0.3s linear;
+}
+.container-btns-add-cadastro .container-arrow-icon .arrow-icon:hover {
+  transform: scale(0.8);
+}
+.container-btns-add-cadastro .container-btns-cadastro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.container-btns-add-cadastro .container-btns-cadastro .btn-add-cadastro {
   margin-bottom: 25px;
   background-color: transparent;
   border: none;
@@ -13,6 +32,6 @@
   font-weight: 500;
   transition: 0.2s linear;
 }
-.container-btns-add-cadastro .btn-add-cadastro:hover {
+.container-btns-add-cadastro .container-btns-cadastro .btn-add-cadastro:hover {
   border-bottom: 2px solid #fff100;
 }/*# sourceMappingURL=add_cadastro.css.map */

@@ -6,19 +6,44 @@
     justify-content: center;
     align-items: center;
 
-    .btn-add-cadastro {
-        margin-bottom: 25px;
-        
-        background-color: transparent;
+    .container-arrow-icon {
+        width: 100%;
 
-        border: none;
+        padding: 15px;
 
         font-size: 24px;
-        font-weight: 500;
 
-        transition: 0.2s linear;
-        &:hover {
-            border-bottom: 2px solid #fff100;
+        .arrow-icon {
+            color: black;
+            transition: 0.3s linear;
+
+            &:hover {
+                transform: scale(0.8);
+            }
+        }
+    }
+
+    .container-btns-cadastro {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        height: 100%;
+        .btn-add-cadastro {
+            margin-bottom: 25px;
+            
+            background-color: transparent;
+    
+            border: none;
+    
+            font-size: 24px;
+            font-weight: 500;
+    
+            transition: 0.2s linear;
+            &:hover {
+                border-bottom: 2px solid #fff100;
+            }
         }
     }
 }
