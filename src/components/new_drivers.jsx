@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
 
 import '../style/new_driver_page/new_driver.css'
 
@@ -44,7 +48,7 @@ const NewDrivers = () => {
             }
         })
         if (response.status === 403) {
-            navigate('/home', {replace: true})
+            navigate('/home', { replace: true })
         }
         const data = await response.json()
         setInfoDrivers(data)
@@ -68,6 +72,12 @@ const NewDrivers = () => {
 
     return (
         <div className="container-cadastros">
+            <div className='container-arrow-icon'>
+                <Link to={'/adicionar_cadastros'}>
+                    <FontAwesomeIcon className='arrow-icon' icon={faArrowLeftLong} />
+                </Link>
+            </div>
+
             <h1 className="title-cadastro-pendentes">Cadastros Pendentes</h1>
 
             <div className="container-ul-cadastros">
