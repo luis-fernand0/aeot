@@ -203,7 +203,7 @@
 .container-modal-edit-combustivel .modal-edit-combustivel .container-input-edit-combustivel {
   margin-top: 20px;
 }
-.container-modal-edit-combustivel .modal-edit-combustivel .container-input-edit-combustivel #etanol, .container-modal-edit-combustivel .modal-edit-combustivel .container-input-edit-combustivel #gasolina {
+.container-modal-edit-combustivel .modal-edit-combustivel .container-input-edit-combustivel .input-edit-combustivel {
   width: 80%;
   padding: 10px;
   margin-bottom: 10px;
@@ -211,7 +211,7 @@
   border-radius: 5px;
   font-size: 1rem;
 }
-.container-modal-edit-combustivel .modal-edit-combustivel .container-input-edit-combustivel #etanol:focus, .container-modal-edit-combustivel .modal-edit-combustivel .container-input-edit-combustivel #gasolina:focus {
+.container-modal-edit-combustivel .modal-edit-combustivel .container-input-edit-combustivel .input-edit-combustivel:focus {
   outline: none;
   border-color: #4CAF50;
 }
