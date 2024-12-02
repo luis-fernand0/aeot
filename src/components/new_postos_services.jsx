@@ -64,12 +64,7 @@ const NewPostosServices = () => {
 
     const cnpjSemFormatacao = cnpj.replace(/[^0-9]/g, "")
 
-    const response = await fetch(`https://api.cnpja.com/office/${cnpjSemFormatacao}`, {
-      method: 'GET',
-      headers: {
-        'Authorization': apiKey
-      }
-    })
+    const response = await fetch(`https://open.cnpja.com/office/${cnpjSemFormatacao}`)
     const data = await response.json()
     addValue(data.address)
   }
@@ -81,7 +76,7 @@ const NewPostosServices = () => {
       return
     }
 
-    inputAddress.value = `${infoCnpj.street}, ${infoCnpj.number}, ${infoCnpj.district}`
+    inputAddress.value = `${infoCnpj.street}, ${infoCnpj.number}, ${infoCnpj.district}, ${infoCnpj.city} - ${infoCnpj.state}`
   }
 
   async function hundleSubmit(e) {
