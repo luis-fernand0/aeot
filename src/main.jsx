@@ -16,6 +16,7 @@ import NewDrivers from './components/new_drivers.jsx'
 import EditPerfil from './components/edit_perfil.jsx'
 import AdicionarCadastros from './components/add_cadastros.jsx'
 import NewPostosServices from './components/new_postos_services.jsx'
+import Abastecimento from './components/abastecimento.jsx'
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,11 @@ const router = createBrowserRouter([
   {
     path: '/cadastros_pendentes',
     element: <NewDrivers/>
+  },
+
+  {
+    path: '/abastecimento',
+    element: <Abastecimento/>
   },
 
   {
