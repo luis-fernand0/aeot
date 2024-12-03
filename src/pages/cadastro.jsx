@@ -42,7 +42,7 @@ const Cadastro = () => {
         var inputModelCor = event.target;
         const regex = /^\w+\s+\w+/;
         inputModelCor.value = inputModelCor.value.toUpperCase()
-        
+
         validarModeloCor(regex.test(inputModelCor.value));
     };
 
@@ -137,9 +137,6 @@ const Cadastro = () => {
 
             const myForm = document.getElementById('myFormCadastro')
             const formData = new FormData(myForm)
-            for (const [key, value] of formData.entries()) {
-                console.log(`${key}: ${value}`);
-            }
 
             const response = await fetch(`${urlCadastro}`, {
                 method: 'POST',

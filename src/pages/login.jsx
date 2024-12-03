@@ -13,7 +13,6 @@ const Login = () => {
   function formatEmail(e) {
     var inputEmail = e.target
     inputEmail.value = inputEmail.value.toLowerCase()
-    console.log(inputEmail.value)
 
     return inputEmail
   }
@@ -55,7 +54,7 @@ const Login = () => {
     <>
       <div className="container-login">
 
-        <form onSubmit={(e) => { hundleSubmit() }} id='myFormLogin' className='form-login'>
+        <form onSubmit={(e) => { hundleSubmit(e) }} id='myFormLogin' className='form-login'>
 
           <div className="logo-inputs">
 
