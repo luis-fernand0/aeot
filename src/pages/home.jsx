@@ -108,7 +108,7 @@ const Home = () => {
 
         <div className='btns-ul'>
           <div className='btns-fuel-services'>
-            <button onClick={() => { checkButton('postos') }} className={`btn-option btn-combustivel ${categoria === 'postos' ? 'checked' : ''}`} type="button">Combustivel</button>
+            <button onClick={() => { checkButton('postos') }} className={`btn-option btn-combustivel ${categoria === 'postos' ? 'checked' : ''}`} type="button">Postos de Combustiveis</button>
             <button onClick={() => { checkButton('anuncios') }} className={`btn-option btn-services ${categoria === 'anuncios' ? 'checked' : ''}`} type="button">Serviços</button>
           </div>
 
