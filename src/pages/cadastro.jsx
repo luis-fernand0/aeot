@@ -24,19 +24,26 @@ const Cadastro = () => {
     const [modalMessage, setModalMessage] = useState('');
 
     // Função para validar se o input contém pelo menos duas palavras
-    const validarModeloCor = () => {
-        if (!erroModeloCor) {
+    const validarModeloCor = (wordValid) => {
+        if (!wordValid) {
             document.getElementById('span-modelo').classList.remove('hidden-span-modelo')
-        } else {
-            document.getElementById('span-modelo').classList.add('hidden-span-modelo')
+            setErroModeloCor(wordValid);
+
+            return
         }
+        console.log(wordValid)
+        document.getElementById('span-modelo').classList.add('hidden-span-modelo')
+        setErroModeloCor(wordValid);
+
+        return
     };
 
     const handleChangeModeloCor = (event) => {
-        const valor = event.target.value;
+        var inputModelCor = event.target;
         const regex = /^\w+\s+\w+/;
-        setErroModeloCor(regex.test(valor));
-        validarModeloCor(valor);
+        inputModelCor.value = inputModelCor.value.toUpperCase()
+        
+        validarModeloCor(regex.test(inputModelCor.value));
     };
 
     const callCheckPhone = (e) => checkPhone(e)
@@ -62,19 +69,11 @@ const Cadastro = () => {
     }
     function checkPass() {
         const password = document.querySelectorAll('.input-cadastro-pass')
-        const span = document.querySelectorAll('.span')
+        const span = document.querySelectorAll('.span-pass')
         const pass = password[0]
         const confirmpass = password[1]
 
-        if (pass.value === confirmpass.value) {
-            pass.classList.remove('alert-pass')
-            confirmpass.classList.remove('alert-pass')
-
-            for (let i = 0; i < span.length; i++) {
-                const element = span[i];
-                element.classList.add('hidden-span')
-            }
-        } else {
+        if (pass.value != confirmpass.value) {
             pass.classList.add('alert-pass')
             confirmpass.classList.add('alert-pass')
 
@@ -82,7 +81,24 @@ const Cadastro = () => {
                 const element = span[i];
                 element.classList.remove('hidden-span')
             }
+
+            return false
         }
+        pass.classList.remove('alert-pass')
+        confirmpass.classList.remove('alert-pass')
+
+        for (let i = 0; i < span.length; i++) {
+            const element = span[i];
+            element.classList.add('hidden-span')
+        }
+
+        return true
+    }
+    function formatEmail(e) {
+        var inputEmail = e.target
+        inputEmail.value = inputEmail.value.toLowerCase()
+
+        return inputEmail
     }
 
     function formatPlate(event) {
@@ -96,7 +112,7 @@ const Cadastro = () => {
             plateValue = plateValue.slice(0, 8);
         }
 
-        plate.value = plateValue
+        plate.value = plateValue.toUpperCase()
 
         return plate
     }
@@ -106,11 +122,11 @@ const Cadastro = () => {
         setFotoValid(verificarFoto(inputId, span, btnId))
     }
 
-    function enviarForm() { hundleSubmit() }
-    async function hundleSubmit() {
+    async function hundleSubmit(e) {
+        e.preventDefault()
         setLoading(true)
         try {
-            if (!erroModeloCor || !fotoValid) {
+            if (!erroModeloCor || !fotoValid || !checkPass()) {
                 setModalMessage('É necessario preencher todos os dados!')
                 setModalVisible(true)
 
@@ -121,6 +137,9 @@ const Cadastro = () => {
 
             const myForm = document.getElementById('myFormCadastro')
             const formData = new FormData(myForm)
+            for (const [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
+            }
 
             const response = await fetch(`${urlCadastro}`, {
                 method: 'POST',
@@ -152,7 +171,7 @@ const Cadastro = () => {
             <div className="container-cadastro">
                 <img className='logo-aeot-cadastro' src="/logo_AEOT.png" alt="logo-aeot" />
 
-                <form id='myFormCadastro' className="form-cadastro">
+                <form onSubmit={(e) => { hundleSubmit(e) }} id='myFormCadastro' className="form-cadastro">
                     <div className='cadastro-full'>
 
                         <div className='title-arrow'>
@@ -168,16 +187,16 @@ const Cadastro = () => {
                             <input
                                 onChange={(e) => { callCheckPhone(e) }} className='input-cadastro' type="tel" name="telefone" id="input-tel" placeholder='Telefone' required autoComplete='off' maxLength={15} />
 
-                            <input className='input-cadastro input-cadastro-email' type="email" name="email_cadastro" id="email-cadastro" placeholder='Email' required autoComplete='off' />
+                            <input className='input-cadastro input-cadastro-email' type="email" name="email_cadastro" id="email-cadastro" placeholder='Email' required autoComplete='off' onChange={(e) => { formatEmail(e) }} />
 
                             <div className='placa-modelo'>
                                 <input onChange={(event) => { formatPlate(event) }} className='input-cadastro-veiculo' type="text" name="placa_veiculo" id="placa-veiculo" placeholder='Placa' required autoComplete='off' maxLength={8} />
 
                                 <span id='span-modelo' className='span hidden-span-modelo'>PORFAVOR INSIRA MODELO E COR DO VEICULO EXEMPLO: ONIX PRETO*</span>
-                                <input onChange={(e) => { handleChangeModeloCor(e) }} className='input-cadastro-veiculo' type="text" name="modelo_veiculo" id="modelo-veiculo" placeholder='Modelo/Cor' required autoComplete='off' />
+                                <input onBlur={(e) => { handleChangeModeloCor(e) }} className='input-cadastro-veiculo' type="text" name="modelo_veiculo" id="modelo-veiculo" placeholder='Modelo/Cor' required autoComplete='off' />
                             </div>
 
-                            <span className='span hidden-span'>AS SENHAS DEVEM SER IGUAIS*</span>
+                            <span className='span span-pass hidden-span'>AS SENHAS DEVEM SER IGUAIS*</span>
                             <div className='div-pass-cadastro'>
                                 <input onBlur={() => { checkPass() }} className='input-cadastro input-cadastro-pass' type="password" name="password_cadastro" id="password-cadastro" minLength={6} placeholder='Senha' required />
 
@@ -187,7 +206,7 @@ const Cadastro = () => {
                                 </button>
                             </div>
 
-                            <span className='span hidden-span'>AS SENHAS DEVEM SER IGUAIS*</span>
+                            <span className='span span-pass hidden-span'>AS SENHAS DEVEM SER IGUAIS*</span>
                             <div className='div-pass-cadastro' >
                                 <input onBlur={() => { checkPass() }} className='input-cadastro input-cadastro-pass' type="password" name="password_cadastro_check" id="password-cadastro-chek" placeholder='Confirme sua senha' minLength={6} required />
                                 <button onClick={() => { revealPass() }} type='button' className='pass-reveal'>
@@ -251,7 +270,7 @@ const Cadastro = () => {
                                 Anexar print do APP de mobilidade
                             </button>
 
-                            <button onClick={() => { enviarForm() }} className='btn-cadastro btn-criar-cadastro' type="button">
+                            <button className='btn-cadastro btn-criar-cadastro' type="submit">
                                 CRIAR!
                             </button>
                         </div>
