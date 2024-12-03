@@ -10,8 +10,16 @@ const Login = () => {
 
   const navigate = useNavigate()
 
-  function enviarForm() {hundleSubmit()}
-  async function hundleSubmit() {
+  function formatEmail(e) {
+    var inputEmail = e.target
+    inputEmail.value = inputEmail.value.toLowerCase()
+    console.log(inputEmail.value)
+
+    return inputEmail
+  }
+
+  async function hundleSubmit(e) {
+    e.preventDefault()
 
     const myForm = document.getElementById('myFormLogin')
     const formData = new FormData(myForm)
@@ -47,7 +55,7 @@ const Login = () => {
     <>
       <div className="container-login">
 
-        <form id='myFormLogin' className='form-login'>
+        <form onSubmit={(e) => { hundleSubmit() }} id='myFormLogin' className='form-login'>
 
           <div className="logo-inputs">
 
@@ -58,7 +66,7 @@ const Login = () => {
 
             <span className='span-login span-login-hidden'></span>
             <div className="inputs-btns">
-              <input className='input-login input-login-email' type="email" name="email_login" id="email-login" placeholder="Email" required autoComplete='off' />
+              <input className='input-login input-login-email' type="email" name="email_login" id="email-login" placeholder="Email" required autoComplete='off' onChange={(e) => { formatEmail(e) }} />
 
               <input className='input-login' type="password" name="password_login" id="password-login" placeholder="Senha" required />
 
@@ -73,7 +81,7 @@ const Login = () => {
 
           </div>
 
-          <button onClick={() => { enviarForm() }} className='btn-log btn-login' type="button">Login</button>
+          <button className='btn-log btn-login' type="submit">Login</button>
           <p className='text-version'>1.0.0</p>
 
         </form >
