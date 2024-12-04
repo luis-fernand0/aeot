@@ -20,6 +20,8 @@ const Home = () => {
   const [editCombustivel, setEditCombustivel] = useState(false)
   const [inputInfo, setInputInfo] = useState({})
 
+  const [local, setLocal] = useState(null)
+
   const navigate = useNavigate()
 
   const tokenUser = localStorage.getItem('token');
@@ -43,6 +45,49 @@ const Home = () => {
       navigate('/', { replace: true })
     }
     setPostos(data.infoGasStation)
+  }
+
+  function obterLocation() {
+    if (!navigator.geolocation) {
+      alert('Geolocalização não suportada pelo navegador')
+      return
+    }
+
+    try {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords
+          setLocal({ latitude, longitude })
+        }, (error) => {
+          alert(`Não foi possivel obter sua localização: ${error.message}`)
+        })
+    } catch (error) {
+      alert('Não foi possivel obter sua localização')
+    }
+
+    obterDistancia()
+  }
+
+  async function obterDistancia() {
+    if (!local) {
+      alert('Localização não disponível.');
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:3000/aeot/auth/distance?latitude=${local.latitude}&longitude=${local.longitude}`
+      );
+
+      if (!response.ok) {
+        throw new Error('Erro ao obter os dados do backend');
+      }
+
+      const data = await response.json();
+      console.log(data); // Verifique no console
+    } catch (error) {
+      alert('Erro ao obter distância: ' + error.message);
+    }
   }
 
   function checkButton(btnClicado) {
@@ -97,6 +142,8 @@ const Home = () => {
 
   useEffect(() => {
     gasStation()
+    obterLocation()
+    console.log(local)
   }, [categoria])
 
   return (
