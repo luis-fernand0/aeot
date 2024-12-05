@@ -165,6 +165,23 @@
 .container-modal-edit-posto .modal-edit-posto .container-sobre-posto .container-edit-combustivel-modal .modal-edit-combustivel-hidden {
   display: none;
 }
+.container-modal-edit-posto .modal-edit-posto .container-km .text-km {
+  font-weight: bold;
+  color: #333;
+  text-align: left;
+}
+.container-modal-edit-posto .modal-edit-posto .container-btn-abrir-maps .btn-abrir-maps {
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.container-modal-edit-posto .modal-edit-posto .container-btn-abrir-maps .btn-abrir-maps:hover {
+  background-color: #45a049;
+}
 
 .container-modal-edit-combustivel {
   position: fixed;
@@ -229,20 +246,32 @@
 }
 
 @media screen and (max-width: 768px) {
-  .container-modal-edit-posto .modal-edit-posto, .container-modal-edit-posto .modal-edit-combustivel, .container-modal-edit-combustivel .modal-edit-posto, .container-modal-edit-combustivel .modal-edit-combustivel {
+  .container-modal-edit-posto .modal-edit-posto,
+  .container-modal-edit-posto .modal-edit-combustivel,
+  .container-modal-edit-combustivel .modal-edit-posto,
+  .container-modal-edit-combustivel .modal-edit-combustivel {
     width: 95%;
     padding: 15px;
   }
-  .container-modal-edit-posto .modal-edit-posto .foto-modal-posto, .container-modal-edit-posto .modal-edit-combustivel .foto-modal-posto, .container-modal-edit-combustivel .modal-edit-posto .foto-modal-posto, .container-modal-edit-combustivel .modal-edit-combustivel .foto-modal-posto {
+  .container-modal-edit-posto .modal-edit-posto .foto-modal-posto,
+  .container-modal-edit-posto .modal-edit-combustivel .foto-modal-posto,
+  .container-modal-edit-combustivel .modal-edit-posto .foto-modal-posto,
+  .container-modal-edit-combustivel .modal-edit-combustivel .foto-modal-posto {
     width: 80px;
     height: 80px;
   }
-  .container-modal-edit-posto .modal-edit-posto .container-input-edit-combustivel input, .container-modal-edit-posto .modal-edit-combustivel .container-input-edit-combustivel input, .container-modal-edit-combustivel .modal-edit-posto .container-input-edit-combustivel input, .container-modal-edit-combustivel .modal-edit-combustivel .container-input-edit-combustivel input {
+  .container-modal-edit-posto .modal-edit-posto .container-input-edit-combustivel input,
+  .container-modal-edit-posto .modal-edit-combustivel .container-input-edit-combustivel input,
+  .container-modal-edit-combustivel .modal-edit-posto .container-input-edit-combustivel input,
+  .container-modal-edit-combustivel .modal-edit-combustivel .container-input-edit-combustivel input {
     width: 100%;
   }
 }
 @media screen and (max-width: 480px) {
-  .container-modal-edit-posto .modal-edit-posto .modal-edit-combustivel button, .container-modal-edit-posto .modal-edit-combustivel .modal-edit-combustivel button, .container-modal-edit-combustivel .modal-edit-posto .modal-edit-combustivel button, .container-modal-edit-combustivel .modal-edit-combustivel .modal-edit-combustivel button {
+  .container-modal-edit-posto .modal-edit-posto .modal-edit-combustivel button,
+  .container-modal-edit-posto .modal-edit-combustivel .modal-edit-combustivel button,
+  .container-modal-edit-combustivel .modal-edit-posto .modal-edit-combustivel button,
+  .container-modal-edit-combustivel .modal-edit-combustivel .modal-edit-combustivel button {
     padding: 8px 15px;
   }
 }/*# sourceMappingURL=home.css.map */
