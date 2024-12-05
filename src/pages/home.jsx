@@ -10,6 +10,7 @@ import '../style/home_page/home.css'
 
 const urlDatas = import.meta.env.VITE_URL_DATAS
 const urlEditCombustivel = import.meta.env.VITE_URL_ATUALIZAR_COMBUSTIVEL
+const urlDataGoogleMaps = import.meta.env.VITE_URL_QUERY_GOOGLE_MAPS
 
 const Home = () => {
   const [postos, setPostos] = useState()
@@ -21,6 +22,7 @@ const Home = () => {
   const [inputInfo, setInputInfo] = useState({})
 
   const [local, setLocal] = useState(null)
+  const [distancia, setDistancia] = useState({})
 
   const navigate = useNavigate()
 
@@ -44,6 +46,7 @@ const Home = () => {
     if (response.status === 403) {
       navigate('/', { replace: true })
     }
+    obterLocation()
     setPostos(data.infoGasStation)
   }
 
@@ -58,35 +61,36 @@ const Home = () => {
         (position) => {
           const { latitude, longitude } = position.coords
           setLocal({ latitude, longitude })
-        }, (error) => {
-          alert(`Não foi possivel obter sua localização: ${error.message}`)
+        }, (err) => {
+          alert(`Não foi possivel obter sua localização: ${err.message}`)
         })
-    } catch (error) {
-      alert('Não foi possivel obter sua localização')
+    } catch (err) {
+      alert(`Não foi possivel obter sua localização: ${err.message}`)
     }
-
-    obterDistancia()
   }
 
-  async function obterDistancia() {
-    if (!local) {
-      alert('Localização não disponível.');
-      return;
-    }
-
+  async function obterDistancia(endereco, cod_posto) {
     try {
-      const response = await fetch(
-        `http://localhost:3000/aeot/auth/distance?latitude=${local.latitude}&longitude=${local.longitude}`
-      );
+      if (local && local.latitude && local.longitude) {
+        const response = await fetch(
+          `${urlDataGoogleMaps}?origemlat=${local.latitude}&origemlong=${local.longitude}&address=${endereco}`
+        );
 
-      if (!response.ok) {
-        throw new Error('Erro ao obter os dados do backend');
+        if (!response.ok) {
+          throw new Error('Erro ao obter os dados do Google Maps');
+        }
+
+        const data = await response.json();
+        const distancia = data.rows[0].elements[0].distance.text;
+        const tempo = data.rows[0].elements[0].duration.text;
+        const destino = data.destination_addresses;
+
+        return { distancia, tempo, destino, id: cod_posto };
       }
-
-      const data = await response.json();
-      console.log(data); // Verifique no console
+      throw new Error('Localização não disponível');
     } catch (error) {
-      alert('Erro ao obter distância: ' + error.message);
+      console.error(`Erro ao calcular distância para o posto ${cod_posto}: ${error.message}`);
+      return { distancia: 'Não foi possível calcular', tempo: 'N/A', id: cod_posto };
     }
   }
 
@@ -94,7 +98,7 @@ const Home = () => {
     setCategoria(btnClicado)
   }
 
-  function callModal(posto) {
+  async function callModal(posto) {
     setInfoPosto(posto)
     setOpenModal(true)
   }
@@ -140,11 +144,32 @@ const Home = () => {
     setEditCombustivel(false)
   }
 
+  async function exemplo() {
+    const { distancia, tempo } = await obterDistancia(posto.endereco)
+    console.log(distancia, tempo)
+  }
+
   useEffect(() => {
+    console.log('estou sendo renderizado', categoria)
     gasStation()
-    obterLocation()
-    console.log(local)
+    if (postos) {
+      console.log(postos)
+    }
   }, [categoria])
+
+  useEffect(() => {
+    if (postos) {
+      postos.forEach(async (posto) => {
+        const resultado = await obterDistancia(posto.endereco, posto.cod_posto);
+        if (resultado) {
+          setDistancia((prev) => ({
+            ...prev,
+            [posto.cod_posto]: resultado, // Armazena a distância usando o cod_posto como chave
+          }));
+        }
+      });
+    }
+  }, [postos]);
 
   return (
     <>
@@ -182,6 +207,11 @@ const Home = () => {
                   <p className='combustiveis-gas-station'>
                     DIESEL: R$ {posto.diesel}
                   </p>
+                  {distancia[posto.cod_posto] && (
+                    <p>
+                      KM: {distancia[posto.cod_posto].distancia} Tempo estimado: {distancia[posto.cod_posto].tempo}
+                    </p>
+                  )}
                 </div>
               </li>
             )}
