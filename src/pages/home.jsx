@@ -295,7 +295,9 @@ const Home = () => {
               {distancia[infoPostos.cod_posto] && (
                 <div className='container-km'>
                   <p className='text-km'>
-                    KM: {distancia[infoPostos.cod_posto].distancia} Tempo estimado: {distancia[infoPostos.cod_posto].tempo}
+                    KM: {distancia[infoPostos.cod_posto].distancia} 
+                    <br /> 
+                    Tempo estimado: {distancia[infoPostos.cod_posto].tempo}
                   </p>
                 </div>
               )}
