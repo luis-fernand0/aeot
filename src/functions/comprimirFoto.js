@@ -16,14 +16,12 @@ export async function comprimirFoto(inputId) {
 
     try {
         const compressedFileBlob = await imageCompression(imageFile[0], options)
-        console.log(compressedFileBlob)
         const compressedFile = 
         new File([compressedFileBlob], imageFile[0].name, {
             type: imageFile[0].type,
             lastModified: Date.now()
         })
-        console.log(compressedFile)
-
+        
         const dataTransfer = new DataTransfer()
         dataTransfer.items.add(compressedFile)
         
