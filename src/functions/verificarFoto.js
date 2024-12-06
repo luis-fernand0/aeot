@@ -1,9 +1,9 @@
 import imageCompression from 'browser-image-compression';
 
-export async function verificarFoto(inputId, span, btnId) {
+export async function verificarFoto(inputId) {
     const inputFoto = document.getElementById(inputId)
     const imageFile = inputFoto.files
-    console.log(imageFile)
+
     if (imageFile.length === 0) {
         return false
     }
@@ -28,9 +28,6 @@ export async function verificarFoto(inputId, span, btnId) {
         dataTransfer.items.add(compressedFile)
         
         inputFoto.files = dataTransfer.files
-
-        // document.querySelector(`.${span}`).classList.add('hidden-span-alert')
-        // document.querySelector(`#${btnId}`).classList.add('checked-foto')
 
         return true
     } catch (error) {
