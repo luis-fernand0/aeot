@@ -33,10 +33,7 @@ const EditPerfil = () => {
         setUser(data)
     }
 
-    function anexarFoto(input) {
-        document.getElementById(input).click()
-    }
-
+    function anexarFoto(input) {document.getElementById(input).click()}
     function checkFoto(e) {
         const foto = e.target.files[0]
         const novaFoto = document.getElementById('new-foto-user')//pegando o elemento que vai mostrar a nova foto no modal
@@ -44,7 +41,7 @@ const EditPerfil = () => {
         if (foto) {
             const reader = new FileReader()//lib para criar uma url temporaria
             reader.onload = (e) => {
-                novaFoto.src = e.target.result
+                novaFoto.src = e.target.result //atribuindo a url temporaria ao atributo da src da tag img que mostra a nova foto no modal
             }
             reader.readAsDataURL(foto)
 
