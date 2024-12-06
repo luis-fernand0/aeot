@@ -24,7 +24,7 @@ const Cadastro = () => {
     const [modalMessage, setModalMessage] = useState('');
 
     // Função para validar se o input contém pelo menos duas palavras
-    const validarModeloCor = (wordValid) => {
+    function validarModeloCor(wordValid) {
         if (!wordValid) {
             document.getElementById('span-modelo').classList.remove('hidden-span-modelo')
             setErroModeloCor(wordValid);
@@ -36,15 +36,14 @@ const Cadastro = () => {
         setErroModeloCor(wordValid);
 
         return
-    };
-
-    const handleChangeModeloCor = (event) => {
+    }
+    function handleChangeModeloCor(event) {
         var inputModelCor = event.target;
         const regex = /^\w+\s+\w+/;
         inputModelCor.value = inputModelCor.value.toUpperCase()
 
         validarModeloCor(regex.test(inputModelCor.value));
-    };
+    }
 
     const callCheckPhone = (e) => checkPhone(e)
 
@@ -118,8 +117,19 @@ const Cadastro = () => {
     }
 
     function anexarFoto(nomeFoto) { document.getElementById(nomeFoto).click() }
-    function callVerificarFoto(inputId, span, btnId) {
-        setFotoValid(verificarFoto(inputId, span, btnId))
+    async function callVerificarFoto(inputId, span, btnId) {
+        // setFotoValid(verificarFoto(inputId, span, btnId))
+        const foto = await verificarFoto(inputId, span, btnId)
+        console.log(foto)
+        if (!foto) {
+            document.querySelector(`.${span}`).classList.remove('hidden-span-alert')
+            document.querySelector(`#${btnId}`).classList.remove('checked-foto')
+            return false
+        }
+        
+        setFotoValid(foto)
+        document.querySelector(`.${span}`).classList.add('hidden-span-alert')
+        document.querySelector(`#${btnId}`).classList.add('checked-foto')
     }
 
     async function hundleSubmit(e) {
