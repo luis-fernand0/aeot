@@ -266,7 +266,7 @@ const NewPostosServices = () => {
             {categoria === 'anuncios' && (
               <div className='cadastrar-anuncio'>
                 <input
-                  name="titulo_anuncio"
+                  name="nome"
                   className="input-info input-info-anuncio"
                   type="text"
                   placeholder="Nome do anuncio"
@@ -291,6 +291,7 @@ const NewPostosServices = () => {
                   placeholder="Descrição" />
 
                 <input
+                  id='endereco'
                   name="endereco"
                   className="input-info input-info-anuncio"
                   type="text"
