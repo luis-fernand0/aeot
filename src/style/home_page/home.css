@@ -18,12 +18,13 @@
 }
 .container-home .btns-ul .btns-fuel-services {
   width: 100%;
-  height: 50px;
+  height: auto;
   display: flex;
   justify-content: space-between;
 }
 .container-home .btns-ul .btns-fuel-services .btn-option {
   width: 50%;
+  padding: 5px 0 5px 0;
   background-color: transparent;
   border: none;
   text-align: center;
@@ -51,15 +52,37 @@
 }
 .container-home .btns-ul .ul-gas-services .gas-services {
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: row wrap;
   margin-bottom: 30px;
   cursor: pointer;
 }
-.container-home .btns-ul .ul-gas-services .gas-services .img-gas-services {
+.container-home .btns-ul .ul-gas-services .gas-services .container-img-title {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.container-home .btns-ul .ul-gas-services .gas-services .container-img-title .container-img {
+  width: auto;
+}
+.container-home .btns-ul .ul-gas-services .gas-services .container-img-title .container-img .img-gas-services {
   min-width: 150px;
   max-width: 150px;
   height: 150px;
   border-radius: 20px;
+}
+.container-home .btns-ul .ul-gas-services .gas-services .container-img-title .container-title-endereco {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.container-home .btns-ul .ul-gas-services .gas-services .container-img-title .container-title-endereco .title-gas-services {
+  font-size: 18px;
+  font-weight: 500;
+}
+.container-home .btns-ul .ul-gas-services .gas-services .container-img-title .container-title-endereco .endereco-gas-services {
+  font-size: 15px;
 }
 .container-home .btns-ul .ul-gas-services .gas-services .info-gas-services {
   display: flex;
@@ -69,15 +92,17 @@
   height: 150px;
   margin-left: 10px;
 }
-.container-home .btns-ul .ul-gas-services .gas-services .info-gas-services .title-gas-services {
-  font-size: 18px;
-  font-weight: 500;
-}
-.container-home .btns-ul .ul-gas-services .gas-services .info-gas-services .endereco-gas-services {
-  font-size: 15px;
-}
 .container-home .btns-ul .ul-gas-services .gas-services .info-gas-services .combustiveis-gas-station {
   font-size: 15px;
+  font-weight: bold;
+  color: #333;
+}
+.container-home .btns-ul .ul-gas-services .gas-services .info-gas-services .container-km-time {
+  display: flex;
+  flex-direction: row;
+}
+.container-home .btns-ul .ul-gas-services .gas-services .info-gas-services .container-km-time .km {
+  margin-right: 15px;
 }
 .container-home .btns-ul .ul-gas-services .gas-services .info-gas-services .descricao-services {
   height: 40%;
@@ -86,15 +111,13 @@
 
 .container-modal-edit-posto {
   position: fixed;
-  top: 0;
-  left: 0;
+  z-index: 2;
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 2;
 }
 .container-modal-edit-posto .modal-edit-posto {
   background-color: #fff;
@@ -165,21 +188,28 @@
 .container-modal-edit-posto .modal-edit-posto .container-sobre-posto .container-edit-combustivel-modal .modal-edit-combustivel-hidden {
   display: none;
 }
-.container-modal-edit-posto .modal-edit-posto .container-km .text-km {
-  font-weight: bold;
-  color: #333;
-  text-align: left;
+.container-modal-edit-posto .modal-edit-posto .container-km-time-btn .container-km-time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.container-modal-edit-posto .modal-edit-posto .container-btn-abrir-maps .btn-abrir-maps {
+.container-modal-edit-posto .modal-edit-posto .container-km-time-btn .container-km-time .km-time {
+  font-weight: bold;
+  text-align: left;
+  color: #333;
+  margin: 15px 0 15px 0;
+}
+.container-modal-edit-posto .modal-edit-posto .container-km-time-btn .container-btn-abrir-maps .btn-abrir-maps {
   background-color: #4CAF50;
+  font-size: 0.9rem;
   color: #fff;
   border: none;
-  padding: 5px 10px;
   border-radius: 5px;
-  font-size: 0.9rem;
+  padding: 5px 10px;
+  height: 50px;
   cursor: pointer;
 }
-.container-modal-edit-posto .modal-edit-posto .container-btn-abrir-maps .btn-abrir-maps:hover {
+.container-modal-edit-posto .modal-edit-posto .container-km-time-btn .container-btn-abrir-maps .btn-abrir-maps:hover {
   background-color: #45a049;
 }
 
