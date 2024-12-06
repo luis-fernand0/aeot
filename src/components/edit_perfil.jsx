@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 
 import '../style/edit_perfil_page/edit_perfil.css'
+import { verificarFoto } from '../functions/verificarFoto';
 
 const urlData = import.meta.env.VITE_URL_DATAS_USER
 const urlAtualizarFoto = import.meta.env.VITE_URL_ATUALIZAR_FOTO_USER
@@ -38,19 +39,21 @@ const EditPerfil = () => {
 
     function checkFoto(e) {
         const foto = e.target.files[0]
-        const novaFoto = document.getElementById('new-foto-user')
+        const novaFoto = document.getElementById('new-foto-user')//pegando o elemento que vai mostrar a nova foto no modal
 
         if (foto) {
-            const reader = new FileReader()
-
+            const reader = new FileReader()//lib para criar uma url temporaria
             reader.onload = (e) => {
                 novaFoto.src = e.target.result
             }
             reader.readAsDataURL(foto)
+
             document.querySelector('.modal-confirm').classList.remove('modal-confirm-hidden')
-        } else {
-            return
+
+            verificarFoto('edit_foto')//passando o id do input que está armazenando a foto como argumento para a função que comprimi a foto
         }
+
+        return
     }
 
     async function changeFoto(input) {
