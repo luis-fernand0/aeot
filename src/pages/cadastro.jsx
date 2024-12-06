@@ -7,7 +7,7 @@ import { faEye, faEyeSlash, faArrowLeftLong } from '@fortawesome/free-solid-svg-
 import Loading from '../components/loading'
 import ModalResponse from '../components/modalResponse'
 import { checkPhone } from '../functions/checkPhone';
-import { verificarFoto } from '../functions/verificarFoto'
+import { comprimirFoto } from '../functions/comprimirFoto'
 
 import '../style/cadastro_page/cadastro.css'
 
@@ -118,7 +118,7 @@ const Cadastro = () => {
 
     function anexarFoto(nomeFoto) { document.getElementById(nomeFoto).click() }
     async function callVerificarFoto(inputId, span, btnId) {
-        const foto = await verificarFoto(inputId)
+        const foto = await comprimirFoto(inputId)
         if (!foto) {
             document.querySelector(`.${span}`).classList.remove('hidden-span-alert')
             document.querySelector(`#${btnId}`).classList.remove('checked-foto')

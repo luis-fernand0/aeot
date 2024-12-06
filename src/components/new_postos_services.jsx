@@ -8,7 +8,7 @@ import { validarCnpj } from '../functions/validarCnpj'
 import { checkPhone } from '../functions/checkPhone'
 import { checkValor } from '../functions/checkValor'
 import { maskCnpj } from '../functions/maskCnpj'
-import { verificarFoto } from '../functions/verificarFoto';
+import { comprimirFoto } from '../functions/comprimirFoto';
 
 import Loading from './loading'
 import ModalResponse from './modalResponse';
@@ -53,13 +53,13 @@ const NewPostosServices = () => {
 
   function addFoto(input) { document.getElementById(input).click() }
   const callVerificarFoto = async (inputId, span, btnId) => {
-    const foto = await verificarFoto(inputId)
+    const foto = await comprimirFoto(inputId)
     if (!foto) {
       document.querySelector(`.${span}`).classList.remove('hidden-span-alert')
       document.querySelector(`#${btnId}`).classList.remove('checked-foto')
       return false
     }
-    
+
     setFotoValid(foto)
     document.querySelector(`.${span}`).classList.add('hidden-span-alert')
     document.querySelector(`#${btnId}`).classList.add('checked-foto')

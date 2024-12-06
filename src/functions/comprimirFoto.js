@@ -1,6 +1,6 @@
 import imageCompression from 'browser-image-compression';
 
-export async function verificarFoto(inputId) {
+export async function comprimirFoto(inputId) {
     const inputFoto = document.getElementById(inputId)
     const imageFile = inputFoto.files
 
