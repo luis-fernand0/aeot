@@ -118,9 +118,7 @@ const Cadastro = () => {
 
     function anexarFoto(nomeFoto) { document.getElementById(nomeFoto).click() }
     async function callVerificarFoto(inputId, span, btnId) {
-        // setFotoValid(verificarFoto(inputId, span, btnId))
-        const foto = await verificarFoto(inputId, span, btnId)
-        console.log(foto)
+        const foto = await verificarFoto(inputId)
         if (!foto) {
             document.querySelector(`.${span}`).classList.remove('hidden-span-alert')
             document.querySelector(`#${btnId}`).classList.remove('checked-foto')
