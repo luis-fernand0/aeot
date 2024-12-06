@@ -223,18 +223,24 @@ const Home = () => {
 
             {categoria.categoria === 'anuncios' && postos && postos.map((anuncio) =>
               <li className='gas-services' key={anuncio.cod_anuncio}>
-                <img className='img-gas-services' src={`https://aeotnew.s3.amazonaws.com/${anuncio.foto}`} alt="imagem-do-anuncio/serviço" />
-                <div className='info-gas-services'>
-                  <h3 className='title-gas-services'>
-                    {anuncio.titulo_anuncio}
-                  </h3>
+                <div className='container-img-title'>
+                  <div className='container-img'>
+                    <img className='img-gas-services' src={`https://aeotnew.s3.amazonaws.com/${anuncio.foto}`} alt="imagem-do-posto-de-gasolina" />
+                  </div>
 
+                  <div className='container-title-endereco'>
+                    <h3 className='title-gas-services'>
+                      {anuncio.titulo_anuncio}
+                    </h3>
+
+                    <p className='endereco-gas-services'>
+                      {anuncio.endereco}
+                    </p>
+                  </div>
+                </div>
+                <div className='info-gas-services'>
                   <p className='descricao-services'>
                     {anuncio.descricao}
-                  </p>
-
-                  <p className='endereco-gas-services'>
-                    {anuncio.endereco}
                   </p>
                 </div>
               </li>
