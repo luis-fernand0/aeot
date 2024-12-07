@@ -1,29 +1,9 @@
-let cacheName = 'cache-v1';
-
 self.addEventListener('install', (e) => {
-
-    let cache = caches.open(cacheName).then((c) => {
-        c.addAll([
-            // nothing
-        ]);
-    });
-
-    e.waitUntil(cache);
+    // Simplesmente aguarda a instalação do Service Worker
+    self.skipWaiting();
 });
 
-self.addEventListener('fetch', function (event) {
-
-    event.respondWith(
-
-        caches.open(cacheName).then(function (cache) {
-            return cache.match(event.request).then(function (response) {
-                return response || fetch(event.request).then(function (response) {
-                    cache.put(event.request, response.clone());
-                    return response;
-                });
-            });
-        })
-
-    );
-
+self.addEventListener('activate', (e) => {
+    // Ativa o Service Worker imediatamente
+    self.clients.claim();
 });
