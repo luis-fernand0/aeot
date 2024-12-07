@@ -1,0 +1,31 @@
+{
+    "name": "Aplicativo Enche O Tanque",
+    "short_name": "AEOT",
+    "theme_color": "#fff100",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "/",
+    "icons": [
+        {
+            "src": "/public/icon-aeot-192px.png",
+            "sizes": "192x130",
+            "type": "image/png"
+        },
+        {
+            "src": "/public/icon-aeot-256px.png",
+            "sizes": "256x173",
+            "type": "image/png"
+        },
+        {
+            "src": "/public/icon-aeot-384px.png",
+            "sizes": "384x260",
+            "type": "image/png"
+        },
+        {
+            "src": "/public/icon-aeot-512px.png",
+            "sizes": "512x347",
+            "type": "image/png"
+        }
+    ]
+}
