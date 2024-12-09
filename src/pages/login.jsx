@@ -1,12 +1,29 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from "react"
 
 import '../style/login_page/login.css'
 
 const urlLogin = import.meta.env.VITE_URL_LOGIN;
 
 const Login = () => {
+  let eventPrompt = null
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault()
+    eventPrompt = e
+
+    let pwaBtn = document.getElementById('pwa-btn')
+    pwaBtn.removeAttribute('hidden')
+  })
+  function installPwa() {
+    if (eventPrompt) {
+      eventPrompt.prompt()
+
+      eventPrompt.userChoice.then(() => {
+        eventPrompt = null
+      })
+    }
+  }
 
   const navigate = useNavigate()
 
@@ -50,6 +67,10 @@ const Login = () => {
     }
   }
 
+  useEffect(() => {
+
+  }, [])
+
   return (
     <>
       <div className="container-login">
@@ -81,6 +102,10 @@ const Login = () => {
           </div>
 
           <button className='btn-log btn-login' type="submit">Login</button>
+          <button onClick={() => { installPwa() }} id='pwa-btn' className='btn-log btn-pwa' type="button" hidden>
+            Adicionar na tela incial!
+          </button>
+          <br />
           <p className='text-version'>1.0.6</p>
 
         </form >
