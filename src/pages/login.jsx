@@ -95,7 +95,7 @@ const Login = () => {
               </Link>
 
               <Link to={'/esqueceu_senha'}>
-                <button type='button' className='btn-log btn-esqueceu'>Esqueceu a senha?</button>
+                <button type='button' className='btn-log btn-esqueceu'>Recuperar/Trocar senha?</button>
               </Link>
             </div>
 
