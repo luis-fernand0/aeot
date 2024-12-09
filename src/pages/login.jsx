@@ -81,7 +81,7 @@ const Login = () => {
           </div>
 
           <button className='btn-log btn-login' type="submit">Login</button>
-          <p className='text-version'>1.0.5</p>
+          <p className='text-version'>1.0.6</p>
 
         </form >
 
