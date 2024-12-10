@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faPen, faFlagCheckered, faClock } from '@fortawesome/free-solid-svg-icons'
+import { faFlagCheckered, faClock } from '@fortawesome/free-solid-svg-icons'
 
 import Header from '../components/header';
-import { checkValor } from '../functions/checkValor';
 
 import '../style/home_page/home.css'
 
@@ -17,11 +16,12 @@ const Home = () => {
 
   const [local, setLocal] = useState(null)
   const [distancia, setDistancia] = useState({})
+  const [distanciaAnuncio, setDistanciaAnuncio] = useState({})
 
   const navigate = useNavigate()
 
   const tokenUser = localStorage.getItem('token');
-  
+
   async function gasStation() {
     const response = await fetch(urlDatas, {
       method: 'POST',
@@ -58,7 +58,7 @@ const Home = () => {
     }
   }
 
-  async function obterDistancia(endereco, cod_posto) {
+  async function obterDistancia(endereco, cod) {
     try {
       if (local && local.latitude && local.longitude) {
         const response = await fetch(
@@ -73,17 +73,17 @@ const Home = () => {
         const tempo = data.rows[0].elements[0].duration.text;
         const destino = data.destination_addresses;
 
-        return { distancia, tempo, destino, id: cod_posto };
+        return { distancia, tempo, destino, id: cod };
       }
       throw new Error('Localização não disponível');
     } catch (error) {
-      console.error(`Erro ao calcular distância para o posto ${cod_posto}: ${error.message}`);
-      return { distancia: 'Não foi possível calcular', tempo: 'N/A', id: cod_posto };
+      console.error(`Erro ao calcular distância para o item ${cod}: ${error.message}, ${endereco}`);
+      return { distancia: 'Não foi possível calcular', tempo: 'N/A', id: cod };
     }
   }
 
-  async function detalhes(posto, distancia, local) {
-    navigate('/detalhes', { state: [posto, distancia, local] })
+  async function detalhes(posto, distancia, local, categoria) {
+    navigate('/detalhes', { state: [posto, distancia, local, categoria] })
   }
 
   useEffect(() => {
@@ -93,16 +93,27 @@ const Home = () => {
   useEffect(() => {
     if (postos) {
       postos.forEach(async (posto) => {
-        const queryLocal = await obterDistancia(posto.endereco, posto.cod_posto);
-        if (queryLocal) {
+        if (!posto.cod_posto) {
+          const distance = await obterDistancia(posto.endereco, posto.cod_anuncio);
+          if (distance) {
+            setDistancia((prev) => ({
+              ...prev,
+              [posto.cod_anuncio]: distance,
+            }))
+          }
+          return
+        }
+        const distance = await obterDistancia(posto.endereco, posto.cod_posto);
+        if (distance) {
           setDistancia((prev) => ({
             ...prev,
-            [posto.cod_posto]: queryLocal,
+            [posto.cod_posto]: distance,
           }))
         }
+
       })
     }
-  }, [local])
+  }, [local, categoria])
 
   return (
     <>
@@ -127,7 +138,7 @@ const Home = () => {
           <ul className='ul-gas-services'>
 
             {categoria.categoria === 'postos' && postos && postos.map((posto) =>
-              <li onClick={() => { detalhes(posto, distancia[posto.cod_posto], local) }}
+              <li onClick={() => { detalhes(posto, distancia[posto.cod_posto], local, categoria) }}
                 className='gas-services'
                 key={posto.cod_posto}>
                   
@@ -172,7 +183,9 @@ const Home = () => {
             )}
 
             {categoria.categoria === 'anuncios' && postos && postos.map((anuncio) =>
-              <li className='gas-services' key={anuncio.cod_anuncio}>
+              <li
+                onClick={() => { detalhes(anuncio, distancia[anuncio.cod_anuncio], local, categoria) }} className='gas-services'
+                key={anuncio.cod_anuncio}>
                 <div className='container-img-title'>
                   <div className='container-img'>
                     <img className='img-gas-services' src={`https://aeotnew.s3.amazonaws.com/${anuncio.foto}`} alt="imagem-do-posto-de-gasolina" />
@@ -192,6 +205,18 @@ const Home = () => {
                   <p className='descricao-services'>
                     {anuncio.descricao}
                   </p>
+
+                  {distancia[anuncio.cod_anuncio] && (
+                    <div className='container-km-time'>
+                      <p className='km km-time'>
+                        <FontAwesomeIcon icon={faFlagCheckered} style={{ color: "#4caf50", }} /> {distancia[anuncio.cod_anuncio].distancia}
+                      </p>
+
+                      <p className='time km-time'>
+                        <FontAwesomeIcon icon={faClock} style={{ color: "#4caf50", }} /> {distancia[anuncio.cod_anuncio].tempo}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </li>
             )}
