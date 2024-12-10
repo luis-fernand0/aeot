@@ -106,7 +106,7 @@ const Login = () => {
             Adicionar na tela incial!
           </button>
           <br />
-          <p className='text-version'>1.0.8</p>
+          <p className='text-version'>1.0.9</p>
 
         </form >
 
