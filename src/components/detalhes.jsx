@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faGasPump, faPen, faFlagCheckered, faClock } from '@fortawesome/free-solid-svg-icons'
@@ -56,14 +56,9 @@ const Detalhes = () => {
     if (response.status === 403) {
       navigate('/', { replace: true })
     }
+    setDetalhe(data.query)
     setEditCombustivel(false)
   }
-
-  useEffect(() => {
-    console.log(detalhe)
-    console.log(distancia)
-    console.log(local)
-  }, [])
   return (
     <>
       <Header redirectTo={'/home'} />
@@ -162,11 +157,8 @@ const Detalhes = () => {
                 onClick={() => { editarCombustivel(combustivelInfo.type_combustivel, detalhe.cod_posto) }}>
                 Salvar
               </button>
-
             </div>
-
           </div>
-
         </div>
       )}
     </>
