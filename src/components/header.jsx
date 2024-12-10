@@ -24,10 +24,6 @@ const Header = () => {
                     </button>
                 </Link>
 
-                <button className='header-btn' type="button">
-                    <FontAwesomeIcon className='icon-header-btn' icon={faGasPump} />
-                </button>
-
                 <Link to={'/editar_perfil'}>
                     <button className='header-btn' type="button">
                         <FontAwesomeIcon className='icon-header-btn' icon={faLock} />
