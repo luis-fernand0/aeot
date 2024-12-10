@@ -16,7 +16,7 @@ const Detalhes = () => {
   const [detalhe, setDetalhe] = useState(useLocation().state[0])
   const [distancia, setDistancia] = useState(useLocation().state[1])
   const [local, setLocal] = useState(useLocation().state[2])
-
+  const [categoria, setCategoria] = useState(useLocation().state[3])
 
   const [editCombustivel, setEditCombustivel] = useState(false)
   const [combustivelInfo, setCombustivelInfo] = useState({})
@@ -63,71 +63,104 @@ const Detalhes = () => {
     <>
       <Header redirectTo={'/home'} />
       <div className='container-item'>
-
-        <div className="container-title-foto">
-          <h1 className='title-item'>{detalhe.nome}</h1>
-          <img src={`https://aeotnew.s3.amazonaws.com/${detalhe.foto}`} alt="foto_item" className='foto-item' />
-        </div>
-        <div className="container-sobre-item">
-          <p className='info-item item-descricao'>{detalhe.descricao}</p>
-          <p className='info-item item-endereco'>{detalhe.endereco}</p>
-
-          <div className='container-edit-combustivel'>
-            <p id='valor-etanol' className='combustivel-posto'>
-              Etanol: R$ {detalhe.etanol}
-            </p>
-            <button
-              onClick={() => { modalEditCombustivel(detalhe.etanol, 'etanol') }}
-              type="button"
-              className={`${typeUser === 'user' ? 'edit-combustivel-hidden' : 'edit-combustivel'}`}>
-              <FontAwesomeIcon className='pen-icon' icon={faPen} />
-            </button>
-          </div>
-
-          <div className='container-edit-combustivel'>
-            <p id='valor-gasolina' className='combustivel-posto'>
-              Gasolina: R$ {detalhe.gasolina}
-            </p>
-            <button
-              onClick={() => { modalEditCombustivel(detalhe.gasolina, 'gasolina') }} type="button"
-              className={`${typeUser === 'user' ? 'edit-combustivel-hidden' : 'edit-combustivel'}`}>
-              <FontAwesomeIcon className='pen-icon' icon={faPen} />
-            </button>
-          </div>
-
-          <div className='container-edit-combustivel'>
-            <p id='valor-diesel' className='combustivel-posto'>
-              Diesel: R$ {detalhe.diesel}
-            </p>
-            <button
-              onClick={() => { modalEditCombustivel(detalhe.diesel, 'diesel') }} type="button"
-              className={`${typeUser === 'user' ? 'edit-combustivel-hidden' : 'edit-combustivel'}`}>
-              <FontAwesomeIcon className='pen-icon' icon={faPen} />
-            </button>
-          </div>
-        </div>
-        <div className='container-km-time-btn'>
-          {distancia.id && (
-            <div className='container-km-time'>
-              <p className='km km-time'>
-                <FontAwesomeIcon className="icon-km" icon={faFlagCheckered} style={{ color: "#4caf50", }} /> {distancia.distancia}
-              </p>
-
-              <p className='time km-time'>
-                <FontAwesomeIcon className="icon-time" icon={faClock} style={{ color: "#4caf50", }} /> {distancia.tempo}
-              </p>
+        {categoria.categoria === 'postos' && (
+          <>
+            <div className="container-title-foto">
+              <h1 className='title-item'>{detalhe.nome}</h1>
+              <img src={`https://aeotnew.s3.amazonaws.com/${detalhe.foto}`} alt="foto_item" className='foto-item' />
             </div>
-          )}
-          <div className='container-btn-abrir-maps'>
-            <button className='btn-abrir-maps' onClick={() => { abrirMaps(detalhe.endereco) }} type="button">Abrir no Maps?</button>
-          </div>
+            <div className="container-sobre-item">
+              <p className='info-item item-descricao'>{detalhe.descricao}</p>
+              <p className='info-item item-endereco'>{detalhe.endereco}</p>
 
-          <div className="container-gas-pump-btn">
-            <button className="gas-pump-btn" type="button">
-              Abastecer <FontAwesomeIcon className='icon-gas-pump' icon={faGasPump} />
-            </button>
-          </div>
-        </div>
+              <div className='container-edit-combustivel'>
+                <p id='valor-etanol' className='combustivel-posto'>
+                  Etanol: R$ {detalhe.etanol}
+                </p>
+                <button
+                  onClick={() => { modalEditCombustivel(detalhe.etanol, 'etanol') }}
+                  type="button"
+                  className={`${typeUser === 'user' ? 'edit-combustivel-hidden' : 'edit-combustivel'}`}>
+                  <FontAwesomeIcon className='pen-icon' icon={faPen} />
+                </button>
+              </div>
+
+              <div className='container-edit-combustivel'>
+                <p id='valor-gasolina' className='combustivel-posto'>
+                  Gasolina: R$ {detalhe.gasolina}
+                </p>
+                <button
+                  onClick={() => { modalEditCombustivel(detalhe.gasolina, 'gasolina') }} type="button"
+                  className={`${typeUser === 'user' ? 'edit-combustivel-hidden' : 'edit-combustivel'}`}>
+                  <FontAwesomeIcon className='pen-icon' icon={faPen} />
+                </button>
+              </div>
+
+              <div className='container-edit-combustivel'>
+                <p id='valor-diesel' className='combustivel-posto'>
+                  Diesel: R$ {detalhe.diesel}
+                </p>
+                <button
+                  onClick={() => { modalEditCombustivel(detalhe.diesel, 'diesel') }} type="button"
+                  className={`${typeUser === 'user' ? 'edit-combustivel-hidden' : 'edit-combustivel'}`}>
+                  <FontAwesomeIcon className='pen-icon' icon={faPen} />
+                </button>
+              </div>
+            </div>
+            <div className='container-km-time-btn'>
+              {distancia.id && (
+                <div className='container-km-time'>
+                  <p className='km km-time'>
+                    <FontAwesomeIcon className="icon-km" icon={faFlagCheckered} style={{ color: "#4caf50", }} /> {distancia.distancia}
+                  </p>
+
+                  <p className='time km-time'>
+                    <FontAwesomeIcon className="icon-time" icon={faClock} style={{ color: "#4caf50", }} /> {distancia.tempo}
+                  </p>
+                </div>
+              )}
+              <div className='container-btn-abrir-maps'>
+                <button className='btn-abrir-maps' onClick={() => { abrirMaps(detalhe.endereco) }} type="button">Abrir no Maps?</button>
+              </div>
+
+              <div className="container-gas-pump-btn">
+                <button className="gas-pump-btn" type="button">
+                  Abastecer <FontAwesomeIcon className='icon-gas-pump' icon={faGasPump} />
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+
+        {categoria.categoria === 'anuncios' && (
+          <>
+            <div className="container-title-foto">
+              <h1 className='title-item'>{detalhe.titulo_anuncio}</h1>
+              <img src={`https://aeotnew.s3.amazonaws.com/${detalhe.foto}`} alt="foto_item" className='foto-item' />
+            </div>
+            <div className="container-sobre-item">
+              <p className='info-item item-descricao'>{detalhe.descricao}</p>
+              <p className='info-item item-endereco'>{detalhe.endereco}</p>
+            </div>
+
+            <div className='container-km-time-btn'>
+              {distancia.id && (
+                <div className='container-km-time'>
+                  <p className='km km-time'>
+                    <FontAwesomeIcon className="icon-km" icon={faFlagCheckered} style={{ color: "#4caf50", }} /> {distancia.distancia}
+                  </p>
+
+                  <p className='time km-time'>
+                    <FontAwesomeIcon className="icon-time" icon={faClock} style={{ color: "#4caf50", }} /> {distancia.tempo}
+                  </p>
+                </div>
+              )}
+              <div className='container-btn-abrir-maps'>
+                <button className='btn-abrir-maps' onClick={() => { abrirMaps(detalhe.endereco) }} type="button">Abrir no Maps?</button>
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       {editCombustivel && (
