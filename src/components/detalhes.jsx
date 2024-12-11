@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faGasPump, faPen, faFlagCheckered, faClock } from '@fortawesome/free-solid-svg-icons'
 
 import { checkValor } from "../functions/checkValor";
 
 import Header from "./header";
+import Loading from "./loading"
+import ModalResponse from "./modalResponse";
 
 import '../style/detalhes_page/detalhes.css'
 
@@ -13,13 +14,19 @@ const urlEditCombustivel = import.meta.env.VITE_URL_ATUALIZAR_COMBUSTIVEL
 
 
 const Detalhes = () => {
-  const [detalhe, setDetalhe] = useState(useLocation().state[0])
-  const [distancia, setDistancia] = useState(useLocation().state[1])
-  const [local, setLocal] = useState(useLocation().state[2])
-  const [categoria, setCategoria] = useState(useLocation().state[3])
+  const itens = JSON.parse(sessionStorage.getItem('detalhes'))
+
+  const [detalhe, setDetalhe] = useState(itens[0] || {})
+  const [distancia, setDistancia] = useState(itens[1] || {})
+  const [local, setLocal] = useState(itens[2] || {})
+  const [categoria, setCategoria] = useState(itens[3] || {})
 
   const [editCombustivel, setEditCombustivel] = useState(false)
   const [combustivelInfo, setCombustivelInfo] = useState({})
+
+  const [loading, setLoading] = useState(false)
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   const tokenUser = localStorage.getItem('token');
   const typeUser = localStorage.getItem('type_user')
@@ -43,25 +50,52 @@ const Detalhes = () => {
 
   async function editarCombustivel(combustivel, posto) {
     const valor = document.getElementById(combustivel).value
+    setLoading(true)
 
-    const response = await fetch(urlEditCombustivel, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${tokenUser}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ combustivel, valor, cod_posto: posto })
-    })
-    const data = await response.json()
-    if (response.status === 403) {
-      navigate('/', { replace: true })
+    try {
+      const response = await fetch(urlEditCombustivel, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${tokenUser}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ combustivel, valor, cod_posto: posto })
+      })
+      const data = await response.json()
+
+      if (response.status === 403) {
+        navigate('/', { replace: true })
+        return
+      }
+      if (!response.ok) {
+        setModalMessage(data.message)
+        setModalVisible(true)
+      }
+
+      setDetalhe(data.query)
+      setModalMessage(data.message)
+      setModalVisible(true)
+      setEditCombustivel(false)
+
+    } catch (err) {
+
+      setModalMessage(`Ocorreu um erro inesperado. Tente novamente mais tarde.` + err.message)
+      setModalVisible(true)
+
+    } finally {
+      setLoading(false)
     }
-    setDetalhe(data.query)
-    setEditCombustivel(false)
   }
+
   return (
     <>
       <Header redirectTo={'/home'} />
+      <Loading loading={loading} />
+      <ModalResponse
+        isVisible={isModalVisible}
+        onClose={() => setModalVisible(false)}
+        message={modalMessage}
+      />
       <div className='container-item'>
         {categoria.categoria === 'postos' && (
           <>
