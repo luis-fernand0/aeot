@@ -13,21 +13,6 @@
   flex-direction: column;
   justify-content: space-between;
 }
-.container-login .form-login .btn-log {
-  min-height: 60px;
-  width: 100%;
-  margin-bottom: 15px;
-  border: none;
-  border-radius: 50px;
-  font-size: 18px;
-  font-weight: 700;
-  background-color: #fff100;
-  transition: all 0.3s linear;
-}
-.container-login .form-login .btn-log:hover {
-  color: #fff;
-  background-color: #14181b;
-}
 .container-login .form-login .logo-inputs {
   height: 60%;
   display: flex;
@@ -86,12 +71,51 @@
   text-transform: capitalize;
 }
 .container-login .form-login .logo-inputs .inputs-btns .btn-log {
-  background-color: #fff;
+  min-height: 60px;
+  width: 100%;
   margin-bottom: 15px;
+  border: none;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 700;
+  background-color: #ffffff;
+  transition: all 0.3s linear;
 }
 .container-login .form-login .logo-inputs .inputs-btns .btn-log:hover {
   color: #14181b;
   background-color: #f5f5f5;
+}
+.container-login .form-login .btn-login,
+.container-login .form-login .btn-pwa {
+  min-height: 60px;
+  width: 100%;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 700;
+  background-color: #fff100;
+  transition: all 0.3s linear;
+}
+.container-login .form-login .btn-login:hover,
+.container-login .form-login .btn-pwa:hover {
+  color: #fff;
+  background-color: #14181b;
+}
+.container-login .form-login .link-whatsapp {
+  text-align: center;
+}
+.container-login .form-login .link-whatsapp .btn-whatsapp {
+  min-height: 60px;
+  background-color: transparent;
+  border: none;
+}
+.container-login .form-login .link-whatsapp .btn-whatsapp:hover .logo-whatsapp {
+  transform: scale(0.8);
+}
+.container-login .form-login .link-whatsapp .btn-whatsapp .logo-whatsapp {
+  transition: 0.5s all;
+  width: 70px;
 }
 .container-login .form-login .text-version {
   text-align: center;
