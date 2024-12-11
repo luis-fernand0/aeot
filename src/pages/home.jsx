@@ -16,7 +16,6 @@ const Home = () => {
 
   const [local, setLocal] = useState(null)
   const [distancia, setDistancia] = useState({})
-  const [distanciaAnuncio, setDistanciaAnuncio] = useState({})
 
   const navigate = useNavigate()
 
@@ -57,7 +56,6 @@ const Home = () => {
       alert(`Não foi possivel obter sua localização: ${err.message}`)
     }
   }
-
   async function obterDistancia(endereco, cod) {
     try {
       if (local && local.latitude && local.longitude) {
@@ -82,8 +80,9 @@ const Home = () => {
     }
   }
 
-  async function detalhes(posto, distancia, local, categoria) {
-    navigate('/detalhes', { state: [posto, distancia, local, categoria] })
+  function detalhes(posto, distancia, local, categoria) {
+    sessionStorage.setItem('detalhes', JSON.stringify([posto, distancia, local, categoria]))
+    navigate('/detalhes')
   }
 
   useEffect(() => {
