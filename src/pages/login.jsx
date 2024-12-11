@@ -109,7 +109,7 @@ const Login = () => {
             href="http://wa.me/556796659181?text="
             target="_blank" rel="noopener noreferrer">
             <button className='btn-whatsapp' type="button">
-              <img className='logo-whatsapp' src="../public/whatsapp.png" alt="img-whatsapp" />
+              <img className='logo-whatsapp' src="/whatsapp.png" alt="img-whatsapp" />
             </button>
           </a>
           <br />
