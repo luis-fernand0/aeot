@@ -102,18 +102,22 @@ const Login = () => {
           </div>
 
           <button className='btn-log btn-login' type="submit">Login</button>
+
           <button onClick={() => { installPwa() }} id='pwa-btn' className='btn-log btn-pwa' type="button" hidden>
             Adicionar na tela incial!
           </button>
+
           <a className='link-whatsapp'
             href="http://wa.me/556796659181?text="
             target="_blank" rel="noopener noreferrer">
+            Falar com o suporte
             <button className='btn-whatsapp' type="button">
               <img className='logo-whatsapp' src="/whatsapp.png" alt="img-whatsapp" />
             </button>
           </a>
+
           <br />
-          <p className='text-version'>1.1.0</p>
+          <p className='text-version'>1.1.1</p>
 
         </form >
 
