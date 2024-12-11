@@ -79,7 +79,7 @@
 }
 .container-home .btns-ul .ul-gas-services .gas-services .container-img-title .container-title-endereco .title-gas-services {
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
 }
 .container-home .btns-ul .ul-gas-services .gas-services .container-img-title .container-title-endereco .endereco-gas-services {
   font-size: 15px;
@@ -94,7 +94,6 @@
 }
 .container-home .btns-ul .ul-gas-services .gas-services .info-gas-services .combustiveis-gas-station {
   font-size: 15px;
-  font-weight: bold;
   color: #333;
 }
 .container-home .btns-ul .ul-gas-services .gas-services .info-gas-services .container-km-time {
