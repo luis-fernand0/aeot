@@ -1,6 +1,7 @@
 .container-response-cadastro {
     position: fixed;
-    z-index: 3;
+    top: 0;
+    z-index: 5;
 
     background-color: rgba(0, 0, 0, 0.253);
 
@@ -49,8 +50,10 @@
 
             display: flex;
             flex-direction: column;
-            justify-content: space-evenly;
+            justify-content: space-between;
             align-items: center;
+
+            padding: 15px 0 15px 0;
 
             .response-text-cadastro {
                 width: 60%;
