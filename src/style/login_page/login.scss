@@ -80,14 +80,6 @@
                     }
                 }
 
-                .input-login-email {
-                    text-transform: lowercase;
-
-                    &::placeholder {
-                        text-transform: capitalize;
-                    }
-                }
-
                 .btn-log {
                     min-height: 60px;
                     width: 100%;
@@ -138,25 +130,36 @@
         }
 
         .link-whatsapp {
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            background-color: #fff;
+
+            color: black;
+
+            border-radius: 50px;
+
+            transition: 0.5s all;
+
+            &:hover {
+                background-color: #e0e3e7;
+
+                .logo-whatsapp {
+                    transform: scale(0.80);
+                }
+            }
 
             .btn-whatsapp {
-                min-height: 60px;
-
                 background-color: transparent;
 
                 border: none;
 
-                &:hover {
-                    .logo-whatsapp {
-                        transform: scale(0.80);
-                    }
-                }
-                
+                margin-left: 20px;
                 .logo-whatsapp {
                     transition: 0.5s all;
 
-                    width: 70px;
+                    width: 60px;
                 }
             }
         }
