@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faGasPump, faPen, faFlagCheckered, faClock } from '@fortawesome/free-solid-svg-icons'
 
@@ -158,9 +159,11 @@ const Detalhes = () => {
               </div>
 
               <div className="container-gas-pump-btn">
-                <button className="gas-pump-btn" type="button">
-                  Abastecer <FontAwesomeIcon className='icon-gas-pump' icon={faGasPump} />
-                </button>
+                <Link to={'/abastecimento'}>
+                  <button className="gas-pump-btn" type="button">
+                    Abastecer <FontAwesomeIcon className='icon-gas-pump' icon={faGasPump} />
+                  </button>
+                </Link>
               </div>
             </div>
           </>
