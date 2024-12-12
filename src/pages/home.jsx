@@ -51,9 +51,10 @@ const Home = () => {
           setLocal({ latitude, longitude })
         }, (err) => {
           alert(`Não foi possivel obter sua localização: ${err.message}`)
+          throw new Error(err.message)
         })
     } catch (err) {
-      alert(`Não foi possivel obter sua localização: ${err.message}`)
+      console.error(err)
     }
   }
   async function obterDistancia(endereco, cod) {
@@ -73,6 +74,7 @@ const Home = () => {
 
         return { distancia, tempo, destino, id: cod };
       }
+
       throw new Error('Localização não disponível');
     } catch (error) {
       console.error(`Erro ao calcular distância para o item ${cod}: ${error.message}, ${endereco}`);
@@ -112,7 +114,7 @@ const Home = () => {
 
       })
     }
-  }, [local, categoria])
+  }, [local, categoria, postos])
 
   return (
     <>
