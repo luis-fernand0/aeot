@@ -70,6 +70,7 @@ const Detalhes = () => {
       if (!response.ok) {
         setModalMessage(data.message)
         setModalVisible(true)
+        return
       }
 
       setDetalhe(data.query)
@@ -78,7 +79,6 @@ const Detalhes = () => {
       setEditCombustivel(false)
 
     } catch (err) {
-
       setModalMessage(`Ocorreu um erro inesperado. Tente novamente mais tarde.` + err.message)
       setModalVisible(true)
 
