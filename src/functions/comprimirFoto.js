@@ -10,7 +10,7 @@ export async function comprimirFoto(inputId) {
 
     const options = {
         maxSizeMB: 1,
-        maxWidthOrHeight: 200,
+        maxWidthOrHeight: 720,
         useWebWorker: true,
     }
 
@@ -21,6 +21,8 @@ export async function comprimirFoto(inputId) {
             type: imageFile[0].type,
             lastModified: Date.now()
         })
+        console.log(compressedFileBlob)
+        console.log(compressedFile)
         
         const dataTransfer = new DataTransfer()
         dataTransfer.items.add(compressedFile)
