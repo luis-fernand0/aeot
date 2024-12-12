@@ -36,7 +36,7 @@ const PerfilUser = () => {
     return (
         <>
             <div className="container-perfil">
-                <Header />
+                <Header redirectTo={'/home'}/>
 
                 {dataUser && (
                     <>

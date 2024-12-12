@@ -1,17 +1,41 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from "react"
 
 import '../style/login_page/login.css'
 
 const urlLogin = import.meta.env.VITE_URL_LOGIN;
 
 const Login = () => {
+  let eventPrompt = null
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault()
+    eventPrompt = e
+
+    let pwaBtn = document.getElementById('pwa-btn')
+    pwaBtn.removeAttribute('hidden')
+  })
+  function installPwa() {
+    if (eventPrompt) {
+      eventPrompt.prompt()
+
+      eventPrompt.userChoice.then(() => {
+        eventPrompt = null
+      })
+    }
+  }
 
   const navigate = useNavigate()
 
-  function enviarForm() {hundleSubmit()}
-  async function hundleSubmit() {
+  function formatEmail(e) {
+    var inputEmail = e.target
+    inputEmail.value = inputEmail.value.toLowerCase()
+
+    return inputEmail
+  }
+
+  async function hundleSubmit(e) {
+    e.preventDefault()
 
     const myForm = document.getElementById('myFormLogin')
     const formData = new FormData(myForm)
@@ -43,11 +67,15 @@ const Login = () => {
     }
   }
 
+  useEffect(() => {
+
+  }, [])
+
   return (
     <>
       <div className="container-login">
 
-        <form id='myFormLogin' className='form-login'>
+        <form onSubmit={(e) => { hundleSubmit(e) }} id='myFormLogin' className='form-login'>
 
           <div className="logo-inputs">
 
@@ -58,7 +86,7 @@ const Login = () => {
 
             <span className='span-login span-login-hidden'></span>
             <div className="inputs-btns">
-              <input className='input-login input-login-email' type="email" name="email_login" id="email-login" placeholder="Email" required autoComplete='off' />
+              <input className='input-login input-login-email' type="email" name="email_login" id="email-login" placeholder="Email" required autoComplete='off' onChange={(e) => { formatEmail(e) }} />
 
               <input className='input-login' type="password" name="password_login" id="password-login" placeholder="Senha" required />
 
@@ -67,14 +95,29 @@ const Login = () => {
               </Link>
 
               <Link to={'/esqueceu_senha'}>
-                <button type='button' className='btn-log btn-esqueceu'>Esqueceu a senha?</button>
+                <button type='button' className='btn-log btn-esqueceu'>Recuperar/Trocar senha?</button>
               </Link>
             </div>
 
           </div>
 
-          <button onClick={() => { enviarForm() }} className='btn-log btn-login' type="button">Login</button>
-          <p className='text-version'>1.0.0</p>
+          <button className='btn-log btn-login' type="submit">Login</button>
+
+          <button onClick={() => { installPwa() }} id='pwa-btn' className='btn-log btn-pwa' type="button" hidden>
+            Adicionar na tela incial!
+          </button>
+
+          <a className='link-whatsapp'
+            href="http://wa.me/556796659181?text="
+            target="_blank" rel="noopener noreferrer">
+            Falar com o suporte
+            <button className='btn-whatsapp' type="button">
+              <img className='logo-whatsapp' src="/whatsapp.png" alt="img-whatsapp" />
+            </button>
+          </a>
+
+          <br />
+          <p className='text-version'>1.1.1</p>
 
         </form >
 

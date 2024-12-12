@@ -17,6 +17,7 @@ import EditPerfil from './components/edit_perfil.jsx'
 import AdicionarCadastros from './components/add_cadastros.jsx'
 import NewPostosServices from './components/new_postos_services.jsx'
 import Abastecimento from './components/abastecimento.jsx'
+import Detalhes from './components/detalhes.jsx'
 
 const router = createBrowserRouter([
   {
@@ -67,6 +68,11 @@ const router = createBrowserRouter([
   {
     path: '/adicionar_postos_services',
     element: <NewPostosServices/>
+  },
+
+  {
+    path: '/detalhes',
+    element: <Detalhes/>
   }
 ])
 

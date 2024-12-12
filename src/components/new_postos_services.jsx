@@ -8,7 +8,7 @@ import { validarCnpj } from '../functions/validarCnpj'
 import { checkPhone } from '../functions/checkPhone'
 import { checkValor } from '../functions/checkValor'
 import { maskCnpj } from '../functions/maskCnpj'
-import { verificarFoto } from '../functions/verificarFoto';
+import { comprimirFoto } from '../functions/comprimirFoto';
 
 import Loading from './loading'
 import ModalResponse from './modalResponse';
@@ -52,8 +52,17 @@ const NewPostosServices = () => {
   const callCheckValor = (e) => checkValor(e)
 
   function addFoto(input) { document.getElementById(input).click() }
-  const callVerificarFoto = (inputId, span, btnId) => {
-    setFotoValid(verificarFoto(inputId, span, btnId))
+  const callVerificarFoto = async (inputId, span, btnId) => {
+    const foto = await comprimirFoto(inputId)
+    if (!foto) {
+      document.querySelector(`.${span}`).classList.remove('hidden-span-alert')
+      document.querySelector(`#${btnId}`).classList.remove('checked-foto')
+      return false
+    }
+
+    setFotoValid(foto)
+    document.querySelector(`.${span}`).classList.add('hidden-span-alert')
+    document.querySelector(`#${btnId}`).classList.add('checked-foto')
   }
 
   async function buscarCnpj(cnpjValid, cnpj) {
@@ -266,7 +275,7 @@ const NewPostosServices = () => {
             {categoria === 'anuncios' && (
               <div className='cadastrar-anuncio'>
                 <input
-                  name="titulo_anuncio"
+                  name="nome"
                   className="input-info input-info-anuncio"
                   type="text"
                   placeholder="Nome do anuncio"
@@ -291,6 +300,7 @@ const NewPostosServices = () => {
                   placeholder="Descrição" />
 
                 <input
+                  id='endereco'
                   name="endereco"
                   className="input-info input-info-anuncio"
                   type="text"
