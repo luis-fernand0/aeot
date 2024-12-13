@@ -1,0 +1,64 @@
+.container-manual {
+  height: 100%;
+  width: 100%;
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.container-manual .container-arrow-icon {
+  width: 100%;
+  padding: 20px 20px 20px 30px;
+}
+.container-manual .container-arrow-icon .arrow-icon {
+  font-size: 25px;
+  color: gray;
+  transition: 0.5s all;
+}
+.container-manual .container-arrow-icon .arrow-icon:hover {
+  transform: scale(0.8);
+}
+.container-manual .descricao-manual {
+  padding: 60px 15px 60px 15px;
+  height: 100%;
+}
+.container-manual .descricao-manual .titles-passo-a-passo {
+  margin-bottom: 40px;
+}
+.container-manual .descricao-manual .titles-passo-a-passo .title-1 {
+  font-weight: 500;
+}
+.container-manual .descricao-manual .titles-passo-a-passo .title-2 {
+  font-weight: 500;
+  font-size: 28px;
+  margin-top: 60px;
+}
+.container-manual .descricao-manual .list-passo-a-passo .passo-a-passo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.container-manual .descricao-manual .list-passo-a-passo .passo-a-passo .text-passo-a-passo {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+.container-manual .descricao-manual .list-passo-a-passo .passo-a-passo .text-passo-a-passo .span-passo-text {
+  display: block;
+  font-weight: 500;
+  font-size: 20px;
+  width: 100%;
+  margin-bottom: 5px;
+}
+.container-manual .descricao-manual .list-passo-a-passo .passo-a-passo .text-passo-a-passo .arrow-icon {
+  margin-left: 15px;
+}
+.container-manual .descricao-manual .list-passo-a-passo .passo-a-passo .img-passo-a-passo::before {
+  background-color: aqua;
+}
+.container-manual .descricao-manual .list-passo-a-passo .passo-a-passo .obs-passo-1, .container-manual .descricao-manual .list-passo-a-passo .passo-a-passo .obs-passo-2 {
+  margin-top: 25px;
+  font-weight: 500;
+  text-align: center;
+}/*# sourceMappingURL=instrucoes.css.map */

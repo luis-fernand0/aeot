@@ -77,7 +77,8 @@
   background-color: #f5f5f5;
 }
 .container-login .form-login .btn-login,
-.container-login .form-login .btn-pwa {
+.container-login .form-login .btn-pwa,
+.container-login .form-login .btn-instrucoes {
   min-height: 60px;
   width: 100%;
   margin-bottom: 15px;
@@ -89,7 +90,8 @@
   transition: all 0.3s linear;
 }
 .container-login .form-login .btn-login:hover,
-.container-login .form-login .btn-pwa:hover {
+.container-login .form-login .btn-pwa:hover,
+.container-login .form-login .btn-instrucoes:hover {
   color: #fff;
   background-color: #14181b;
 }

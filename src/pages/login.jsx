@@ -24,6 +24,12 @@ const Login = () => {
       })
     }
   }
+  function instrucoes() {
+    const soUser = navigator.userAgent
+    if (soUser.includes('Mac')) {
+      document.getElementById('instrucoes-btn').removeAttribute('hidden')
+    }
+  }
 
   const navigate = useNavigate()
 
@@ -68,7 +74,7 @@ const Login = () => {
   }
 
   useEffect(() => {
-
+    instrucoes()
   }, [])
 
   return (
@@ -106,6 +112,11 @@ const Login = () => {
           <button onClick={() => { installPwa() }} id='pwa-btn' className='btn-log btn-pwa' type="button" hidden>
             Adicionar na tela incial!
           </button>
+          <Link to={'/manual_de_instalacao'}>
+            <button className='btn-log btn-instrucoes' id='instrucoes-btn' hidden>
+              Instruções para instalação do APP!
+            </button>
+          </Link>
 
           <a className='link-whatsapp'
             href="http://wa.me/556796659181?text="
@@ -117,7 +128,7 @@ const Login = () => {
           </a>
 
           <br />
-          <p className='text-version'>1.1.1</p>
+          <p className='text-version'>1.1.3</p>
 
         </form >
 
