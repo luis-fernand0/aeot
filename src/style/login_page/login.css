@@ -4,6 +4,7 @@
   justify-content: center;
   align-items: center;
   padding: 15px 15px 15px 15px;
+  background-color: #fff;
 }
 .container-login .form-login {
   min-height: 100vh;
