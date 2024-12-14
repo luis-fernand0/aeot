@@ -1,0 +1,166 @@
+.container-abastecimento-title {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+}
+.container-abastecimento-title .container-icon-title {
+  width: 100%;
+  padding: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.container-abastecimento-title .container-icon-title .arrow-icon {
+  font-size: 28px;
+  color: gray;
+  margin-right: 100px;
+  transition: 0.5s all;
+}
+.container-abastecimento-title .container-icon-title .arrow-icon:hover {
+  transform: scale(0.8);
+}
+.container-abastecimento-title .container-icon-title .title-abastecimento {
+  font-weight: 600;
+  font-size: 24px;
+}
+@media (max-width: 767px) {
+  .container-abastecimento-title .container-icon-title .arrow-icon {
+    margin-right: 20px;
+  }
+}
+.container-abastecimento-title .container-abastecimento {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container-abastecimento-title .container-abastecimento .container-abastecer {
+  width: 100%;
+  height: 50%;
+  padding-left: 25px;
+}
+.container-abastecimento-title .container-abastecimento .container-abastecer .container-combustivel-pagamento {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.container-abastecimento-title .container-abastecimento .container-abastecer .container-combustivel-pagamento .container-combustivel,
+.container-abastecimento-title .container-abastecimento .container-abastecer .container-combustivel-pagamento .container-pagamento {
+  height: 40%;
+  max-width: 428px;
+  display: flex;
+  flex-direction: column;
+}
+.container-abastecimento-title .container-abastecimento .container-abastecer .container-combustivel-pagamento .container-combustivel .text-label,
+.container-abastecimento-title .container-abastecimento .container-abastecer .container-combustivel-pagamento .container-pagamento .text-label {
+  font-weight: 700;
+}
+.container-abastecimento-title .container-abastecimento .container-abastecer .container-combustivel-pagamento .container-combustivel #combustivel,
+.container-abastecimento-title .container-abastecimento .container-abastecer .container-combustivel-pagamento .container-combustivel #pagamento,
+.container-abastecimento-title .container-abastecimento .container-abastecer .container-combustivel-pagamento .container-pagamento #combustivel,
+.container-abastecimento-title .container-abastecimento .container-abastecer .container-combustivel-pagamento .container-pagamento #pagamento {
+  max-width: 290px;
+  height: 40px;
+  margin-top: 25px;
+  padding: 0 15px 0;
+  border: none;
+}
+.container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  padding: 0 25px 0;
+}
+.container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-text {
+  width: 100%;
+  margin-bottom: 25px;
+}
+.container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-text .text-abastecimento {
+  font-weight: 500;
+}
+.container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-btns-input {
+  height: 100%;
+  width: 100%;
+}
+.container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-btns-input .container-btns {
+  background-color: azure;
+  height: 50px;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+}
+.container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-btns-input .container-btns .btn-option {
+  width: 50%;
+  background-color: #f5f5f5;
+  border: none;
+  font-size: 18px;
+  font-weight: 500;
+  color: gray;
+  transition: 0.2s all;
+}
+.container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-btns-input .container-btns .btn-option:hover {
+  border-bottom: 3px solid #fff100;
+}
+.container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-btns-input .container-btns .checked {
+  border-bottom: 3px solid #fff100;
+}
+.container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-btns-input .container-text-input {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-btns-input .container-text-input .container-option {
+  width: 70%;
+  height: 100%;
+  margin-top: 45px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+}
+.container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-btns-input .container-text-input .container-option .text-option {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 45px;
+}
+.container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-btns-input .container-text-input .container-option .input-option {
+  width: 280px;
+  height: 50px;
+  border: none;
+  outline: none;
+  border-radius: 15px;
+  padding-left: 15px;
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 45px;
+}
+.container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-btns-input .container-text-input .container-option .input-option:focus {
+  border: 2px solid #4b39ef;
+}
+.container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-btns-input .container-text-input .container-option .btn-abastecer {
+  height: 50px;
+  padding: 15px;
+  border-radius: 15px;
+  border: none;
+  background-color: #fff100;
+  font-size: 14px;
+  font-weight: 500;
+  transition: 0.5s all;
+}
+.container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-btns-input .container-text-input .container-option .btn-abastecer:hover {
+  background-color: #14181b;
+  color: #fff;
+}
+.container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-btns-input .container-text-input .container-option .btn-abastecer .gas-pump-icon {
+  margin-left: 5px;
+}/*# sourceMappingURL=abastecimento.css.map */
