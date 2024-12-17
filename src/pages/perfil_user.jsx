@@ -8,12 +8,15 @@ import '../style/perfil_user_page/perfil_user.css'
 const urlData = import.meta.env.VITE_URL_DATAS_USER
 
 const PerfilUser = () => {
+    const abastecimento = JSON.parse(sessionStorage.getItem('dadosAbastecimento'))
     const [dataUser, setDataUser] = useState()
+    const [dataPosto, setDataPosto] = useState(abastecimento.posto || {})
+    const [dataAbastecimento, setDataAbastecimento] = useState(abastecimento || {})
 
     const navigate = useNavigate()
-    
+
     const tokenUser = localStorage.getItem('token');
-    
+
     async function callInfoUser() {
         const response = await fetch(`${urlData}`, {
             method: 'GET',
@@ -32,11 +35,13 @@ const PerfilUser = () => {
 
     useEffect(() => {
         callInfoUser()
+        console.log(dataAbastecimento)
+        console.log(abastecimento.posto)
     }, [])
     return (
         <>
             <div className="container-perfil">
-                <Header redirectTo={'/home'}/>
+                <Header redirectTo={'/home'} />
 
                 {dataUser && (
                     <>
@@ -63,6 +68,74 @@ const PerfilUser = () => {
                                     <span className="data-user-span"> {dataUser.car_plate}</span>
                                 </p>
                             </div>
+                        </div>
+                    </>
+                )}
+
+                {dataAbastecimento && (
+                    <>
+                        <div className="container-dados-abastecimento">
+                            <h1 className="title-dados-abastecimento">
+                                Confirme os dados do abastecimento
+                            </h1>
+
+                            <div className="container-posto">
+                                <h2 className="title-container title-dados-posto">
+                                    Dados do posto de combustivel
+                                </h2>
+
+                                <p className="text-container dado-posto-nome">
+                                    {dataPosto[0].nome}
+                                </p>
+
+                                <div className="container-img-posto">
+                                    <img
+                                        className="img-posto"
+                                        src={`https://aeotnew.s3.amazonaws.com/${dataPosto[0].foto}`}
+                                        alt="foto_posto" />
+                                </div>
+
+                                <p className="text-container dado-posto-endereco">
+                                    {dataPosto[0].endereco}
+                                </p>
+
+                                <p className="text-container dado-posto-combustivel">
+                                    {dataAbastecimento.tipo_combustivel}:
+                                    R$ {dataPosto[0][dataAbastecimento.tipo_combustivel]}
+                                </p>
+                            </div>
+
+                            <div className="container-abastecimento">
+                                <h2 className="title-container title-abastecimento">
+                                    Abastecimento
+                                </h2>
+
+                                <div className="container-sobre-abastecimento">
+                                    <p className="text-container abastecimento-tipo-combustivel">
+                                        Tipo de combustivel: {dataAbastecimento.tipo_combustivel}
+                                    </p>
+
+                                    <p className="text-container abastecimento-forma-abastecimento">
+                                        Vai abastecer por: {dataAbastecimento.forma_abastecimento}
+                                    </p>
+
+                                    <p className="text-container abastecimento-metodo-pagamento">
+                                        Metodo de Pagamento: {dataAbastecimento.metodo_pagamento}
+                                    </p>
+
+                                    <p className="text-container abastecimento-preco-ou-litro">
+                                        Quantidade que vai abastecer:
+                                        {dataAbastecimento.forma_abastecimento != 'preco' ? 
+                                        ` ${dataAbastecimento.preco_ou_litro} Litros` : 
+                                        ` R$ ${dataAbastecimento.preco_ou_litro}`}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <button className="btn-criar-qrcode">
+                                Gerar QRCode de Abastecimento!
+                            </button>
+
                         </div>
                     </>
                 )}
