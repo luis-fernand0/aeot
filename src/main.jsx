@@ -19,66 +19,72 @@ import NewPostosServices from './components/new_postos_services.jsx'
 import Abastecimento from './components/abastecimento.jsx'
 import Detalhes from './components/detalhes.jsx'
 import Instrucoes from './components/instrucoes.jsx'
+import LerQrCode from './components/ler_qrcode.jsx'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Login/>
+    element: <Login />
   },
 
   {
     path: '/cadastro',
-    element: <Cadastro/>
+    element: <Cadastro />
   },
 
   {
     path: '/home',
-    element: <Home/>
+    element: <Home />
   },
 
   {
     path: '/perfil',
-    element: <PerfilUser/>
+    element: <PerfilUser />
   },
 
   {
     path: '/esqueceu_senha',
-    element: <EsqueceuSenha/>
+    element: <EsqueceuSenha />
   },
 
   {
     path: '/cadastros_pendentes',
-    element: <NewDrivers/>
+    element: <NewDrivers />
   },
 
   {
     path: '/abastecimento',
-    element: <Abastecimento/>
+    element: <Abastecimento />
   },
 
   {
     path: '/editar_perfil',
-    element: <EditPerfil/>
+    element: <EditPerfil />
   },
 
   {
     path: '/adicionar_cadastros',
-    element: <AdicionarCadastros/>
+    element: <AdicionarCadastros />
   },
 
   {
     path: '/adicionar_postos_services',
-    element: <NewPostosServices/>
+    element: <NewPostosServices />
   },
 
   {
     path: '/detalhes',
-    element: <Detalhes/>
+    element: <Detalhes />
   },
 
   {
     path: '/manual_de_instalacao',
-    element: <Instrucoes/>
+    element: <Instrucoes />
+  },
+
+  {
+    path: '/ler_qrcode',
+    element: <LerQrCode />
   }
 ])
 
