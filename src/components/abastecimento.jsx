@@ -48,8 +48,9 @@ const Abastecimento = () => {
             preco_ou_litro: value,
             posto
         }
-        navigate('/perfil')
+        
         sessionStorage.setItem('dadosAbastecimento', JSON.stringify(metodoAbastecimento))
+        navigate('/perfil')
     }
 
     return (
