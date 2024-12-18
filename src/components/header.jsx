@@ -36,6 +36,10 @@ const Header = ({ redirectTo }) => {
                         <FontAwesomeIcon className='icon-header-btn' icon={faLock} />
                     </button>
                 </Link>
+
+                <Link to={'/ler_qrcode'}>
+                    ler qrcode
+                </Link>
             </header>
         </>
     )
