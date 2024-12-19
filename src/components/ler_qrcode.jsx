@@ -1,38 +1,62 @@
-import { Html5QrcodeScanner } from "html5-qrcode"
+import { Html5Qrcode, Html5QrcodeScanner } from "html5-qrcode"
 import { useEffect, useState } from "react";
 
 const LerQrCode = () => {
-    const [result, setResult] = useState({})
+    const [camera, setCamera] = useState(null)
+    const [scanner, setScanner] = useState(null);
+    const [result, setResult] = useState(null)
 
-    const onScanSuccess = (decodedText, decodedResult) => {
-        // Ação quando o QR Code é lido com sucesso
-        console.log("Texto decodificado:", decodedText);
-        console.log(JSON.parse(decodedText))
-        setResult(JSON.parse(decodedText))
-    }
+    const startScanning = () => {
+        if (!camera) {
+            alert("Nenhuma câmera foi encotrada no dispositivo.");
+            return;
+        }
 
-    const onScanFailure = (error) => {
-        // Ação quando ocorre um erro
-        console.warn("Erro na leitura:", error);
+        const html5QrCode = new Html5Qrcode("reader");
+        setScanner(html5QrCode);
+
+        html5QrCode
+            .start(
+                camera,
+                {
+                    fps: 1,
+                    qrbox: { width: 250, height: 250 },
+                },
+                (decodedText, decodedResult) => {
+                    console.log("Código QR lido:", decodedText);
+                    setResult(JSON.parse(decodedText))
+
+                },
+                (errorMessage) => {
+                    console.warn("Erro ao escanear:", errorMessage);
+                }
+            )
+            .catch((err) => {
+                console.error("Erro ao iniciar o scanner:", err);
+            });
     };
 
-    // Configurar o scanner
+    const stopScanning = () => {
+        if (scanner) {
+            scanner.stop().then(() => {
+                console.log("Scanner parado.");
+                console.log(scanner)
+            });
+        }
+    };
+
     useEffect(() => {
-        const scanner = new Html5QrcodeScanner(
-            "reader", // ID do elemento onde o scanner será renderizado
-            {
-                fps: 10, // Leituras por segundo
-                qrbox: { width: 250, height: 250 } // Tamanho da área de leitura
-            },
-            false // Não mostrar logs detalhados
-        );
-
-        scanner.render(onScanSuccess, onScanFailure);
-
-        // Cleanup para evitar problemas de memória
-        return () => scanner.clear();
+        // Obtenha as câmeras disponíveis ao carregar o componente
+        Html5Qrcode.getCameras()
+            .then((devices) => {
+                if (devices && devices.length > 0) {
+                    setCamera(devices[1].id);
+                }
+            })
+            .catch((err) => {
+                console.error("Erro ao obter câmeras:", err);
+            });
     }, []);
-
 
     return (
         <>
@@ -41,6 +65,10 @@ const LerQrCode = () => {
                     <h1>Leitor de QR Code</h1>
                     <div id="reader"></div>
                 </div>
+
+                <button onClick={() => {startScanning()}}>
+                    Scannear
+                </button>
 
                 {result && (
                     <>
