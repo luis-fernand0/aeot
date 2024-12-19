@@ -1,0 +1,97 @@
+.container-scan-respose {
+  height: 100vh;
+  width: 100%;
+  padding: 30px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.container-scan-respose .container-scan {
+  width: 100%;
+  text-align: center;
+}
+.container-scan-respose .container-scan h1 {
+  margin-bottom: 15px;
+}
+.container-scan-respose .container-btns {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.container-scan-respose .container-btns .btn-scan {
+  width: 185px;
+  padding: 15px;
+  background-color: #f5f100;
+  border: none;
+  border-radius: 15px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: 0.5s all;
+}
+.container-scan-respose .container-btns .btn-scan:hover {
+  background-color: #14181b;
+  color: #fff;
+}
+.container-scan-respose #dados-do-abastecimento {
+  margin-top: 25px;
+  padding: 0 20px 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.container-scan-respose #dados-do-abastecimento .container-title-dados-abastecimento {
+  width: 100%;
+  text-align: center;
+}
+.container-scan-respose #dados-do-abastecimento .container-title-dados-abastecimento .title-dados-abastecimento {
+  color: #d0c613;
+  font-weight: 600;
+  font-size: 20px;
+}
+.container-scan-respose #dados-do-abastecimento .container-dados-do-motorista {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.container-scan-respose #dados-do-abastecimento .container-dados-do-motorista,
+.container-scan-respose #dados-do-abastecimento .container-abastecimento {
+  width: 100%;
+}
+.container-scan-respose #dados-do-abastecimento .container-dados-do-motorista .text-container,
+.container-scan-respose #dados-do-abastecimento .container-abastecimento .text-container {
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+.container-scan-respose #dados-do-abastecimento .container-dados-do-motorista .text-container .text-span-container,
+.container-scan-respose #dados-do-abastecimento .container-abastecimento .text-container .text-span-container {
+  margin-left: 10px;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+.container-scan-respose #dados-do-abastecimento .container-dados-do-motorista .title-container,
+.container-scan-respose #dados-do-abastecimento .container-abastecimento .title-container {
+  color: #d0c613;
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+.container-scan-respose #dados-do-abastecimento .btn-abastecido {
+  padding: 15px;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #00ff73;
+  border: none;
+  border-radius: 15px;
+  transition: 0.5s all;
+}
+.container-scan-respose #dados-do-abastecimento .btn-abastecido:hover {
+  background-color: #6ff4ab;
+}/*# sourceMappingURL=ler_qrcode.css.map */
