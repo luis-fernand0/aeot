@@ -1,6 +1,8 @@
 import { Html5Qrcode, Html5QrcodeScanner } from "html5-qrcode"
 import { useEffect, useState } from "react";
 
+import '../style/ler_qrcode_component/ler_qrcode.css'
+
 const LerQrCode = () => {
     const [camera, setCamera] = useState(null)
     const [scanner, setScanner] = useState(null);
@@ -8,9 +10,11 @@ const LerQrCode = () => {
 
     const startScanning = () => {
         if (!camera) {
-            alert("Nenhuma câmera foi encotrada no dispositivo.");
+            alert("Nenhuma câmera foi encotrada no dispositivo ou a permissão foi negada!");
             return;
         }
+
+        document.getElementById('dados-do-abastecimento').setAttribute('hidden', true)
 
         const html5QrCode = new Html5Qrcode("reader");
         setScanner(html5QrCode);
@@ -19,12 +23,13 @@ const LerQrCode = () => {
             .start(
                 camera,
                 {
-                    fps: 1,
+                    fps: 10,
                     qrbox: { width: 250, height: 250 },
                 },
                 (decodedText, decodedResult) => {
-                    console.log("Código QR lido:", decodedText);
                     setResult(JSON.parse(decodedText))
+
+                    document.getElementById('stop-scan').click()
 
                 },
                 (errorMessage) => {
@@ -36,12 +41,14 @@ const LerQrCode = () => {
             });
     };
 
-    const stopScanning = () => {
+    function stopScanning() {
         if (scanner) {
-            scanner.stop().then(() => {
-                console.log("Scanner parado.");
-                console.log(scanner)
-            });
+            scanner.stop()
+
+            document.getElementById('dados-do-abastecimento').removeAttribute('hidden')
+
+            setScanner(null)
+            return
         }
     };
 
@@ -50,7 +57,7 @@ const LerQrCode = () => {
         Html5Qrcode.getCameras()
             .then((devices) => {
                 if (devices && devices.length > 0) {
-                    setCamera(devices[1].id);
+                    setCamera(devices[0].id);
                 }
             })
             .catch((err) => {
@@ -64,46 +71,96 @@ const LerQrCode = () => {
                 <div className="container-scan">
                     <h1>Leitor de QR Code</h1>
                     <div id="reader"></div>
+                    <p className="text-scan">
+                        {scanner === null ? '*Clique em scannear para ler um QRCode*' : ''}
+                    </p>
                 </div>
 
-                <button onClick={() => {startScanning()}}>
-                    Scannear
-                </button>
+                <div id="dados-do-abastecimento">
+                    {result && (
+                        <>
+                            <div className="container-title-dados-abastecimento">
+                                <h2 className="title-dados-abastecimento">
+                                    Dados do abastecimento
+                                </h2>
+                            </div>
 
-                {result && (
-                    <>
-                        <h2>
-                            Dados do abastecimento
-                        </h2>
+                            <div className="container-dados-do-motorista">
+                                <h2 className="title-container">Motorista</h2>
 
-                        <p>
-                            Nome do motorista: {result.usuario}
-                        </p>
-                        <p>
-                            Modelo: {result.veiculo?.modelo || ''}
-                        </p>
-                        <p>
-                            Placa: {result.veiculo?.placa || ''}
-                        </p>
+                                <p className="text-container">
+                                    Nome do motorista:
+                                    <span className="text-span-container">
+                                        {result.usuario}
+                                    </span>
+                                </p>
 
-                        <p>
-                            Tipo do combustivel: {result.tipo_combustivel}
-                        </p>
-                        <p>
-                            Valor do combustivel:
-                        </p>
-                        <p>
-                            Forma de abastecimento: {result.forma_abastecimento}
-                        </p>
-                        <p>
-                            Quatidade abastecida: {result.quantidade}
-                        </p>
-                        <p>
-                            Metodo de pagamento: {result.metodo_pagamento}
-                        </p>
-                    </>
-                )}
+                                <p className="text-container">
+                                    Modelo:
+                                    <span className="text-span-container">
+                                        {result.veiculo?.modelo || ''}
+                                    </span>
+                                </p>
+                                <p className="text-container">
+                                    Placa:
+                                    <span className="text-span-container">
+                                        {result.veiculo?.placa || ''}
+                                    </span>
+                                </p>
+                            </div>
 
+                            <div className="container-abastecimento">
+                                <h2 className="title-container">
+                                    Abastecimento
+                                </h2>
+
+                                <p className="text-container">
+                                    Tipo do combustivel:
+                                    <span className="text-span-container">
+                                        {result.tipo_combustivel}
+                                    </span>
+                                </p>
+                                <p className="text-container">
+                                    Valor do combustivel:
+                                </p>
+
+                                <p className="text-container">
+                                    Forma de abastecimento:
+                                    <span className="text-span-container">
+                                        {result.forma_abastecimento}
+                                    </span>
+                                </p>
+
+                                <p className="text-container">
+                                    Quatidade abastecida:
+                                    <span className="text-span-container">
+                                        {result.quantidade}
+                                    </span>
+                                </p>
+
+                                <p className="text-container">
+                                    Metodo de pagamento:
+                                    <span className="text-span-container">
+                                        {result.metodo_pagamento}
+                                    </span>
+                                </p>
+                            </div>
+
+                            <button className="btn-abastecido">
+                                Abastecido!
+                            </button>
+                        </>
+                    )}
+                </div>
+
+                <div className="container-btns">
+                    <button className="btn-scan" onClick={() => { startScanning() }}>
+                        Scannear
+                    </button>
+                    <button className="btn-scan" id="stop-scan" onClick={() => { stopScanning() }}>
+                        Parar scanneamento
+                    </button>
+                </div>
             </div>
         </>
     )
