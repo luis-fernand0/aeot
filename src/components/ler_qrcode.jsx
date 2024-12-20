@@ -1,5 +1,8 @@
-import { Html5Qrcode, Html5QrcodeScanner } from "html5-qrcode"
+import { Html5Qrcode } from "html5-qrcode"
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 
 import '../style/ler_qrcode_component/ler_qrcode.css'
 
@@ -53,11 +56,15 @@ const LerQrCode = () => {
     };
 
     useEffect(() => {
-        // Obtenha as câmeras disponíveis ao carregar o componente
         Html5Qrcode.getCameras()
             .then((devices) => {
                 if (devices && devices.length > 0) {
-                    setCamera(devices[0].id);
+                    devices.map((cameras) => {
+                        if (cameras.label.includes('back')) {
+                            setCamera(cameras.id)
+                            return
+                        }
+                    })
                 }
             })
             .catch((err) => {
@@ -68,6 +75,14 @@ const LerQrCode = () => {
     return (
         <>
             <div className="container-scan-respose">
+                <div className="container-btn-arrow">
+                    <Link to={'/home'}>
+                        <button className="btn-arrow">
+                            <FontAwesomeIcon className='arrow-icon' icon={faChevronLeft} />
+                        </button>
+                    </Link>
+                </div>
+                
                 <div className="container-scan">
                     <h1>Leitor de QR Code</h1>
                     <div id="reader"></div>
@@ -122,6 +137,9 @@ const LerQrCode = () => {
                                 </p>
                                 <p className="text-container">
                                     Valor do combustivel:
+                                    <span className="text-span-container">
+                                        R$ {result.valor_combustivel}
+                                    </span>
                                 </p>
 
                                 <p className="text-container">
@@ -135,6 +153,13 @@ const LerQrCode = () => {
                                     Quatidade abastecida:
                                     <span className="text-span-container">
                                         {result.quantidade}
+                                    </span>
+                                </p>
+
+                                <p className="text-container">
+                                    Valor total:
+                                    <span className="text-span-container">
+                                        R$ {result.valor_total}
                                     </span>
                                 </p>
 
