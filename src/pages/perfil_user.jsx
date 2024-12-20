@@ -19,8 +19,8 @@ const PerfilUser = () => {
     const [dataPosto, setDataPosto] = useState(abastecimento.posto || {})
     const [dataAbastecimento, setDataAbastecimento] = useState(abastecimento || {})
 
-    const [showQRCode, setShowQRCode] = useState(false) // Para exibir ou ocultar o QRCode
-    const [qrCodeValue, setQrCodeValue] = useState("") // Valor do QRCode
+    const [showQRCode, setShowQRCode] = useState(false)
+    const [qrCodeValue, setQrCodeValue] = useState("")
 
     const navigate = useNavigate()
 
@@ -43,28 +43,32 @@ const PerfilUser = () => {
     }
 
     const generateQRCode = () => {
-        // Criar um valor baseado nos dados do abastecimento
         const qrData = JSON.stringify({
-            usuario: dataUser.full_name || "Desconhecido",
+            usuario: dataUser.full_name,
             veiculo: {
                 modelo: dataUser.car_model,
                 placa: dataUser.car_plate
             },
-            posto: dataPosto[0].nome || "Desconhecido",
-            tipo_combustivel: dataAbastecimento.tipo_combustivel || "Desconhecido",
-            metodo_pagamento: dataAbastecimento.metodo_pagamento || "Desconhecido",
+            posto: dataPosto[0].nome,
+            tipo_combustivel: dataAbastecimento.tipo_combustivel,
+            valor_combustivel: dataPosto[0][dataAbastecimento.tipo_combustivel],
+            metodo_pagamento: dataAbastecimento.metodo_pagamento,
             forma_abastecimento: dataAbastecimento.forma_abastecimento,
-            quantidade: dataAbastecimento.preco_ou_litro || "Desconhecido"
-        });
+            quantidade: dataAbastecimento.preco_ou_litro,
+            valor_total: calcularPagamento(
+                Number(dataPosto[0][dataAbastecimento.tipo_combustivel]),
+                Number(dataAbastecimento.preco_ou_litro),
+            )
+        })
 
-        setQrCodeValue(qrData); // Define o valor do QR Code
-        setShowQRCode(true); // Exibe o QR Code
-    };
+        setQrCodeValue(qrData)
+        setShowQRCode(true)
+    }
+
+    const calcularPagamento = (num1, num2) => parseFloat(num1 * num2).toFixed(2)
 
     useEffect(() => {
         callInfoUser()
-        console.log(dataAbastecimento)
-        console.log(abastecimento.posto)
     }, [])
     return (
         <>
@@ -158,6 +162,16 @@ const PerfilUser = () => {
                                             {dataAbastecimento.forma_abastecimento != 'preco' ?
                                                 ` ${dataAbastecimento.preco_ou_litro} Litros` :
                                                 ` R$ ${dataAbastecimento.preco_ou_litro}`}
+                                        </p>
+
+                                        <p className="text-container abastecimento-preco-ou-litro">
+                                            Valor total:
+                                            {dataAbastecimento.forma_abastecimento != 'preco' ?
+                                                ` R$ ${calcularPagamento(
+                                                    Number(dataPosto[0][dataAbastecimento.tipo_combustivel]),
+                                                    Number(dataAbastecimento.preco_ou_litro),
+                                                )}` :
+                                                `R$ ${dataAbastecimento.preco_ou_litro}`}
                                         </p>
                                     </div>
                                 </div>
