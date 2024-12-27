@@ -1,0 +1,117 @@
+.container-dados-abastecimento {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.container-dados-abastecimento .container-dados {
+  height: 100%;
+  max-width: 428px;
+  padding: 20px 20px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.container-dados-abastecimento .container-dados .title-dados-abastecimento {
+  font-size: 24px;
+  text-align: center;
+}
+.container-dados-abastecimento .container-dados .container-posto .title-container,
+.container-dados-abastecimento .container-dados .container-abastecimento .title-container {
+  font-size: 20px;
+  font-weight: 600;
+  color: #d0c613;
+  margin-bottom: 15px;
+}
+.container-dados-abastecimento .container-dados .container-posto .text-container {
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: 500;
+}
+.container-dados-abastecimento .container-dados .container-posto .container-img-posto {
+  text-align: center;
+  margin-bottom: 15px;
+}
+.container-dados-abastecimento .container-dados .container-posto .container-img-posto .img-posto {
+  width: 150px;
+  height: 150px;
+  border-radius: 100%;
+}
+.container-dados-abastecimento .container-dados .container-posto .dado-posto-endereco {
+  text-align: center;
+  color: gray;
+}
+.container-dados-abastecimento .container-dados .container-posto .dado-posto-combustivel {
+  text-transform: uppercase;
+}
+.container-dados-abastecimento .container-dados .container-abastecimento {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container-dados-abastecimento .container-dados .container-abastecimento .container-sobre-abastecimento {
+  width: 100%;
+}
+.container-dados-abastecimento .container-dados .container-abastecimento .container-sobre-abastecimento .text-container {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+.container-dados-abastecimento .container-dados .btn-criar-qrcode {
+  height: 50px;
+  padding: 15px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 15px;
+  border: none;
+  background-color: #fff100;
+  transition: 0.5s all;
+}
+.container-dados-abastecimento .container-dados .btn-criar-qrcode:hover {
+  background-color: #14181b;
+  color: #fff;
+}
+
+.qrcode-container {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.253);
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.qrcode-container .qrcode-btn-close-container {
+  background-color: #f5f5f5;
+  width: 90%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 25px;
+}
+.qrcode-container .qrcode-btn-close-container .container-btn-close {
+  width: 100%;
+  padding-right: 25px;
+  text-align: right;
+}
+.qrcode-container .qrcode-btn-close-container .container-btn-close .btn-close {
+  background-color: transparent;
+  border: none;
+}
+.qrcode-container .qrcode-btn-close-container .container-btn-close .btn-close .x-icon {
+  font-size: 20px;
+}
+.qrcode-container .qrcode-btn-close-container .qrcode {
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}/*# sourceMappingURL=gerar_qrcode.css.map */
