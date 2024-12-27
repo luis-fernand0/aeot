@@ -20,6 +20,7 @@ import Abastecimento from './components/abastecimento.jsx'
 import Detalhes from './components/detalhes.jsx'
 import Instrucoes from './components/instrucoes.jsx'
 import LerQrCode from './components/ler_qrcode.jsx'
+import GerarQrCode from './components/gerar_qrcode.jsx'
 
 const router = createBrowserRouter([
   {
@@ -80,6 +81,11 @@ const router = createBrowserRouter([
   {
     path: '/manual_de_instalacao',
     element: <Instrucoes />
+  },
+
+  {
+    path: '/gerar_qrcode',
+    element: <GerarQrCode />
   },
 
   {
