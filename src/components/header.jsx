@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft, faUser, faLock, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faUser, faLock, faPlus, faQrcode } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
 
 import '../style/header_component/header.css'
@@ -38,7 +38,9 @@ const Header = ({ redirectTo }) => {
                 </Link>
 
                 <Link to={'/ler_qrcode'}>
-                    ler qrcode
+                <button className='header-btn' type="button">
+                        <FontAwesomeIcon className='icon-header-btn' icon={faQrcode} />
+                    </button>
                 </Link>
             </header>
         </>
