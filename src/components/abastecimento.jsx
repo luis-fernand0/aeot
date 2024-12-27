@@ -50,7 +50,7 @@ const Abastecimento = () => {
         }
         
         sessionStorage.setItem('dadosAbastecimento', JSON.stringify(metodoAbastecimento))
-        navigate('/perfil')
+        navigate('/gerar_qrcode')
     }
 
     return (
