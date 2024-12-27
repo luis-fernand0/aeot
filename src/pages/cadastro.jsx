@@ -4,10 +4,14 @@ import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash, faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
 
+import { checkPhone } from '../functions/checkPhone'
+import { comprimirFoto } from '../functions/comprimirFoto'
+import { formatarEmail } from '../functions/formatarEmail'
+import { formatarPlaca } from '../functions/formatarPlaca'
+import { formatarCep } from '../functions/formatarCep'
+
 import Loading from '../components/loading'
 import ModalResponse from '../components/modalResponse'
-import { checkPhone } from '../functions/checkPhone';
-import { comprimirFoto } from '../functions/comprimirFoto'
 
 import '../style/cadastro_page/cadastro.css'
 
@@ -23,7 +27,42 @@ const Cadastro = () => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
 
-    // Função para validar se o input contém pelo menos duas palavras
+    async function hundleSubmit(e) {
+        e.preventDefault()
+        setLoading(true)
+        try {
+            if (!erroModeloCor || !fotoValid || !checkPass()) {
+                setModalMessage('É necessario preencher todos os dados!')
+                setModalVisible(true)
+
+                setLoading(false)
+
+                return
+            }
+
+            const myForm = document.getElementById('myFormCadastro')
+            const formData = new FormData(myForm)
+            for (let [key, value] of formData.entries()) {
+                console.log(key, value)
+            }
+            
+            const response = await fetch(`${urlCadastro}`, {
+                method: 'POST',
+                body: formData
+            })
+            const dataResponse = await response.json()
+            if (response.status) {
+                setModalMessage(dataResponse.message)
+                setModalVisible(true)
+            }
+        } catch (err) {
+            setModalMessage(`Ocorreu um erro inesperado. Tente novamente mais tarde.` + err.message)
+            setModalVisible(true)
+        } finally {
+            setLoading(false)
+        }
+    }
+
     function validarModeloCor(wordValid) {
         if (!wordValid) {
             document.getElementById('span-modelo').classList.remove('hidden-span-modelo')
@@ -45,7 +84,46 @@ const Cadastro = () => {
         validarModeloCor(regex.test(inputModelCor.value));
     }
 
-    const callCheckPhone = (e) => checkPhone(e)
+    async function buscarCep(e) {
+        var cep = e.target
+        var cepFormat = cep.value.replace(/[^0-9]/g, '')
+
+        const response = await fetch(`https://cep.awesomeapi.com.br/json/${cepFormat}`)
+        const data = await response.json()
+
+        addValue(data)
+    }
+    function addValue(infoCep) {
+        var inputAddress = document.getElementById('endereco-cadastro')
+        var city = document.getElementById('cid-cadastro')
+        var uf = document.getElementById('uf-cadastro')
+
+        if (infoCep.code === 'not_found') {
+            inputAddress.value = ``
+            city.value = ``
+            uf.value = ``
+            return
+        }
+
+        inputAddress.value = `${infoCep.address}, ${infoCep.district}`
+        city.value = `${infoCep.city}`
+        uf.value = `${infoCep.state}`
+
+        console.log(infoCep)
+    }
+
+    function limitarCaracter(e) {
+        let uf = e.target
+        let ufValue = uf.value.replace(/[^a-zA-Z]/g, '')
+
+        if (ufValue.length > 2) {
+            ufValue = ufValue.slice(0,2)
+        }
+
+        ufValue = ufValue.toUpperCase()
+
+        return uf.value = ufValue
+    }
 
     function revealPass() {
         const element = document.querySelectorAll(`.eye-icon`)
@@ -93,74 +171,19 @@ const Cadastro = () => {
 
         return true
     }
-    function formatEmail(e) {
-        var inputEmail = e.target
-        inputEmail.value = inputEmail.value.toLowerCase()
-
-        return inputEmail
-    }
-
-    function formatPlate(event) {
-        var plate = event.target
-        // Remove todos os caracteres que não são letras ou números
-        var plateValue = plate.value.replace(/[^A-Za-z0-9]/g, '');
-        if (plateValue.length > 3) {
-            plateValue = plateValue.slice(0, 3) + '-' + plateValue.slice(3);
-        }
-        if (plateValue.length > 8) {
-            plateValue = plateValue.slice(0, 8);
-        }
-
-        plate.value = plateValue.toUpperCase()
-
-        return plate
-    }
 
     function anexarFoto(nomeFoto) { document.getElementById(nomeFoto).click() }
-    async function callVerificarFoto(inputId, span, btnId) {
+    async function verificarFoto(inputId, span, btnId) {
         const foto = await comprimirFoto(inputId)
         if (!foto) {
             document.querySelector(`.${span}`).classList.remove('hidden-span-alert')
             document.querySelector(`#${btnId}`).classList.remove('checked-foto')
             return false
         }
-        
+
         setFotoValid(foto)
         document.querySelector(`.${span}`).classList.add('hidden-span-alert')
         document.querySelector(`#${btnId}`).classList.add('checked-foto')
-    }
-
-    async function hundleSubmit(e) {
-        e.preventDefault()
-        setLoading(true)
-        try {
-            if (!erroModeloCor || !fotoValid || !checkPass()) {
-                setModalMessage('É necessario preencher todos os dados!')
-                setModalVisible(true)
-
-                setLoading(false)
-
-                return
-            }
-
-            const myForm = document.getElementById('myFormCadastro')
-            const formData = new FormData(myForm)
-
-            const response = await fetch(`${urlCadastro}`, {
-                method: 'POST',
-                body: formData
-            })
-            const dataResponse = await response.json()
-            if (response.status != 200 || response.status === 200) {
-                setModalMessage(dataResponse.message)
-                setModalVisible(true)
-            }
-        } catch (err) {
-            setModalMessage(`Ocorreu um erro inesperado. Tente novamente mais tarde.` + err.message)
-            setModalVisible(true)
-        } finally {
-            setLoading(false)
-        }
     }
 
     return (
@@ -187,19 +210,94 @@ const Cadastro = () => {
                         </div>
 
                         <div className='datas-user'>
-                            <input className='input-cadastro input-cadastro-nome' type="text" name="name" id="input-name" placeholder='Nome' required autoComplete='off' />
+                            <input
+                                className='input-cadastro input-cadastro-nome'
+                                type="text"
+                                name="name"
+                                id="input-name"
+                                placeholder='Nome'
+                                required autoComplete='off' />
 
                             <input
-                                onChange={(e) => { callCheckPhone(e) }} className='input-cadastro' type="tel" name="telefone" id="input-tel" placeholder='Telefone' required autoComplete='off' maxLength={15} />
+                                onChange={(e) => checkPhone(e)}
+                                className='input-cadastro'
+                                type="tel" name="telefone"
+                                id="input-tel"
+                                placeholder='Telefone'
+                                required autoComplete='off'
+                                maxLength={15} />
 
-                            <input className='input-cadastro input-cadastro-email' type="email" name="email_cadastro" id="email-cadastro" placeholder='Email' required autoComplete='off' onChange={(e) => { formatEmail(e) }} />
+                            <input
+                                onChange={(e) => formatarEmail(e)}
+                                className='input-cadastro input-cadastro-email'
+                                type="email"
+                                name="email_cadastro"
+                                id="email-cadastro"
+                                placeholder='Email'
+                                required autoComplete='off' />
 
                             <div className='placa-modelo'>
-                                <input onChange={(event) => { formatPlate(event) }} className='input-cadastro-veiculo' type="text" name="placa_veiculo" id="placa-veiculo" placeholder='Placa' required autoComplete='off' maxLength={8} />
+                                <input
+                                    onChange={(e) => formatarPlaca(e)} className='input-cadastro-veiculo'
+                                    type="text"
+                                    name="placa_veiculo"
+                                    id="placa-veiculo"
+                                    placeholder='Placa'
+                                    required autoComplete='off'
+                                    maxLength={8} />
 
-                                <span id='span-modelo' className='span hidden-span-modelo'>PORFAVOR INSIRA MODELO E COR DO VEICULO EXEMPLO: ONIX PRETO*</span>
-                                <input onBlur={(e) => { handleChangeModeloCor(e) }} className='input-cadastro-veiculo' type="text" name="modelo_veiculo" id="modelo-veiculo" placeholder='Modelo/Cor' required autoComplete='off' />
+                                <span id='span-modelo' className='span hidden-span-modelo'>
+                                    PORFAVOR INSIRA MODELO E COR DO VEICULO EXEMPLO: ONIX PRETO*
+                                </span>
+                                <input
+                                    onBlur={(e) => handleChangeModeloCor(e)} className='input-cadastro-veiculo'
+                                    type="text"
+                                    name="modelo_veiculo"
+                                    id="modelo-veiculo"
+                                    placeholder='Modelo/Cor'
+                                    required autoComplete='off' />
                             </div>
+
+                            <input
+                                onChange={(e) => formatarCep(e)}
+                                onBlur={(e) => buscarCep(e)}
+                                className='input-cadastro'
+                                type="text" name="cep_cadastro"
+                                id="cep-cadastro"
+                                placeholder='CEP'
+                                autoComplete='off' />
+
+                            <input
+                                className='input-cadastro'
+                                type="text" name="endereco_cadastro"
+                                id="endereco-cadastro"
+                                placeholder='Endereço'
+                                autoComplete='off' />
+
+                            <input
+                                className='input-cadastro'
+                                type="text"
+                                name="n_cadastro"
+                                id="n-cadastro"
+                                placeholder='N°'
+                                autoComplete='off' />
+
+                            <input
+                                className='input-cadastro'
+                                type="text"
+                                name="cid_cadastro"
+                                id="cid-cadastro"
+                                placeholder='Cidade'
+                                autoComplete='off' />
+
+                            <input
+                                onChange={(e) => limitarCaracter(e)}
+                                className='input-cadastro'
+                                type="text"
+                                name="uf_cadastro"
+                                id="uf-cadastro"
+                                placeholder='UF'
+                                autoComplete='off' />
 
                             <span className='span span-pass hidden-span'>AS SENHAS DEVEM SER IGUAIS*</span>
                             <div className='div-pass-cadastro'>
@@ -227,7 +325,7 @@ const Cadastro = () => {
                                 *É NECESSARIO ADICIONAR UMA FOTO DE PERFIL!
                             </span>
                             <input
-                                onChange={() => { callVerificarFoto('foto_user', 'alert-foto', 'btn-foto-user') }}
+                                onChange={() => { verificarFoto('foto_user', 'alert-foto', 'btn-foto-user') }}
                                 type="file"
                                 className='input-foto-print'
                                 name="foto_user"
@@ -246,7 +344,7 @@ const Cadastro = () => {
                                 *É NECESSARIO ADICIONAR UMA FOTO DA CNH!
                             </span>
                             <input
-                                onChange={() => { callVerificarFoto('foto_cnh', 'alert-cnh', 'btn-foto-cnh') }} type="file"
+                                onChange={() => { verificarFoto('foto_cnh', 'alert-cnh', 'btn-foto-cnh') }} type="file"
                                 className='input-foto-print'
                                 name="foto_cnh" id="foto_cnh"
                                 accept='image/*' />
@@ -262,7 +360,7 @@ const Cadastro = () => {
                                 *É NECESSARIO ADICIONAR UM PRINT DO APP DE MOBILIDADE!
                             </span>
                             <input
-                                onChange={() => { callVerificarFoto('print_app', 'alert-print-app', 'btn-print-app') }} type="file"
+                                onChange={() => { verificarFoto('print_app', 'alert-print-app', 'btn-print-app') }} type="file"
                                 className='input-foto-print'
                                 name="print_app"
                                 id="print_app"
