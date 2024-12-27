@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { QRCodeCanvas } from "qrcode.react"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faXmark, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 
 import '../style/gerar_qrcode_component/gerar_qrcode.css'
 
@@ -73,6 +73,13 @@ const GerarQrCode = () => {
             {dataAbastecimento && (
                 <>
                     <div className="container-dados-abastecimento">
+                        <div className="container-btn-arrow">
+                            <Link to={'/abastecimento'}>
+                                <button className="btn-arrow">
+                                    <FontAwesomeIcon className="arrow-icon" icon={faChevronLeft}/>
+                                </button>
+                            </Link>
+                        </div>
                         <div className="container-dados">
 
                             <h1 className="title-dados-abastecimento">
