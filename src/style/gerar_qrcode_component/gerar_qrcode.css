@@ -6,6 +6,22 @@
   align-items: center;
   justify-content: center;
 }
+.container-dados-abastecimento .container-btn-arrow {
+  width: 100%;
+  padding: 30px;
+}
+.container-dados-abastecimento .container-btn-arrow .btn-arrow {
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  color: gray;
+}
+.container-dados-abastecimento .container-btn-arrow .btn-arrow .arrow-icon {
+  transition: 0.5s all;
+}
+.container-dados-abastecimento .container-btn-arrow .btn-arrow:hover .arrow-icon {
+  transform: scale(0.8);
+}
 .container-dados-abastecimento .container-dados {
   height: 100%;
   max-width: 428px;

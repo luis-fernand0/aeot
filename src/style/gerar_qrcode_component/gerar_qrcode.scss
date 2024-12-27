@@ -7,6 +7,31 @@
     align-items: center;
     justify-content: center;
 
+    .container-btn-arrow {
+        width: 100%;
+
+        padding: 30px;
+
+        .btn-arrow {
+            background-color: transparent;
+
+            border: none;
+
+            font-size: 24px;
+            color: gray;
+
+            .arrow-icon {
+                transition: 0.5s all;
+            }
+
+            &:hover {
+                .arrow-icon {
+                    transform: scale(0.80);
+                }
+            }
+        }
+    }
+
     .container-dados {
         height: 100%;
         max-width: 428px;
