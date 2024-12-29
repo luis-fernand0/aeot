@@ -187,6 +187,47 @@
                     }
                 }
 
+                .container-pass {
+                    display: flex;
+                    flex-flow: row;
+                    position: relative;
+
+                    .input-info-pass {
+                        width: 100%;
+
+                        border-top-right-radius: 0;
+                        border-bottom-right-radius: 0;
+                    }
+
+                    .pass-reveal {
+                        width: 55px;
+                        height: 40px;
+
+                        background-color: #f5f5f5;
+
+                        border: none;
+                        border-radius: 15px;
+                        border-top-left-radius: 0;
+                        border-bottom-left-radius: 0;
+
+                        box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
+
+                        font-size: 18px;
+
+                        .eye-icon {
+                            color: #acaaaa;
+                        }
+
+                        .hidden {
+                            display: none;
+                        }
+                    }
+
+                    .alert-pass {
+                        border: 1px solid red;
+                    }
+                }
+
                 .text-area-descricao {
                     padding: 15px;
 
