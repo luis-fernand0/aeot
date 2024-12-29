@@ -21,9 +21,7 @@ export async function comprimirFoto(inputId) {
             type: imageFile[0].type,
             lastModified: Date.now()
         })
-        console.log(compressedFileBlob)
-        console.log(compressedFile)
-        
+                
         const dataTransfer = new DataTransfer()
         dataTransfer.items.add(compressedFile)
         
