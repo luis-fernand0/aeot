@@ -9,6 +9,7 @@ import { comprimirFoto } from '../functions/comprimirFoto'
 import { formatarEmail } from '../functions/formatarEmail'
 import { formatarPlaca } from '../functions/formatarPlaca'
 import { formatarCep } from '../functions/formatarCep'
+import { revealPass } from '../functions/revealPass'
 
 import Loading from '../components/loading'
 import ModalResponse from '../components/modalResponse'
@@ -42,9 +43,6 @@ const Cadastro = () => {
 
             const myForm = document.getElementById('myFormCadastro')
             const formData = new FormData(myForm)
-            for (let [key, value] of formData.entries()) {
-                console.log(key, value)
-            }
             
             const response = await fetch(`${urlCadastro}`, {
                 method: 'POST',
@@ -125,25 +123,6 @@ const Cadastro = () => {
         return uf.value = ufValue
     }
 
-    function revealPass() {
-        const element = document.querySelectorAll(`.eye-icon`)
-
-        for (let i = 0; i < element.length; i++) {
-            const btn = element[i];
-            btn.classList.toggle('hidden')
-        }
-
-        const input = document.querySelectorAll('.input-cadastro-pass')
-        for (let i = 0; i < input.length; i++) {
-            const element = input[i];
-            if (element.type === 'password') {
-                element.type = 'text'
-            } else {
-                element.type = 'password'
-            }
-
-        }
-    }
     function checkPass() {
         const password = document.querySelectorAll('.input-cadastro-pass')
         const span = document.querySelectorAll('.span-pass')
@@ -301,9 +280,9 @@ const Cadastro = () => {
 
                             <span className='span span-pass hidden-span'>AS SENHAS DEVEM SER IGUAIS*</span>
                             <div className='div-pass-cadastro'>
-                                <input onBlur={() => { checkPass() }} className='input-cadastro input-cadastro-pass' type="password" name="password_cadastro" id="password-cadastro" minLength={6} placeholder='Senha' required />
+                                <input onBlur={() => checkPass()} className='input-cadastro input-cadastro-pass' type="password" name="password_cadastro" id="password-cadastro" minLength={6} placeholder='Senha' required />
 
-                                <button onClick={() => { revealPass() }} type='button' className='pass-reveal'>
+                                <button onClick={() => revealPass('input-cadastro-pass')} type='button' className='pass-reveal'>
                                     <FontAwesomeIcon className='eye-icon eye-icon-hidden hidden' icon={faEyeSlash} />
                                     <FontAwesomeIcon className='eye-icon eye-icon-show' icon={faEye} />
                                 </button>
@@ -311,8 +290,8 @@ const Cadastro = () => {
 
                             <span className='span span-pass hidden-span'>AS SENHAS DEVEM SER IGUAIS*</span>
                             <div className='div-pass-cadastro' >
-                                <input onBlur={() => { checkPass() }} className='input-cadastro input-cadastro-pass' type="password" name="password_cadastro_check" id="password-cadastro-chek" placeholder='Confirme sua senha' minLength={6} required />
-                                <button onClick={() => { revealPass() }} type='button' className='pass-reveal'>
+                                <input onBlur={() => checkPass()} className='input-cadastro input-cadastro-pass' type="password" name="password_cadastro_check" id="password-cadastro-chek" placeholder='Confirme sua senha' minLength={6} required />
+                                <button onClick={() => revealPass('input-cadastro-pass')} type='button' className='pass-reveal'>
                                     <FontAwesomeIcon className='eye-icon eye-icon-hidden hidden' icon={faEyeSlash} />
                                     <FontAwesomeIcon className='eye-icon eye-icon-show' icon={faEye} />
                                 </button>
