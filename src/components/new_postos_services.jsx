@@ -1,26 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeftLong, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 import { validarCnpj } from '../functions/validarCnpj'
 import { checkPhone } from '../functions/checkPhone'
 import { checkValor } from '../functions/checkValor'
 import { maskCnpj } from '../functions/maskCnpj'
 import { comprimirFoto } from '../functions/comprimirFoto';
+import { formatarEmail } from '../functions/formatarEmail';
+import { revealPass } from '../functions/revealPass';
+import { checkPass } from '../functions/checkPass';
 
 import Loading from './loading'
 import ModalResponse from './modalResponse';
+
 import '../style/new_services_page/new_services.css'
 
-const apiKey = import.meta.env.VITE_URL_API_CNPJ_KEY
 const urlCadastrar = import.meta.env.VITE_URL_CADASTRAR_POSTO_ANUNCIO
 
 const NewPostosServices = () => {
   const [categoria, setCategoria] = useState('postos')
-  const [cnpjValid, setCnpjValid] = useState(false)
-  const [cnpj, setCnpj] = useState()
   const [fotoValid, setFotoValid] = useState(false)
 
   const [loading, setLoading] = useState(false)
@@ -31,25 +32,6 @@ const NewPostosServices = () => {
   const tokenUser = localStorage.getItem('token');
 
   const navigate = useNavigate()
-
-  function callValidation(e) {
-    const cnpj = e.target.value
-
-    setCnpj(cnpj)
-    setCnpjValid(validarCnpj(cnpj))
-
-    if (!validarCnpj(cnpj)) {
-      document.querySelector('.alert-cnpj').classList.remove('hidden-span-alert')
-    } else {
-      document.querySelector('.alert-cnpj').classList.add('hidden-span-alert')
-    }
-  }
-
-  const callMaskCnpj = (e) => maskCnpj(e)
-
-  const callCheckPhone = (e) => checkPhone(e)
-
-  const callCheckValor = (e) => checkValor(e)
 
   function addFoto(input) { document.getElementById(input).click() }
   const callVerificarFoto = async (inputId, span, btnId) => {
@@ -65,34 +47,56 @@ const NewPostosServices = () => {
     document.querySelector(`#${btnId}`).classList.add('checked-foto')
   }
 
-  async function buscarCnpj(cnpjValid, cnpj) {
+  function callValidation(e) {
+    const cnpj = e.target.value
+
+    if (!validarCnpj(cnpj)) {
+      buscarCnpj(validarCnpj(cnpj))
+      document.querySelector('.alert-cnpj').classList.remove('hidden-span-alert')
+      return
+    }
+
+    buscarCnpj(validarCnpj(cnpj))
+    
+    document.querySelector('.alert-cnpj').classList.add('hidden-span-alert')
+  }
+  async function buscarCnpj(cnpjValid) {
     if (!cnpjValid) {
       addValue(false)
       return
     }
 
-    const cnpjSemFormatacao = cnpj.replace(/[^0-9]/g, "")
+    let cnpj = document.getElementById('cnpj')
+    const cnpjSemFormatacao = cnpj.value.replace(/[^0-9]/g, "")
 
     const response = await fetch(`https://open.cnpja.com/office/${cnpjSemFormatacao}`)
     const data = await response.json()
     addValue(data.address)
   }
   function addValue(infoCnpj) {
-    let inputAddress = document.getElementById('endereco')
+    let address = document.getElementById('endereco')
+    let city = document.getElementById('cidade')
+    let uf = document.getElementById('uf')
 
     if (!infoCnpj) {
-      inputAddress.value = ''
+      address.value = ''
+      city.value = ''
+      uf.value = ''
       return
     }
 
-    inputAddress.value = `${infoCnpj.street}, ${infoCnpj.number}, ${infoCnpj.district}, ${infoCnpj.city} - ${infoCnpj.state}`
+    address.value = `${infoCnpj.street}, ${infoCnpj.number}, ${infoCnpj.district}`
+    city.value = `${infoCnpj.city}`
+    uf.value = `${infoCnpj.state}`
   }
 
   async function hundleSubmit(e) {
     e.preventDefault()
     setLoading(true)
 
-    if (!fotoValid || !cnpjValid) {
+    let cnpj = document.getElementById('cnpj')
+
+    if (!fotoValid || !validarCnpj(cnpj.value) || !checkPass('pass', 'confirm-pass', 'pass-alert')) {
       setModalMessage('É necessario preencher todos os dados!')
       setModalVisible(true)
 
@@ -104,10 +108,6 @@ const NewPostosServices = () => {
     const formData = new FormData(myForm)
     formData.append('categoria', [categoria])
 
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-
     try {
       const response = await fetch(urlCadastrar, {
         method: 'POST',
@@ -116,10 +116,12 @@ const NewPostosServices = () => {
         },
         body: formData
       })
+      const dataResponse = await response.json()
+
       if (response.status === 403) {
         navigate('/', { replace: true })
       }
-      const dataResponse = await response.json()
+
       if (response.status != 200 || response.status === 200) {
         setModalMessage(dataResponse.message)
         setModalVisible(true)
@@ -131,10 +133,6 @@ const NewPostosServices = () => {
       setLoading(false)
     }
   }
-
-  useEffect(() => {
-    buscarCnpj(cnpjValid, cnpj)
-  }, [cnpjValid, cnpj])
 
   return (
     <>
@@ -155,12 +153,12 @@ const NewPostosServices = () => {
         </div>
 
         <div className='container-btns'>
-          <button onClick={() => { setCategoria('postos') }}
+          <button onClick={() => setCategoria('postos')}
             className={`tipo-cadastro ${categoria === 'postos' ? 'checked' : ''}`}
             type="button">
             Cadastrar Posto
           </button>
-          <button onClick={() => { setCategoria('anuncios') }}
+          <button onClick={() => setCategoria('anuncios')}
             className={`tipo-cadastro ${categoria === 'anuncios' ? 'checked' : ''}`}
             type="button">
             Cadastrar Anuncio
@@ -168,7 +166,7 @@ const NewPostosServices = () => {
         </div>
 
         <div className="container-forms">
-          <form id='form-cadastro' onSubmit={(e) => { hundleSubmit(e) }} className="form-cadastrar-posto-anuncio">
+          <form id='form-cadastro' onSubmit={(e) => hundleSubmit(e)} className="form-cadastrar-posto-anuncio">
 
             {categoria === 'postos' && (
               <div className='cadastrar-posto'>
@@ -184,15 +182,58 @@ const NewPostosServices = () => {
                   *CPNJ INFORMADO NÃO É VALIDO!
                 </span>
                 <input
+                  onChange={(e) => maskCnpj(e)}
+                  onBlur={(e) => callValidation(e)}
                   id='cnpj'
                   name="cnpj"
                   className="input-info input-info-posto"
                   type="text"
                   placeholder="CNPJ"
                   required
-                  maxLength={18}
-                  onChange={(e) => { callMaskCnpj(e) }}
-                  onBlur={(e) => { callValidation(e) }} />
+                  maxLength={18} />
+
+                <input
+                  onChange={(e) => formatarEmail(e)}
+                  id='email'
+                  name="email"
+                  className="input-info input-info-posto"
+                  type="email"
+                  placeholder="Email"
+                  required />
+
+                <span className='span-alert hidden-span-alert pass-alert'>AS SENHAS DEVEM SER IGUAIS*</span>
+                <div className='container-pass' >
+                  <input
+                    onBlur={() => checkPass('pass', 'confirm-pass', 'pass-alert')}
+                    id="pass"
+                    className='input-info input-info-posto input-info-pass'
+                    type="password"
+                    name="pass"
+                    placeholder='Senha'
+                    minLength={6}
+                    required />
+                  <button onClick={() => revealPass('input-info-pass')} type='button' className='pass-reveal'>
+                    <FontAwesomeIcon className='eye-icon eye-icon-hidden hidden' icon={faEyeSlash} />
+                    <FontAwesomeIcon className='eye-icon eye-icon-show' icon={faEye} />
+                  </button>
+                </div>
+
+                <span className='span-alert hidden-span-alert pass-alert'>AS SENHAS DEVEM SER IGUAIS*</span>
+                <div className='container-pass' >
+                  <input
+                    onBlur={() => checkPass('pass', 'confirm-pass', 'pass-alert')}
+                    id="confirm-pass"
+                    className='input-info input-info-posto input-info-pass'
+                    type="password"
+                    name="confirm_pass"
+                    placeholder='Confirme sua senha'
+                    minLength={6}
+                    required />
+                  <button onClick={() => revealPass('input-info-pass')} type='button' className='pass-reveal'>
+                    <FontAwesomeIcon className='eye-icon eye-icon-hidden hidden' icon={faEyeSlash} />
+                    <FontAwesomeIcon className='eye-icon eye-icon-show' icon={faEye} />
+                  </button>
+                </div>
 
                 <textarea
                   id='descricao'
@@ -210,20 +251,36 @@ const NewPostosServices = () => {
                   required />
 
                 <input
+                  id='cidade'
+                  name="cidade"
+                  className="input-info input-info-posto"
+                  type="text"
+                  placeholder="Cidade"
+                  required />
+
+                <input
+                  id='uf'
+                  name="uf"
+                  className="input-info input-info-posto"
+                  type="text"
+                  placeholder="UF"
+                  required />
+
+                <input
                   id='telefone'
                   name="telefone"
                   className="input-info input-info-posto"
                   type="tel"
                   placeholder="Telefone"
                   required
-                  onChange={(e) => { callCheckPhone(e) }}
+                  onChange={(e) => checkPhone(e)}
                   maxLength={15} />
 
                 <p className='text-info'>Tipo de combustivel que deseja trabalhar</p>
                 <div className='container-inputs-combutiveis'>
 
                   <input
-                    onChange={(e) => { callCheckValor(e) }}
+                    onChange={(e) => checkValor(e)}
                     id='etanol'
                     className='input-add-combustivel input-info'
                     name="etanol"
@@ -231,7 +288,7 @@ const NewPostosServices = () => {
                     placeholder="Etanol" />
 
                   <input
-                    onChange={(e) => { callCheckValor(e) }}
+                    onChange={(e) => checkValor(e)}
                     id='gasolina'
                     className='input-add-combustivel input-info'
                     name="gasolina"
@@ -239,7 +296,7 @@ const NewPostosServices = () => {
                     placeholder="Gasolina" />
 
                   <input
-                    onChange={(e) => { callCheckValor(e) }}
+                    onChange={(e) => checkValor(e)}
                     id='diesel'
                     className='input-add-combustivel input-info'
                     name="diesel"
@@ -258,7 +315,7 @@ const NewPostosServices = () => {
                   type="file"
                   accept="image/*" />
                 <button
-                  onClick={() => { addFoto('foto-posto') }}
+                  onClick={() => addFoto('foto-posto')}
                   id='btn-foto-posto'
                   className="btn-foto btn-foto-posto"
                   type="button">
@@ -289,8 +346,8 @@ const NewPostosServices = () => {
                   type="text"
                   placeholder="CNPJ"
                   maxLength={18}
-                  onChange={(e) => { callMaskCnpj(e) }}
-                  onBlur={(e) => { callValidation(e) }}
+                  onChange={(e) => maskCnpj(e)}
+                  onBlur={(e) => callValidation(e)}
                   required />
 
                 <textarea
@@ -308,12 +365,28 @@ const NewPostosServices = () => {
                   required />
 
                 <input
+                  id='cidade'
+                  name="cidade"
+                  className="input-info input-info-anuncio"
+                  type="text"
+                  placeholder="Cidade"
+                  required />
+
+                <input
+                  id='uf'
+                  name="uf"
+                  className="input-info input-info-anuncio"
+                  type="text"
+                  placeholder="UF"
+                  required />
+
+                <input
                   name="telefone"
                   className="input-info input-info-anuncio"
                   type="tel"
                   placeholder="Telefone"
                   required
-                  onChange={(e) => { callCheckPhone(e) }}
+                  onChange={(e) => checkPhone(e)}
                   maxLength={15} />
 
                 <span className='span-alert hidden-span-alert alert-foto-anuncio'>
@@ -327,7 +400,7 @@ const NewPostosServices = () => {
                   accept="image/*"
                   onChange={() => { callVerificarFoto('foto-anuncio', 'alert-foto-anuncio', 'btn-foto-anuncio') }} />
                 <button
-                  onClick={() => { addFoto('foto-anuncio') }}
+                  onClick={() => addFoto('foto-anuncio')}
                   id='btn-foto-anuncio'
                   className="btn-foto btn-foto-anuncio"
                   type="button">
