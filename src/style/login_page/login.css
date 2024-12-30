@@ -33,12 +33,10 @@
   margin: 15px 0 15px 0;
 }
 .container-login .form-login .logo-inputs .span-login {
+  text-align: center;
   color: red;
 }
 .container-login .form-login .logo-inputs .span-login-hidden {
-  display: none;
-}
-.container-login .form-login .logo-inputs .span-login-hidden-aprovado {
   display: none;
 }
 .container-login .form-login .logo-inputs .inputs-btns {
