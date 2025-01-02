@@ -1,7 +1,7 @@
 .container-scan-respose {
   height: 100vh;
   width: 100%;
-  padding: 0px 0 30px 0;
+  padding: 0 0 30px 0;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -25,12 +25,20 @@
   transform: scale(0.8);
 }
 .container-scan-respose .container-scan {
-  width: 100%;
+  max-width: 500px;
   height: 100%;
   text-align: center;
 }
 .container-scan-respose .container-scan h1 {
   margin-bottom: 15px;
+}
+.container-scan-respose .container-scan video {
+  width: 100% !important;
+  height: 100% !important;
+}
+.container-scan-respose .container-scan #qr-shaded-region {
+  width: 100% !important;
+  height: 100% !important;
 }
 .container-scan-respose .container-btns {
   width: 100%;
@@ -39,6 +47,8 @@
   flex-flow: row wrap;
   align-items: center;
   justify-content: space-evenly;
+  margin-top: 25px;
+  padding-bottom: 25px;
 }
 .container-scan-respose .container-btns .btn-scan {
   width: 185px;
@@ -59,6 +69,7 @@
   padding: 20px 20px;
   height: 100%;
   width: 100%;
+  max-width: 800px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -73,15 +84,13 @@
   font-weight: 600;
   font-size: 20px;
 }
-.container-scan-respose #dados-do-abastecimento .container-dados-do-motorista {
+.container-scan-respose #dados-do-abastecimento .container-dados-do-motorista,
+.container-scan-respose #dados-do-abastecimento .container-abastecimento {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-.container-scan-respose #dados-do-abastecimento .container-dados-do-motorista,
-.container-scan-respose #dados-do-abastecimento .container-abastecimento {
-  width: 100%;
 }
 .container-scan-respose #dados-do-abastecimento .container-dados-do-motorista .text-container,
 .container-scan-respose #dados-do-abastecimento .container-abastecimento .text-container {
