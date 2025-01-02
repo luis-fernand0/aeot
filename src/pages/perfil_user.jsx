@@ -51,15 +51,15 @@ const PerfilUser = () => {
 
                             <div className="data-user-perfil">
                                 <p className="data-user">Nome:
-                                    <span className="data-user-span"> {dataUser.full_name}</span>
+                                    <span className="data-user-span"> {dataUser.nome}</span>
                                 </p>
 
                                 <p className="data-user">Veiculo:
-                                    <span className="data-user-span"> {dataUser.car_model}</span>
+                                    <span className="data-user-span"> {dataUser.modelo}</span>
                                 </p>
 
                                 <p className="data-user">Placa:
-                                    <span className="data-user-span"> {dataUser.car_plate}</span>
+                                    <span className="data-user-span"> {dataUser.placa}</span>
                                 </p>
                             </div>
                         </div>
