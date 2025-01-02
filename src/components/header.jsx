@@ -24,12 +24,12 @@ const Header = ({ redirectTo }) => {
                     </button>
                 </Link>
 
-                <Link to={`/adicionar_cadastros`}
-                    className={`${typeUser === 'user' ? 'header-btn-hidden' : ''}`}>
-                    <button className='header-btn' type='button'>
-                        <FontAwesomeIcon className='icon-header-btn' icon={faPlus} />
-                    </button>
-                </Link>
+                {typeUser === 'administrador' ?
+                    <Link to={`/adicionar_cadastros`}>
+                        <button className='header-btn' type='button'>
+                            <FontAwesomeIcon className='icon-header-btn' icon={faPlus} />
+                        </button>
+                    </Link> : ''}
 
                 <Link to={'/editar_perfil'}>
                     <button className='header-btn' type="button">
@@ -37,11 +37,12 @@ const Header = ({ redirectTo }) => {
                     </button>
                 </Link>
 
-                <Link to={'/ler_qrcode'}>
-                <button className='header-btn' type="button">
-                        <FontAwesomeIcon className='icon-header-btn' icon={faQrcode} />
-                    </button>
-                </Link>
+                {typeUser === 'administrador' ?
+                    <Link to={'/ler_qrcode'}>
+                        <button className='header-btn' type="button">
+                            <FontAwesomeIcon className='icon-header-btn' icon={faQrcode} />
+                        </button>
+                    </Link> : ''}
             </header>
         </>
     )
