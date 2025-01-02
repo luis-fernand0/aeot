@@ -44,10 +44,10 @@ const GerarQrCode = () => {
 
     function generateQrCode() {
         const qrData = JSON.stringify({
-            usuario: dataUser?.full_name,
+            usuario: dataUser?.nome,
             veiculo: {
-                modelo: dataUser?.car_model,
-                placa: dataUser?.car_plate
+                modelo: dataUser?.modelo,
+                placa: dataUser?.placa
             },
             posto: dataPosto[0]?.nome,
             tipo_combustivel: dataAbastecimento?.tipo_combustivel,
@@ -55,10 +55,12 @@ const GerarQrCode = () => {
             metodo_pagamento: dataAbastecimento?.metodo_pagamento,
             forma_abastecimento: dataAbastecimento?.forma_abastecimento,
             quantidade: dataAbastecimento?.preco_ou_litro,
-            valor_total: calcularPagamento(
-                Number(dataPosto[0][dataAbastecimento.tipo_combustivel]),
-                Number(dataAbastecimento.preco_ou_litro),
-            )
+            valor_total:
+                dataAbastecimento?.forma_abastecimento != 'preco' ? 
+                calcularPagamento(
+                    Number(dataPosto[0][dataAbastecimento.tipo_combustivel]),
+                    Number(dataAbastecimento.preco_ou_litro),
+                ) : dataAbastecimento?.preco_ou_litro
         })
 
         setQrCodeValue(qrData)
@@ -76,7 +78,7 @@ const GerarQrCode = () => {
                         <div className="container-btn-arrow">
                             <Link to={'/abastecimento'}>
                                 <button className="btn-arrow">
-                                    <FontAwesomeIcon className="arrow-icon" icon={faChevronLeft}/>
+                                    <FontAwesomeIcon className="arrow-icon" icon={faChevronLeft} />
                                 </button>
                             </Link>
                         </div>
