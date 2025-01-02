@@ -1,7 +1,13 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash, faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faEyeSlash, faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
+
+import { formatarEmail } from '../functions/formatarEmail'
+
+import Loading from '../components/loading'
+import ModalResponse from '../components/modalResponse'
 
 import '../style/esqueceu_senha_page/esqueceu_senha.css'
 
@@ -12,6 +18,11 @@ const EsqueceuSenha = () => {
         'senha-atual': false,
         'esqueceu-senha-pass': false
     })
+
+    const [loading, setLoading] = useState(false)
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+
     const revealPass = (inputId) => {
         setViewPass((prevState) => ({
             ...prevState,
@@ -44,63 +55,59 @@ const EsqueceuSenha = () => {
         }
     }
 
-    function closeWindowResponse(btnClose) {
-        document.querySelector(`.${btnClose}`).classList.add('container-response-esqueceu-senha-hidden')
-    }
-
-    async function submitForm(event) {
-        event.preventDefault()
+    async function submitForm(e) {
+        e.preventDefault()
+        setLoading(true)
 
         const myForm = document.getElementById('myFormEsqueceuSenha')
         const formData = new FormData(myForm)
         const data = Object.fromEntries(formData)
 
-        const response = await fetch(urlEsqueceuSenha, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        const dataResponse = await response.json()
-        if (response.status != 200 || response.status === 200) {
-            const element = document.querySelector('.container-response-esqueceu-senha')
-            element.classList.remove('container-response-esqueceu-senha-hidden')
+        try {
+            const response = await fetch(urlEsqueceuSenha, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
 
-            const textResponse = document.querySelector('.response-text-esqueceu-senha')
-            console.log(dataResponse.message)
-            textResponse.innerHTML = dataResponse.message
+            const dataResponse = await response.json()
+            
+            if (response.status != 200) {
+                throw new Error(dataResponse.message)
+            }
+
+            setModalMessage(dataResponse.message)
+            setModalVisible(true)
+        } catch (err) {
+            setModalMessage(err.message)
+            setModalVisible(true)
+        } finally {
+            setLoading(false)
         }
+
     }
 
     return (
         <>
+            <Loading loading={loading} />
+            <ModalResponse
+                isVisible={isModalVisible}
+                onClose={() => setModalVisible(false)}
+                message={modalMessage}
+                buttonText="Retornar para a página de login"
+                redirectTo="/"
+            />
             <div className='container-esqueceu-senha'>
-                <div className='container-response-esqueceu-senha container-response-esqueceu-senha-hidden'>
-                    <div className='container-info-response-esqueceu-senha'>
-                        <div className='div-close-alert-response-esqueceu-senha'>
-                            <button onClick={() => { closeWindowResponse('container-response-esqueceu-senha') }} className='btn-close-alert-response-esqueceu-senha'>
-                                X
-                            </button>
-                        </div>
-                        <div className='container-text-esqueceu-senha'>
-                            <p className='response-text-esqueceu-senha'></p>
-
-                            <Link to={'/'}>
-                                <button className='btn-response-esqueceu-senha'>
-                                    Retornar para a pagina de login!
-                                </button>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-                <form id='myFormEsqueceuSenha' className='form-esqueceu-senha' onSubmit={(event) => { submitForm(event) }}>
+                <form id='myFormEsqueceuSenha' className='form-esqueceu-senha' onSubmit={(e) => submitForm(e)}>
                     <div className='div-email-pass-esqueceu-senha'>
                         <Link to={'/'}>
                             <FontAwesomeIcon className='arrow-esqueceu-senha' icon={faArrowLeftLong} />
                         </Link>
 
                         <input
+                            onChange={(e) => formatarEmail(e)}
                             type="email"
                             name="email_esqueceu_senha"
                             id="email-esqueceu-senha"
