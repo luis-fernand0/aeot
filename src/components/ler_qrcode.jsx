@@ -57,14 +57,9 @@ const LerQrCode = () => {
 
     useEffect(() => {
         Html5Qrcode.getCameras()
-            .then((devices) => {
-                if (devices && devices.length > 0) {
-                    devices.map((cameras) => {
-                        if (cameras.label.includes('back')) {
-                            setCamera(cameras.id)
-                            return
-                        }
-                    })
+            .then((cameras) => {
+                if (cameras && cameras.length > 0) {
+                    setCamera(cameras[0].id)
                 }
             })
             .catch((err) => {
