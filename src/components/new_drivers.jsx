@@ -89,7 +89,7 @@ const NewDrivers = () => {
                                     <tr>
                                         <td>
                                             <p>Nome</p>
-                                            <p>{driver.full_name}</p>
+                                            <p>{driver.nome}</p>
                                         </td>
                                         <td>
                                             <p>Email</p>
@@ -97,15 +97,15 @@ const NewDrivers = () => {
                                         </td>
                                         <td>
                                             <p>Telefone</p>
-                                            <p>{driver.phone}</p>
+                                            <p>{driver.telefone}</p>
                                         </td>
                                         <td>
                                             <p>Carro</p>
-                                            <p>{driver.car_model}</p>
+                                            <p>{driver.modelo}</p>
                                         </td>
                                         <td>
                                             <p>Placa</p>
-                                            <p>{driver.car_plate}</p>
+                                            <p>{driver.placa}</p>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -127,11 +127,11 @@ const NewDrivers = () => {
                         </div>
                         <div className="container-text-newdriver">
                             <p className="response-text-newdriver">
-                                <strong>Nome:</strong> {driverDetails.full_name}<br />
+                                <strong>Nome:</strong> {driverDetails.nome}<br />
                                 <strong>Email:</strong> {driverDetails.email}<br />
-                                <strong>Telefone:</strong> {driverDetails.phone}<br />
-                                <strong>Carro:</strong> {driverDetails.car_model}<br />
-                                <strong>Placa:</strong> {driverDetails.car_plate}
+                                <strong>Telefone:</strong> {driverDetails.telefone}<br />
+                                <strong>Carro:</strong> {driverDetails.modelo}<br />
+                                <strong>Placa:</strong> {driverDetails.placa}
                             </p>
 
                             {/* Exibindo as imagens com clique para ampliar */}
@@ -143,12 +143,12 @@ const NewDrivers = () => {
                                     </button>
                                 </div>
                                 <div className="driver-image">
-                                    <button onClick={() => handleImageClick(driverDetails.fotocnh)}>
+                                    <button onClick={() => handleImageClick(driverDetails.cnh)}>
                                         Foto da CNH:
                                     </button>
                                 </div>
                                 <div className="driver-image">
-                                    <button onClick={() => handleImageClick(driverDetails.printappmobi)}>
+                                    <button onClick={() => handleImageClick(driverDetails.print_app)}>
                                         Print do APP:
                                     </button>
                                 </div>
