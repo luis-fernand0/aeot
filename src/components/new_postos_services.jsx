@@ -48,7 +48,9 @@ const NewPostosServices = () => {
   }
 
   function callValidation(e) {
+    console.log(e.target.value)
     const cnpj = e.target.value
+    console.log(cnpj)
 
     if (!validarCnpj(cnpj)) {
       buscarCnpj(validarCnpj(cnpj))
@@ -75,6 +77,7 @@ const NewPostosServices = () => {
   }
   function addValue(infoCnpj) {
     let address = document.getElementById('endereco')
+    console.log(address)
     let city = document.getElementById('cidade')
     let uf = document.getElementById('uf')
 
@@ -96,8 +99,17 @@ const NewPostosServices = () => {
 
     let cnpj = document.getElementById('cnpj')
 
-    if (!fotoValid || !validarCnpj(cnpj.value) || !checkPass('pass', 'confirm-pass', 'pass-alert')) {
+    if (!fotoValid || !validarCnpj(cnpj.value)) {
       setModalMessage('É necessario preencher todos os dados!')
+      setModalVisible(true)
+
+      setLoading(false)
+
+      return
+    }
+
+    if (categoria === 'postos' && !checkPass('pass', 'confirm-pass', 'pass-alert')) {
+      setModalMessage('É necessario que as senhas sejam iguais! Corrija sua senha!')
       setModalVisible(true)
 
       setLoading(false)
@@ -341,13 +353,14 @@ const NewPostosServices = () => {
                   *CPNJ INFORMADO NÃO É VALIDO!
                 </span>
                 <input
+                  onChange={(e) => maskCnpj(e)}
+                  onBlur={(e) => callValidation(e)}
                   name="cnpj"
+                  id='cnpj'
                   className="input-info input-info-anuncio"
                   type="text"
                   placeholder="CNPJ"
                   maxLength={18}
-                  onChange={(e) => maskCnpj(e)}
-                  onBlur={(e) => callValidation(e)}
                   required />
 
                 <textarea
