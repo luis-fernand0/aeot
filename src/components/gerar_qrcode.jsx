@@ -17,6 +17,7 @@ const GerarQrCode = () => {
     const navigate = useNavigate()
 
     const [dataUser, setDataUser] = useState()
+    console.log(dataUser)
 
     const [dataPosto, setDataPosto] = useState(abastecimento.posto || {})
     const [dataAbastecimento, setDataAbastecimento] = useState(abastecimento || {})
@@ -44,11 +45,13 @@ const GerarQrCode = () => {
 
     function generateQrCode() {
         const qrData = JSON.stringify({
+            driver_id: dataUser?.user_id,
             usuario: dataUser?.nome,
             veiculo: {
                 modelo: dataUser?.modelo,
                 placa: dataUser?.placa
             },
+            posto_user_id: dataPosto[0]?.user_id,
             posto: dataPosto[0]?.nome,
             tipo_combustivel: dataAbastecimento?.tipo_combustivel,
             valor_combustivel: dataPosto[0][dataAbastecimento?.tipo_combustivel],
