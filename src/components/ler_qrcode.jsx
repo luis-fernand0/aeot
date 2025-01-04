@@ -29,7 +29,7 @@ const LerQrCode = () => {
 
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
-                video: { facingMode: 'enviroment' }
+                video: { facingMode: 'environment' }
             })
 
             const tracks = stream.getVideoTracks()
@@ -69,7 +69,7 @@ const LerQrCode = () => {
 
                 const rearCamera = videoDevices.find(device =>
                     device.label.toLowerCase().includes('back') ||
-                    device.label.toLowerCase().includes('enviroments')
+                    device.label.toLowerCase().includes('environment')
                 )
 
                 const selectedDeviceId = rearCamera ? rearCamera.deviceId : videoDevices[0].deviceId
