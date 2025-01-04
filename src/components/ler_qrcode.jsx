@@ -1,48 +1,108 @@
 import { Html5Qrcode } from "html5-qrcode"
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 
+import Loading from '../components/loading'
+import ModalResponse from '../components/modalResponse'
+
 import '../style/ler_qrcode_component/ler_qrcode.css'
 
+const urlVenda = import.meta.env.VITE_URL_VENDA
+
 const LerQrCode = () => {
-    const [camera, setCamera] = useState(null)
+    const tokenUser = localStorage.getItem('token')
+    const navigate = useNavigate()
+
     const [scanner, setScanner] = useState(null);
+
     const [result, setResult] = useState(null)
 
-    const startScanning = () => {
-        if (!camera) {
-            alert("Nenhuma câmera foi encotrada no dispositivo ou a permissão foi negada!");
-            return;
+    const [loading, setLoading] = useState(false)
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+
+    const startScanning = async () => {
+        const html5QrCode = new Html5Qrcode("reader")
+
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: 'enviroment' }
+            })
+
+            const tracks = stream.getVideoTracks()
+            const selectedDeviceId = tracks[0].getSettings().deviceId
+
+            document.getElementById('dados-do-abastecimento').setAttribute('hidden', true)
+
+            setScanner(html5QrCode);
+
+            html5QrCode
+                .start(
+                    { deviceId: selectedDeviceId },
+                    {
+                        fps: 10,
+                        qrbox: { width: 250, height: 250 },
+                    },
+                    (decodedText, decodedResult) => {
+                        setResult(JSON.parse(decodedText))
+
+                        document.getElementById('stop-scan').click()
+
+                    },
+                    (errorMessage) => {
+                        console.warn("Erro ao escanear:", errorMessage);
+                    })
+        } catch (err) {
+            console.warn(`Não foi possivel usar o facing mode, tentando fallback: ${err}`)
+
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices()
+                const videoDevices = devices.filter(device => device.kind === 'videoinput')
+
+                if (videoDevices.length === 0) {
+                    alert('Nenhuma câmera foi encotrada no dispositivo!')
+                    return
+                }
+
+                const rearCamera = videoDevices.find(device =>
+                    device.label.toLowerCase().includes('back') ||
+                    device.label.toLowerCase().includes('enviroments')
+                )
+
+                const selectedDeviceId = rearCamera ? rearCamera.deviceId : videoDevices[0].deviceId
+
+                document.getElementById('dados-do-abastecimento').setAttribute('hidden', true)
+
+                setScanner(html5QrCode)
+
+                html5QrCode
+                    .start(
+                        { deviceId: selectedDeviceId },
+                        {
+                            fps: 10,
+                            qrbox: { width: 250, height: 250 },
+                        },
+                        (decodedText, decodedResult) => {
+                            setResult(JSON.parse(decodedText))
+
+                            document.getElementById('stop-scan').click()
+
+                        },
+                        (errorMessage) => {
+                            console.warn("Erro ao escanear:", errorMessage);
+                        })
+            } catch (fallBackErr) {
+                console.error(`Erro ao tentar usar o fallback: ${fallBackErr}`)
+                alert('Não foi possivel acessar nenhuma câmera! Verifique as permissões.')
+
+            }
         }
 
-        document.getElementById('dados-do-abastecimento').setAttribute('hidden', true)
 
-        const html5QrCode = new Html5Qrcode("reader");
-        setScanner(html5QrCode);
-
-        html5QrCode
-            .start(
-                camera,
-                {
-                    fps: 10,
-                    qrbox: { width: 250, height: 250 },
-                },
-                (decodedText, decodedResult) => {
-                    setResult(JSON.parse(decodedText))
-
-                    document.getElementById('stop-scan').click()
-
-                },
-                (errorMessage) => {
-                    console.warn("Erro ao escanear:", errorMessage);
-                }
-            )
-            .catch((err) => {
-                console.error("Erro ao iniciar o scanner:", err);
-            });
-    };
+    }
 
     function stopScanning() {
         if (scanner) {
@@ -53,22 +113,57 @@ const LerQrCode = () => {
             setScanner(null)
             return
         }
-    };
+    }
 
-    useEffect(() => {
-        Html5Qrcode.getCameras()
-            .then((cameras) => {
-                if (cameras && cameras.length > 0) {
-                    setCamera(cameras[0].id)
-                }
+    async function confirmarVenda() {
+        setLoading(true)
+
+        const myForm = new FormData()
+        myForm.append('driver_id', result.driver_id)
+        myForm.append('posto_id', result.posto_user_id)
+        myForm.append('combustivel', result.tipo_combustivel)
+        myForm.append('forma', result.forma_abastecimento)
+        myForm.append('valor', result.valor_combustivel)
+        myForm.append('quantidade', result.quantidade)
+        myForm.append('valor_total', result.valor_total)
+        myForm.append('metodo_pagamento', result.metodo_pagamento)
+
+        const myFormData = Object.fromEntries(myForm)
+
+        try {
+            const response = await fetch(urlVenda, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${tokenUser}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(myFormData)
             })
-            .catch((err) => {
-                console.error("Erro ao obter câmeras:", err);
-            });
-    }, []);
+            const data = await response.json()
+            if (response.status === 403) {
+                navigate('/', { replace: true })
+                return
+            }
+
+            setModalMessage(data.message)
+            setModalVisible(true)
+            setResult(null)
+        } catch (err) {
+            setModalMessage(`Ocorreu um erro inesperado! ${err.message}`)
+            setModalVisible(true)
+        } finally {
+            setLoading(false)
+        }
+    }
 
     return (
         <>
+            <Loading loading={loading} />
+            <ModalResponse
+                isVisible={isModalVisible}
+                onClose={() => setModalVisible(false)}
+                message={modalMessage}
+            />
             <div className="container-scan-respose">
                 <div className="container-btn-arrow">
                     <Link to={'/home'}>
@@ -77,7 +172,7 @@ const LerQrCode = () => {
                         </button>
                     </Link>
                 </div>
-                
+
                 <div className="container-scan">
                     <h1>Leitor de QR Code</h1>
                     <div id="reader"></div>
@@ -166,7 +261,9 @@ const LerQrCode = () => {
                                 </p>
                             </div>
 
-                            <button className="btn-abastecido">
+                            <button
+                                onClick={() => confirmarVenda()}
+                                className="btn-abastecido">
                                 Abastecido!
                             </button>
                         </>
@@ -185,5 +282,4 @@ const LerQrCode = () => {
         </>
     )
 }
-
 export default LerQrCode
