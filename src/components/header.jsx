@@ -6,8 +6,7 @@ import '../style/header_component/header.css'
 
 const Header = ({ redirectTo }) => {
     const typeUser = localStorage.getItem('type_user')
-    console.log(typeUser)
-
+    
     return (
         <>
             <header className="header-home">
