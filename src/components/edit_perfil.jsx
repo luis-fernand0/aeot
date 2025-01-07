@@ -33,21 +33,20 @@ const EditPerfil = () => {
         setUser(data)
     }
 
-    function anexarFoto(input) {document.getElementById(input).click()}
+    function anexarFoto(input) { document.getElementById(input).click() }
     function checkFoto(e) {
         const foto = e.target.files[0]
-        const novaFoto = document.getElementById('new-foto-user')//pegando o elemento que vai mostrar a nova foto no modal
-
+        const novaFoto = document.getElementById('new-foto-user')
         if (foto) {
-            const reader = new FileReader()//lib para criar uma url temporaria
+            const reader = new FileReader()
             reader.onload = (e) => {
-                novaFoto.src = e.target.result //atribuindo a url temporaria ao atributo da src da tag img que mostra a nova foto no modal
+                novaFoto.src = e.target.result
             }
             reader.readAsDataURL(foto)
 
             document.querySelector('.modal-confirm').classList.remove('modal-confirm-hidden')
 
-            comprimirFoto('edit_foto')//passando o id do input que está armazenando a foto como argumento para a função que comprimi a foto
+            comprimirFoto('edit_foto')
         }
 
         return
