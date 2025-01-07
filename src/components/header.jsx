@@ -17,12 +17,15 @@ const Header = ({ redirectTo }) => {
                     </button>
                 </Link>
 
-                <Link to={'/perfil'}>
-                    <button className='header-btn header-btn-perfil' type="button">
-                        <FontAwesomeIcon className='icon-header-btn' icon={faUser} />
-                        Cartão de visita
-                    </button>
-                </Link>
+                {typeUser === 'administrador' || typeUser === 'driver' && (
+                    <Link to={'/perfil'}>
+                        <button className='header-btn header-btn-perfil' type="button">
+                            <FontAwesomeIcon className='icon-header-btn' icon={faUser} />
+                            Cartão de visita
+                        </button>
+                    </Link>
+
+                )}
 
                 {typeUser === 'administrador' ?
                     <Link to={`/adicionar_cadastros`}>
@@ -37,12 +40,13 @@ const Header = ({ redirectTo }) => {
                     </button>
                 </Link>
 
-                {typeUser === 'administrador' ?
+                {typeUser != 'driver' && (
                     <Link to={'/ler_qrcode'}>
                         <button className='header-btn' type="button">
                             <FontAwesomeIcon className='icon-header-btn' icon={faQrcode} />
                         </button>
-                    </Link> : ''}
+                    </Link>
+                )}
             </header>
         </>
     )
