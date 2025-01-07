@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFlagCheckered, faClock } from '@fortawesome/free-solid-svg-icons'
 
+import Loading from '../components/loading'
+import ModalResponse from '../components/modalResponse'
 import Header from '../components/header';
 
 import '../style/home_page/home.css'
@@ -17,25 +20,38 @@ const Home = () => {
   const [local, setLocal] = useState(null)
   const [distancia, setDistancia] = useState({})
 
+  const [loading, setLoading] = useState(false)
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+
   const navigate = useNavigate()
 
   const tokenUser = localStorage.getItem('token');
+  const typerUser = localStorage.getItem('type_user')
 
   async function gasStation() {
-    const response = await fetch(urlDatas, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${tokenUser}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(categoria)
-    })
-    const data = await response.json()
-    if (response.status === 403) {
-      navigate('/', { replace: true })
+    setLoading(true)
+    try {
+      const response = await fetch(urlDatas, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${tokenUser}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(categoria)
+      })
+      const data = await response.json()
+      if (response.status === 403) {
+        navigate('/', { replace: true })
+      }
+      obterLocation()
+      setPostos(data.infoGasStation)
+    } catch (err) {
+      setModalMessage(err.message)
+      setModalVisible(true)
+    } finally {
+      setLoading(false)
     }
-    obterLocation()
-    setPostos(data.infoGasStation)
   }
 
   function obterLocation() {
@@ -118,111 +134,120 @@ const Home = () => {
 
   return (
     <>
+      <Loading loading={loading} />
+      <ModalResponse
+        isVisible={isModalVisible}
+        onClose={() => setModalVisible(false)}
+        message={modalMessage}
+      />
       <div className="container-home">
         <Header redirectTo={'/'} />
 
-        <h2 className='title-home'>Todos os anuncios</h2>
+        {typerUser != 'posto' && (
+          <>
+            <h2 className='title-home'>Todos os anuncios</h2>
+            <div className='btns-ul'>
+              <div className='btns-fuel-services'>
+                <button onClick={() => { setCategoria({ categoria: 'postos' }) }}
+                  className={`btn-option btn-combustivel ${categoria.categoria === 'postos' ? 'checked' : ''}`} type="button">
+                  Postos de Combustiveis
+                </button>
 
-        <div className='btns-ul'>
-          <div className='btns-fuel-services'>
-            <button onClick={() => { setCategoria({ categoria: 'postos' }) }}
-              className={`btn-option btn-combustivel ${categoria.categoria === 'postos' ? 'checked' : ''}`} type="button">
-              Postos de Combustiveis
-            </button>
+                <button onClick={() => { setCategoria({ categoria: 'anuncios' }) }}
+                  className={`btn-option btn-services ${categoria.categoria === 'anuncios' ? 'checked' : ''}`} type="button">
+                  Serviços
+                </button>
+              </div>
 
-            <button onClick={() => { setCategoria({ categoria: 'anuncios' }) }}
-              className={`btn-option btn-services ${categoria.categoria === 'anuncios' ? 'checked' : ''}`} type="button">
-              Serviços
-            </button>
-          </div>
+              <ul className='ul-gas-services'>
 
-          <ul className='ul-gas-services'>
+                {categoria.categoria === 'postos' && postos && postos.map((posto) =>
+                  <li onClick={() => { detalhes(posto, distancia[posto.cod_posto], local, categoria) }}
+                    className='gas-services'
+                    key={posto.cod_posto}>
 
-            {categoria.categoria === 'postos' && postos && postos.map((posto) =>
-              <li onClick={() => { detalhes(posto, distancia[posto.cod_posto], local, categoria) }}
-                className='gas-services'
-                key={posto.cod_posto}>
-                  
-                <div className='container-img-title'>
-                  <div className='container-img'>
-                    <img className='img-gas-services' src={`https://aeotnew.s3.amazonaws.com/${posto.foto}`} alt="imagem-do-posto-de-gasolina" />
-                  </div>
+                    <div className='container-img-title'>
+                      <div className='container-img'>
+                        <img className='img-gas-services' src={`https://aeotnew.s3.amazonaws.com/${posto.foto}`} alt="imagem-do-posto-de-gasolina" />
+                      </div>
 
-                  <div className='container-title-endereco'>
-                    <h3 className='title-gas-services'>
-                      {posto.nome}
-                    </h3>
+                      <div className='container-title-endereco'>
+                        <h3 className='title-gas-services'>
+                          {posto.nome}
+                        </h3>
 
-                    <p className='endereco-gas-services'>
-                      {posto.endereco}
-                    </p>
-                  </div>
-                </div>
-                <div className='info-gas-services'>
-                  <p className='combustiveis-gas-station'>
-                    ETANOL: R$ {posto.etanol}
-                  </p>
-                  <p className='combustiveis-gas-station'>
-                    GASOLINA: R$ {posto.gasolina}
-                  </p>
-                  <p className='combustiveis-gas-station'>
-                    DIESEL: R$ {posto.diesel}
-                  </p>
-                  {distancia[posto.cod_posto] && (
-                    <div className='container-km-time'>
-                      <p className='km km-time'>
-                        <FontAwesomeIcon icon={faFlagCheckered} style={{ color: "#4caf50", }} /> {distancia[posto.cod_posto].distancia}
-                      </p>
-
-                      <p className='time km-time'>
-                        <FontAwesomeIcon icon={faClock} style={{ color: "#4caf50", }} /> {distancia[posto.cod_posto].tempo}
-                      </p>
+                        <p className='endereco-gas-services'>
+                          {posto.endereco}
+                        </p>
+                      </div>
                     </div>
-                  )}
-                </div>
-              </li>
-            )}
-
-            {categoria.categoria === 'anuncios' && postos && postos.map((anuncio) =>
-              <li
-                onClick={() => { detalhes(anuncio, distancia[anuncio.cod_anuncio], local, categoria) }} className='gas-services'
-                key={anuncio.cod_anuncio}>
-                <div className='container-img-title'>
-                  <div className='container-img'>
-                    <img className='img-gas-services' src={`https://aeotnew.s3.amazonaws.com/${anuncio.foto}`} alt="imagem-do-posto-de-gasolina" />
-                  </div>
-
-                  <div className='container-title-endereco'>
-                    <h3 className='title-gas-services'>
-                      {anuncio.titulo_anuncio}
-                    </h3>
-
-                    <p className='endereco-gas-services'>
-                      {anuncio.endereco}
-                    </p>
-                  </div>
-                </div>
-                <div className='info-gas-services'>
-                  <p className='descricao-services'>
-                    {anuncio.descricao}
-                  </p>
-
-                  {distancia[anuncio.cod_anuncio] && (
-                    <div className='container-km-time'>
-                      <p className='km km-time'>
-                        <FontAwesomeIcon icon={faFlagCheckered} style={{ color: "#4caf50", }} /> {distancia[anuncio.cod_anuncio].distancia}
+                    <div className='info-gas-services'>
+                      <p className='combustiveis-gas-station'>
+                        ETANOL: R$ {posto.etanol}
                       </p>
-
-                      <p className='time km-time'>
-                        <FontAwesomeIcon icon={faClock} style={{ color: "#4caf50", }} /> {distancia[anuncio.cod_anuncio].tempo}
+                      <p className='combustiveis-gas-station'>
+                        GASOLINA: R$ {posto.gasolina}
                       </p>
+                      <p className='combustiveis-gas-station'>
+                        DIESEL: R$ {posto.diesel}
+                      </p>
+                      {distancia[posto.cod_posto] && (
+                        <div className='container-km-time'>
+                          <p className='km km-time'>
+                            <FontAwesomeIcon icon={faFlagCheckered} style={{ color: "#4caf50", }} /> {distancia[posto.cod_posto].distancia}
+                          </p>
+
+                          <p className='time km-time'>
+                            <FontAwesomeIcon icon={faClock} style={{ color: "#4caf50", }} /> {distancia[posto.cod_posto].tempo}
+                          </p>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              </li>
-            )}
-          </ul>
-        </div>
+                  </li>
+                )}
+
+                {categoria.categoria === 'anuncios' && postos && postos.map((anuncio) =>
+                  <li
+                    onClick={() => { detalhes(anuncio, distancia[anuncio.cod_anuncio], local, categoria) }} className='gas-services'
+                    key={anuncio.cod_anuncio}>
+                    <div className='container-img-title'>
+                      <div className='container-img'>
+                        <img className='img-gas-services' src={`https://aeotnew.s3.amazonaws.com/${anuncio.foto}`} alt="imagem-do-posto-de-gasolina" />
+                      </div>
+
+                      <div className='container-title-endereco'>
+                        <h3 className='title-gas-services'>
+                          {anuncio.titulo_anuncio}
+                        </h3>
+
+                        <p className='endereco-gas-services'>
+                          {anuncio.endereco}
+                        </p>
+                      </div>
+                    </div>
+                    <div className='info-gas-services'>
+                      <p className='descricao-services'>
+                        {anuncio.descricao}
+                      </p>
+
+                      {distancia[anuncio.cod_anuncio] && (
+                        <div className='container-km-time'>
+                          <p className='km km-time'>
+                            <FontAwesomeIcon icon={faFlagCheckered} style={{ color: "#4caf50", }} /> {distancia[anuncio.cod_anuncio].distancia}
+                          </p>
+
+                          <p className='time km-time'>
+                            <FontAwesomeIcon icon={faClock} style={{ color: "#4caf50", }} /> {distancia[anuncio.cod_anuncio].tempo}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </li>
+                )}
+              </ul>
+            </div>
+          </>
+        )}
       </div>
     </>
   )
