@@ -6,6 +6,7 @@ import '../style/header_component/header.css'
 
 const Header = ({ redirectTo }) => {
     const typeUser = localStorage.getItem('type_user')
+    console.log(typeUser)
 
     return (
         <>
@@ -17,7 +18,7 @@ const Header = ({ redirectTo }) => {
                     </button>
                 </Link>
 
-                {typeUser === 'administrador' || typeUser === 'driver' && (
+                {(typeUser === 'driver' || typeUser === 'administrador') && (
                     <Link to={'/perfil'}>
                         <button className='header-btn header-btn-perfil' type="button">
                             <FontAwesomeIcon className='icon-header-btn' icon={faUser} />
@@ -27,18 +28,22 @@ const Header = ({ redirectTo }) => {
 
                 )}
 
-                {typeUser === 'administrador' ?
+                {(typeUser === 'administrador' || typeUser === 'posto') && (
                     <Link to={`/adicionar_cadastros`}>
                         <button className='header-btn' type='button'>
                             <FontAwesomeIcon className='icon-header-btn' icon={faPlus} />
                         </button>
-                    </Link> : ''}
+                    </Link>
 
-                <Link to={'/editar_perfil'}>
-                    <button className='header-btn' type="button">
-                        <FontAwesomeIcon className='icon-header-btn' icon={faLock} />
-                    </button>
-                </Link>
+                )}
+
+                {(typeUser === 'administrador' || typeUser === 'driver') && (
+                    <Link to={'/editar_perfil'}>
+                        <button className='header-btn' type="button">
+                            <FontAwesomeIcon className='icon-header-btn' icon={faLock} />
+                        </button>
+                    </Link>
+                )}
 
                 {typeUser != 'driver' && (
                     <Link to={'/ler_qrcode'}>
