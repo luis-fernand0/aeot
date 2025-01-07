@@ -112,13 +112,14 @@ const Detalhes = () => {
                 <p id='valor-etanol' className='combustivel-posto'>
                   Etanol: R$ {detalhe.etanol}
                 </p>
-                {typeUser === 'administrador' ?
+
+                {(typeUser === 'administrador' || typeUser === 'posto') && (
                   <button
-                    onClick={() => { modalEditCombustivel(detalhe.etanol, 'etanol') }}
-                    type="button"
-                    className={`${typeUser === 'user' ? 'edit-combustivel-hidden' : 'edit-combustivel'}`}>
+                    onClick={() => { modalEditCombustivel(detalhe.gasolina, 'gasolina') }} type="button"
+                    className='edit-combustivel'>
                     <FontAwesomeIcon className='pen-icon' icon={faPen} />
-                  </button> : ''}
+                  </button>
+                )}
               </div>
 
               <div className='container-edit-combustivel'>
@@ -126,25 +127,27 @@ const Detalhes = () => {
                   Gasolina: R$ {detalhe.gasolina}
                 </p>
 
-                {typeUser === 'administrador' ?
+                {(typeUser === 'administrador' || typeUser === 'posto') && (
                   <button
                     onClick={() => { modalEditCombustivel(detalhe.gasolina, 'gasolina') }} type="button"
-                    className={`${typeUser === 'user' ? 'edit-combustivel-hidden' : 'edit-combustivel'}`}>
+                    className='edit-combustivel'>
                     <FontAwesomeIcon className='pen-icon' icon={faPen} />
                   </button>
-                  : ''}
+                )}
               </div>
 
               <div className='container-edit-combustivel'>
                 <p id='valor-diesel' className='combustivel-posto'>
                   Diesel: R$ {detalhe.diesel}
                 </p>
-                {typeUser === 'administrador' ?
+                
+                {(typeUser === 'administrador' || typeUser === 'posto') && (
                   <button
-                    onClick={() => { modalEditCombustivel(detalhe.diesel, 'diesel') }} type="button"
-                    className={`${typeUser === 'user' ? 'edit-combustivel-hidden' : 'edit-combustivel'}`}>
+                    onClick={() => { modalEditCombustivel(detalhe.gasolina, 'gasolina') }} type="button"
+                    className='edit-combustivel'>
                     <FontAwesomeIcon className='pen-icon' icon={faPen} />
-                  </button> : ''}
+                  </button>
+                )}
               </div>
             </div>
             <div className='container-km-time-btn'>
