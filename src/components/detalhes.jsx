@@ -22,8 +22,8 @@ const Detalhes = () => {
   const [local, setLocal] = useState(itens[2] || {})
   const [categoria, setCategoria] = useState(itens[3] || {})
 
-  const [editCombustivel, setEditCombustivel] = useState(false)
-  const [combustivelInfo, setCombustivelInfo] = useState({})
+  const [editPosto, setEditPosto] = useState(false)
+  const [inputInfo, setInputInfo] = useState({})
 
   const [loading, setLoading] = useState(false)
   const [isModalVisible, setModalVisible] = useState(false);
@@ -32,11 +32,9 @@ const Detalhes = () => {
   const tokenUser = localStorage.getItem('token');
   const typeUser = localStorage.getItem('type_user')
 
-  const callCheckValor = (e) => checkValor(e)
-
-  function modalEditCombustivel(valor_combustivel, type_combustivel) {
-    setEditCombustivel(true)
-    setCombustivelInfo({ valor_combustivel, type_combustivel })
+  function modalEditPosto(value_input, type_input) {
+    setEditPosto(true)
+    setInputInfo({ value_input, type_input })
   }
 
   function abrirMaps(endereco) {
@@ -49,8 +47,8 @@ const Detalhes = () => {
     window.open(mapsUrl, '_blank');
   }
 
-  async function editarCombustivel(combustivel, posto) {
-    const valor = document.getElementById(combustivel).value
+  async function editarPosto(type_input, posto) {
+    const valor = document.getElementById(type_input).value
     setLoading(true)
 
     try {
@@ -60,7 +58,7 @@ const Detalhes = () => {
           'Authorization': `Bearer ${tokenUser}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ combustivel, valor, cod_posto: posto })
+        body: JSON.stringify({ type_input, valor, cod_posto: posto })
       })
       const data = await response.json()
 
@@ -77,7 +75,7 @@ const Detalhes = () => {
       setDetalhe(data.query)
       setModalMessage(data.message)
       setModalVisible(true)
-      setEditCombustivel(false)
+      setEditPosto(false)
 
     } catch (err) {
       setModalMessage(`Ocorreu um erro inesperado. Tente novamente mais tarde.` + err.message)
@@ -106,7 +104,21 @@ const Detalhes = () => {
             </div>
             <div className="container-sobre-item">
               <p className='info-item item-descricao'>{detalhe.descricao}</p>
+              {(typeUser === 'administrador' || typeUser === 'posto') && (
+                  <button
+                    onClick={() => { modalEditPosto(detalhe.descricao, 'descricao') }} type="button"
+                    className='edit-combustivel'>
+                    <FontAwesomeIcon className='pen-icon' icon={faPen} />
+                  </button>
+                )}
               <p className='info-item item-endereco'>{detalhe.endereco}</p>
+              {(typeUser === 'administrador' || typeUser === 'posto') && (
+                  <button
+                    onClick={() => { modalEditPosto(detalhe.endereco, 'endereco') }} type="button"
+                    className='edit-combustivel'>
+                    <FontAwesomeIcon className='pen-icon' icon={faPen} />
+                  </button>
+                )}
 
               <div className='container-edit-combustivel'>
                 <p id='valor-etanol' className='combustivel-posto'>
@@ -115,7 +127,7 @@ const Detalhes = () => {
 
                 {(typeUser === 'administrador' || typeUser === 'posto') && (
                   <button
-                    onClick={() => { modalEditCombustivel(detalhe.gasolina, 'gasolina') }} type="button"
+                    onClick={() => { modalEditPosto(detalhe.etanol, 'etanol') }} type="button"
                     className='edit-combustivel'>
                     <FontAwesomeIcon className='pen-icon' icon={faPen} />
                   </button>
@@ -129,7 +141,7 @@ const Detalhes = () => {
 
                 {(typeUser === 'administrador' || typeUser === 'posto') && (
                   <button
-                    onClick={() => { modalEditCombustivel(detalhe.gasolina, 'gasolina') }} type="button"
+                    onClick={() => { modalEditPosto(detalhe.gasolina, 'gasolina') }} type="button"
                     className='edit-combustivel'>
                     <FontAwesomeIcon className='pen-icon' icon={faPen} />
                   </button>
@@ -143,7 +155,7 @@ const Detalhes = () => {
                 
                 {(typeUser === 'administrador' || typeUser === 'posto') && (
                   <button
-                    onClick={() => { modalEditCombustivel(detalhe.gasolina, 'gasolina') }} type="button"
+                    onClick={() => { modalEditPosto(detalhe.diesel, 'diesel') }} type="button"
                     className='edit-combustivel'>
                     <FontAwesomeIcon className='pen-icon' icon={faPen} />
                   </button>
@@ -208,14 +220,14 @@ const Detalhes = () => {
         )}
       </div>
 
-      {editCombustivel && (
+      {editPosto && (
 
         <div id='editar_combustivel' className='container-modal-edit-combustivel'>
 
           <div className='modal-edit-combustivel'>
 
             <div className='container-close-modal'>
-              <button onClick={() => { setEditCombustivel(false) }} type="button" className='btn-close-modal'>
+              <button onClick={() => { setEditPosto(false) }} type="button" className='btn-close-modal'>
                 <FontAwesomeIcon className='x-icon' icon={faXmark} />
               </button>
             </div>
@@ -225,14 +237,14 @@ const Detalhes = () => {
               <input
                 className='input-edit-combustivel'
                 type="text"
-                name={combustivelInfo.type_combustivel}
-                id={combustivelInfo.type_combustivel}
-                placeholder={combustivelInfo.valor_combustivel}
-                onChange={(e) => { callCheckValor(e) }} />
+                name={inputInfo.type_input}
+                id={inputInfo.type_input}
+                placeholder={inputInfo.value_input}
+                onChange={(e) => checkValor(e)} />
               <button
                 className='btn-edit-combustivel'
                 type="button"
-                onClick={() => { editarCombustivel(combustivelInfo.type_combustivel, detalhe.cod_posto) }}>
+                onClick={() => { editarPosto(inputInfo.type_input, detalhe.cod_posto) }}>
                 Salvar
               </button>
             </div>
