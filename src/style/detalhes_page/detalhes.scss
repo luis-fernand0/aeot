@@ -17,43 +17,67 @@
         .title-item {
             font-size: 24px;
             font-weight: 500;
+            text-align: center;
 
             margin-bottom: 50px;
         }
 
-        .foto-item {
-            width: 250px;
-            border-radius: 15px;
+        .container-div-foto-btn {
+            height: 100%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .container-foto-btn {
+                .foto-item {
+                    width: 250px;
+                    border-radius: 15px;
+                }
+
+                .container-btn-edit-foto {
+
+                    .input-edit-foto {
+                        display: none;
+                    }
+
+                    .btn-edit-foto {
+                        background-color: #fff100;
+
+                        border: none;
+                        border-radius: 100%;
+
+                        width: 40px;
+                        height: 40px;
+
+                        translate: 225px -25px;
+                        transition: 0.3s linear;
+
+                        &:hover {
+                            background-color: #14181b;
+                            color: #fff;
+                        }
+
+                        .pen-icon {
+                            width: 15px;
+                            height: 15px;
+                        }
+                    }
+                }
+            }
+
+
         }
     }
 
     .container-sobre-item {
+
         width: 60%;
 
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-
-        .info-item {
-            margin-bottom: 25px;
-
-            color: #666;
-            text-align: center;
-        }
-    }
-
-    .container-edit-combustivel {
-        width: 100%;
-
-        margin-bottom: 25px;
-
-        color: #333;
-        font-weight: bold;
-
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
 
         .edit-combustivel {
             background-color: #4CAF50;
@@ -70,8 +94,34 @@
             }
         }
 
-        .edit-combustivel-hidden {
-            display: none;
+        .container-info-item {
+            margin-bottom: 15px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            .info-item {
+                margin-bottom: 15px;
+
+                color: #666;
+                text-align: center;
+            }
+        }
+
+        .container-edit-combustivel {
+
+            width: 100%;
+
+            margin-bottom: 25px;
+
+            color: #333;
+            font-weight: bold;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
         }
     }
 
@@ -155,10 +205,10 @@
     }
 }
 
-.container-modal-edit-combustivel {
+.container-modal-edit-posto {
     position: fixed;
     top: 0;
-    
+
     width: 100%;
     height: 100%;
 
@@ -170,7 +220,7 @@
 
     z-index: 3;
 
-    .modal-edit-combustivel {
+    .modal-edit-posto {
         background-color: #fff;
 
         width: 90%;
@@ -203,10 +253,10 @@
             }
         }
 
-        .container-input-edit-combustivel {
+        .container-input-edit-posto {
             margin-top: 20px;
 
-            .input-edit-combustivel {
+            .input-edit-posto {
                 width: 80%;
 
                 padding: 10px;
@@ -224,7 +274,7 @@
                 }
             }
 
-            .btn-edit-combustivel {
+            .btn-edit-posto {
                 background-color: #4CAF50;
 
                 color: #fff;
@@ -246,13 +296,93 @@
     }
 }
 
+.modal-confirm {
+    position: absolute;
+    z-index: 2;
+
+    background-color: rgba(0, 0, 0, 0.253);
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .container-imgs-btns-text {
+        background-color: #fff;
+
+        width: 90%;
+        height: 90%;
+
+        padding: 15px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+
+        box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
+
+        border-radius: 15px;
+
+        .foto-posto {
+            width: 90%; max-width: 250px;
+            
+            border-radius: 15px;
+        }
+
+        .container-text {
+            text-align: center;
+        }
+
+        .container-btns-enviar-img {
+            width: 100%;
+
+            display: flex;
+            justify-content: space-around;
+
+            .btn-enviar-img {
+                width: 40%;
+                height: 40px;
+
+                border: none;
+                border-radius: 5px;
+
+                transition: 0.3s linear;
+            }
+
+            .btn-sim {
+                background-color: #00ff73;
+
+                &:hover {
+                    background-color: #74e9a9;
+                }
+            }
+
+            .btn-nao {
+                background-color: rgb(231, 84, 84);
+
+                &:hover {
+                    background-color: rgb(252, 142, 142);
+                }
+            }
+        }
+    }
+
+}
+
+.modal-confirm-hidden {
+    display: none;
+}
+
 @media screen and (max-width: 768px) {
 
     .container-modal-edit-posto,
-    .container-modal-edit-combustivel {
+    .container-modal-edit-posto {
 
         .modal-edit-posto,
-        .modal-edit-combustivel {
+        .modal-edit-posto {
             width: 95%;
             padding: 15px;
 
@@ -261,7 +391,7 @@
                 height: 80px;
             }
 
-            .container-input-edit-combustivel input {
+            .container-input-edit-posto input {
                 width: 100%;
             }
         }
@@ -271,11 +401,11 @@
 @media screen and (max-width: 480px) {
 
     .container-modal-edit-posto,
-    .container-modal-edit-combustivel {
+    .container-modal-edit-posto {
 
         .modal-edit-posto,
-        .modal-edit-combustivel {
-            .modal-edit-combustivel button {
+        .modal-edit-posto {
+            .modal-edit-posto button {
                 padding: 8px 15px;
             }
         }
