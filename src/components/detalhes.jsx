@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faGasPump, faPen, faFlagCheckered, faClock } from '@fortawesome/free-solid-svg-icons'
 
 import { checkValor } from "../functions/checkValor";
+import { comprimirFoto } from "../functions/comprimirFoto";
 
 import Header from "./header";
 import Loading from "./loading"
@@ -12,6 +13,7 @@ import ModalResponse from "./modalResponse";
 import '../style/detalhes_page/detalhes.css'
 
 const urlEditCombustivel = import.meta.env.VITE_URL_ATUALIZAR_COMBUSTIVEL
+const urlAtualizarFoto = import.meta.env.VITE_URL_ATUALIZAR_FOTO_USER
 
 
 const Detalhes = () => {
@@ -105,12 +107,13 @@ const Detalhes = () => {
     return
   }
 
-  async function changeFoto(input) {
+  async function changeFoto(input, cod) {
     const fileInput = document.getElementById(input)
     const file = fileInput.files[0]
 
     const formData = new FormData()
     formData.append('foto_posto', file)
+    formData.append('cod_user', cod)
 
     const response = await fetch(urlAtualizarFoto, {
       method: 'PUT',
@@ -144,7 +147,7 @@ const Detalhes = () => {
         message={modalMessage}
       />
       <div className='container-item'>
-        {categoria.categoria === 'postos' && (
+        {categoria && (
           <>
             <div className="container-title-foto">
               <h1 className='title-item'>{detalhe.nome}</h1>
@@ -190,47 +193,51 @@ const Detalhes = () => {
                 )}
               </div>
 
-              <div className='container-edit-combustivel'>
-                <p id='valor-etanol' className='combustivel-posto'>
-                  Etanol: R$ {detalhe.etanol}
-                </p>
+              {categoria.categoria === 'postos' && (
+                <>
+                  <div className='container-edit-combustivel'>
+                    <p id='valor-etanol' className='combustivel-posto'>
+                      Etanol: R$ {detalhe.etanol}
+                    </p>
 
-                {(typeUser === 'administrador' || typeUser === 'posto') && (
-                  <button
-                    onClick={() => { modalEditPosto(detalhe.etanol, 'etanol') }} type="button"
-                    className='edit-combustivel'>
-                    <FontAwesomeIcon className='pen-icon' icon={faPen} />
-                  </button>
-                )}
-              </div>
+                    {(typeUser === 'administrador' || typeUser === 'posto') && (
+                      <button
+                        onClick={() => { modalEditPosto(detalhe.etanol, 'etanol') }} type="button"
+                        className='edit-combustivel'>
+                        <FontAwesomeIcon className='pen-icon' icon={faPen} />
+                      </button>
+                    )}
+                  </div>
 
-              <div className='container-edit-combustivel'>
-                <p id='valor-gasolina' className='combustivel-posto'>
-                  Gasolina: R$ {detalhe.gasolina}
-                </p>
+                  <div className='container-edit-combustivel'>
+                    <p id='valor-gasolina' className='combustivel-posto'>
+                      Gasolina: R$ {detalhe.gasolina}
+                    </p>
 
-                {(typeUser === 'administrador' || typeUser === 'posto') && (
-                  <button
-                    onClick={() => { modalEditPosto(detalhe.gasolina, 'gasolina') }} type="button"
-                    className='edit-combustivel'>
-                    <FontAwesomeIcon className='pen-icon' icon={faPen} />
-                  </button>
-                )}
-              </div>
+                    {(typeUser === 'administrador' || typeUser === 'posto') && (
+                      <button
+                        onClick={() => { modalEditPosto(detalhe.gasolina, 'gasolina') }} type="button"
+                        className='edit-combustivel'>
+                        <FontAwesomeIcon className='pen-icon' icon={faPen} />
+                      </button>
+                    )}
+                  </div>
 
-              <div className='container-edit-combustivel'>
-                <p id='valor-diesel' className='combustivel-posto'>
-                  Diesel: R$ {detalhe.diesel}
-                </p>
+                  <div className='container-edit-combustivel'>
+                    <p id='valor-diesel' className='combustivel-posto'>
+                      Diesel: R$ {detalhe.diesel}
+                    </p>
 
-                {(typeUser === 'administrador' || typeUser === 'posto') && (
-                  <button
-                    onClick={() => { modalEditPosto(detalhe.diesel, 'diesel') }} type="button"
-                    className='edit-combustivel'>
-                    <FontAwesomeIcon className='pen-icon' icon={faPen} />
-                  </button>
-                )}
-              </div>
+                    {(typeUser === 'administrador' || typeUser === 'posto') && (
+                      <button
+                        onClick={() => { modalEditPosto(detalhe.diesel, 'diesel') }} type="button"
+                        className='edit-combustivel'>
+                        <FontAwesomeIcon className='pen-icon' icon={faPen} />
+                      </button>
+                    )}
+                  </div>
+                </>
+              )}
             </div>
 
             <div className='container-km-time-btn'>
@@ -259,36 +266,6 @@ const Detalhes = () => {
             </div>
           </>
         )}
-
-        {categoria.categoria === 'anuncios' && (
-          <>
-            <div className="container-title-foto">
-              <h1 className='title-item'>{detalhe.titulo_anuncio}</h1>
-              <img src={`https://aeotnew.s3.amazonaws.com/${detalhe.foto}`} alt="foto_item" className='foto-item' />
-            </div>
-            <div className="container-sobre-item">
-              <p className='info-item item-descricao'>{detalhe.descricao}</p>
-              <p className='info-item item-endereco'>{detalhe.endereco}</p>
-            </div>
-
-            <div className='container-km-time-btn'>
-              {distancia.id && (
-                <div className='container-km-time'>
-                  <p className='km km-time'>
-                    <FontAwesomeIcon className="icon-km" icon={faFlagCheckered} style={{ color: "#4caf50", }} /> {distancia.distancia}
-                  </p>
-
-                  <p className='time km-time'>
-                    <FontAwesomeIcon className="icon-time" icon={faClock} style={{ color: "#4caf50", }} /> {distancia.tempo}
-                  </p>
-                </div>
-              )}
-              <div className='container-btn-abrir-maps'>
-                <button className='btn-abrir-maps' onClick={() => { abrirMaps(detalhe.endereco) }} type="button">Abrir no Maps?</button>
-              </div>
-            </div>
-          </>
-        )}
       </div>
 
       <div className='modal-confirm modal-confirm-hidden'>
@@ -299,8 +276,8 @@ const Detalhes = () => {
           <img src="" alt="foto-posto" className='foto-posto' id='new-foto-posto' />
 
           <div className='container-btns-enviar-img'>
-            <button onClick={() => { changeFoto('edit_foto') }} className='btn-enviar-img btn-sim' type="button">Sim</button>
-            <button onClick={() => { cancelFoto() }} className='btn-enviar-img btn-nao' type="button">Não</button>
+            <button onClick={() => changeFoto('edit_foto', detalhe.cod_posto)} className='btn-enviar-img btn-sim' type="button">Sim</button>
+            <button onClick={() => cancelFoto()} className='btn-enviar-img btn-nao' type="button">Não</button>
           </div>
         </div>
       </div>
@@ -312,7 +289,7 @@ const Detalhes = () => {
           <div className='modal-edit-posto'>
 
             <div className='container-close-modal'>
-              <button onClick={() => { setEditPosto(false) }} type="button" className='btn-close-modal'>
+              <button onClick={() => setEditPosto(false)} type="button" className='btn-close-modal'>
                 <FontAwesomeIcon className='x-icon' icon={faXmark} />
               </button>
             </div>
