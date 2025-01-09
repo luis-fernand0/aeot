@@ -205,7 +205,8 @@
 }
 
 .modal-confirm {
-  position: absolute;
+  position: fixed;
+  top: 0;
   z-index: 2;
   background-color: rgba(0, 0, 0, 0.253);
   width: 100%;
