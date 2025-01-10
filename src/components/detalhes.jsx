@@ -12,7 +12,7 @@ import ModalResponse from "./modalResponse";
 
 import '../style/detalhes_page/detalhes.css'
 
-const urlEditCombustivel = import.meta.env.VITE_URL_ATUALIZAR_COMBUSTIVEL
+const urlEditPosto = import.meta.env.VITE_URL_ATUALIZAR_POSTO
 const urlAtualizarFoto = import.meta.env.VITE_URL_ATUALIZAR_FOTO_USER
 
 
@@ -26,6 +26,7 @@ const Detalhes = () => {
 
   const [editPosto, setEditPosto] = useState(false)
   const [inputInfo, setInputInfo] = useState({})
+  const [newFoto, setNewFoto] = useState()
 
   const [loading, setLoading] = useState(false)
   const [isModalVisible, setModalVisible] = useState(false);
@@ -54,7 +55,7 @@ const Detalhes = () => {
     setLoading(true)
 
     try {
-      const response = await fetch(urlEditCombustivel, {
+      const response = await fetch(urlEditPosto, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${tokenUser}`,
@@ -107,29 +108,42 @@ const Detalhes = () => {
     return
   }
 
-  async function changeFoto(input, cod) {
+  async function changeFoto(input, categoria, cod) {
+    setLoading(true)
+
     const fileInput = document.getElementById(input)
     const file = fileInput.files[0]
 
     const formData = new FormData()
     formData.append('foto_posto', file)
-    formData.append('cod_user', cod)
+    formData.append('categoria', categoria)
+    formData.append('cod_posto', cod)
 
-    const response = await fetch(urlAtualizarFoto, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${tokenUser}`,
-      },
-      body: formData
-    })
-    const data = await response.json()
-    if (response.status === 403) {
-      navigate('/', { replace: true })
+    try {
+      const response = await fetch(urlAtualizarFoto, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${tokenUser}`,
+        },
+        body: formData
+      })
+      const data = await response.json()
+      if (response.status === 403) {
+        navigate('/', { replace: true })
+      }
+
+      setDetalhe(data.query)
+      setModalMessage(data.message)
+      setModalVisible(true)
+      document.querySelector('.modal-confirm').classList.add('modal-confirm-hidden')
+    } catch (error) {
+      setModalMessage(`Ocorreu um erro inesperado. Tente novamente mais tarde.` + err.message)
+      setModalVisible(true)
+    } finally {
+      setLoading(false)
     }
-
-    setNewFoto(file)
-    document.querySelector('.modal-confirm').classList.add('modal-confirm-hidden')
   }
+
 
   function cancelFoto() {
     const inputFoto = document.getElementById('edit_foto')
@@ -276,7 +290,7 @@ const Detalhes = () => {
           <img src="" alt="foto-posto" className='foto-posto' id='new-foto-posto' />
 
           <div className='container-btns-enviar-img'>
-            <button onClick={() => changeFoto('edit_foto', detalhe.cod_posto)} className='btn-enviar-img btn-sim' type="button">Sim</button>
+            <button onClick={() => changeFoto('edit_foto', 'postos', detalhe.cod_posto)} className='btn-enviar-img btn-sim' type="button">Sim</button>
             <button onClick={() => cancelFoto()} className='btn-enviar-img btn-nao' type="button">Não</button>
           </div>
         </div>
