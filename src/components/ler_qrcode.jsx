@@ -14,11 +14,9 @@ const urlVenda = import.meta.env.VITE_URL_VENDA
 
 const LerQrCode = () => {
     const tokenUser = localStorage.getItem('token')
-    const navigate = useNavigate()
+    const typeUser = localStorage.getItem('type_user')
 
-    if (typeUser === 'driver' || typeUser === 'frentista') {
-        return navigate('/', { replace: true })
-    }
+    const navigate = useNavigate()
 
     const [scanner, setScanner] = useState(null);
 
@@ -159,6 +157,12 @@ const LerQrCode = () => {
             setLoading(false)
         }
     }
+
+    useEffect(() => {
+        if (typeUser === 'driver' || typeUser === 'frentista') {
+            return navigate('/', { replace: true })
+        }
+    }, [])
 
     return (
         <>
