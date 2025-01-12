@@ -106,8 +106,6 @@ const Cadastro = () => {
         inputAddress.value = `${infoCep.address}, ${infoCep.district}`
         city.value = `${infoCep.city}`
         uf.value = `${infoCep.state}`
-
-        console.log(infoCep)
     }
 
     function limitarCaracter(e) {
