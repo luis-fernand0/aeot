@@ -16,6 +16,10 @@ const LerQrCode = () => {
     const tokenUser = localStorage.getItem('token')
     const navigate = useNavigate()
 
+    if (typeUser === 'driver' || typeUser === 'frentista') {
+        return navigate('/', { replace: true })
+    }
+
     const [scanner, setScanner] = useState(null);
 
     const [result, setResult] = useState(null)
