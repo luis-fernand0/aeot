@@ -21,6 +21,7 @@ import Detalhes from './components/detalhes.jsx'
 import Instrucoes from './components/instrucoes.jsx'
 import LerQrCode from './components/ler_qrcode.jsx'
 import GerarQrCode from './components/gerar_qrcode.jsx'
+import CadastrarFrentista from './components/add_frentista.jsx'
 
 const router = createBrowserRouter([
   {
@@ -91,6 +92,11 @@ const router = createBrowserRouter([
   {
     path: '/ler_qrcode',
     element: <LerQrCode />
+  },
+
+  {
+    path: '/cadastrar_frentista',
+    element: <CadastrarFrentista/>
   }
 ])
 
