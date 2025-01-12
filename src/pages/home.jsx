@@ -14,7 +14,7 @@ const urlDatas = import.meta.env.VITE_URL_DATAS
 const urlDataGoogleMaps = import.meta.env.VITE_URL_QUERY_GOOGLE_MAPS
 
 const Home = () => {
-  const [postos, setPostos] = useState()
+  const [postos, setPostos] = useState([])
   const [categoria, setCategoria] = useState({ categoria: 'postos' })
 
   const [local, setLocal] = useState(null)
@@ -44,7 +44,7 @@ const Home = () => {
       if (response.status === 403) {
         navigate('/', { replace: true })
       }
-      obterLocation()
+      await obterLocation()
       setPostos(data.infoGasStation)
     } catch (err) {
       setModalMessage(err.message)
@@ -54,7 +54,7 @@ const Home = () => {
     }
   }
 
-  function obterLocation() {
+  async function obterLocation() {
     if (!navigator.geolocation) {
       alert('Geolocalização não suportada pelo navegador')
       return
@@ -64,7 +64,7 @@ const Home = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords
-          setLocal({ latitude, longitude })
+          return setLocal({ latitude, longitude })
         }, (err) => {
           alert(`Não foi possivel obter sua localização: ${err.message}`)
           throw new Error(err.message)
