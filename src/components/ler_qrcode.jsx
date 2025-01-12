@@ -159,7 +159,7 @@ const LerQrCode = () => {
     }
 
     useEffect(() => {
-        if (typeUser === 'driver' || typeUser === 'frentista') {
+        if (typeUser === 'driver') {
             return navigate('/', { replace: true })
         }
     }, [])
