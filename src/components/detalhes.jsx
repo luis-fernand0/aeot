@@ -61,7 +61,7 @@ const Detalhes = () => {
           'Authorization': `Bearer ${tokenUser}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ type_input, valor, cod_posto: posto })
+        body: JSON.stringify({ type_input, valor, cod_posto: posto, categoria })
       })
       const data = await response.json()
 
@@ -170,12 +170,14 @@ const Detalhes = () => {
                 <div className='container-foto-btn'>
                   <img src={`https://aeotnew.s3.amazonaws.com/${detalhe.foto}`} alt="foto-item" className='foto-item' />
 
-                  <div className='container-btn-edit-foto'>
-                    <input onChange={(e) => { checkFoto(e) }} type="file" className='input-edit-foto' id='edit_foto' name='foto' accept='image/*' />
-                    <button onClick={() => { anexarFoto('edit_foto') }} type="button" className='btn-edit-foto'>
-                      <FontAwesomeIcon className='pen-icon' icon={faPen} />
-                    </button>
-                  </div>
+                  {typeUser === 'posto' && (
+                    <div className='container-btn-edit-foto'>
+                      <input onChange={(e) => { checkFoto(e) }} type="file" className='input-edit-foto' id='edit_foto' name='foto' accept='image/*' />
+                      <button onClick={() => { anexarFoto('edit_foto') }} type="button" className='btn-edit-foto'>
+                        <FontAwesomeIcon className='pen-icon' icon={faPen} />
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -270,13 +272,17 @@ const Detalhes = () => {
                 <button className='btn-abrir-maps' onClick={() => { abrirMaps(detalhe.endereco) }} type="button">Abrir no Maps?</button>
               </div>
 
-              <div className="container-gas-pump-btn">
-                <Link to={'/abastecimento'}>
-                  <button className="gas-pump-btn" type="button">
-                    Abastecer <FontAwesomeIcon className='icon-gas-pump' icon={faGasPump} />
-                  </button>
-                </Link>
-              </div>
+              {categoria.categoria === 'postos' && (
+                <div className="container-gas-pump-btn">
+                  {(typeUser === 'driver' || typeUser === 'administrador') && (
+                    <Link to={'/abastecimento'}>
+                      <button className="gas-pump-btn" type="button">
+                        Abastecer <FontAwesomeIcon className='icon-gas-pump' icon={faGasPump} />
+                      </button>
+                    </Link>
+                  )}
+                </div>
+              )}
             </div>
           </>
         )}
@@ -290,7 +296,7 @@ const Detalhes = () => {
           <img src="" alt="foto-posto" className='foto-posto' id='new-foto-posto' />
 
           <div className='container-btns-enviar-img'>
-            <button onClick={() => changeFoto('edit_foto', 'postos', detalhe.cod_posto)} className='btn-enviar-img btn-sim' type="button">Sim</button>
+            <button onClick={() => changeFoto('edit_foto', 'postos', detalhe.cod_posto || detalhe.cod_anuncio)} className='btn-enviar-img btn-sim' type="button">Sim</button>
             <button onClick={() => cancelFoto()} className='btn-enviar-img btn-nao' type="button">Não</button>
           </div>
         </div>
@@ -320,7 +326,7 @@ const Detalhes = () => {
               <button
                 className='btn-edit-posto'
                 type="button"
-                onClick={() => { editarPosto(inputInfo.type_input, detalhe.cod_posto) }}>
+                onClick={() => { editarPosto(inputInfo.type_input, detalhe.cod_posto || detalhe.cod_anuncio) }}>
                 Salvar
               </button>
             </div>
