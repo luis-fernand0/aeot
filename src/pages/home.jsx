@@ -217,7 +217,7 @@ const Home = () => {
 
                       <div className='container-title-endereco'>
                         <h3 className='title-gas-services'>
-                          {anuncio.titulo_anuncio}
+                          {anuncio.nome}
                         </h3>
 
                         <p className='endereco-gas-services'>
