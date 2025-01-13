@@ -147,7 +147,7 @@ const Login = () => {
           </a>
 
           <br />
-          <p className='text-version'>2.0.1</p>
+          <p className='text-version'>2.0.2</p>
 
         </form >
 
