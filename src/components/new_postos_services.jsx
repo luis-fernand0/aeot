@@ -48,9 +48,7 @@ const NewPostosServices = () => {
   }
 
   function callValidation(e) {
-    console.log(e.target.value)
     const cnpj = e.target.value
-    console.log(cnpj)
 
     if (!validarCnpj(cnpj)) {
       buscarCnpj(validarCnpj(cnpj))
@@ -77,7 +75,6 @@ const NewPostosServices = () => {
   }
   function addValue(infoCnpj) {
     let address = document.getElementById('endereco')
-    console.log(address)
     let city = document.getElementById('cidade')
     let uf = document.getElementById('uf')
 
