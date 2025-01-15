@@ -240,12 +240,44 @@
 
                 .text-info {
                     margin-bottom: 15px;
+                    
+                    text-align: center;
                 }
 
                 .container-inputs-combutiveis {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
+
+                }
+                
+                .container-forma-de-pagamento {
+                    height: auto;
+                    width: 100%;
+                    
+                    display: flex;
+                    flex-flow: row wrap;
+                    justify-content: space-between;
+                    gap: 15px;
+                    
+                    margin-bottom: 25px;
+
+                    .forma-de-pagamento {
+                        display: flex;
+                        flex-direction: row wrap;
+                        align-items: center;
+
+                        .input-checkbox {
+                            width: 20px;
+                            height: 20px;
+
+                            margin-right: 10px;
+                        }
+
+                        .text-checkbox {
+                            font-size: 18px;
+                        }
+                    }
                 }
 
                 .span-alert {

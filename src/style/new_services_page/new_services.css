@@ -184,12 +184,39 @@
 .container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .text-info,
 .container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .text-info {
   margin-bottom: 15px;
+  text-align: center;
 }
 .container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .container-inputs-combutiveis,
 .container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .container-inputs-combutiveis {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .container-forma-de-pagamento,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .container-forma-de-pagamento {
+  height: auto;
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .container-forma-de-pagamento .forma-de-pagamento,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .container-forma-de-pagamento .forma-de-pagamento {
+  display: flex;
+  flex-direction: row wrap;
+  align-items: center;
+}
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .container-forma-de-pagamento .forma-de-pagamento .input-checkbox,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .container-forma-de-pagamento .forma-de-pagamento .input-checkbox {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .container-forma-de-pagamento .forma-de-pagamento .text-checkbox,
+.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .container-forma-de-pagamento .forma-de-pagamento .text-checkbox {
+  font-size: 18px;
 }
 .container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .span-alert,
 .container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .span-alert {
