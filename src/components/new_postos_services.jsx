@@ -57,7 +57,7 @@ const NewPostosServices = () => {
     }
 
     buscarCnpj(validarCnpj(cnpj))
-    
+
     document.querySelector('.alert-cnpj').classList.add('hidden-span-alert')
   }
   async function buscarCnpj(cnpjValid) {
@@ -93,30 +93,38 @@ const NewPostosServices = () => {
   async function hundleSubmit(e) {
     e.preventDefault()
     setLoading(true)
-
+    
     let cnpj = document.getElementById('cnpj')
-
+    let checkboxes = document.querySelectorAll("input[type='checkbox']")
+    
     if (!fotoValid || !validarCnpj(cnpj.value)) {
       setModalMessage('É necessario preencher todos os dados!')
       setModalVisible(true)
-
+      
       setLoading(false)
-
+      
       return
     }
-
+    
     if (categoria === 'postos' && !checkPass('pass', 'confirm-pass', 'pass-alert')) {
       setModalMessage('É necessario que as senhas sejam iguais! Corrija sua senha!')
       setModalVisible(true)
-
+      
       setLoading(false)
-
+      
       return
     }
     const myForm = document.getElementById('form-cadastro')
     const formData = new FormData(myForm)
     formData.append('categoria', [categoria])
 
+    checkboxes.forEach((checkbox) => {
+      checkbox.value = checkbox.checked
+      if (!checkbox.checked) {
+        formData.append(checkbox.name, checkbox.checked)
+      }
+    })
+    
     try {
       const response = await fetch(urlCadastrar, {
         method: 'POST',
@@ -311,6 +319,29 @@ const NewPostosServices = () => {
                     name="diesel"
                     type="text"
                     placeholder="Diesel" />
+                </div>
+
+                <p className='text-info'>Formas de pagamento</p>
+                <div className='container-forma-de-pagamento'>
+                  <div className='forma-de-pagamento'>
+                    <input className='input-checkbox' type="checkbox" name="dinheiro" id="dinheiro" />
+                    <label className='text-checkbox' htmlFor="dinheiro">Dinheiro</label>
+                  </div>
+
+                  <div className="forma-de-pagamento">
+                    <input className='input-checkbox' type="checkbox" name="pix" id="pix" />
+                    <label className='text-checkbox' htmlFor="pix">Pix</label>
+                  </div>
+
+                  <div className="forma-de-pagamento">
+                    <input className='input-checkbox' type="checkbox" name="debito" id="debito" />
+                    <label className='text-checkbox' htmlFor="debito">Debito</label>
+                  </div>
+
+                  <div className="forma-de-pagamento">
+                    <input className='input-checkbox' type="checkbox" name="credito" id="credito" />
+                    <label className='text-checkbox' htmlFor="credito">Credito</label>
+                  </div>
                 </div>
 
                 <span className='span-alert hidden-span-alert alert-foto-posto'>
