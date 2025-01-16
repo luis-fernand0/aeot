@@ -93,25 +93,25 @@ const NewPostosServices = () => {
   async function hundleSubmit(e) {
     e.preventDefault()
     setLoading(true)
-    
+
     let cnpj = document.getElementById('cnpj')
     let checkboxes = document.querySelectorAll("input[type='checkbox']")
-    
+
     if (!fotoValid || !validarCnpj(cnpj.value)) {
       setModalMessage('É necessario preencher todos os dados!')
       setModalVisible(true)
-      
+
       setLoading(false)
-      
+
       return
     }
-    
+
     if (categoria === 'postos' && !checkPass('pass', 'confirm-pass', 'pass-alert')) {
       setModalMessage('É necessario que as senhas sejam iguais! Corrija sua senha!')
       setModalVisible(true)
-      
+
       setLoading(false)
-      
+
       return
     }
     const myForm = document.getElementById('form-cadastro')
@@ -124,7 +124,7 @@ const NewPostosServices = () => {
         formData.append(checkbox.name, checkbox.checked)
       }
     })
-    
+
     try {
       const response = await fetch(urlCadastrar, {
         method: 'POST',
@@ -149,6 +149,19 @@ const NewPostosServices = () => {
     } finally {
       setLoading(false)
     }
+  }
+
+  function limitarCaracter(e) {
+    let uf = e.target
+    let ufValue = uf.value.replace(/[^a-zA-Z]/g, '')
+
+    if (ufValue.length > 2) {
+      ufValue = ufValue.slice(0, 2)
+    }
+
+    ufValue = ufValue.toUpperCase()
+
+    return uf.value = ufValue
   }
 
   return (
@@ -276,6 +289,7 @@ const NewPostosServices = () => {
                   required />
 
                 <input
+                  onChange={(e) => limitarCaracter(e)}
                   id='uf'
                   name="uf"
                   className="input-info input-info-posto"
