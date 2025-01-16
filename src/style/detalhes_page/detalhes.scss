@@ -71,7 +71,6 @@
     }
 
     .container-sobre-item {
-
         width: 60%;
 
         display: flex;
@@ -91,6 +90,36 @@
 
             &:hover {
                 background-color: #45a049;
+            }
+        }
+
+        .container-formas-de-pagamento {
+            width: 100%;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .title-formas-de-pagamento {
+                font-size: 18px;
+                font-weight: 500;
+                color: #14181b;
+
+                margin-bottom: 15px;
+            }
+
+            .formas-de-pagamento {
+                width: 100%;
+
+                display: flex;
+                flex-flow: row wrap;
+                justify-content: space-between;
+
+                .text-forma-de-pagamento {
+                    margin-bottom: 10px;
+
+                    color: #666;
+                }
             }
         }
 
@@ -328,8 +357,9 @@
         border-radius: 15px;
 
         .foto-posto {
-            width: 90%; max-width: 250px;
-            
+            width: 90%;
+            max-width: 250px;
+
             border-radius: 15px;
         }
 
