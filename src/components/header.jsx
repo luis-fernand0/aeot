@@ -36,7 +36,7 @@ const Header = ({ redirectTo }) => {
 
                 )}
 
-                {(typeUser === 'administrador' || typeUser === 'driver') && (
+                {typeUser != 'frentista' && (
                     <Link to={'/editar_perfil'}>
                         <button className='header-btn' type="button">
                             <FontAwesomeIcon className='icon-header-btn' icon={faLock} />
