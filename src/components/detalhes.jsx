@@ -9,6 +9,7 @@ import { comprimirFoto } from "../functions/comprimirFoto";
 import Header from "./header";
 import Loading from "./loading"
 import ModalResponse from "./modalResponse";
+import EditItem from "./modal_edit_item";
 
 import '../style/detalhes_page/detalhes.css'
 
@@ -24,21 +25,14 @@ const Detalhes = () => {
   const [local, setLocal] = useState(itens[2] || {})
   const [categoria, setCategoria] = useState(itens[3] || {})
 
-  const [editPosto, setEditPosto] = useState(false)
-  const [inputInfo, setInputInfo] = useState({})
-  const [newFoto, setNewFoto] = useState()
-
   const [loading, setLoading] = useState(false)
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
 
+  const [showEditPosto, setShowEditPosto] = useState(false)
+
   const tokenUser = localStorage.getItem('token');
   const typeUser = localStorage.getItem('type_user')
-
-  function modalEditPosto(value_input, type_input) {
-    setEditPosto(true)
-    setInputInfo({ value_input, type_input })
-  }
 
   function abrirMaps(endereco) {
     if (!local) {
@@ -78,7 +72,6 @@ const Detalhes = () => {
       setDetalhe(data.query)
       setModalMessage(data.message)
       setModalVisible(true)
-      setEditPosto(false)
 
     } catch (err) {
       setModalMessage(`Ocorreu um erro inesperado. Tente novamente mais tarde.` + err.message)
@@ -165,6 +158,11 @@ const Detalhes = () => {
           <>
             <div className="container-title-foto">
               <h1 className='title-item'>{detalhe.nome}</h1>
+              <button
+                onClick={() => setShowEditPosto(true)} type="button"
+                className='edit-combustivel'>
+                <FontAwesomeIcon className='pen-icon' icon={faPen} />
+              </button>
 
               <div className='container-div-foto-btn'>
                 <div className='container-foto-btn'>
@@ -187,26 +185,10 @@ const Detalhes = () => {
 
               <div className="container-info-item">
                 <p className='info-item item-descricao'>{detalhe.descricao}</p>
-
-                {(typeUser === 'administrador' || typeUser === 'posto') && (
-                  <button
-                    onClick={() => { modalEditPosto(detalhe.descricao, 'descricao') }} type="button"
-                    className='edit-combustivel'>
-                    <FontAwesomeIcon className='pen-icon' icon={faPen} />
-                  </button>
-                )}
               </div>
 
               <div className="container-info-item">
                 <p className='info-item item-endereco'>{detalhe.endereco}</p>
-
-                {(typeUser === 'administrador' || typeUser === 'posto') && (
-                  <button
-                    onClick={() => { modalEditPosto(detalhe.endereco, 'endereco') }} type="button"
-                    className='edit-combustivel'>
-                    <FontAwesomeIcon className='pen-icon' icon={faPen} />
-                  </button>
-                )}
               </div>
 
               {categoria.categoria === 'postos' && (
@@ -215,42 +197,40 @@ const Detalhes = () => {
                     <p id='valor-etanol' className='combustivel-posto'>
                       Etanol: R$ {detalhe.etanol}
                     </p>
-
-                    {(typeUser === 'administrador' || typeUser === 'posto') && (
-                      <button
-                        onClick={() => { modalEditPosto(detalhe.etanol, 'etanol') }} type="button"
-                        className='edit-combustivel'>
-                        <FontAwesomeIcon className='pen-icon' icon={faPen} />
-                      </button>
-                    )}
                   </div>
 
                   <div className='container-edit-combustivel'>
                     <p id='valor-gasolina' className='combustivel-posto'>
                       Gasolina: R$ {detalhe.gasolina}
                     </p>
-
-                    {(typeUser === 'administrador' || typeUser === 'posto') && (
-                      <button
-                        onClick={() => { modalEditPosto(detalhe.gasolina, 'gasolina') }} type="button"
-                        className='edit-combustivel'>
-                        <FontAwesomeIcon className='pen-icon' icon={faPen} />
-                      </button>
-                    )}
                   </div>
 
                   <div className='container-edit-combustivel'>
                     <p id='valor-diesel' className='combustivel-posto'>
                       Diesel: R$ {detalhe.diesel}
                     </p>
+                  </div>
 
-                    {(typeUser === 'administrador' || typeUser === 'posto') && (
-                      <button
-                        onClick={() => { modalEditPosto(detalhe.diesel, 'diesel') }} type="button"
-                        className='edit-combustivel'>
-                        <FontAwesomeIcon className='pen-icon' icon={faPen} />
-                      </button>
-                    )}
+                  <div className="container-formas-de-pagamento">
+                    <p className="title-formas-de-pagamento">Formas de pagamento</p>
+
+                    <div className="formas-de-pagamento">
+                      <p className="text-forma-de-pagamento">
+                        Dinheiro: {detalhe.dinheiro === true ? 'Sim' : 'Não'}
+                      </p>
+
+                      <p className="text-forma-de-pagamento">
+                        Pix: {detalhe.pix === true ? 'Sim' : 'Não'}
+                      </p>
+
+                      <p className="text-forma-de-pagamento">
+                        Debito: {detalhe.debito === true ? 'Sim' : 'Não'}
+                      </p>
+
+                      <p className="text-forma-de-pagamento">
+                        Credito: {detalhe.credito === true ? 'Sim' : 'Não'}
+                      </p>
+                    </div>
                   </div>
                 </>
               )}
@@ -286,9 +266,15 @@ const Detalhes = () => {
             </div>
           </>
         )}
+
+        <EditItem
+          show={showEditPosto}
+          close={() => setShowEditPosto(false)}
+          item={detalhe}
+          categoria={categoria} />
       </div>
 
-      <div className='modal-confirm modal-confirm-hidden'>
+      {/* <div className='modal-confirm modal-confirm-hidden'>
         <div className='container-imgs-btns-text'>
           <div className='container-text'>
             <p>Tem certeza que deseja trocar sua foto de perfil?</p>
@@ -300,9 +286,9 @@ const Detalhes = () => {
             <button onClick={() => cancelFoto()} className='btn-enviar-img btn-nao' type="button">Não</button>
           </div>
         </div>
-      </div>
+      </div> */}
 
-      {editPosto && (
+      {/* {editPosto && (
 
         <div id='editar_posto' className='container-modal-edit-posto'>
 
@@ -332,7 +318,7 @@ const Detalhes = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </>
   )
 }
