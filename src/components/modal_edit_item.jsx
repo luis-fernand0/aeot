@@ -1,28 +1,113 @@
+import { useState } from 'react'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
+
+import { checkValor } from '../functions/checkValor'
+
+import ModalResponse from './modalResponse'
+import Loading from './loading'
+
 import '../style/modal_edit_item_component/edit_item.css'
 
+const urlEditarItem = import.meta.env.VITE_URL_EDITAR_ITEM
+
 const EditItem = ({ show, close, categoria, item }) => {
+    const tokenUser = localStorage.getItem('token')
+
+    const [loading, setLoading] = useState(false)
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+
+    async function editarItem(e) {
+        e.preventDefault()
+        setLoading(true)
+
+        let checkboxes = document.querySelectorAll("input[type='checkbox']")
+        checkboxes.forEach((checkbox) => {
+            checkbox.value = checkbox.checked
+        })
+
+        const myForm = document.getElementById('form-editar-item')
+        const formData = new FormData(myForm)
+        formData.append('categoria', categoria.categoria)
+        formData.append('item_id', item.cod_posto || item.cod_anuncio)
+        checkboxes.forEach((checkbox) => {
+            if (!checkbox.checked) {
+                formData.append(checkbox.name, checkbox.checked)
+            }
+        })
+        const formObject = Object.fromEntries(formData)
+
+        try {
+            const response = await fetch(urlEditarItem, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${tokenUser}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formObject)
+            })
+            const data = await response.json()
+
+            if (response.status === 403) {
+                navigate('/', { replace: true })
+                return
+            }
+            if (!response.ok) {
+                setModalMessage(data.message)
+                setModalVisible(true)
+                return
+            }
+
+            setModalMessage(data.message)
+            setModalVisible(true)
+            document.getElementById('btn-close').click()
+            
+        } catch (err) {
+            setModalMessage(err.message)
+            setModalVisible(true)
+        } finally {
+            setLoading(false)
+        }
+    }
+
     return (
         <>
+            <Loading loading={loading} />
+            <ModalResponse
+                isVisible={isModalVisible}
+                onClose={() => setModalVisible(false)}
+                message={modalMessage}
+            />
             <div className="container-modal-editar-item" hidden={show ? false : true}>
                 <div className='container-btn-form'>
-                    <button onClick={close}>
-                        X
-                    </button>
-                    <form className="form-editar-item">
+                    <div className='container-btn-close'>
+                        <button id='btn-close' className='btn-close' onClick={close}>
+                            <FontAwesomeIcon className='x-icon'
+                                icon={faXmark} />
+                        </button>
+
+                    </div>
+                    <form
+                        onSubmit={(e) => editarItem(e)}
+                        id='form-editar-item'
+                        className="form-editar-item">
+
                         <textarea
                             className="editar-item-descricao"
                             name="descricao"
                             id="descricao-item"
-                            placeholder="Descrição"
-                            value={item.descricao} />
+                            defaultValue={item.descricao}
+                            placeholder={item.descricao} />
                         <input
                             className="input-editar-item"
                             type="text"
                             name="endereco"
                             id="endereco-item"
-                            value={item.endereco} />
+                            defaultValue={item.endereco}
+                            placeholder={item.endereco} />
 
-                        {/*verificar se eh posto ou anuncio nessa etapa*/}
                         {categoria.categoria === 'postos' && (
                             <>
                                 <p className='text-editar-item'>
@@ -30,23 +115,35 @@ const EditItem = ({ show, close, categoria, item }) => {
                                 </p>
                                 <div className='container-edit-combustivel'>
                                     <input
+                                        onChange={(e) => checkValor(e)}
                                         className="input-editar-item"
+                                        name='etanol'
+                                        id='etanol'
                                         type="text"
-                                        value={item.etanol} />
+                                        defaultValue={item.etanol}
+                                        placeholder={item.etanol} />
                                 </div>
 
                                 <div className='container-edit-combustivel'>
                                     <input
+                                        onChange={(e) => checkValor(e)}
                                         className="input-editar-item"
+                                        name='gasolina'
+                                        id='gasolina'
                                         type="text"
-                                        value={item.gasolina} />
+                                        defaultValue={item.gasolina}
+                                        placeholder={item.gasolina} />
                                 </div>
 
                                 <div className='container-edit-combustivel'>
                                     <input
+                                        onChange={(e) => checkValor(e)}
                                         className="input-editar-item"
+                                        name='diesel'
+                                        id='diesel'
                                         type="text"
-                                        value={item.diesel} />
+                                        defaultValue={item.diesel}
+                                        placeholder={item.diesel} />
                                 </div>
 
                                 <p className='text-editar-item'>
@@ -59,7 +156,7 @@ const EditItem = ({ show, close, categoria, item }) => {
                                             type="checkbox"
                                             name="dinheiro"
                                             id="dinheiro"
-                                            checked={item.credito} />
+                                            defaultChecked={item.dinheiro} />
                                         <label className='text-forma-de-pagamento' htmlFor="dinheiro">Dinheiro</label>
                                     </div>
 
@@ -69,7 +166,7 @@ const EditItem = ({ show, close, categoria, item }) => {
                                             type="checkbox"
                                             name="pix"
                                             id="pix"
-                                            checked={item.credito} />
+                                            defaultChecked={item.pix} />
                                         <label className='text-forma-de-pagamento' htmlFor="pix">Pix</label>
                                     </div>
 
@@ -79,7 +176,7 @@ const EditItem = ({ show, close, categoria, item }) => {
                                             type="checkbox"
                                             name="debito"
                                             id="debito"
-                                            checked={item.credito} />
+                                            defaultChecked={item.debito} />
                                         <label className='text-forma-de-pagamento' htmlFor="debito">Debito</label>
                                     </div>
 
@@ -89,7 +186,7 @@ const EditItem = ({ show, close, categoria, item }) => {
                                             type="checkbox"
                                             name="credito"
                                             id="credito"
-                                            checked={item.credito} />
+                                            defaultChecked={item.credito} />
                                         <label className='text-forma-de-pagamento' htmlFor="credito">Credito</label>
                                     </div>
 
@@ -101,7 +198,6 @@ const EditItem = ({ show, close, categoria, item }) => {
                             Salvar
                         </button>
                     </form>
-
                 </div>
             </div>
         </>
