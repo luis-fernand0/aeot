@@ -13,7 +13,6 @@ import EditItem from "./modal_edit_item";
 
 import '../style/detalhes_page/detalhes.css'
 
-const urlEditPosto = import.meta.env.VITE_URL_ATUALIZAR_POSTO
 const urlAtualizarFoto = import.meta.env.VITE_URL_ATUALIZAR_FOTO_USER
 
 
@@ -42,44 +41,6 @@ const Detalhes = () => {
 
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${local.latitude},${local.longitude}&destination=${encodeURIComponent(endereco)}&travelmode=driving`;
     window.open(mapsUrl, '_blank');
-  }
-
-  async function editarPosto(type_input, posto) {
-    const valor = document.getElementById(type_input).value
-    setLoading(true)
-
-    try {
-      const response = await fetch(urlEditPosto, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${tokenUser}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ type_input, valor, cod_posto: posto, categoria })
-      })
-      const data = await response.json()
-
-      if (response.status === 403) {
-        navigate('/', { replace: true })
-        return
-      }
-      if (!response.ok) {
-        setModalMessage(data.message)
-        setModalVisible(true)
-        return
-      }
-
-      setDetalhe(data.query)
-      setModalMessage(data.message)
-      setModalVisible(true)
-
-    } catch (err) {
-      setModalMessage(`Ocorreu um erro inesperado. Tente novamente mais tarde.` + err.message)
-      setModalVisible(true)
-
-    } finally {
-      setLoading(false)
-    }
   }
 
   function anexarFoto(input) { document.getElementById(input).click() }
@@ -153,6 +114,12 @@ const Detalhes = () => {
         onClose={() => setModalVisible(false)}
         message={modalMessage}
       />
+      <EditItem
+        show={showEditPosto}
+        close={() => setShowEditPosto(false)}
+        item={detalhe}
+        categoria={categoria} />
+
       <div className='container-item'>
         {categoria && (
           <>
@@ -266,12 +233,6 @@ const Detalhes = () => {
             </div>
           </>
         )}
-
-        <EditItem
-          show={showEditPosto}
-          close={() => setShowEditPosto(false)}
-          item={detalhe}
-          categoria={categoria} />
       </div>
 
       {/* <div className='modal-confirm modal-confirm-hidden'>
@@ -287,38 +248,6 @@ const Detalhes = () => {
           </div>
         </div>
       </div> */}
-
-      {/* {editPosto && (
-
-        <div id='editar_posto' className='container-modal-edit-posto'>
-
-          <div className='modal-edit-posto'>
-
-            <div className='container-close-modal'>
-              <button onClick={() => setEditPosto(false)} type="button" className='btn-close-modal'>
-                <FontAwesomeIcon className='x-icon' icon={faXmark} />
-              </button>
-            </div>
-
-            <div className='container-input-edit-posto'>
-
-              <input
-                className='input-edit-posto'
-                type="text"
-                name={inputInfo.type_input}
-                id={inputInfo.type_input}
-                placeholder={inputInfo.value_input}
-                onChange={(e) => checkValor(e)} />
-              <button
-                className='btn-edit-posto'
-                type="button"
-                onClick={() => { editarPosto(inputInfo.type_input, detalhe.cod_posto || detalhe.cod_anuncio) }}>
-                Salvar
-              </button>
-            </div>
-          </div>
-        </div>
-      )} */}
     </>
   )
 }
