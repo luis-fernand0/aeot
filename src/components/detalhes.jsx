@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faGasPump, faPen, faFlagCheckered, faClock } from '@fortawesome/free-solid-svg-icons'
 
@@ -14,6 +14,7 @@ const urlCallItem = import.meta.env.VITE_URL_CALL_ITEM
 
 const Detalhes = () => {
   const itens = JSON.parse(localStorage.getItem('detalhes'))
+  const navigate = useNavigate()
 
   const [detalhe, setDetalhe] = useState(itens[0] || {})
   const [distancia, setDistancia] = useState(itens[1] || {})
