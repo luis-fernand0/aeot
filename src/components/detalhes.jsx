@@ -3,9 +3,6 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faGasPump, faPen, faFlagCheckered, faClock } from '@fortawesome/free-solid-svg-icons'
 
-import { checkValor } from "../functions/checkValor";
-import { comprimirFoto } from "../functions/comprimirFoto";
-
 import Header from "./header";
 import Loading from "./loading"
 import ModalResponse from "./modalResponse";
@@ -13,11 +10,10 @@ import EditItem from "./modal_edit_item";
 
 import '../style/detalhes_page/detalhes.css'
 
-const urlAtualizarFoto = import.meta.env.VITE_URL_ATUALIZAR_FOTO_USER
-
+const urlCallItem = import.meta.env.VITE_URL_CALL_ITEM
 
 const Detalhes = () => {
-  const itens = JSON.parse(sessionStorage.getItem('detalhes'))
+  const itens = JSON.parse(localStorage.getItem('detalhes'))
 
   const [detalhe, setDetalhe] = useState(itens[0] || {})
   const [distancia, setDistancia] = useState(itens[1] || {})
@@ -27,7 +23,6 @@ const Detalhes = () => {
   const [loading, setLoading] = useState(false)
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
-
   const [showEditPosto, setShowEditPosto] = useState(false)
 
   const tokenUser = localStorage.getItem('token');
@@ -43,66 +38,40 @@ const Detalhes = () => {
     window.open(mapsUrl, '_blank');
   }
 
-  function anexarFoto(input) { document.getElementById(input).click() }
-  function checkFoto(e) {
-    const foto = e.target.files[0]
-    const novaFoto = document.getElementById('new-foto-posto')
-    if (foto) {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        novaFoto.src = e.target.result
-      }
-      reader.readAsDataURL(foto)
-
-      document.querySelector('.modal-confirm').classList.remove('modal-confirm-hidden')
-
-      comprimirFoto('edit_foto')
-    }
-
-    return
-  }
-
-  async function changeFoto(input, categoria, cod) {
+  async function callItem() {
+    setShowEditPosto(false)
     setLoading(true)
 
-    const fileInput = document.getElementById(input)
-    const file = fileInput.files[0]
-
-    const formData = new FormData()
-    formData.append('foto_posto', file)
-    formData.append('categoria', categoria)
-    formData.append('cod_posto', cod)
-
     try {
-      const response = await fetch(urlAtualizarFoto, {
-        method: 'PUT',
+      const response = await fetch(urlCallItem, {
+        method: 'POST',
         headers: {
           'Authorization': `Bearer ${tokenUser}`,
+          'Content-Type': 'application/json'
         },
-        body: formData
+        body: JSON.stringify({
+          categoria: categoria.categoria,
+          item_id: detalhe.cod_posto || detalhe.cod_anuncio
+        })
       })
       const data = await response.json()
       if (response.status === 403) {
         navigate('/', { replace: true })
+        return
+      }
+      if (!response.ok) {
+        setModalMessage(data.message)
+        setModalVisible(true)
+        return
       }
 
       setDetalhe(data.query)
-      setModalMessage(data.message)
-      setModalVisible(true)
-      document.querySelector('.modal-confirm').classList.add('modal-confirm-hidden')
-    } catch (error) {
-      setModalMessage(`Ocorreu um erro inesperado. Tente novamente mais tarde.` + err.message)
+    } catch (err) {
+      setModalMessage(`Desculpe ocorreu um erro inesperado! ${err.message}`)
       setModalVisible(true)
     } finally {
       setLoading(false)
     }
-  }
-
-
-  function cancelFoto() {
-    const inputFoto = document.getElementById('edit_foto')
-    inputFoto.value = ''
-    document.querySelector('.modal-confirm').classList.add('modal-confirm-hidden')
   }
 
   return (
@@ -116,7 +85,7 @@ const Detalhes = () => {
       />
       <EditItem
         show={showEditPosto}
-        close={() => setShowEditPosto(false)}
+        close={() => callItem()}
         item={detalhe}
         categoria={categoria} />
 
@@ -125,27 +94,8 @@ const Detalhes = () => {
           <>
             <div className="container-title-foto">
               <h1 className='title-item'>{detalhe.nome}</h1>
-              <button
-                onClick={() => setShowEditPosto(true)} type="button"
-                className='edit-combustivel'>
-                <FontAwesomeIcon className='pen-icon' icon={faPen} />
-              </button>
 
-              <div className='container-div-foto-btn'>
-                <div className='container-foto-btn'>
-                  <img src={`https://aeotnew.s3.amazonaws.com/${detalhe.foto}`} alt="foto-item" className='foto-item' />
-
-                  {typeUser === 'posto' && (
-                    <div className='container-btn-edit-foto'>
-                      <input onChange={(e) => { checkFoto(e) }} type="file" className='input-edit-foto' id='edit_foto' name='foto' accept='image/*' />
-                      <button onClick={() => { anexarFoto('edit_foto') }} type="button" className='btn-edit-foto'>
-                        <FontAwesomeIcon className='pen-icon' icon={faPen} />
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-
+              <img src={`https://aeotnew.s3.amazonaws.com/${detalhe.foto}`} alt="foto-item" className='foto-item' />
             </div>
 
             <div className="container-sobre-item">
@@ -231,23 +181,17 @@ const Detalhes = () => {
                 </div>
               )}
             </div>
+
+            {(typeUser === 'administrador' || typeUser === 'posto') && (
+              <button
+                onClick={() => setShowEditPosto(true)} type="button"
+                className='btn-edit-item'>
+                <FontAwesomeIcon className='pen-icon' icon={faPen} />
+              </button>
+            )}
           </>
         )}
       </div>
-
-      {/* <div className='modal-confirm modal-confirm-hidden'>
-        <div className='container-imgs-btns-text'>
-          <div className='container-text'>
-            <p>Tem certeza que deseja trocar sua foto de perfil?</p>
-          </div>
-          <img src="" alt="foto-posto" className='foto-posto' id='new-foto-posto' />
-
-          <div className='container-btns-enviar-img'>
-            <button onClick={() => changeFoto('edit_foto', 'postos', detalhe.cod_posto || detalhe.cod_anuncio)} className='btn-enviar-img btn-sim' type="button">Sim</button>
-            <button onClick={() => cancelFoto()} className='btn-enviar-img btn-nao' type="button">Não</button>
-          </div>
-        </div>
-      </div> */}
     </>
   )
 }
