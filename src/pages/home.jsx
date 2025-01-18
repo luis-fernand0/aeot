@@ -99,7 +99,7 @@ const Home = () => {
   }
 
   function detalhes(posto, distancia, local, categoria) {
-    sessionStorage.setItem('detalhes', JSON.stringify([posto, distancia, local, categoria]))
+    localStorage.setItem('detalhes', JSON.stringify([posto, distancia, local, categoria]))
     navigate('/detalhes')
   }
 
