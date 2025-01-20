@@ -1,27 +1,13 @@
 {
     "name": "Aplicativo Enche O Tanque",
     "short_name": "AEOT",
-    "theme_color": "#fff100",
-    "background_color": "#ffffff",
+    "description": "Instale o aplicativo para ter uma melhor experiencia!",
     "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#ffffff",
+    "theme_color": "#fff100",
     "scope": "/",
     "start_url": "/",
-    "screenshots": [
-        {
-            "src": "/print-app-aeot.jpg",
-            "sizes": "829x1600",
-            "type": "image/jpg",
-            "form_factor": "wide",
-            "label": "Wonder Widgets"
-        },
-        {
-            "src": "/print-app-aeot.jpg",
-            "sizes": "829x1600",
-            "type": "image/jpg",
-            "form_factor": "narrow",
-            "label": "Wonder Widgets"
-        }
-    ],
     "icons": [
         {
             "src": "/icon-aeot-192x192px.png",
