@@ -18,35 +18,9 @@
   text-align: center;
   margin-bottom: 50px;
 }
-.container-item .container-title-foto .container-div-foto-btn {
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.container-item .container-title-foto .container-div-foto-btn .container-foto-btn .foto-item {
+.container-item .container-title-foto .foto-item {
   width: 250px;
   border-radius: 15px;
-}
-.container-item .container-title-foto .container-div-foto-btn .container-foto-btn .container-btn-edit-foto .input-edit-foto {
-  display: none;
-}
-.container-item .container-title-foto .container-div-foto-btn .container-foto-btn .container-btn-edit-foto .btn-edit-foto {
-  background-color: #fff100;
-  border: none;
-  border-radius: 100%;
-  width: 40px;
-  height: 40px;
-  translate: 225px -25px;
-  transition: 0.3s linear;
-}
-.container-item .container-title-foto .container-div-foto-btn .container-foto-btn .container-btn-edit-foto .btn-edit-foto:hover {
-  background-color: #14181b;
-  color: #fff;
-}
-.container-item .container-title-foto .container-div-foto-btn .container-foto-btn .container-btn-edit-foto .btn-edit-foto .pen-icon {
-  width: 15px;
-  height: 15px;
 }
 .container-item .container-sobre-item {
   width: 60%;
@@ -54,19 +28,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-.container-item .container-sobre-item .edit-combustivel {
-  background-color: #4CAF50;
-  color: #fff;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 0.9rem;
-  width: 50px;
-  cursor: pointer;
-}
-.container-item .container-sobre-item .edit-combustivel:hover {
-  background-color: #45a049;
 }
 .container-item .container-sobre-item .container-formas-de-pagamento {
   width: 100%;
@@ -164,155 +125,17 @@
   background-color: #14181b;
   color: #fff;
 }
-
-.container-modal-edit-posto {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 3;
-}
-.container-modal-edit-posto .modal-edit-posto {
-  background-color: #fff;
-  width: 90%;
-  max-width: 400px;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  text-align: center;
-}
-.container-modal-edit-posto .modal-edit-posto .container-close-modal {
-  text-align: right;
-}
-.container-modal-edit-posto .modal-edit-posto .container-close-modal .btn-close-modal {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  color: #555;
-  cursor: pointer;
-}
-.container-modal-edit-posto .modal-edit-posto .container-close-modal .btn-close-modal:hover {
-  color: #000;
-}
-.container-modal-edit-posto .modal-edit-posto .container-input-edit-posto {
-  margin-top: 20px;
-}
-.container-modal-edit-posto .modal-edit-posto .container-input-edit-posto .input-edit-posto {
-  width: 80%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
-}
-.container-modal-edit-posto .modal-edit-posto .container-input-edit-posto .input-edit-posto:focus {
-  outline: none;
-  border-color: #4CAF50;
-}
-.container-modal-edit-posto .modal-edit-posto .container-input-edit-posto .btn-edit-posto {
+.container-item .btn-edit-item {
   background-color: #4CAF50;
   color: #fff;
+  font-size: 0.9rem;
   border: none;
   border-radius: 5px;
-  padding: 10px 20px;
-  font-size: 1rem;
+  padding: 5px 10px;
+  margin-bottom: 15px;
+  width: 50px;
   cursor: pointer;
 }
-.container-modal-edit-posto .modal-edit-posto .container-input-edit-posto .btn-edit-posto:hover {
+.container-item .btn-edit-item:hover {
   background-color: #45a049;
-}
-
-.modal-confirm {
-  position: fixed;
-  top: 0;
-  z-index: 2;
-  background-color: rgba(0, 0, 0, 0.253);
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.modal-confirm .container-imgs-btns-text {
-  background-color: #fff;
-  width: 90%;
-  height: 90%;
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
-  border-radius: 15px;
-}
-.modal-confirm .container-imgs-btns-text .foto-posto {
-  width: 90%;
-  max-width: 250px;
-  border-radius: 15px;
-}
-.modal-confirm .container-imgs-btns-text .container-text {
-  text-align: center;
-}
-.modal-confirm .container-imgs-btns-text .container-btns-enviar-img {
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-}
-.modal-confirm .container-imgs-btns-text .container-btns-enviar-img .btn-enviar-img {
-  width: 40%;
-  height: 40px;
-  border: none;
-  border-radius: 5px;
-  transition: 0.3s linear;
-}
-.modal-confirm .container-imgs-btns-text .container-btns-enviar-img .btn-sim {
-  background-color: #00ff73;
-}
-.modal-confirm .container-imgs-btns-text .container-btns-enviar-img .btn-sim:hover {
-  background-color: #74e9a9;
-}
-.modal-confirm .container-imgs-btns-text .container-btns-enviar-img .btn-nao {
-  background-color: rgb(231, 84, 84);
-}
-.modal-confirm .container-imgs-btns-text .container-btns-enviar-img .btn-nao:hover {
-  background-color: rgb(252, 142, 142);
-}
-
-.modal-confirm-hidden {
-  display: none;
-}
-
-@media screen and (max-width: 768px) {
-  .container-modal-edit-posto .modal-edit-posto,
-  .container-modal-edit-posto .modal-edit-posto,
-  .container-modal-edit-posto .modal-edit-posto,
-  .container-modal-edit-posto .modal-edit-posto {
-    width: 95%;
-    padding: 15px;
-  }
-  .container-modal-edit-posto .modal-edit-posto .foto-modal-posto,
-  .container-modal-edit-posto .modal-edit-posto .foto-modal-posto,
-  .container-modal-edit-posto .modal-edit-posto .foto-modal-posto,
-  .container-modal-edit-posto .modal-edit-posto .foto-modal-posto {
-    width: 80px;
-    height: 80px;
-  }
-  .container-modal-edit-posto .modal-edit-posto .container-input-edit-posto input,
-  .container-modal-edit-posto .modal-edit-posto .container-input-edit-posto input,
-  .container-modal-edit-posto .modal-edit-posto .container-input-edit-posto input,
-  .container-modal-edit-posto .modal-edit-posto .container-input-edit-posto input {
-    width: 100%;
-  }
-}
-@media screen and (max-width: 480px) {
-  .container-modal-edit-posto .modal-edit-posto .modal-edit-posto button,
-  .container-modal-edit-posto .modal-edit-posto .modal-edit-posto button,
-  .container-modal-edit-posto .modal-edit-posto .modal-edit-posto button,
-  .container-modal-edit-posto .modal-edit-posto .modal-edit-posto button {
-    padding: 8px 15px;
-  }
 }/*# sourceMappingURL=detalhes.css.map */

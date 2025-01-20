@@ -22,51 +22,9 @@
             margin-bottom: 50px;
         }
 
-        .container-div-foto-btn {
-            height: 100%;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            .container-foto-btn {
-                .foto-item {
-                    width: 250px;
-                    border-radius: 15px;
-                }
-
-                .container-btn-edit-foto {
-
-                    .input-edit-foto {
-                        display: none;
-                    }
-
-                    .btn-edit-foto {
-                        background-color: #fff100;
-
-                        border: none;
-                        border-radius: 100%;
-
-                        width: 40px;
-                        height: 40px;
-
-                        translate: 225px -25px;
-                        transition: 0.3s linear;
-
-                        &:hover {
-                            background-color: #14181b;
-                            color: #fff;
-                        }
-
-                        .pen-icon {
-                            width: 15px;
-                            height: 15px;
-                        }
-                    }
-                }
-            }
-
-
+        .foto-item {
+            width: 250px;
+            border-radius: 15px;
         }
     }
 
@@ -77,21 +35,6 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-
-        .edit-combustivel {
-            background-color: #4CAF50;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            width: 50px;
-            cursor: pointer;
-
-            &:hover {
-                background-color: #45a049;
-            }
-        }
 
         .container-formas-de-pagamento {
             width: 100%;
@@ -232,213 +175,23 @@
             }
         }
     }
-}
 
-.container-modal-edit-posto {
-    position: fixed;
-    top: 0;
+    .btn-edit-item {
+        background-color: #4CAF50;
 
-    width: 100%;
-    height: 100%;
+        color: #fff;
+        font-size: 0.9rem;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+        border: none;
+        border-radius: 5px;
 
-    background-color: rgba(0, 0, 0, 0.5);
+        padding: 5px 10px;
+        margin-bottom: 15px;
 
-    z-index: 3;
-
-    .modal-edit-posto {
-        background-color: #fff;
-
-        width: 90%;
-        max-width: 400px;
-
-        border-radius: 10px;
-
-        padding: 20px;
-
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-
-        text-align: center;
-
-        .container-close-modal {
-            text-align: right;
-
-            .btn-close-modal {
-                background: none;
-
-                border: none;
-
-                font-size: 1.5rem;
-                color: #555;
-
-                cursor: pointer;
-
-                &:hover {
-                    color: #000;
-                }
-            }
-        }
-
-        .container-input-edit-posto {
-            margin-top: 20px;
-
-            .input-edit-posto {
-                width: 80%;
-
-                padding: 10px;
-
-                margin-bottom: 10px;
-
-                border: 1px solid #ccc;
-                border-radius: 5px;
-
-                font-size: 1rem;
-
-                &:focus {
-                    outline: none;
-                    border-color: #4CAF50;
-                }
-            }
-
-            .btn-edit-posto {
-                background-color: #4CAF50;
-
-                color: #fff;
-
-                border: none;
-                border-radius: 5px;
-
-                padding: 10px 20px;
-
-                font-size: 1rem;
-
-                cursor: pointer;
-
-                &:hover {
-                    background-color: #45a049;
-                }
-            }
-        }
-    }
-}
-
-.modal-confirm {
-    position: fixed;
-    top: 0;
-    z-index: 2;
-
-    background-color: rgba(0, 0, 0, 0.253);
-
-    width: 100%;
-    height: 100%;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .container-imgs-btns-text {
-        background-color: #fff;
-
-        width: 90%;
-        height: 90%;
-
-        padding: 15px;
-
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
-
-        box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
-
-        border-radius: 15px;
-
-        .foto-posto {
-            width: 90%;
-            max-width: 250px;
-
-            border-radius: 15px;
-        }
-
-        .container-text {
-            text-align: center;
-        }
-
-        .container-btns-enviar-img {
-            width: 100%;
-
-            display: flex;
-            justify-content: space-around;
-
-            .btn-enviar-img {
-                width: 40%;
-                height: 40px;
-
-                border: none;
-                border-radius: 5px;
-
-                transition: 0.3s linear;
-            }
-
-            .btn-sim {
-                background-color: #00ff73;
-
-                &:hover {
-                    background-color: #74e9a9;
-                }
-            }
-
-            .btn-nao {
-                background-color: rgb(231, 84, 84);
-
-                &:hover {
-                    background-color: rgb(252, 142, 142);
-                }
-            }
-        }
-    }
-
-}
-
-.modal-confirm-hidden {
-    display: none;
-}
-
-@media screen and (max-width: 768px) {
-
-    .container-modal-edit-posto,
-    .container-modal-edit-posto {
-
-        .modal-edit-posto,
-        .modal-edit-posto {
-            width: 95%;
-            padding: 15px;
-
-            .foto-modal-posto {
-                width: 80px;
-                height: 80px;
-            }
-
-            .container-input-edit-posto input {
-                width: 100%;
-            }
-        }
-    }
-}
-
-@media screen and (max-width: 480px) {
-
-    .container-modal-edit-posto,
-    .container-modal-edit-posto {
-
-        .modal-edit-posto,
-        .modal-edit-posto {
-            .modal-edit-posto button {
-                padding: 8px 15px;
-            }
+        width: 50px;
+        cursor: pointer;
+        &:hover {
+            background-color: #45a049;
         }
     }
 }
