@@ -159,7 +159,7 @@ const LerQrCode = () => {
     }
 
     useEffect(() => {
-        if (typeUser === 'driver') {
+        if (typeUser === 'driver' || !tokenUser) {
             return navigate('/', { replace: true })
         }
     }, [])
