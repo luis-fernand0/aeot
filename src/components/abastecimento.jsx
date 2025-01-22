@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeftLong, faGasPump } from '@fortawesome/free-solid-svg-icons'
 
@@ -8,13 +8,12 @@ import { checkValor } from '../functions/checkValor'
 import '../style/abastecimento_component/abastecimento.css'
 
 const Abastecimento = () => {
-    const [btnChecked, setBtnChecked] = useState('btn-litro')
-
     const navigate = useNavigate()
 
-    const callCheckValor = (e) => {
-        checkValor(e)
-    }
+    const posto = JSON.parse(localStorage.getItem('detalhes'))
+
+    const [btnChecked, setBtnChecked] = useState('btn-litro')
+
     function formatLitro(e) {
         var input = e.target
         var inputValue = input.value.replace(/[^0-9]/g, '')
@@ -38,8 +37,6 @@ const Abastecimento = () => {
         const Typecombustivel = document.getElementById(combustivel).value
         const payMethod = document.getElementById(pagamento).value
         const value = document.getElementById(valor).value
-        
-        const posto = JSON.parse(sessionStorage.getItem('detalhes'))
 
         var metodoAbastecimento = {
             tipo_combustivel: Typecombustivel,
@@ -48,10 +45,17 @@ const Abastecimento = () => {
             preco_ou_litro: value,
             posto
         }
-        
-        sessionStorage.setItem('dadosAbastecimento', JSON.stringify(metodoAbastecimento))
+
+        localStorage.setItem('dadosAbastecimento', JSON.stringify(metodoAbastecimento))
         navigate('/gerar_qrcode')
     }
+
+    useEffect(() => {
+        if (posto === null) {
+            navigate('/home', { replace: true })
+            return
+        }
+    }, [])
 
     return (
         <>
@@ -131,7 +135,7 @@ const Abastecimento = () => {
                                                 Quantos litros deseja abastecer?
                                             </p>
                                             <input
-                                                onChange={(e) => { formatLitro(e) }}
+                                                onChange={(e) => formatLitro(e)}
                                                 id='input-litro'
                                                 className='input-option'
                                                 type="text"
@@ -159,7 +163,7 @@ const Abastecimento = () => {
                                                 Qual valor deseja abastecer?
                                             </p>
                                             <input
-                                                onChange={(e) => { callCheckValor(e) }}
+                                                onChange={(e) => checkValor(e)}
                                                 id='input-preco'
                                                 className='input-option'
                                                 type="text"
@@ -187,7 +191,7 @@ const Abastecimento = () => {
                                                 Enche o tanque!
                                             </p>
                                             <input
-                                                onChange={(e) => { formatLitro(e) }}
+                                                onChange={(e) => formatLitro(e)}
                                                 id='input-tanque'
                                                 className='input-option'
                                                 type="text"
