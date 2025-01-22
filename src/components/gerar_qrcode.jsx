@@ -10,17 +10,16 @@ import '../style/gerar_qrcode_component/gerar_qrcode.css'
 const urlData = import.meta.env.VITE_URL_DATAS_USER
 
 const GerarQrCode = () => {
-    const abastecimento = JSON.parse(sessionStorage.getItem('dadosAbastecimento'))
+    const navigate = useNavigate()
+
+    const abastecimento = JSON.parse(localStorage.getItem('dadosAbastecimento'))
 
     const tokenUser = localStorage.getItem('token');
 
-    const navigate = useNavigate()
-
     const [dataUser, setDataUser] = useState()
-    console.log(dataUser)
 
-    const [dataPosto, setDataPosto] = useState(abastecimento.posto || {})
-    const [dataAbastecimento, setDataAbastecimento] = useState(abastecimento || {})
+    const [dataPosto, setDataPosto] = useState(abastecimento?.posto || null)
+    const [dataAbastecimento, setDataAbastecimento] = useState(abastecimento || null)
 
     const [showQRCode, setShowQRCode] = useState(false)
     const [qrCodeValue, setQrCodeValue] = useState("")
@@ -59,11 +58,11 @@ const GerarQrCode = () => {
             forma_abastecimento: dataAbastecimento?.forma_abastecimento,
             quantidade: dataAbastecimento?.preco_ou_litro,
             valor_total:
-                dataAbastecimento?.forma_abastecimento != 'preco' ? 
-                calcularPagamento(
-                    Number(dataPosto[0][dataAbastecimento.tipo_combustivel]),
-                    Number(dataAbastecimento.preco_ou_litro),
-                ) : dataAbastecimento?.preco_ou_litro
+                dataAbastecimento?.forma_abastecimento != 'preco' ?
+                    calcularPagamento(
+                        Number(dataPosto[0][dataAbastecimento.tipo_combustivel]),
+                        Number(dataAbastecimento.preco_ou_litro),
+                    ) : dataAbastecimento?.preco_ou_litro
         })
 
         setQrCodeValue(qrData)
@@ -71,6 +70,10 @@ const GerarQrCode = () => {
     }
 
     useEffect(() => {
+        if (abastecimento === null) {
+            navigate('/home', { replace: true })
+            return
+        }
         callInfoUser()
     }, [])
     return (
@@ -159,27 +162,28 @@ const GerarQrCode = () => {
                             </button>
                         </div>
 
-                        {showQRCode && (
-                            <div className="qrcode-container">
-                                <div className="qrcode-btn-close-container">
-                                    <div className="container-btn-close">
-                                        <button
-                                            onClick={() => { setShowQRCode(false) }}
-                                            className="btn-close">
-                                            <FontAwesomeIcon className="x-icon" icon={faXmark} />
-                                        </button>
-                                    </div>
-                                    <div className="qrcode">
-                                        <QRCodeCanvas value={qrCodeValue} size={256} />
-                                        <p>
-                                            <span>*Mostre o QRCode para o frentista*</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
                     </div>
                 </>
+            )}
+
+            {showQRCode && (
+                <div className="qrcode-container">
+                    <div className="qrcode-btn-close-container">
+                        <div className="container-btn-close">
+                            <button
+                                onClick={() => { setShowQRCode(false) }}
+                                className="btn-close">
+                                <FontAwesomeIcon className="x-icon" icon={faXmark} />
+                            </button>
+                        </div>
+                        <div className="qrcode">
+                            <QRCodeCanvas value={qrCodeValue} size={256} />
+                            <p>
+                                <span>*Mostre o QRCode para o frentista*</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
             )}
         </>
     )
