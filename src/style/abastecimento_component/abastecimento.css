@@ -1,5 +1,5 @@
 .container-abastecimento-title {
-  height: 100vh;
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -42,6 +42,7 @@
   width: 100%;
   height: 50%;
   padding-left: 25px;
+  margin-bottom: 50px;
 }
 .container-abastecimento-title .container-abastecimento .container-abastecer .container-combustivel-pagamento {
   height: 100%;
@@ -147,9 +148,10 @@
 .container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-btns-input .container-text-input .container-option .input-option:focus {
   border: 2px solid #4b39ef;
 }
-.container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-btns-input .container-text-input .container-option .btn-abastecer {
+.container-abastecimento-title .container-abastecimento .btn-abastecer {
   height: 50px;
   padding: 15px;
+  margin-bottom: 15px;
   border-radius: 15px;
   border: none;
   background-color: #fff100;
@@ -157,10 +159,10 @@
   font-weight: 500;
   transition: 0.5s all;
 }
-.container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-btns-input .container-text-input .container-option .btn-abastecer:hover {
+.container-abastecimento-title .container-abastecimento .btn-abastecer:hover {
   background-color: #14181b;
   color: #fff;
 }
-.container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-btns-input .container-text-input .container-option .btn-abastecer .gas-pump-icon {
+.container-abastecimento-title .container-abastecimento .btn-abastecer .gas-pump-icon {
   margin-left: 5px;
 }/*# sourceMappingURL=abastecimento.css.map */

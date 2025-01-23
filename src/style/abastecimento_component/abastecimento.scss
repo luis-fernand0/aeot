@@ -1,5 +1,5 @@
 .container-abastecimento-title {
-    height: 100vh;
+    height: auto;
 
     display: flex;
     flex-direction: column;
@@ -24,6 +24,7 @@
             margin-right: 100px;
 
             transition: 0.5s all;
+
             &:hover {
                 transform: scale(0.80);
             }
@@ -57,6 +58,8 @@
             height: 50%;
 
             padding-left: 25px;
+
+            margin-bottom: 50px;
 
             .container-combustivel-pagamento {
                 height: 100%;
@@ -99,9 +102,9 @@
             flex-direction: column;
             justify-content: start;
             align-items: center;
-            
+
             padding: 0 25px 0;
-            
+
             .container-text {
                 width: 100%;
 
@@ -193,36 +196,36 @@
                                 border: 2px solid #4b39ef;
                             }
                         }
-
-                        .btn-abastecer {
-                            height: 50px;
-
-                            padding: 15px;
-
-                            border-radius: 15px;
-                            border: none;
-
-                            background-color: #fff100;
-
-                            font-size: 14px;
-                            font-weight: 500;
-
-                            transition: 0.5s all;
-
-                            &:hover {
-                             background-color: #14181b;   
-
-                             color: #fff;
-                            }
-                            
-                            .gas-pump-icon {
-                                margin-left: 5px;
-                            }
-                        }
                     }
                 }
             }
+        }
 
+        .btn-abastecer {
+            height: 50px;
+
+            padding: 15px;
+            margin-bottom: 15px;
+
+            border-radius: 15px;
+            border: none;
+
+            background-color: #fff100;
+
+            font-size: 14px;
+            font-weight: 500;
+
+            transition: 0.5s all;
+
+            &:hover {
+                background-color: #14181b;
+
+                color: #fff;
+            }
+
+            .gas-pump-icon {
+                margin-left: 5px;
+            }
         }
     }
 
