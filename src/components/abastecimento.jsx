@@ -15,8 +15,8 @@ const Abastecimento = () => {
     const [btnChecked, setBtnChecked] = useState('btn-litro')
 
     function formatLitro(e) {
-        var input = e.target
-        var inputValue = input.value.replace(/[^0-9]/g, '')
+        let input = e.target
+        let inputValue = input.value.replace(/[^0-9]/g, '')
 
         if (inputValue.length > 1) {
             inputValue = inputValue.slice(0, 1) + '.' + inputValue.slice(1);
@@ -33,16 +33,26 @@ const Abastecimento = () => {
         input.value = inputValue
     }
 
-    function enviarDados(combustivel, pagamento, abastecimento, valor) {
-        const Typecombustivel = document.getElementById(combustivel).value
-        const payMethod = document.getElementById(pagamento).value
-        const value = document.getElementById(valor).value
+    function enviarDados() {
+        const Typecombustivel = document.getElementById('combustivel').value
+        const payMethod = document.getElementById('pagamento').value
 
-        var metodoAbastecimento = {
+        let valor = null
+        let abastecimento = null
+
+        if (document.getElementById('input-litro')) {
+            abastecimento = 'litro'
+            valor = document.getElementById('input-litro').value
+        } else {
+            abastecimento = 'encher-tanque'
+            valor = document.getElementById('input-tanque').value
+        }
+
+        let metodoAbastecimento = {
             tipo_combustivel: Typecombustivel,
             metodo_pagamento: payMethod,
             forma_abastecimento: abastecimento,
-            preco_ou_litro: value,
+            litros: valor,
             posto
         }
 
@@ -81,18 +91,6 @@ const Abastecimento = () => {
                                     <option value="diesel">Diesel</option>
                                 </select>
                             </div>
-
-                            <div className="container-pagamento">
-                                <label htmlFor='pagamento' className="text-label">
-                                    Qual será a forma de pagamento?
-                                </label>
-                                <select name="pagamento" id="pagamento">
-                                    <option value="debito">Debito</option>
-                                    <option value="credito">Credito</option>
-                                    <option value="dinheiro">Dinheiro</option>
-                                    <option value="pix">Pix</option>
-                                </select>
-                            </div>
                         </div>
                     </div>
 
@@ -112,12 +110,12 @@ const Abastecimento = () => {
                                     Litro
                                 </button>
 
-                                <button
+                                {/* <button
                                     onClick={() => { setBtnChecked('btn-preco') }}
                                     className={`btn-preco btn-option ${btnChecked != 'btn-preco' ? '' : 'checked'}`}
                                     type="button">
                                     Preço
-                                </button>
+                                </button> */}
 
                                 <button
                                     onClick={() => { setBtnChecked('btn-tanque') }}
@@ -140,23 +138,11 @@ const Abastecimento = () => {
                                                 className='input-option'
                                                 type="text"
                                                 placeholder='Litros' />
-                                            <button
-                                                onClick={() => {
-                                                    enviarDados('combustivel',
-                                                        'pagamento',
-                                                        'litro',
-                                                        'input-litro')
-                                                }}
-                                                className='btn-abastecer'
-                                                type="button">
-                                                Abastecer!
-                                                <FontAwesomeIcon className='gas-pump-icon' icon={faGasPump} />
-                                            </button>
                                         </div>
                                     </>
                                 )}
 
-                                {btnChecked === 'btn-preco' && (
+                                {/* {btnChecked === 'btn-preco' && (
                                     <>
                                         <div className='container-option'>
                                             <p className='text-option'>
@@ -182,7 +168,7 @@ const Abastecimento = () => {
                                             </button>
                                         </div>
                                     </>
-                                )}
+                                )} */}
 
                                 {btnChecked === 'btn-tanque' && (
                                     <>
@@ -196,18 +182,6 @@ const Abastecimento = () => {
                                                 className='input-option'
                                                 type="text"
                                                 placeholder='Litros do Tanque' />
-                                            <button
-                                                onClick={() => {
-                                                    enviarDados('combustivel',
-                                                        'pagamento',
-                                                        'encher-tanque',
-                                                        'input-tanque')
-                                                }}
-                                                className='btn-abastecer btn-enche-o-tanque'
-                                                type="button">
-                                                Encher o tanque!
-                                                <FontAwesomeIcon className='gas-pump-icon' icon={faGasPump} />
-                                            </button>
                                         </div>
                                     </>
                                 )}
@@ -215,6 +189,30 @@ const Abastecimento = () => {
 
                         </div>
                     </div>
+
+                    <div className='container-abastecer'>
+                        <div className='container-combustivel-pagamento'>
+                            <div className="container-pagamento">
+                                <label htmlFor='pagamento' className="text-label">
+                                    Qual será a forma de pagamento?
+                                </label>
+                                <select name="pagamento" id="pagamento">
+                                    <option value="debito">Debito</option>
+                                    <option value="credito">Credito</option>
+                                    <option value="dinheiro">Dinheiro</option>
+                                    <option value="pix">Pix</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button
+                        onClick={() => enviarDados()}
+                        className='btn-abastecer btn-enche-o-tanque'
+                        type="button">
+                        Abastecer!
+                        <FontAwesomeIcon className='gas-pump-icon' icon={faGasPump} />
+                    </button>
                 </div>
             </div>
         </>
