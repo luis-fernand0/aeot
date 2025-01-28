@@ -45,7 +45,7 @@ const Home = () => {
         navigate('/', { replace: true })
       }
       await obterLocation()
-      setPostos(data.infoGasStation)
+      setPostos(data.itens)
     } catch (err) {
       setModalMessage(err.message)
       setModalVisible(true)
@@ -183,13 +183,13 @@ const Home = () => {
                     </div>
                     <div className='info-gas-services'>
                       <p className='combustiveis-gas-station'>
-                        ETANOL: R$ {posto.etanol}
+                        ETANOL: R$ {posto.combustivel?.etanol.valor}
                       </p>
                       <p className='combustiveis-gas-station'>
-                        GASOLINA: R$ {posto.gasolina}
+                        GASOLINA: R$ {posto.combustivel?.gasolina.valor}
                       </p>
                       <p className='combustiveis-gas-station'>
-                        DIESEL: R$ {posto.diesel}
+                        DIESEL: R$ {posto.combustivel?.diesel.valor}
                       </p>
                       {distancia[posto.cod_posto] && (
                         <div className='container-km-time'>
