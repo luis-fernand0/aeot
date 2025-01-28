@@ -67,6 +67,9 @@ const Detalhes = () => {
       }
 
       setDetalhe(data.query)
+      console.log(data)
+      console.log(data.query)
+      console.log(data.query.combustivel.etanol.valor)
     } catch (err) {
       setModalMessage(`Desculpe ocorreu um erro inesperado! ${err.message}`)
       setModalVisible(true)
@@ -113,19 +116,23 @@ const Detalhes = () => {
                 <>
                   <div className='container-edit-combustivel'>
                     <p id='valor-etanol' className='combustivel-posto'>
-                      Etanol: R$ {detalhe.etanol}
+                      Etanol: R$ {detalhe.combustivel?.etanol.valor}
+                      <br />
+                      {detalhe.combustivel?.etanol.formas_abastecimento}
+                      <br />
+                      {detalhe.combustivel?.etanol.formas_pagamento}
                     </p>
                   </div>
 
                   <div className='container-edit-combustivel'>
                     <p id='valor-gasolina' className='combustivel-posto'>
-                      Gasolina: R$ {detalhe.gasolina}
+                      Gasolina: R$ {detalhe.combustivel?.gasolina.valor}
                     </p>
                   </div>
 
                   <div className='container-edit-combustivel'>
                     <p id='valor-diesel' className='combustivel-posto'>
-                      Diesel: R$ {detalhe.diesel}
+                      Diesel: R$ {detalhe.combustivel?.diesel.valor}
                     </p>
                   </div>
 
