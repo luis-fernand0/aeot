@@ -29,6 +29,14 @@ const NewPostosServices = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
 
+  const combustiveis = ['etanol', 'gasolina', 'diesel'];
+  const metodosPagamento = ['dinheiro', 'pix', 'debito', 'credito'];
+  const abastecimentos = [
+    { value: '', label: 'Escolha a forma de abastecimento' },
+    { value: 'Litragem Livre', label: 'Litragem Livre' },
+    { value: 'Encher Tanque', label: 'Encher Tanque' },
+  ];
+
   const tokenUser = localStorage.getItem('token');
 
   const navigate = useNavigate()
@@ -92,10 +100,13 @@ const NewPostosServices = () => {
 
   async function hundleSubmit(e) {
     e.preventDefault()
-    setLoading(true)
+    // setLoading(true)
 
     let cnpj = document.getElementById('cnpj')
     let checkboxes = document.querySelectorAll("input[type='checkbox']")
+    checkboxes.forEach((box) => {
+      console.log(box)
+    })
 
     if (!fotoValid || !validarCnpj(cnpj.value)) {
       setModalMessage('É necessario preencher todos os dados!')
@@ -124,6 +135,10 @@ const NewPostosServices = () => {
         formData.append(checkbox.name, checkbox.checked)
       }
     })
+
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value)
+    }
 
     try {
       const response = await fetch(urlCadastrar, {
@@ -307,34 +322,6 @@ const NewPostosServices = () => {
                   onChange={(e) => checkPhone(e)}
                   maxLength={15} />
 
-                <p className='text-info'>Tipo de combustivel que deseja trabalhar</p>
-                <div className='container-inputs-combutiveis'>
-
-                  <input
-                    onChange={(e) => checkValor(e)}
-                    id='etanol'
-                    className='input-add-combustivel input-info'
-                    name="etanol"
-                    type="text"
-                    placeholder="Etanol" />
-
-                  <input
-                    onChange={(e) => checkValor(e)}
-                    id='gasolina'
-                    className='input-add-combustivel input-info'
-                    name="gasolina"
-                    type="text"
-                    placeholder="Gasolina" />
-
-                  <input
-                    onChange={(e) => checkValor(e)}
-                    id='diesel'
-                    className='input-add-combustivel input-info'
-                    name="diesel"
-                    type="text"
-                    placeholder="Diesel" />
-                </div>
-
                 <p className='text-info'>Formas de pagamento</p>
                 <div className='container-forma-de-pagamento'>
                   <div className='forma-de-pagamento'>
@@ -356,6 +343,72 @@ const NewPostosServices = () => {
                     <input className='input-checkbox' type="checkbox" name="credito" id="credito" />
                     <label className='text-checkbox' htmlFor="credito">Credito</label>
                   </div>
+                </div>
+
+                <p className='text-info'>Valores dos combustivel que deseja trabalhar</p>
+                <div className='container-inputs-combutiveis'>
+
+                  {combustiveis.map(combustivel => (
+                    <div key={combustivel} className="combustivel-container">
+                      <input
+                        onChange={(e) => checkValor(e)}
+                        id={combustivel}
+                        className='input-add-combustivel input-info'
+                        name={combustivel}
+                        type="text"
+                        placeholder={combustivel.charAt(0).toUpperCase() + combustivel.slice(1)}
+                      />
+
+                      {metodosPagamento.map(metodo => (
+                        <div key={`${combustivel}-${metodo}`} className="metodo-container">
+
+                          <input
+                            className='input-checkbox'
+                            type="checkbox"
+                            id={`${combustivel}-${metodo}`}
+                            name={`${combustivel}_${metodo}`} />
+                          <label
+                            className='text-checkbox'
+                            htmlFor={`${combustivel}-${metodo}`}>
+                            {metodo.charAt(0).toUpperCase() + metodo.slice(1)}
+                          </label>
+
+                          <select
+                            name={`${combustivel}_${metodo}_abastecimento`}
+                            id={`${combustivel}-${metodo}-abastecimento`}>
+
+                            {abastecimentos.map(opcao => (
+                              <option key={opcao.value} value={opcao.value}>{opcao.label}</option>
+                            ))}
+                          </select>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+
+                  {/* <input
+                    onChange={(e) => checkValor(e)}
+                    id='etanol'
+                    className='input-add-combustivel input-info'
+                    name="etanol"
+                    type="text"
+                    placeholder="Etanol" />
+
+                  <input
+                    onChange={(e) => checkValor(e)}
+                    id='gasolina'
+                    className='input-add-combustivel input-info'
+                    name="gasolina"
+                    type="text"
+                    placeholder="Gasolina" />
+
+                  <input
+                    onChange={(e) => checkValor(e)}
+                    id='diesel'
+                    className='input-add-combustivel input-info'
+                    name="diesel"
+                    type="text"
+                    placeholder="Diesel" /> */}
                 </div>
 
                 <span className='span-alert hidden-span-alert alert-foto-posto'>
