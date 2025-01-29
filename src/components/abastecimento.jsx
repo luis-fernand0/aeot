@@ -110,13 +110,6 @@ const Abastecimento = () => {
                                     Litro
                                 </button>
 
-                                {/* <button
-                                    onClick={() => { setBtnChecked('btn-preco') }}
-                                    className={`btn-preco btn-option ${btnChecked != 'btn-preco' ? '' : 'checked'}`}
-                                    type="button">
-                                    Preço
-                                </button> */}
-
                                 <button
                                     onClick={() => { setBtnChecked('btn-tanque') }}
                                     className={`btn-tanque btn-option ${btnChecked != 'btn-tanque' ? '' : 'checked'}`}
@@ -141,34 +134,6 @@ const Abastecimento = () => {
                                         </div>
                                     </>
                                 )}
-
-                                {/* {btnChecked === 'btn-preco' && (
-                                    <>
-                                        <div className='container-option'>
-                                            <p className='text-option'>
-                                                Qual valor deseja abastecer?
-                                            </p>
-                                            <input
-                                                onChange={(e) => checkValor(e)}
-                                                id='input-preco'
-                                                className='input-option'
-                                                type="text"
-                                                placeholder='Preço' />
-                                            <button
-                                                onClick={() => {
-                                                    enviarDados('combustivel',
-                                                        'pagamento',
-                                                        'preco',
-                                                        'input-preco')
-                                                }}
-                                                className='btn-abastecer'
-                                                type="button">
-                                                Abastecer!
-                                                <FontAwesomeIcon className='gas-pump-icon' icon={faGasPump} />
-                                            </button>
-                                        </div>
-                                    </>
-                                )} */}
 
                                 {btnChecked === 'btn-tanque' && (
                                     <>
