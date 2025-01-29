@@ -92,8 +92,14 @@
             font-weight: bold;
 
             display: flex;
-            flex-direction: row;
-            justify-content: space-between;
+            flex-direction: column;
+
+            .container-metodo-pagamento-abastecimento {
+                margin-top: 5px;
+                #metodo_pagamento {
+                    margin-right: 15px;
+                }
+            }
         }
     }
 

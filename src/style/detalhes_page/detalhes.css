@@ -69,8 +69,13 @@
   color: #333;
   font-weight: bold;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+}
+.container-item .container-sobre-item .container-edit-combustivel .container-metodo-pagamento-abastecimento {
+  margin-top: 5px;
+}
+.container-item .container-sobre-item .container-edit-combustivel .container-metodo-pagamento-abastecimento #metodo_pagamento {
+  margin-right: 15px;
 }
 .container-item .container-km-time-btn {
   width: 100%;
