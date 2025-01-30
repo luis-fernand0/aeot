@@ -100,7 +100,7 @@ const NewPostosServices = () => {
 
   async function hundleSubmit(e) {
     e.preventDefault()
-    // setLoading(true)
+    setLoading(true)
 
     let cnpj = document.getElementById('cnpj')
     let checkboxes = document.querySelectorAll(".input-checkbox")
@@ -144,10 +144,6 @@ const NewPostosServices = () => {
 
       formData.append(box.name, selectValue)
     })
-
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value)
-    }
 
     try {
       const response = await fetch(urlCadastrar, {
