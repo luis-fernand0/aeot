@@ -90,6 +90,12 @@
 .container-modal-editar-item .container-btn-form .form-editar-item .container-formas-de-pagamento .container-forma-de-pagamento .text-forma-de-pagamento {
   font-size: 16px;
 }
+.container-modal-editar-item .container-btn-form .form-editar-item .combustivel-container .metodo-container {
+  margin-bottom: 15px;
+}
+.container-modal-editar-item .container-btn-form .form-editar-item .combustivel-container .metodo-container .text-checkbox {
+  margin: 0 5px 0 5px;
+}
 .container-modal-editar-item .container-btn-form .form-editar-item .btn-salvar {
   background-color: #4CAF50;
   font-size: 0.9rem;
