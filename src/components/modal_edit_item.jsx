@@ -19,24 +19,43 @@ const EditItem = ({ show, close, categoria, item }) => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
 
+    const combustiveis = ['etanol', 'gasolina', 'diesel'];
+    const metodosPagamento = ['dinheiro', 'pix', 'debito', 'credito'];
+    const abastecimentos = [
+        { value: '', label: 'Escolha a forma de abastecimento' },
+        { value: 'Litragem Livre', label: 'Litragem Livre' },
+        { value: 'Encher Tanque', label: 'Encher Tanque' },
+    ];
+
     async function editarItem(e) {
         e.preventDefault()
         setLoading(true)
 
-        let checkboxes = document.querySelectorAll("input[type='checkbox']")
-        checkboxes.forEach((checkbox) => {
-            checkbox.value = checkbox.checked
-        })
+        let checkboxes = document.querySelectorAll(".forma-de-pagamento-checkbox")
+        let metodoscheckbox = document.querySelectorAll(".input-metodo-checkbox")
 
         const myForm = document.getElementById('form-editar-item')
         const formData = new FormData(myForm)
         formData.append('categoria', categoria.categoria)
         formData.append('item_id', item.cod_posto || item.cod_anuncio)
         checkboxes.forEach((checkbox) => {
-            if (!checkbox.checked) {
-                formData.append(checkbox.name, checkbox.checked)
-            }
+            formData.delete(checkbox.name)
+            formData.append(checkbox.name, checkbox.checked)
         })
+
+        metodoscheckbox.forEach((box) => {
+            let name = box.getAttribute('name')
+            formData.delete(`${name}_abastecimento`)
+            formData.delete(name)
+            let selectValue = document.getElementById(`${name}_abastecimento`).value
+
+            if (!box.checked) {
+                selectValue = 'Não trabalhamos'
+            }
+
+            formData.append(box.name, selectValue)
+        })
+
         const formObject = Object.fromEntries(formData)
 
         try {
@@ -63,7 +82,7 @@ const EditItem = ({ show, close, categoria, item }) => {
             setModalMessage(data.message)
             setModalVisible(true)
             document.getElementById('btn-close').click()
-            
+
         } catch (err) {
             setModalMessage(err.message)
             setModalVisible(true)
@@ -111,42 +130,6 @@ const EditItem = ({ show, close, categoria, item }) => {
                         {categoria.categoria === 'postos' && (
                             <>
                                 <p className='text-editar-item'>
-                                    Valores dos combustiveis
-                                </p>
-                                <div className='container-edit-combustivel'>
-                                    <input
-                                        onChange={(e) => checkValor(e)}
-                                        className="input-editar-item"
-                                        name='etanol'
-                                        id='etanol'
-                                        type="text"
-                                        defaultValue={item.etanol}
-                                        placeholder={item.etanol} />
-                                </div>
-
-                                <div className='container-edit-combustivel'>
-                                    <input
-                                        onChange={(e) => checkValor(e)}
-                                        className="input-editar-item"
-                                        name='gasolina'
-                                        id='gasolina'
-                                        type="text"
-                                        defaultValue={item.gasolina}
-                                        placeholder={item.gasolina} />
-                                </div>
-
-                                <div className='container-edit-combustivel'>
-                                    <input
-                                        onChange={(e) => checkValor(e)}
-                                        className="input-editar-item"
-                                        name='diesel'
-                                        id='diesel'
-                                        type="text"
-                                        defaultValue={item.diesel}
-                                        placeholder={item.diesel} />
-                                </div>
-
-                                <p className='text-editar-item'>
                                     Formas de Pagamento
                                 </p>
                                 <div className='container-formas-de-pagamento'>
@@ -191,6 +174,53 @@ const EditItem = ({ show, close, categoria, item }) => {
                                     </div>
 
                                 </div>
+
+                                <p className='text-editar-item'>
+                                    Valores dos combustiveis
+                                </p>
+                                {combustiveis.map(typeCombustivel => (
+                                    <div key={typeCombustivel} className="combustivel-container">
+                                        <input
+                                            onChange={(e) => checkValor(e)}
+                                            className='input-editar-item'
+                                            id={typeCombustivel}
+                                            name={typeCombustivel}
+                                            defaultValue={item.combustivel?.[typeCombustivel]?.valor}
+                                            type="text"
+                                            placeholder={typeCombustivel.charAt(0).toUpperCase() + typeCombustivel.slice(1)}
+                                        />
+
+                                        {metodosPagamento.map(metodo => (
+                                            <div key={`${typeCombustivel}-${metodo}`} className="metodo-container">
+
+                                                <input
+                                                    className='input-metodo-checkbox'
+                                                    type="checkbox"
+                                                    id={`${typeCombustivel}-${metodo}`}
+                                                    name={`${typeCombustivel}_${metodo}`}
+                                                    defaultChecked=
+                                                    {item.combustivel?.[typeCombustivel]?.[metodo] != 'Não trabalhamos' ? true : false} />
+                                                <label
+                                                    className='text-checkbox'
+                                                    htmlFor={`${typeCombustivel}-${metodo}`}>
+                                                    {metodo.charAt(0).toUpperCase() + metodo.slice(1)}
+                                                </label>
+
+                                                <select
+                                                    name={`${typeCombustivel}_${metodo}_abastecimento`}
+                                                    id={`${typeCombustivel}_${metodo}_abastecimento`}
+                                                    defaultValue=
+                                                    {item.combustivel?.[typeCombustivel]?.[metodo]}>
+
+                                                    {abastecimentos.map(opcao => (
+                                                        <option key={opcao.value} value={opcao.value}>{opcao.label}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ))}
+
                             </>
                         )}
 
