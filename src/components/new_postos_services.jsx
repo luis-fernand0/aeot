@@ -103,10 +103,8 @@ const NewPostosServices = () => {
     // setLoading(true)
 
     let cnpj = document.getElementById('cnpj')
-    let checkboxes = document.querySelectorAll("input[type='checkbox']")
-    checkboxes.forEach((box) => {
-      console.log(box)
-    })
+    let checkboxes = document.querySelectorAll(".input-checkbox")
+    let metodoscheckbox = document.querySelectorAll(".input-metodo-checkbox")
 
     if (!fotoValid || !validarCnpj(cnpj.value)) {
       setModalMessage('É necessario preencher todos os dados!')
@@ -130,10 +128,21 @@ const NewPostosServices = () => {
     formData.append('categoria', [categoria])
 
     checkboxes.forEach((checkbox) => {
-      checkbox.value = checkbox.checked
-      if (!checkbox.checked) {
-        formData.append(checkbox.name, checkbox.checked)
+      formData.delete(checkbox.name)
+      formData.append(checkbox.name, checkbox.checked)
+    })
+
+    metodoscheckbox.forEach((box) => {
+      let name = box.getAttribute('name')
+      formData.delete(`${name}_abastecimento`)
+      formData.delete(name)
+      let selectValue = document.getElementById(`${name}_abastecimento`).value
+
+      if (!box.checked) {
+        selectValue = 'Não trabalhamos'
       }
+
+      formData.append(box.name, selectValue)
     })
 
     for (let [key, value] of formData.entries()) {
@@ -345,7 +354,9 @@ const NewPostosServices = () => {
                   </div>
                 </div>
 
-                <p className='text-info'>Valores dos combustivel que deseja trabalhar</p>
+                <p className='text-info'>
+                  Valores dos combustivel que deseja trabalhar
+                </p>
                 <div className='container-inputs-combutiveis'>
 
                   {combustiveis.map(combustivel => (
@@ -363,7 +374,7 @@ const NewPostosServices = () => {
                         <div key={`${combustivel}-${metodo}`} className="metodo-container">
 
                           <input
-                            className='input-checkbox'
+                            className='input-metodo-checkbox'
                             type="checkbox"
                             id={`${combustivel}-${metodo}`}
                             name={`${combustivel}_${metodo}`} />
@@ -375,7 +386,7 @@ const NewPostosServices = () => {
 
                           <select
                             name={`${combustivel}_${metodo}_abastecimento`}
-                            id={`${combustivel}-${metodo}-abastecimento`}>
+                            id={`${combustivel}_${metodo}_abastecimento`}>
 
                             {abastecimentos.map(opcao => (
                               <option key={opcao.value} value={opcao.value}>{opcao.label}</option>
