@@ -68,7 +68,6 @@ const Cadastro = () => {
 
             return
         }
-        console.log(wordValid)
         document.getElementById('span-modelo').classList.add('hidden-span-modelo')
         setErroModeloCor(wordValid);
 
