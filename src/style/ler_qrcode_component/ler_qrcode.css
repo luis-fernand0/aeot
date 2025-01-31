@@ -92,6 +92,20 @@
   align-items: center;
   justify-content: center;
 }
+.container-scan-respose #dados-do-abastecimento .container-dados-do-motorista .text-img-container,
+.container-scan-respose #dados-do-abastecimento .container-abastecimento .text-img-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.container-scan-respose #dados-do-abastecimento .container-dados-do-motorista .text-img-container .img-foto-motorista,
+.container-scan-respose #dados-do-abastecimento .container-abastecimento .text-img-container .img-foto-motorista {
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  margin-top: 15px;
+}
 .container-scan-respose #dados-do-abastecimento .container-dados-do-motorista .text-container,
 .container-scan-respose #dados-do-abastecimento .container-abastecimento .text-container {
   margin-bottom: 15px;
