@@ -3,8 +3,6 @@ import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeftLong, faGasPump } from '@fortawesome/free-solid-svg-icons'
 
-import { checkValor } from '../functions/checkValor'
-
 import '../style/abastecimento_component/abastecimento.css'
 
 const Abastecimento = () => {
@@ -55,7 +53,6 @@ const Abastecimento = () => {
             litros: valor,
             posto
         }
-
         localStorage.setItem('dadosAbastecimento', JSON.stringify(metodoAbastecimento))
         navigate('/gerar_qrcode')
     }
@@ -89,6 +86,22 @@ const Abastecimento = () => {
                                     <option value="etanol">Etanol</option>
                                     <option value="gasolina">Gasolina</option>
                                     <option value="diesel">Diesel</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className='container-abastecer'>
+                        <div className='container-combustivel-pagamento'>
+                            <div className="container-pagamento">
+                                <label htmlFor='pagamento' className="text-label">
+                                    Qual será a forma de pagamento?
+                                </label>
+                                <select name="pagamento" id="pagamento">
+                                    <option value="debito">Debito</option>
+                                    <option value="credito">Credito</option>
+                                    <option value="dinheiro">Dinheiro</option>
+                                    <option value="pix">Pix</option>
                                 </select>
                             </div>
                         </div>
@@ -152,22 +165,6 @@ const Abastecimento = () => {
                                 )}
                             </div>
 
-                        </div>
-                    </div>
-
-                    <div className='container-abastecer'>
-                        <div className='container-combustivel-pagamento'>
-                            <div className="container-pagamento">
-                                <label htmlFor='pagamento' className="text-label">
-                                    Qual será a forma de pagamento?
-                                </label>
-                                <select name="pagamento" id="pagamento">
-                                    <option value="debito">Debito</option>
-                                    <option value="credito">Credito</option>
-                                    <option value="dinheiro">Dinheiro</option>
-                                    <option value="pix">Pix</option>
-                                </select>
-                            </div>
                         </div>
                     </div>
 
