@@ -46,6 +46,7 @@ const GerarQrCode = () => {
         const qrData = JSON.stringify({
             driver_id: dataUser?.user_id,
             usuario: dataUser?.nome,
+            foto_user: dataUser?.foto,
             veiculo: {
                 modelo: dataUser?.modelo,
                 placa: dataUser?.placa
@@ -53,18 +54,15 @@ const GerarQrCode = () => {
             posto_user_id: dataPosto[0]?.user_id,
             posto: dataPosto[0]?.nome,
             tipo_combustivel: dataAbastecimento?.tipo_combustivel,
-            valor_combustivel: dataPosto[0][dataAbastecimento?.tipo_combustivel],
+            valor_combustivel: dataPosto[0].combustivel[dataAbastecimento?.tipo_combustivel]?.valor,
             metodo_pagamento: dataAbastecimento?.metodo_pagamento,
             forma_abastecimento: dataAbastecimento?.forma_abastecimento,
-            quantidade: dataAbastecimento?.preco_ou_litro,
-            valor_total:
-                dataAbastecimento?.forma_abastecimento != 'preco' ?
-                    calcularPagamento(
-                        Number(dataPosto[0][dataAbastecimento.tipo_combustivel]),
-                        Number(dataAbastecimento.preco_ou_litro),
-                    ) : dataAbastecimento?.preco_ou_litro
+            quantidade: dataAbastecimento?.litros,
+            valor_total: calcularPagamento(
+                Number(dataPosto[0].combustivel[dataAbastecimento.tipo_combustivel]?.valor),
+                Number(dataAbastecimento.litros)
+            )
         })
-
         setQrCodeValue(qrData)
         setShowQRCode(true)
     }
@@ -116,7 +114,7 @@ const GerarQrCode = () => {
 
                                 <p className="text-container dado-posto-combustivel">
                                     {dataAbastecimento.tipo_combustivel}:
-                                    R$ {dataPosto[0][dataAbastecimento.tipo_combustivel]}
+                                    R$ {dataPosto[0].combustivel[dataAbastecimento.tipo_combustivel].valor}
                                 </p>
                             </div>
 
@@ -139,20 +137,15 @@ const GerarQrCode = () => {
                                     </p>
 
                                     <p className="text-container abastecimento-preco-ou-litro">
-                                        Quantidade que vai abastecer:
-                                        {dataAbastecimento.forma_abastecimento != 'preco' ?
-                                            ` ${dataAbastecimento.preco_ou_litro} Litros` :
-                                            ` R$ ${dataAbastecimento.preco_ou_litro}`}
+                                        Quantidade que vai abastecer: {dataAbastecimento.litros} Litros
                                     </p>
 
                                     <p className="text-container abastecimento-preco-ou-litro">
                                         Valor total:
-                                        {dataAbastecimento.forma_abastecimento != 'preco' ?
-                                            ` R$ ${calcularPagamento(
-                                                Number(dataPosto[0][dataAbastecimento.tipo_combustivel]),
-                                                Number(dataAbastecimento.preco_ou_litro),
-                                            )}` :
-                                            `R$ ${dataAbastecimento.preco_ou_litro}`}
+                                        {` R$ ${calcularPagamento(
+                                            Number(dataPosto[0].combustivel[dataAbastecimento.tipo_combustivel]?.valor),
+                                            Number(dataAbastecimento.litros),
+                                        )}`}
                                     </p>
                                 </div>
                             </div>
