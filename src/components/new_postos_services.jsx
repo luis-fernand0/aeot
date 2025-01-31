@@ -392,30 +392,6 @@ const NewPostosServices = () => {
                       ))}
                     </div>
                   ))}
-
-                  {/* <input
-                    onChange={(e) => checkValor(e)}
-                    id='etanol'
-                    className='input-add-combustivel input-info'
-                    name="etanol"
-                    type="text"
-                    placeholder="Etanol" />
-
-                  <input
-                    onChange={(e) => checkValor(e)}
-                    id='gasolina'
-                    className='input-add-combustivel input-info'
-                    name="gasolina"
-                    type="text"
-                    placeholder="Gasolina" />
-
-                  <input
-                    onChange={(e) => checkValor(e)}
-                    id='diesel'
-                    className='input-add-combustivel input-info'
-                    name="diesel"
-                    type="text"
-                    placeholder="Diesel" /> */}
                 </div>
 
                 <span className='span-alert hidden-span-alert alert-foto-posto'>
