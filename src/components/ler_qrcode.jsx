@@ -50,6 +50,7 @@ const LerQrCode = () => {
                     },
                     (decodedText, decodedResult) => {
                         setResult(JSON.parse(decodedText))
+                        console.log(decodedText)
 
                         document.getElementById('stop-scan').click()
 
@@ -206,6 +207,11 @@ const LerQrCode = () => {
                                     <span className="text-span-container">
                                         {result.usuario}
                                     </span>
+                                </p>
+
+                                <p className="text-container text-img-container">
+                                    Foto do motorista:
+                                    <img className="img-foto-motorista" src={`https://aeotnew.s3.amazonaws.com/${result.foto_user}`} alt="foto-do-motorista" />
                                 </p>
 
                                 <p className="text-container">
