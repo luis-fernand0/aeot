@@ -4,6 +4,7 @@
   flex-direction: row;
   justify-content: space-around;
   margin-bottom: 50px;
+  padding: 20px;
 }
 .header-home .header-btn {
   background-color: transparent;
