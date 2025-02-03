@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeftLong, faGasPump } from '@fortawesome/free-solid-svg-icons'
 
+import {checkValor} from '../functions/checkValor'
+
 import '../style/abastecimento_component/abastecimento.css'
 
 const Abastecimento = () => {
@@ -41,11 +43,14 @@ const Abastecimento = () => {
         if (document.getElementById('input-litro')) {
             abastecimento = 'litro'
             valor = document.getElementById('input-litro').value
-        } else {
+        } else if (document.getElementById('input-valor')) {
+            abastecimento = 'valor'
+            valor = document.getElementById('input-valor').value
+        } else { 
             abastecimento = 'encher-tanque'
             valor = document.getElementById('input-tanque').value
         }
-
+        
         let metodoAbastecimento = {
             tipo_combustivel: Typecombustivel,
             metodo_pagamento: payMethod,
@@ -124,6 +129,13 @@ const Abastecimento = () => {
                                 </button>
 
                                 <button
+                                    onClick={() => { setBtnChecked('btn-valor') }}
+                                    className={`btn-valor btn-option ${btnChecked != 'btn-valor' ? '' : 'checked'}`}
+                                    type="button">
+                                    Preço
+                                </button>
+
+                                <button
                                     onClick={() => { setBtnChecked('btn-tanque') }}
                                     className={`btn-tanque btn-option ${btnChecked != 'btn-tanque' ? '' : 'checked'}`}
                                     type="button">
@@ -144,6 +156,22 @@ const Abastecimento = () => {
                                                 className='input-option'
                                                 type="text"
                                                 placeholder='Litros' />
+                                        </div>
+                                    </>
+                                )}
+
+                                {btnChecked === 'btn-valor' && (
+                                    <>
+                                        <div className='container-option'>
+                                            <p className='text-option'>
+                                                Qual valor deseja abastecer?
+                                            </p>
+                                            <input
+                                                onChange={(e) => checkValor(e)}
+                                                id='input-valor'
+                                                className='input-option'
+                                                type="text"
+                                                placeholder='Valor' />
                                         </div>
                                     </>
                                 )}
