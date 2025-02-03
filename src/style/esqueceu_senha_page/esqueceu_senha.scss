@@ -1,231 +1,148 @@
-.container-esqueceu-senha {
+.form-esqueceu-senha {
+    background-color: #f3df2b;
 
-    .container-response-esqueceu-senha {
-        position: absolute;
-        z-index: 1;
+    width: 100%;
+    min-height: 100vh;
 
-        background-color: rgba(0, 0, 0, 0.253);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-        width: 100%;
-        height: 100%;
+    .div-email-pass-esqueceu-senha {
+        background-color: #fff;
 
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        max-width: 350px;
+        height: auto;
 
-        .container-info-response-esqueceu-senha {
-            background-color: #ffffff;
-
-            width: 50%;
-            height: 30%;
-
-            border-radius: 15px;
-
-            box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.384);
-
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-
-            .div-close-alert-response-esqueceu-senha {
-                width: 100%;
-
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-end;
-
-                .btn-close-alert-response-esqueceu-senha {
-                    background-color: transparent;
-
-                    border: none;
-
-                    width: 50px;
-                    height: 50px;
-                }
-            }
-
-            .container-text-esqueceu-senha {
-                height: 100%;
-                width: 100%;
-
-                display: flex;
-                flex-direction: column;
-                justify-content: space-evenly;
-                align-items: center;
-
-                .response-text-esqueceu-senha {
-                    width: 60%;
-
-                    text-align: center;
-                }
-
-                .btn-response-esqueceu-senha {
-                    width: 100%;
-                    min-height: 45px;
-
-                    padding: 10px;
-
-                    background-color: #f3df2b;
-
-                    border: none;
-                    border-radius: 15px;
-
-                    transition: all 0.5s;
-
-                    &:hover {
-                        background-color: #14181b;
-                        color: #fff;
-                    }
-                }
-            }
-        }
-    }
-
-    .container-response-esqueceu-senha-hidden {
-        display: none;
-    }
-
-    .form-esqueceu-senha {
-        background-color: #f3df2b;
-        width: 100%;
-        height: 100vh;
+        padding: 25px;
+        margin: 25px;
 
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
 
-        .div-email-pass-esqueceu-senha {
-            background-color: #fff;
+        border-radius: 15px;
 
-            width: 320px;
-            height: auto;
+        .arrow-esqueceu-senha {
+            font-size: 24px;
+            color: black;
+            text-decoration: none;
 
-            padding: 25px 0 25px 0;
+            transition: all 0.2s linear;
 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            margin-bottom: 20px;
 
+            &:hover {
+                transform: scale(0.80);
+            }
+        }
+
+        .input-esqueceu-senha {
+            background-color: #f5f5f5;
+
+            width: 100%;
+            min-height: 55px;
+
+            margin-bottom: 25px;
+            padding-left: 15px;
+
+            border: none;
             border-radius: 15px;
 
-            .arrow-esqueceu-senha {
-                font-size: 24px;
-                color: black;
-                text-decoration: none;
+            box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
 
-                transition: all 0.2s linear;
+            font-size: 18px;
 
-                margin-bottom: 20px;
+            &:focus {
+                outline: none;
 
-                &:hover {
-                    transform: scale(0.80);
+                border: 2px solid #4b39ef;
+            }
+        }
+
+        .div-pass-esqueceu-senha {
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: center;
+
+            .div-input-senha {
+
+                .input-esqueceu-senha-pass {
+                    width: calc(100% - 55px);
+
+                    border-top-right-radius: 0;
+                    border-bottom-right-radius: 0;
                 }
             }
 
-            .input-esqueceu-senha {
-                background-color: #f5f5f5;
 
-                width: calc(100% - 55px);
+            .pass-reveal-esqueceu-senha {
+                width: 55px;
                 height: 55px;
 
-                margin-bottom: 25px;
-                padding-left: 15px;
+                background-color: #f5f5f5;
 
                 border: none;
                 border-radius: 15px;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
 
                 box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
 
                 font-size: 18px;
 
-                &:focus {
-                    outline: none;
-
-                    border: 2px solid #4b39ef;
-                }
-            }
-
-            .div-pass-esqueceu-senha {
-                display: flex;
-                flex-flow: row wrap;
-                justify-content: center;
-
-                .input-esqueceu-senha-pass {
-                    width: auto;
-
-                    border-top-right-radius: 0;
-                    border-bottom-right-radius: 0;
+                .eye-icon {
+                    color: #acaaaa;
                 }
 
-                .pass-reveal-esqueceu-senha {
-                    width: 55px;
-                    height: 55px;
-
-                    background-color: #f5f5f5;
-
-                    border: none;
-                    border-radius: 15px;
-                    border-top-left-radius: 0;
-                    border-bottom-left-radius: 0;
-
-                    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
-
-                    font-size: 18px;
-
-                    .eye-icon {
-                        color: #acaaaa;
-                    }
-
-                    .hidden {
-                        display: none;
-                    }
-                }
-
-                .span-esqueceu-senha {
-                    width: calc(100% - 55px);
-
-                    padding-left: 15px;
-
-                    color: rgb(231, 84, 84);
-                    font-size: 10px;
-                }
-
-                .hidden-span-esqueceu-senha {
+                .hidden {
                     display: none;
                 }
-
-                .alert-pass-esqueceu-senha {
-                    border: 1px solid red;
-                }
             }
 
-            .btn-trocar-senha {
-                height: 45px;
+            .span-esqueceu-senha {
                 width: calc(100% - 55px);
 
-                margin-bottom: 15px;
+                padding-left: 15px;
 
-                border: none;
-                border-radius: 10px;
+                color: rgb(231, 84, 84);
+                font-size: 10px;
+            }
 
-                background-color: #fff100;
+            .hidden-span-esqueceu-senha {
+                display: none;
+            }
 
-                transition: all 0.5s linear;
-
-                &:hover {
-                    color: #fff;
-
-                    background-color: #14181b;
-                }
-
-                font-size: 16px;
-
-                box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
+            .alert-pass-esqueceu-senha {
+                border: 1px solid red;
             }
         }
 
+        .btn-trocar-senha {
+            height: 45px;
+            width: calc(100% - 55px);
+
+            margin-bottom: 15px;
+
+            border: none;
+            border-radius: 10px;
+
+            background-color: #fff100;
+
+            transition: all 0.5s linear;
+
+            &:hover {
+                color: #fff;
+
+                background-color: #14181b;
+            }
+
+            font-size: 16px;
+
+            box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
+        }
     }
+
 }
