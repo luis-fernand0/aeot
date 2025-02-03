@@ -20,6 +20,7 @@ const GerarQrCode = () => {
 
     const [dataPosto, setDataPosto] = useState(abastecimento?.posto || null)
     const [dataAbastecimento, setDataAbastecimento] = useState(abastecimento || null)
+    console.log(dataAbastecimento.forma_abastecimento)
 
     const [showQRCode, setShowQRCode] = useState(false)
     const [qrCodeValue, setQrCodeValue] = useState("")
@@ -40,7 +41,13 @@ const GerarQrCode = () => {
         setDataUser(data)
     }
 
-    const calcularPagamento = (num1, num2) => parseFloat(num1 * num2).toFixed(2)
+    const calcularPagamento = (formaAbastecimento, num1, num2) => {
+        if (formaAbastecimento === 'valor') {
+            return parseFloat(num2).toFixed(2)
+        }
+
+        return parseFloat(num1 * num2).toFixed(2)
+    }
 
     function generateQrCode() {
         const qrData = JSON.stringify({
@@ -59,6 +66,7 @@ const GerarQrCode = () => {
             forma_abastecimento: dataAbastecimento?.forma_abastecimento,
             quantidade: dataAbastecimento?.litros,
             valor_total: calcularPagamento(
+                dataAbastecimento?.forma_abastecimento,
                 Number(dataPosto[0].combustivel[dataAbastecimento.tipo_combustivel]?.valor),
                 Number(dataAbastecimento.litros)
             )
@@ -137,12 +145,17 @@ const GerarQrCode = () => {
                                     </p>
 
                                     <p className="text-container abastecimento-preco-ou-litro">
-                                        Quantidade que vai abastecer: {dataAbastecimento.litros} Litros
+                                        Quantidade que vai abastecer:
+                                        {
+                                            dataAbastecimento.forma_abastecimento === 'valor' ?
+                                                ` R$ ${dataAbastecimento.litros}` :
+                                                ` ${dataAbastecimento.litros} Litros`
+                                        }
                                     </p>
 
                                     <p className="text-container abastecimento-preco-ou-litro">
                                         Valor total:
-                                        {` R$ ${calcularPagamento(
+                                        {` R$ ${calcularPagamento(dataAbastecimento?.forma_abastecimento,
                                             Number(dataPosto[0].combustivel[dataAbastecimento.tipo_combustivel]?.valor),
                                             Number(dataAbastecimento.litros),
                                         )}`}
