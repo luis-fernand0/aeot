@@ -73,7 +73,7 @@ const EsqueceuSenha = () => {
             })
 
             const dataResponse = await response.json()
-            
+
             if (response.status != 200) {
                 throw new Error(dataResponse.message)
             }
@@ -99,23 +99,23 @@ const EsqueceuSenha = () => {
                 buttonText="Retornar para a página de login"
                 redirectTo="/"
             />
-            <div className='container-esqueceu-senha'>
-                <form id='myFormEsqueceuSenha' className='form-esqueceu-senha' onSubmit={(e) => submitForm(e)}>
-                    <div className='div-email-pass-esqueceu-senha'>
-                        <Link to={'/'}>
-                            <FontAwesomeIcon className='arrow-esqueceu-senha' icon={faArrowLeftLong} />
-                        </Link>
+            <form id='myFormEsqueceuSenha' className='form-esqueceu-senha' onSubmit={(e) => submitForm(e)}>
+                <div className='div-email-pass-esqueceu-senha'>
+                    <Link to={'/'}>
+                        <FontAwesomeIcon className='arrow-esqueceu-senha' icon={faArrowLeftLong} />
+                    </Link>
 
-                        <input
-                            onChange={(e) => formatarEmail(e)}
-                            type="email"
-                            name="email_esqueceu_senha"
-                            id="email-esqueceu-senha"
-                            className='input-esqueceu-senha input-esqueceu-senha-email'
-                            placeholder='Email'
-                            required />
+                    <input
+                        onChange={(e) => formatarEmail(e)}
+                        type="email"
+                        name="email_esqueceu_senha"
+                        id="email-esqueceu-senha"
+                        className='input-esqueceu-senha input-esqueceu-senha-email'
+                        placeholder='Email'
+                        required />
 
-                        <div className='div-pass-esqueceu-senha'>
+                    <div className='div-pass-esqueceu-senha'>
+                        <div className='div-input-senha'>
                             <input
                                 type={viewPass['senha-atual'] ? 'text' : 'password'}
                                 name="senha_atual"
@@ -129,43 +129,43 @@ const EsqueceuSenha = () => {
                             </button>
                         </div>
 
-                        <div className='div-pass-esqueceu-senha'>
-                            <span className='span-esqueceu-senha hidden-span-esqueceu-senha'>AS SENHAS DEVEM SER IGUAIS*</span>
-                            <input
-                                onBlur={() => { checkPass() }}
-                                type={viewPass['esqueceu-senha-pass'] ? 'text' : 'password'}
-                                name="new_senha"
-                                id="esqueceu-senha-pass"
-                                className='input-esqueceu-senha input-esqueceu-senha-pass
+                            <div className='div-input-senha'>
+                                <span className='span-esqueceu-senha hidden-span-esqueceu-senha'>AS SENHAS DEVEM SER IGUAIS*</span>
+                                <input
+                                    onBlur={() => { checkPass() }}
+                                    type={viewPass['esqueceu-senha-pass'] ? 'text' : 'password'}
+                                    name="new_senha"
+                                    id="esqueceu-senha-pass"
+                                    className='input-esqueceu-senha input-esqueceu-senha-pass
                                 input-esqueceu-senha-pass-new'
-                                placeholder='Nova Senha'
-                                minLength={6}
-                                required />
-                            <button onClick={() => { revealPass('esqueceu-senha-pass') }} type="button" className='pass-reveal-esqueceu-senha'>
-                                <FontAwesomeIcon className='eye-icon eye-icon-hidden' icon={viewPass['esqueceu-senha-pass'] ? faEye : faEyeSlash} />
-                            </button>
-                        </div>
+                                    placeholder='Nova Senha'
+                                    minLength={6}
+                                    required />
+                                <button onClick={() => { revealPass('esqueceu-senha-pass') }} type="button" className='pass-reveal-esqueceu-senha'>
+                                    <FontAwesomeIcon className='eye-icon eye-icon-hidden' icon={viewPass['esqueceu-senha-pass'] ? faEye : faEyeSlash} />
+                                </button>
+                            </div>
 
-                        <div className='div-pass-esqueceu-senha'>
-                            <span className='span-esqueceu-senha hidden-span-esqueceu-senha'>AS SENHAS DEVEM SER IGUAIS*</span>
-                            <input
-                                onBlur={() => { checkPass() }}
-                                type={viewPass['esqueceu-senha-pass'] ? 'text' : 'password'}
-                                name="check_new_senha"
-                                id="esqueceu-senha-pass-check"
-                                className='input-esqueceu-senha input-esqueceu-senha-pass input-esqueceu-senha-pass-new'
-                                placeholder='Confirme sua Senha'
-                                minLength={6}
-                                required />
-                            <button onClick={() => { revealPass('esqueceu-senha-pass') }} type="button" className='pass-reveal-esqueceu-senha'>
-                                <FontAwesomeIcon className='eye-icon eye-icon-hidden' icon={viewPass['esqueceu-senha-pass'] ? faEye : faEyeSlash} />
-                            </button>
+                            <div className='div-input-senha'>
+                                <span className='span-esqueceu-senha hidden-span-esqueceu-senha'>AS SENHAS DEVEM SER IGUAIS*</span>
+                                <input
+                                    onBlur={() => { checkPass() }}
+                                    type={viewPass['esqueceu-senha-pass'] ? 'text' : 'password'}
+                                    name="check_new_senha"
+                                    id="esqueceu-senha-pass-check"
+                                    className='input-esqueceu-senha input-esqueceu-senha-pass input-esqueceu-senha-pass-new'
+                                    placeholder='Confirme sua Senha'
+                                    minLength={6}
+                                    required />
+                                <button onClick={() => { revealPass('esqueceu-senha-pass') }} type="button" className='pass-reveal-esqueceu-senha'>
+                                    <FontAwesomeIcon className='eye-icon eye-icon-hidden' icon={viewPass['esqueceu-senha-pass'] ? faEye : faEyeSlash} />
+                                </button>
+                            </div>
                         </div>
 
                         <button className='btn-trocar-senha' type="submit">TROCAR SENHA!</button>
                     </div>
-                </form>
-            </div>
+            </form>
         </>
     )
 }
