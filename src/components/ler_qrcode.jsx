@@ -256,9 +256,7 @@ const LerQrCode = () => {
                                 <p className="text-container">
                                     Quatidade abastecida:
                                     <span className="text-span-container">
-                                        {result.forma_abastecimento != 'valor' ?
-                                            result.quantidade :
-                                            `R$ ${result.quantidade}`}
+                                        {result.quantidade} Litros
                                     </span>
                                 </p>
 
