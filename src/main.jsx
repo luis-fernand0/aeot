@@ -96,7 +96,7 @@ const router = createBrowserRouter([
 
   {
     path: '/cadastrar_frentista',
-    element: <CadastrarFrentista/>
+    element: <CadastrarFrentista />
   }
 ])
 
