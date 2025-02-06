@@ -43,10 +43,18 @@ const GerarQrCode = () => {
 
     const calcularPagamento = (formaAbastecimento, num1, num2) => {
         if (formaAbastecimento === 'valor') {
-            return parseFloat(num2).toFixed(2)
+            return (num2).toFixed(2)
         }
 
         return parseFloat(num1 * num2).toFixed(2)
+    }
+
+    const calcularLitros = (formaAbastecimento, num1, num2) => {
+        if (formaAbastecimento != 'valor') {
+            return num2
+        }
+
+        return parseFloat(num2 / num1).toFixed(2)
     }
 
     function generateQrCode() {
@@ -64,7 +72,11 @@ const GerarQrCode = () => {
             valor_combustivel: dataPosto[0].combustivel[dataAbastecimento?.tipo_combustivel]?.valor,
             metodo_pagamento: dataAbastecimento?.metodo_pagamento,
             forma_abastecimento: dataAbastecimento?.forma_abastecimento,
-            quantidade: dataAbastecimento?.litros,
+            quantidade: calcularLitros(
+                dataAbastecimento?.forma_abastecimento,
+                Number(dataPosto[0].combustivel[dataAbastecimento.tipo_combustivel]?.valor),
+                Number(dataAbastecimento.litros)
+            ),
             valor_total: calcularPagamento(
                 dataAbastecimento?.forma_abastecimento,
                 Number(dataPosto[0].combustivel[dataAbastecimento.tipo_combustivel]?.valor),
@@ -148,7 +160,10 @@ const GerarQrCode = () => {
                                         Quantidade que vai abastecer:
                                         {
                                             dataAbastecimento.forma_abastecimento === 'valor' ?
-                                                ` R$ ${dataAbastecimento.litros}` :
+                                                ` ${calcularLitros(dataAbastecimento?.forma_abastecimento,
+                                                    Number(dataPosto[0].combustivel[dataAbastecimento.tipo_combustivel]?.valor),
+                                                    Number(dataAbastecimento.litros),
+                                                )} Litros` :
                                                 ` ${dataAbastecimento.litros} Litros`
                                         }
                                     </p>
