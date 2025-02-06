@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPen, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { faPen, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 
 import '../style/edit_perfil_page/edit_perfil.css'
 import { comprimirFoto } from '../functions/comprimirFoto';
@@ -89,7 +89,7 @@ const EditPerfil = () => {
             <div className='container-datas-user'>
                 <div className='container-icon'>
                     <Link to={'/home'}>
-                        <FontAwesomeIcon className='arrow-icon' icon={faArrowLeft} />
+                        <FontAwesomeIcon className='arrow-icon' icon={faChevronLeft} />
                     </Link>
                 </div>
                 <div className='modal-confirm modal-confirm-hidden'>

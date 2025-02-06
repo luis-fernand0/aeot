@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 
 import '../style/new_driver_page/new_driver.css'
 
@@ -74,7 +74,7 @@ const NewDrivers = () => {
         <div className="container-cadastros">
             <div className='container-arrow-icon'>
                 <Link to={'/adicionar_cadastros'}>
-                    <FontAwesomeIcon className='arrow-icon' icon={faArrowLeftLong} />
+                    <FontAwesomeIcon className='arrow-icon' icon={faChevronLeft} />
                 </Link>
             </div>
 

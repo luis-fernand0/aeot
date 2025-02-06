@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeftLong, faGasPump } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faGasPump } from '@fortawesome/free-solid-svg-icons'
 
 import {checkValor} from '../functions/checkValor'
 
@@ -74,7 +74,7 @@ const Abastecimento = () => {
             <div className="container-abastecimento-title">
                 <div className='container-icon-title'>
                     <Link to={'/home'}>
-                        <FontAwesomeIcon className='arrow-icon' icon={faArrowLeftLong} />
+                        <FontAwesomeIcon className='arrow-icon' icon={faChevronLeft} />
                     </Link>
 
                     <h1 className='title-abastecimento'>Abastecimento</h1>

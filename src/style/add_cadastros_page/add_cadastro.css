@@ -11,7 +11,7 @@
   font-size: 24px;
 }
 .container-btns-add-cadastro .container-arrow-icon .arrow-icon {
-  color: black;
+  color: gray;
   transition: 0.3s linear;
 }
 .container-btns-add-cadastro .container-arrow-icon .arrow-icon:hover {

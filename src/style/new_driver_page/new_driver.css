@@ -10,7 +10,7 @@
   font-size: 24px;
 }
 .container-cadastros .container-arrow-icon .arrow-icon {
-  color: black;
+  color: gray;
   transition: 0.3s linear;
 }
 .container-cadastros .container-arrow-icon .arrow-icon:hover {
