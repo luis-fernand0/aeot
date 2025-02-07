@@ -21,10 +21,30 @@ const LerQrCode = () => {
     const [scanner, setScanner] = useState(null);
 
     const [result, setResult] = useState(null)
+    const [valorTotal, setValorTotal] = useState(null)
 
     const [loading, setLoading] = useState(false)
     const [isModalVisible, setModalVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
+
+    function formatLitro(e) {
+        let input = e.target
+        let inputValue = input.value.replace(/[^0-9]/g, '')
+
+        if (inputValue.length > 2) {
+            inputValue = inputValue.slice(0, 2) + '.' + inputValue.slice(2);
+        }
+        if (inputValue.length > 5) {
+            inputValue = input.value.replace(/[^0-9]/g, '')
+            inputValue = inputValue.slice(0, 3) + '.' + inputValue.slice(3);
+        }
+
+        if (inputValue.length > 6) {
+            inputValue = inputValue.slice(0, 6)
+        }
+
+        input.value = inputValue
+    }
 
     const startScanning = async () => {
         const html5QrCode = new Html5Qrcode("reader")
@@ -50,7 +70,10 @@ const LerQrCode = () => {
                     },
                     (decodedText, decodedResult) => {
                         setResult(JSON.parse(decodedText))
-                        console.log(decodedText)
+                        setValorTotal(null)
+                        if (document.getElementById('litros-abastecidos')) {
+                            document.getElementById('litros-abastecidos').value = ''
+                        }
 
                         document.getElementById('stop-scan').click()
 
@@ -118,17 +141,42 @@ const LerQrCode = () => {
         }
     }
 
+    const changeValorTotal = (e) => {
+        setValorTotal(parseFloat(e.target.value * result.valor_combustivel).toFixed(2))
+        if(e.target.value === '') {
+            document.getElementById('litros-abastecidos').classList.add('litros-abastecidos-alert')
+            return
+        }
+        document.getElementById('litros-abastecidos').classList.remove('litros-abastecidos-alert')
+    }
+
     async function confirmarVenda() {
         setLoading(true)
 
+        if (result.forma_abastecimento === 'encher-tanque') {
+            if (!valorTotal || valorTotal == 0.00) {
+                setLoading(false)
+                setModalMessage('*Por favor informe a quantidade abastecida antes de finalizar a venda!')
+                setModalVisible(true)
+                document.getElementById('litros-abastecidos').classList.add('litros-abastecidos-alert')
+
+                return
+            }
+        }
         const myForm = new FormData()
         myForm.append('driver_id', result.driver_id)
         myForm.append('posto_id', result.posto_user_id)
         myForm.append('combustivel', result.tipo_combustivel)
         myForm.append('forma', result.forma_abastecimento)
         myForm.append('valor', result.valor_combustivel)
-        myForm.append('quantidade', result.quantidade)
-        myForm.append('valor_total', result.valor_total)
+        if (result.forma_abastecimento === 'encher-tanque') {
+            const litros = document.getElementById('litros-abastecidos').value
+            myForm.append('quantidade', litros)
+            myForm.append('valor_total', valorTotal)
+        } else {
+            myForm.append('quantidade', result.quantidade)
+            myForm.append('valor_total', result.valor_total)
+        }
         myForm.append('metodo_pagamento', result.metodo_pagamento)
 
         const myFormData = Object.fromEntries(myForm)
@@ -151,6 +199,7 @@ const LerQrCode = () => {
             setModalMessage(data.message)
             setModalVisible(true)
             setResult(null)
+            setValorTotal(null)
         } catch (err) {
             setModalMessage(`Ocorreu um erro inesperado! ${err.message}`)
             setModalVisible(true)
@@ -255,16 +304,37 @@ const LerQrCode = () => {
 
                                 <p className="text-container">
                                     Quatidade abastecida:
+                                    {result.forma_abastecimento === 'encher-tanque' && (
+                                        <>
+                                            <span className="text-span-container">
+                                                <input
+                                                    onChange={(e) => formatLitro(e)}
+                                                    onBlur={(e) => changeValorTotal(e)}
+                                                    id="litros-abastecidos"
+                                                    name="litros_abastecidos"
+                                                    type="text"
+                                                    placeholder="Litros abastecido" />
+                                            </span>
+                                        </>
+                                    )}
                                     <span className="text-span-container">
-                                        {result.quantidade} Litros
+                                        {result?.quantidade} Litros
                                     </span>
                                 </p>
 
                                 <p className="text-container">
                                     Valor total:
-                                    <span className="text-span-container">
-                                        R$ {result.valor_total}
-                                    </span>
+                                    {result.forma_abastecimento === 'encher-tanque' && (
+                                        <span className="text-span-container">
+                                            R$ {valorTotal}
+                                        </span>
+                                    )}
+
+                                    {result.forma_abastecimento != 'encher-tanque' && (
+                                        <span className="text-span-container">
+                                            R$ {result.valor_total}
+                                        </span>
+                                    )}
                                 </p>
 
                                 <p className="text-container">
