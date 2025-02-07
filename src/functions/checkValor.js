@@ -21,12 +21,12 @@ export function checkValor(e) {
 
     if (inputValue.length > 6) {
         inputValue = input.value.replace(/[^0-9]/g, '')
-        inputValue = inputValue.slice(0, 1) + '.' + inputValue.slice(1, 4) + '.' + inputValue.slice(4);
+        inputValue = inputValue.slice(0, 4) + '.' + inputValue.slice(4);
     }
 
 
-    if (inputValue.length > 8) {
-      inputValue = inputValue.slice(0, 8)
+    if (inputValue.length > 7) {
+      inputValue = inputValue.slice(0, 7)
     }
 
     input.value = inputValue
