@@ -117,6 +117,25 @@
   font-weight: 300;
   text-transform: uppercase;
 }
+.container-scan-respose #dados-do-abastecimento .container-dados-do-motorista .text-container .text-span-container #litros-abastecidos,
+.container-scan-respose #dados-do-abastecimento .container-abastecimento .text-container .text-span-container #litros-abastecidos {
+  width: 100px;
+  height: 40px;
+  border: none;
+  outline: none;
+  border-radius: 15px;
+  padding-left: 10px;
+  font-size: 16px;
+  font-weight: 300;
+}
+.container-scan-respose #dados-do-abastecimento .container-dados-do-motorista .text-container .text-span-container #litros-abastecidos:focus,
+.container-scan-respose #dados-do-abastecimento .container-abastecimento .text-container .text-span-container #litros-abastecidos:focus {
+  border: 2px solid #4b39ef;
+}
+.container-scan-respose #dados-do-abastecimento .container-dados-do-motorista .text-container .text-span-container .litros-abastecidos-alert,
+.container-scan-respose #dados-do-abastecimento .container-abastecimento .text-container .text-span-container .litros-abastecidos-alert {
+  border: 2px solid rgb(231, 84, 84) !important;
+}
 .container-scan-respose #dados-do-abastecimento .container-dados-do-motorista .title-container,
 .container-scan-respose #dados-do-abastecimento .container-abastecimento .title-container {
   color: #d0c613;
