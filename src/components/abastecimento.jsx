@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faGasPump } from '@fortawesome/free-solid-svg-icons'
 
-import {checkValor} from '../functions/checkValor'
+import { checkValor } from '../functions/checkValor'
 
 import '../style/abastecimento_component/abastecimento.css'
 
@@ -46,11 +46,11 @@ const Abastecimento = () => {
         } else if (document.getElementById('input-valor')) {
             abastecimento = 'valor'
             valor = document.getElementById('input-valor').value
-        } else { 
+        } else {
             abastecimento = 'encher-tanque'
-            valor = document.getElementById('input-tanque').value
+            valor = undefined
         }
-        
+
         let metodoAbastecimento = {
             tipo_combustivel: Typecombustivel,
             metodo_pagamento: payMethod,
@@ -182,12 +182,6 @@ const Abastecimento = () => {
                                             <p className='text-option'>
                                                 Enche o tanque!
                                             </p>
-                                            <input
-                                                onChange={(e) => formatLitro(e)}
-                                                id='input-tanque'
-                                                className='input-option'
-                                                type="text"
-                                                placeholder='Litros do Tanque' />
                                         </div>
                                     </>
                                 )}
