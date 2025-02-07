@@ -36,10 +36,6 @@ const AdicionarCadastros = () => {
                   Cadastrar Posto/Serviço
                 </button>
               </Link>
-
-              <button className='btn-add-cadastro'>
-                  Verificar Cadastros
-              </button>
             </>
           )}
 
