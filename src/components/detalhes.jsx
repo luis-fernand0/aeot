@@ -107,7 +107,7 @@ const Detalhes = () => {
         {categoria && (
           <>
             <div className="container-title-foto">
-              <h1 className='title-item'>{detalhe.nome}</h1>
+              <h1 className='title-item'>{detalhe.nome || detalhe.titulo_anuncio}</h1>
 
               <img src={`https://aeotnew.s3.amazonaws.com/${detalhe.foto}`} alt="foto-item" className='foto-item' />
             </div>
