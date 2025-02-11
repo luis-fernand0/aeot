@@ -12,6 +12,7 @@ import ModalResponse from "./modalResponse"
 import '../style/gerar_qrcode_component/gerar_qrcode.css'
 
 const urlData = import.meta.env.VITE_URL_DATAS_USER
+const urlCadastrarChave = import.meta.env.VITE_URL_CADASTRAR_CHAVE
 
 const GerarQrCode = () => {
     const navigate = useNavigate()
@@ -97,7 +98,7 @@ const GerarQrCode = () => {
             })
 
             if (!qrCodeValue.chave) {
-                const response = await fetch('http://localhost:3000/aeot/auth/abastecer', {
+                const response = await fetch(urlCadastrarChave, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${tokenUser}`,
@@ -106,6 +107,11 @@ const GerarQrCode = () => {
                     body: qrData
                 })
                 const data = await response.json()
+                if (response.status === 403) {
+                    navigate('/', { replace: true })
+                    return
+                }
+
                 if (!response.ok) {
                     setModalMessage(data.message)
                     setModalVisible(true)
