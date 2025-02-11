@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react"
 import { useNavigate, Link } from 'react-router-dom'
 import { QRCodeCanvas } from "qrcode.react"
+import { nanoid } from "nanoid"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+import { faXmark, faChevronLeft, faKey } from '@fortawesome/free-solid-svg-icons'
+
+import Loading from "./loading"
+import ModalResponse from "./modalResponse"
 
 import '../style/gerar_qrcode_component/gerar_qrcode.css'
 
@@ -13,16 +17,19 @@ const GerarQrCode = () => {
     const navigate = useNavigate()
 
     const abastecimento = JSON.parse(localStorage.getItem('dadosAbastecimento'))
-
     const tokenUser = localStorage.getItem('token');
 
     const [dataUser, setDataUser] = useState()
 
     const [dataPosto, setDataPosto] = useState(abastecimento?.posto || null)
     const [dataAbastecimento, setDataAbastecimento] = useState(abastecimento || null)
-    
+
     const [showQRCode, setShowQRCode] = useState(false)
-    const [qrCodeValue, setQrCodeValue] = useState("")
+    const [qrCodeValue, setQrCodeValue] = useState({ qrCode: '', chave: null })
+
+    const [loading, setLoading] = useState(false)
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
 
     async function callInfoUser() {
         const response = await fetch(`${urlData}`, {
@@ -56,34 +63,69 @@ const GerarQrCode = () => {
         return parseFloat(num2 / num1).toFixed(2)
     }
 
-    function generateQrCode() {
-        const qrData = JSON.stringify({
-            driver_id: dataUser?.user_id,
-            usuario: dataUser?.nome,
-            foto_user: dataUser?.foto,
-            veiculo: {
-                modelo: dataUser?.modelo,
-                placa: dataUser?.placa
-            },
-            posto_user_id: dataPosto[0]?.user_id,
-            posto: dataPosto[0]?.nome,
-            tipo_combustivel: dataAbastecimento?.tipo_combustivel,
-            valor_combustivel: dataPosto[0].combustivel[dataAbastecimento?.tipo_combustivel]?.valor,
-            metodo_pagamento: dataAbastecimento?.metodo_pagamento,
-            forma_abastecimento: dataAbastecimento?.forma_abastecimento,
-            quantidade: calcularLitros(
-                dataAbastecimento?.forma_abastecimento,
-                Number(dataPosto[0].combustivel[dataAbastecimento.tipo_combustivel]?.valor),
-                Number(dataAbastecimento.litros)
-            ),
-            valor_total: calcularPagamento(
-                dataAbastecimento?.forma_abastecimento,
-                Number(dataPosto[0].combustivel[dataAbastecimento.tipo_combustivel]?.valor),
-                Number(dataAbastecimento.litros)
-            )
-        })
-        setQrCodeValue(qrData)
-        setShowQRCode(true)
+    async function generateQrCode() {
+        try {
+            setLoading(true)
+
+            let chaveID = qrCodeValue.chave || nanoid()
+
+            const qrData = JSON.stringify({
+                chave: chaveID,
+                driver_id: dataUser?.user_id,
+                usuario: dataUser?.nome,
+                foto_user: dataUser?.foto,
+                veiculo: {
+                    modelo: dataUser?.modelo,
+                    placa: dataUser?.placa
+                },
+                posto_user_id: dataPosto[0]?.user_id,
+                posto: dataPosto[0]?.nome,
+                tipo_combustivel: dataAbastecimento?.tipo_combustivel,
+                valor_combustivel: dataPosto[0].combustivel[dataAbastecimento?.tipo_combustivel]?.valor,
+                metodo_pagamento: dataAbastecimento?.metodo_pagamento,
+                forma_abastecimento: dataAbastecimento?.forma_abastecimento,
+                quantidade: calcularLitros(
+                    dataAbastecimento?.forma_abastecimento,
+                    Number(dataPosto[0].combustivel[dataAbastecimento.tipo_combustivel]?.valor),
+                    Number(dataAbastecimento.litros)
+                ),
+                valor_total: calcularPagamento(
+                    dataAbastecimento?.forma_abastecimento,
+                    Number(dataPosto[0].combustivel[dataAbastecimento.tipo_combustivel]?.valor),
+                    Number(dataAbastecimento.litros)
+                )
+            })
+
+            if (!qrCodeValue.chave) {
+                const response = await fetch('http://localhost:3000/aeot/auth/abastecer', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${tokenUser}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: qrData
+                })
+                const data = await response.json()
+                if (!response.ok) {
+                    setModalMessage(data.message)
+                    setModalVisible(true)
+                    return
+                }
+            }
+
+            setQrCodeValue({ qrCode: qrData, chave: chaveID })
+            setShowQRCode(true)
+
+            setTimeout(() => {
+                setQrCodeValue({ qrCode: '', chave: null })
+                setShowQRCode(false)
+            }, 60000)
+        } catch (err) {
+            setModalMessage(`Desculpe ocorreu um erro inesperado! ${err.message}`)
+            setModalVisible(true)
+        } finally {
+            setLoading(false)
+        }
     }
 
     useEffect(() => {
@@ -95,6 +137,12 @@ const GerarQrCode = () => {
     }, [])
     return (
         <>
+            <Loading loading={loading} />
+            <ModalResponse
+                isVisible={isModalVisible}
+                onClose={() => setModalVisible(false)}
+                message={modalMessage} />
+                
             {dataAbastecimento && (
                 <>
                     <div className="container-dados-abastecimento">
@@ -201,9 +249,16 @@ const GerarQrCode = () => {
                             </button>
                         </div>
                         <div className="qrcode">
-                            <QRCodeCanvas value={qrCodeValue} size={256} />
+                            <QRCodeCanvas value={qrCodeValue.qrCode} size={256} />
                             <p>
                                 <span>*Mostre o QRCode para o frentista*</span>
+                            </p>
+
+                            <p>
+                                Ou se preferir, envie a chave do QRCode:
+                            </p>
+                            <p>
+                                <FontAwesomeIcon icon={faKey} />: {qrCodeValue.chave}
                             </p>
                         </div>
                     </div>
