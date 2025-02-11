@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faKey } from '@fortawesome/free-solid-svg-icons'
 
 import Loading from '../components/loading'
 import ModalResponse from '../components/modalResponse'
@@ -143,7 +143,7 @@ const LerQrCode = () => {
 
     const changeValorTotal = (e) => {
         setValorTotal(parseFloat(e.target.value * result.valor_combustivel).toFixed(2))
-        if(e.target.value === '') {
+        if (e.target.value === '') {
             document.getElementById('litros-abastecidos').classList.add('litros-abastecidos-alert')
             return
         }
@@ -208,6 +208,26 @@ const LerQrCode = () => {
         }
     }
 
+    async function buscarChave(e) {
+        try {
+            const response = await fetch('http://localhost:3000/aeot/auth/buscar_chave', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${tokenUser}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ chave: e })
+            })
+            const data = await response.json()
+            if (!response.ok) {
+                
+            }
+            setResult(data.abastecimento)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     useEffect(() => {
         if (typeUser === 'driver' || !tokenUser) {
             return navigate('/', { replace: true })
@@ -234,9 +254,20 @@ const LerQrCode = () => {
                 <div className="container-scan">
                     <h1>Leitor de QR Code</h1>
                     <div id="reader"></div>
-                    <p className="text-scan">
-                        {scanner === null ? '*Clique em scannear para ler um QRCode*' : ''}
-                    </p>
+                    {scanner === null && (
+                        <>
+                            <div className="text-scan-key-input">
+                                <p className="text-scan">
+                                    *Clique em scannear para ler um QRCode*
+                                </p>
+                                <p className="text-scan">
+                                    Ou se preferir digite a chave do QRCode <FontAwesomeIcon className='arrow-icon' icon={faKey} />:
+                                </p>
+
+                                <input onBlur={(e) => buscarChave(e.target.value)} type="text" className="key-input" />
+                            </div>
+                        </>
+                    )}
                 </div>
 
                 <div id="dados-do-abastecimento">
@@ -254,25 +285,25 @@ const LerQrCode = () => {
                                 <p className="text-container">
                                     Nome do motorista:
                                     <span className="text-span-container">
-                                        {result.usuario}
+                                        {result.usuario || result.driver_nome}
                                     </span>
                                 </p>
 
                                 <p className="text-container text-img-container">
                                     Foto do motorista:
-                                    <img className="img-foto-motorista" src={`https://aeotnew.s3.amazonaws.com/${result.foto_user}`} alt="foto-do-motorista" />
+                                    <img className="img-foto-motorista" src={`https://aeotnew.s3.amazonaws.com/${result.foto_user || result.foto_driver}`} alt="foto-do-motorista" />
                                 </p>
 
                                 <p className="text-container">
                                     Modelo:
                                     <span className="text-span-container">
-                                        {result.veiculo?.modelo || ''}
+                                        {result.veiculo?.modelo || result.modelo}
                                     </span>
                                 </p>
                                 <p className="text-container">
                                     Placa:
                                     <span className="text-span-container">
-                                        {result.veiculo?.placa || ''}
+                                        {result.veiculo?.placa || result.placa}
                                     </span>
                                 </p>
                             </div>
