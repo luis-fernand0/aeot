@@ -11,6 +11,7 @@ import ModalResponse from '../components/modalResponse'
 import '../style/ler_qrcode_component/ler_qrcode.css'
 
 const urlVenda = import.meta.env.VITE_URL_VENDA
+const urlBuscarChave = import.meta.env.VITE_URL_BUSCAR_CHAVE
 
 const LerQrCode = () => {
     const tokenUser = localStorage.getItem('token')
@@ -164,7 +165,7 @@ const LerQrCode = () => {
             }
         }
         const myForm = new FormData()
-        myForm.append('driver_id', result.driver_id)
+        myForm.append('driver_id', result.driver_id || result.driver_user_id)
         myForm.append('posto_id', result.posto_user_id)
         myForm.append('combustivel', result.tipo_combustivel)
         myForm.append('forma', result.forma_abastecimento)
@@ -180,6 +181,9 @@ const LerQrCode = () => {
         myForm.append('metodo_pagamento', result.metodo_pagamento)
 
         const myFormData = Object.fromEntries(myForm)
+        for (let [key, value] of myForm.entries()) {
+            console.log(key, typeof key, value, typeof value)
+        }
 
         try {
             const response = await fetch(urlVenda, {
@@ -210,7 +214,9 @@ const LerQrCode = () => {
 
     async function buscarChave(e) {
         try {
-            const response = await fetch('http://localhost:3000/aeot/auth/buscar_chave', {
+            setLoading(true)
+
+            const response = await fetch(urlBuscarChave, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${tokenUser}`,
@@ -219,12 +225,27 @@ const LerQrCode = () => {
                 body: JSON.stringify({ chave: e })
             })
             const data = await response.json()
+
+            if (response.status === 403) {
+                navigate('/', { replace: true })
+                return
+            }
+
             if (!response.ok) {
-                
+                setModalMessage(data.message)
+                setModalVisible(true)
+                return
+            }
+            setValorTotal(null)
+            if (document.getElementById('litros-abastecidos')) {
+                document.getElementById('litros-abastecidos').value = ''
             }
             setResult(data.abastecimento)
         } catch (err) {
-            console.log(err)
+            setModalMessage(`Desculpe ocorreu um erro inesperado! ${err.message}`)
+            setModalVisible(true)
+        } finally {
+            setLoading(false)
         }
     }
 
