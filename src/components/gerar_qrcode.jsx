@@ -125,7 +125,7 @@ const GerarQrCode = () => {
             setTimeout(() => {
                 setQrCodeValue({ qrCode: '', chave: null })
                 setShowQRCode(false)
-            }, 60000)
+            }, 300000)
         } catch (err) {
             setModalMessage(`Desculpe ocorreu um erro inesperado! ${err.message}`)
             setModalVisible(true)
