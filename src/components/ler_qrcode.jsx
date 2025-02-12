@@ -71,6 +71,7 @@ const LerQrCode = () => {
                     },
                     (decodedText, decodedResult) => {
                         setResult(JSON.parse(decodedText))
+                        console.log(result)
                         setValorTotal(null)
                         if (document.getElementById('litros-abastecidos')) {
                             document.getElementById('litros-abastecidos').value = ''
@@ -165,6 +166,7 @@ const LerQrCode = () => {
             }
         }
         const myForm = new FormData()
+        myForm.append('chave', result.chave)
         myForm.append('driver_id', result.driver_id || result.driver_user_id)
         myForm.append('posto_id', result.posto_user_id)
         myForm.append('combustivel', result.tipo_combustivel)
@@ -250,6 +252,17 @@ const LerQrCode = () => {
         }
     }
 
+    function limitarCaracter(e) {
+        let key = e.target
+        let keyValue = key.value
+
+        if (keyValue.length > 9) {
+            keyValue = keyValue.slice(0, 9)
+        }
+
+        return key.value = keyValue
+    }
+
     useEffect(() => {
         if (typeUser === 'driver' || !tokenUser) {
             return navigate('/', { replace: true })
@@ -286,7 +299,12 @@ const LerQrCode = () => {
                                     Ou se preferir digite a chave do QRCode <FontAwesomeIcon className='key-icon' icon={faKey} /> :
                                 </p>
 
-                                <input onBlur={(e) => buscarChave(e.target.value)} type="text" className="key-input" placeholder="Chave QRCode"/>
+                                <input
+                                    onChange={(e) => limitarCaracter(e)}
+                                    onBlur={(e) => buscarChave(e.target.value)}
+                                    type="text"
+                                    className="key-input"
+                                    placeholder="Chave QRCode" />
                             </div>
                         </>
                     )}
