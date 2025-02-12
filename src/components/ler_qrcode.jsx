@@ -234,6 +234,7 @@ const LerQrCode = () => {
             if (!response.ok) {
                 setModalMessage(data.message)
                 setModalVisible(true)
+                setResult(null)
                 return
             }
             setValorTotal(null)
@@ -282,10 +283,10 @@ const LerQrCode = () => {
                                     *Clique em scannear para ler um QRCode*
                                 </p>
                                 <p className="text-scan">
-                                    Ou se preferir digite a chave do QRCode <FontAwesomeIcon className='arrow-icon' icon={faKey} />:
+                                    Ou se preferir digite a chave do QRCode <FontAwesomeIcon className='key-icon' icon={faKey} /> :
                                 </p>
 
-                                <input onBlur={(e) => buscarChave(e.target.value)} type="text" className="key-input" />
+                                <input onBlur={(e) => buscarChave(e.target.value)} type="text" className="key-input" placeholder="Chave QRCode"/>
                             </div>
                         </>
                     )}
