@@ -264,7 +264,7 @@ const GerarQrCode = () => {
                                 Ou se preferir, envie a chave do QRCode:
                             </p>
                             <p>
-                                <FontAwesomeIcon icon={faKey} />: {qrCodeValue.chave}
+                                <FontAwesomeIcon className="key-icon" icon={faKey} />: {qrCodeValue.chave}
                             </p>
                         </div>
                     </div>
