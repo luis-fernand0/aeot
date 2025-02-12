@@ -40,6 +40,25 @@
   width: 100% !important;
   height: 100% !important;
 }
+.container-scan-respose .container-scan .text-scan-key-input .text-scan {
+  margin-bottom: 15px;
+}
+.container-scan-respose .container-scan .text-scan-key-input .text-scan .key-icon {
+  color: #d0c613;
+}
+.container-scan-respose .container-scan .text-scan-key-input .key-input {
+  height: 40px;
+  width: 200px;
+  padding-left: 15px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 15px;
+  outline: none;
+}
+.container-scan-respose .container-scan .text-scan-key-input .key-input:focus {
+  border: 2px solid #4b39ef;
+}
 .container-scan-respose .container-btns {
   width: 100%;
   height: 20%;
@@ -67,7 +86,7 @@
 .container-scan-respose #dados-do-abastecimento {
   margin: 25px 0;
   padding: 20px 20px;
-  height: 100%;
+  height: auto;
   width: 100%;
   max-width: 800px;
   display: flex;
