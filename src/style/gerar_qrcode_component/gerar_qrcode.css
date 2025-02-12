@@ -132,4 +132,8 @@
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+}
+.qrcode-container .qrcode-btn-close-container .qrcode .key-icon {
+  color: #d0c613;
+  margin-right: 5px;
 }/*# sourceMappingURL=gerar_qrcode.css.map */
