@@ -67,8 +67,8 @@ const GerarQrCode = () => {
     async function generateQrCode() {
         try {
             setLoading(true)
-
-            let chaveID = qrCodeValue.chave || nanoid()
+            
+            let chaveID = qrCodeValue.chave || nanoid(6) + dataUser?.user_id
 
             const qrData = JSON.stringify({
                 chave: chaveID,
