@@ -183,9 +183,6 @@ const LerQrCode = () => {
         myForm.append('metodo_pagamento', result.metodo_pagamento)
 
         const myFormData = Object.fromEntries(myForm)
-        for (let [key, value] of myForm.entries()) {
-            console.log(key, typeof key, value, typeof value)
-        }
 
         try {
             const response = await fetch(urlVenda, {
@@ -256,8 +253,8 @@ const LerQrCode = () => {
         let key = e.target
         let keyValue = key.value
 
-        if (keyValue.length > 9) {
-            keyValue = keyValue.slice(0, 9)
+        if (keyValue.length > 5) {
+            keyValue = keyValue.slice(0, 5)
         }
 
         return key.value = keyValue
