@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react"
 import { useNavigate, Link } from 'react-router-dom'
 import { QRCodeCanvas } from "qrcode.react"
-import { nanoid } from "nanoid"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faChevronLeft, faKey } from '@fortawesome/free-solid-svg-icons'
 
 import Loading from "./loading"
 import ModalResponse from "./modalResponse"
+
+import { generateKey } from "../functions/generateKey"
 
 import '../style/gerar_qrcode_component/gerar_qrcode.css'
 
@@ -67,8 +68,8 @@ const GerarQrCode = () => {
     async function generateQrCode() {
         try {
             setLoading(true)
-            
-            let chaveID = qrCodeValue.chave || nanoid(6) + dataUser?.user_id
+
+            let chaveID = qrCodeValue.chave || generateKey(dataUser?.placa)
 
             const qrData = JSON.stringify({
                 chave: chaveID,
@@ -148,7 +149,7 @@ const GerarQrCode = () => {
                 isVisible={isModalVisible}
                 onClose={() => setModalVisible(false)}
                 message={modalMessage} />
-                
+
             {dataAbastecimento && (
                 <>
                     <div className="container-dados-abastecimento">
