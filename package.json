@@ -17,7 +17,6 @@
     "browser-image-compression": "^2.0.2",
     "dotenv": "^16.4.5",
     "html5-qrcode": "^2.3.8",
-    "nanoid": "^5.0.9",
     "qrcode.react": "^4.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
