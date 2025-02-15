@@ -25,9 +25,10 @@ const NewPostosServices = () => {
   const [fotoValid, setFotoValid] = useState(false)
 
   const [loading, setLoading] = useState(false)
-
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+
+  const [formCombustivel, setFormCombustivel] = useState(false)
 
   const combustiveis = ['etanol', 'gasolina', 'diesel'];
   const metodosPagamento = ['dinheiro', 'pix', 'debito', 'credito'];
@@ -98,14 +99,10 @@ const NewPostosServices = () => {
     uf.value = `${infoCnpj.state}`
   }
 
-  async function hundleSubmit(e) {
+  function nextStep(e) {
     e.preventDefault()
-    setLoading(true)
 
     let cnpj = document.getElementById('cnpj')
-    let checkboxes = document.querySelectorAll(".input-checkbox")
-    let metodoscheckbox = document.querySelectorAll(".input-metodo-checkbox")
-
     if (!fotoValid || !validarCnpj(cnpj.value)) {
       setModalMessage('É necessario preencher todos os dados!')
       setModalVisible(true)
@@ -123,6 +120,21 @@ const NewPostosServices = () => {
 
       return
     }
+
+    setFormCombustivel(true)
+  }
+
+  function sendForms(e) {
+
+  }
+
+  async function hundleSubmit(e) {
+    e.preventDefault()
+    setLoading(true)
+
+    let checkboxes = document.querySelectorAll(".input-checkbox")
+    let metodoscheckbox = document.querySelectorAll(".input-metodo-checkbox")
+
     const myForm = document.getElementById('form-cadastro')
     const formData = new FormData(myForm)
     formData.append('categoria', [categoria])
@@ -216,7 +228,7 @@ const NewPostosServices = () => {
         </div>
 
         <div className="container-forms">
-          <form id='form-cadastro' onSubmit={(e) => hundleSubmit(e)} className="form-cadastrar-posto-anuncio">
+          <form id='form-cadastro' onSubmit={(e) => nextStep(e)} className="form-cadastrar-posto-anuncio">
 
             {categoria === 'postos' && (
               <div className='cadastrar-posto'>
@@ -327,7 +339,7 @@ const NewPostosServices = () => {
                   onChange={(e) => checkPhone(e)}
                   maxLength={15} />
 
-                <p className='text-info'>Formas de pagamento</p>
+                {/* <p className='text-info'>Formas de pagamento</p>
                 <div className='container-forma-de-pagamento'>
                   <div className='forma-de-pagamento'>
                     <input className='input-checkbox' type="checkbox" name="dinheiro" id="dinheiro" />
@@ -392,7 +404,7 @@ const NewPostosServices = () => {
                       ))}
                     </div>
                   ))}
-                </div>
+                </div> */}
 
                 <span className='span-alert hidden-span-alert alert-foto-posto'>
                   *É NECESSARIO QUE ANEXE UMA FOTO DO POSTO DE GASOLINA!
@@ -414,7 +426,7 @@ const NewPostosServices = () => {
                 <button
                   className="btn-criar"
                   type="submit">
-                  CRIAR
+                  PROXIMA ETAPA
                 </button>
               </div>
             )}
@@ -506,6 +518,42 @@ const NewPostosServices = () => {
             )}
           </form>
         </div>
+        {formCombustivel && (
+          <div className='container-form-combustivel'>
+            <form id='form-combustivel'>
+              <div className='cadastrar-combustivel'>
+                <p className='text-info'>
+                  Com qual combustivel deseja trabalhar?
+                </p>
+                <div className='container-combustivel'>
+                  <input type="checkbox" name="etanol" id="etanol" value={1} />
+                  <label htmlFor="etanol">Etanol</label>
+
+                  <div className='container-valores-formas'>
+                    <input type="text" placeholder='Preço' />
+                    <div className='container-formas'>
+                       
+                      <select name="abastecimento_etanol">
+                        <option value="1">Litragem livre</option>
+                        <option value="2">Encher tanque</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <input type="checkbox" name="gasolina" id="gasolina" value={2} />
+                  <label htmlFor="gasolina">Gasolina</label>
+                </div>
+
+                <div>
+                  <input type="checkbox" name="diesel" id="diesel" value={3} />
+                  <label htmlFor="diesel">Diesel</label>
+                </div>
+              </div>
+            </form>
+          </div>
+        )}
       </div>
     </>
   )
