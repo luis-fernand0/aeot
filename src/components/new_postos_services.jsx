@@ -21,6 +21,10 @@ import '../style/new_services_page/new_services.css'
 const urlCadastrar = import.meta.env.VITE_URL_CADASTRAR_POSTO_ANUNCIO
 
 const NewPostosServices = () => {
+  const tokenUser = localStorage.getItem('token');
+
+  const navigate = useNavigate()
+
   const [categoria, setCategoria] = useState('postos')
   const [fotoValid, setFotoValid] = useState(false)
 
@@ -29,18 +33,32 @@ const NewPostosServices = () => {
   const [modalMessage, setModalMessage] = useState('');
 
   const [formCombustivel, setFormCombustivel] = useState(false)
+  const [showOptions, setShowOptions] = useState({})
+  function toggleOptions(combustivel) {
+    setShowOptions((prev) => ({
+      ...prev,
+      [combustivel]: !prev[combustivel],
+    }))
+  }
 
-  const combustiveis = ['etanol', 'gasolina', 'diesel'];
-  const metodosPagamento = ['dinheiro', 'pix', 'debito', 'credito'];
-  const abastecimentos = [
-    { value: '', label: 'Escolha a forma de abastecimento' },
-    { value: 'Litragem Livre', label: 'Litragem Livre' },
-    { value: 'Encher Tanque', label: 'Encher Tanque' },
+  const combustiveis = [
+    {value: '1', label: 'etanol'},
+    {value: '2', label: 'gasolina'},
+    {value: '3', label: 'diesel'}
   ];
 
-  const tokenUser = localStorage.getItem('token');
+  const formasPagamento = [
+    {value: '1', label: 'dinheiro'},
+    {value: '2', label: 'pix'},
+    {value: '3', label: 'debito'},
+    {value: '4', label: 'credito'},
+  ];
 
-  const navigate = useNavigate()
+  const formasAbastecimentos = [
+    { value: '', label: 'Escolha a forma de abastecimento' },
+    { value: '1', label: 'Litragem Livre' },
+    { value: '2', label: 'Encher Tanque' },
+  ];
 
   function addFoto(input) { document.getElementById(input).click() }
   const callVerificarFoto = async (inputId, span, btnId) => {
@@ -125,7 +143,11 @@ const NewPostosServices = () => {
   }
 
   function sendForms(e) {
-
+    e.preventDefault()
+    let myForm = new FormData(document.getElementById('form-combustivel'))
+    for(let [key, value] of myForm.entries()) {
+      console.log(key, value)
+    }
   }
 
   async function hundleSubmit(e) {
@@ -339,73 +361,6 @@ const NewPostosServices = () => {
                   onChange={(e) => checkPhone(e)}
                   maxLength={15} />
 
-                {/* <p className='text-info'>Formas de pagamento</p>
-                <div className='container-forma-de-pagamento'>
-                  <div className='forma-de-pagamento'>
-                    <input className='input-checkbox' type="checkbox" name="dinheiro" id="dinheiro" />
-                    <label className='text-checkbox' htmlFor="dinheiro">Dinheiro</label>
-                  </div>
-
-                  <div className="forma-de-pagamento">
-                    <input className='input-checkbox' type="checkbox" name="pix" id="pix" />
-                    <label className='text-checkbox' htmlFor="pix">Pix</label>
-                  </div>
-
-                  <div className="forma-de-pagamento">
-                    <input className='input-checkbox' type="checkbox" name="debito" id="debito" />
-                    <label className='text-checkbox' htmlFor="debito">Debito</label>
-                  </div>
-
-                  <div className="forma-de-pagamento">
-                    <input className='input-checkbox' type="checkbox" name="credito" id="credito" />
-                    <label className='text-checkbox' htmlFor="credito">Credito</label>
-                  </div>
-                </div>
-
-                <p className='text-info'>
-                  Valores dos combustivel que deseja trabalhar
-                </p>
-                <div className='container-inputs-combutiveis'>
-
-                  {combustiveis.map(combustivel => (
-                    <div key={combustivel} className="combustivel-container">
-                      <input
-                        onChange={(e) => checkValor(e)}
-                        id={combustivel}
-                        className='input-add-combustivel input-info'
-                        name={combustivel}
-                        type="text"
-                        placeholder={combustivel.charAt(0).toUpperCase() + combustivel.slice(1)}
-                      />
-
-                      {metodosPagamento.map(metodo => (
-                        <div key={`${combustivel}-${metodo}`} className="metodo-container">
-
-                          <input
-                            className='input-metodo-checkbox'
-                            type="checkbox"
-                            id={`${combustivel}-${metodo}`}
-                            name={`${combustivel}_${metodo}`} />
-                          <label
-                            className='text-checkbox'
-                            htmlFor={`${combustivel}-${metodo}`}>
-                            {metodo.charAt(0).toUpperCase() + metodo.slice(1)}
-                          </label>
-
-                          <select
-                            name={`${combustivel}_${metodo}_abastecimento`}
-                            id={`${combustivel}_${metodo}_abastecimento`}>
-
-                            {abastecimentos.map(opcao => (
-                              <option key={opcao.value} value={opcao.value}>{opcao.label}</option>
-                            ))}
-                          </select>
-                        </div>
-                      ))}
-                    </div>
-                  ))}
-                </div> */}
-
                 <span className='span-alert hidden-span-alert alert-foto-posto'>
                   *É NECESSARIO QUE ANEXE UMA FOTO DO POSTO DE GASOLINA!
                 </span>
@@ -518,39 +473,44 @@ const NewPostosServices = () => {
             )}
           </form>
         </div>
-        {formCombustivel && (
+        {!formCombustivel && (
           <div className='container-form-combustivel'>
-            <form id='form-combustivel'>
+            <form id='form-combustivel' onSubmit={(e) => sendForms(e)}>
               <div className='cadastrar-combustivel'>
                 <p className='text-info'>
                   Com qual combustivel deseja trabalhar?
                 </p>
-                <div className='container-combustivel'>
-                  <input type="checkbox" name="etanol" id="etanol" value={1} />
-                  <label htmlFor="etanol">Etanol</label>
 
-                  <div className='container-valores-formas'>
-                    <input type="text" placeholder='Preço' />
-                    <div className='container-formas'>
-                       
-                      <select name="abastecimento_etanol">
-                        <option value="1">Litragem livre</option>
-                        <option value="2">Encher tanque</option>
-                      </select>
-                    </div>
+                {combustiveis.map((combustivel) => (
+                  <div className="container-combustivel">
+                    <input type="checkbox" name={combustivel.label} id={combustivel.label} value={combustivel.value} onChange={() => toggleOptions(combustivel.label)}/>
+                    <label htmlFor={combustivel.label}>{combustivel.label.charAt(0).toUpperCase() + combustivel.label.slice(1)}</label>
+
+                    {showOptions[combustivel.label] && (
+                      <div className='container-valor-formas'>
+                        <input type="text" name={`${combustivel.label}_valor`} />
+
+                        {formasPagamento.map((pagamento) => (
+                          <div className="container-forma">
+                            <div className='container-forma-pagamento'>
+                              <input type="checkbox" name={`${pagamento.label}_${combustivel.label}`} value={pagamento.value} id={`${pagamento.label}_gasolina`}/>
+                              <label htmlFor={`${pagamento.label}_gasolina`}>{pagamento.label.charAt(0).toUpperCase() + pagamento.label.slice(1)}</label>
+                            </div>
+
+                            <select name="forma_abastecimento" id="forma_abastecimento">
+                              {formasAbastecimentos.map((abastecimento) => (
+                                  <option value={abastecimento.value}>{abastecimento.label}</option>
+                                ))}
+                              </select>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                </div>
-
-                <div>
-                  <input type="checkbox" name="gasolina" id="gasolina" value={2} />
-                  <label htmlFor="gasolina">Gasolina</label>
-                </div>
-
-                <div>
-                  <input type="checkbox" name="diesel" id="diesel" value={3} />
-                  <label htmlFor="diesel">Diesel</label>
-                </div>
+                ))}
               </div>
+
+              <button type='submit'>Criar</button>
             </form>
           </div>
         )}
