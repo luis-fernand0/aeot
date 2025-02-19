@@ -52,12 +52,12 @@
   padding-left: 15px;
   font-size: 14px;
   font-weight: 500;
-  border: none;
+  border: 2px solid #4b39ef;
   border-radius: 15px;
   outline: none;
 }
-.container-scan-respose .container-scan .text-scan-key-input .key-input:focus {
-  border: 2px solid #4b39ef;
+.container-scan-respose .container-scan .text-scan-key-input .key-input-alert {
+  border: 2px solid rgb(231, 84, 84);
 }
 .container-scan-respose .container-btns {
   width: 100%;
@@ -140,16 +140,12 @@
 .container-scan-respose #dados-do-abastecimento .container-abastecimento .text-container .text-span-container #litros-abastecidos {
   width: 100px;
   height: 40px;
-  border: none;
-  outline: none;
+  border: 2px solid #4b39ef;
   border-radius: 15px;
+  outline: none;
   padding-left: 10px;
   font-size: 16px;
   font-weight: 300;
-}
-.container-scan-respose #dados-do-abastecimento .container-dados-do-motorista .text-container .text-span-container #litros-abastecidos:focus,
-.container-scan-respose #dados-do-abastecimento .container-abastecimento .text-container .text-span-container #litros-abastecidos:focus {
-  border: 2px solid #4b39ef;
 }
 .container-scan-respose #dados-do-abastecimento .container-dados-do-motorista .text-container .text-span-container .litros-abastecidos-alert,
 .container-scan-respose #dados-do-abastecimento .container-abastecimento .text-container .text-span-container .litros-abastecidos-alert {

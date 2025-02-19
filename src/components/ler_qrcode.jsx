@@ -203,6 +203,7 @@ const LerQrCode = () => {
             setModalVisible(true)
             setResult(null)
             setValorTotal(null)
+            document.querySelector('.key-input').value = ''
         } catch (err) {
             setModalMessage(`Ocorreu um erro inesperado! ${err.message}`)
             setModalVisible(true)
@@ -234,6 +235,7 @@ const LerQrCode = () => {
                 setModalMessage(data.message)
                 setModalVisible(true)
                 setResult(null)
+                document.querySelector('.key-input').classList.add('key-input-alert')
                 return
             }
             setValorTotal(null)
@@ -241,6 +243,7 @@ const LerQrCode = () => {
                 document.getElementById('litros-abastecidos').value = ''
             }
             setResult(data.abastecimento)
+            document.querySelector('.key-input').classList.remove('key-input-alert')
         } catch (err) {
             setModalMessage(`Desculpe ocorreu um erro inesperado! ${err.message}`)
             setModalVisible(true)
@@ -257,7 +260,7 @@ const LerQrCode = () => {
             keyValue = keyValue.slice(0, 5)
         }
 
-        return key.value = keyValue
+        return key.value = keyValue.toUpperCase()
     }
 
     useEffect(() => {
@@ -416,7 +419,7 @@ const LerQrCode = () => {
                             <button
                                 onClick={() => confirmarVenda()}
                                 className="btn-abastecido">
-                                Abastecido!
+                                Confirmar!
                             </button>
                         </>
                     )}
