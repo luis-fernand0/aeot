@@ -121,51 +121,6 @@
   font-size: 16px;
   resize: none;
 }
-.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .text-info,
-.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .text-info {
-  margin-bottom: 15px;
-  text-align: center;
-}
-.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .container-forma-de-pagamento,
-.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .container-forma-de-pagamento {
-  height: auto;
-  width: 100%;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
-  gap: 15px;
-  margin-bottom: 25px;
-}
-.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .container-forma-de-pagamento .forma-de-pagamento,
-.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .container-forma-de-pagamento .forma-de-pagamento {
-  display: flex;
-  flex-direction: row wrap;
-  align-items: center;
-}
-.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .container-forma-de-pagamento .forma-de-pagamento .input-checkbox,
-.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .container-forma-de-pagamento .forma-de-pagamento .input-checkbox {
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
-}
-.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .container-forma-de-pagamento .forma-de-pagamento .text-checkbox,
-.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .container-forma-de-pagamento .forma-de-pagamento .text-checkbox {
-  font-size: 18px;
-}
-.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .container-inputs-combutiveis,
-.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .container-inputs-combutiveis {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .container-inputs-combutiveis .combustivel-container .metodo-container,
-.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .container-inputs-combutiveis .combustivel-container .metodo-container {
-  margin-bottom: 15px;
-}
-.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .container-inputs-combutiveis .combustivel-container .metodo-container .text-checkbox,
-.container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .container-inputs-combutiveis .combustivel-container .metodo-container .text-checkbox {
-  margin: 0 15px 0 5px;
-}
 .container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .span-alert,
 .container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .span-alert {
   font-size: 10px;
@@ -210,4 +165,113 @@
 .container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-posto .checked-foto,
 .container-form-arrow .container-forms .form-cadastrar-posto-anuncio .cadastrar-anuncio .checked-foto {
   background-color: #00ff73;
+}
+.container-form-arrow .container-forms .text-info,
+.container-form-arrow .container-form-combustivel .text-info {
+  margin-bottom: 15px;
+  text-align: center;
+}
+.container-form-arrow .container-form-combustivel {
+  background-color: rgba(0, 0, 0, 0.253);
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+.container-form-arrow .container-form-combustivel #form-combustivel {
+  background-color: #fff;
+  padding: 25px;
+  height: 90%;
+  border-radius: 15px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.342);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container-form-arrow .container-form-combustivel #form-combustivel .container-close-btn {
+  width: 100%;
+  padding: 5px;
+  text-align: right;
+}
+.container-form-arrow .container-form-combustivel #form-combustivel .container-close-btn .close-btn {
+  background-color: transparent;
+  border: none;
+}
+.container-form-arrow .container-form-combustivel #form-combustivel .container-close-btn .close-btn:hover .x-icon {
+  transform: scale(0.8);
+}
+.container-form-arrow .container-form-combustivel #form-combustivel .container-close-btn .close-btn .x-icon {
+  transition: all 0.5s ease;
+  font-size: 18px;
+}
+.container-form-arrow .container-form-combustivel #form-combustivel .cadastrar-combustivel {
+  height: 100%;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+}
+.container-form-arrow .container-form-combustivel #form-combustivel .cadastrar-combustivel .container-combustivel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.container-form-arrow .container-form-combustivel #form-combustivel .cadastrar-combustivel .container-combustivel .conatiner-checkbox-combustivel {
+  margin-bottom: 15px;
+}
+.container-form-arrow .container-form-combustivel #form-combustivel .cadastrar-combustivel .container-combustivel .checkbox-combustivel {
+  margin-right: 5px;
+  width: 15px;
+  height: 15px;
+}
+.container-form-arrow .container-form-combustivel #form-combustivel .cadastrar-combustivel .container-combustivel .container-valor-formas {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.container-form-arrow .container-form-combustivel #form-combustivel .cadastrar-combustivel .container-combustivel .container-valor-formas .combustivel-valor {
+  background-color: #f5f5f5;
+  height: 40px;
+  width: 150px;
+  padding-left: 15px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
+  font-size: 15px;
+}
+.container-form-arrow .container-form-combustivel #form-combustivel .cadastrar-combustivel .container-combustivel .container-valor-formas .combustivel-valor:focus {
+  outline: none;
+  border: 2px solid #4b39ef;
+}
+.container-form-arrow .container-form-combustivel #form-combustivel .cadastrar-combustivel .container-combustivel .container-valor-formas .container-forma {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.container-form-arrow .container-form-combustivel #form-combustivel .cadastrar-combustivel .container-combustivel .container-valor-formas .container-forma #forma_abastecimento {
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+.container-form-arrow .container-form-combustivel #form-combustivel .btn-criar {
+  height: 45px;
+  width: 95px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 10px;
+  background-color: #fff100;
+  font-size: 16px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
+  transition: 0.5s linear;
+}
+.container-form-arrow .container-form-combustivel #form-combustivel .btn-criar:hover {
+  color: #fff;
+  background-color: #14181b;
 }/*# sourceMappingURL=new_services.css.map */
