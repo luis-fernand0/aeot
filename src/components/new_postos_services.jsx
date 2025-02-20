@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowLeftLong, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeftLong, faEye, faEyeSlash, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 import { validarCnpj } from '../functions/validarCnpj'
 import { checkPhone } from '../functions/checkPhone'
@@ -144,85 +144,51 @@ const NewPostosServices = () => {
 
   async function sendForms(e) {
     e.preventDefault()
-    let myForm = new FormData(document.getElementById('form-combustivel'))
-    let combustiveis = []
-    for (let [key, value] of myForm.entries()) {
-      console.log(key)
-      if (key === 'combustiveis') {
-        combustiveis[value] = {
-          combustivel: value,
-          valor: '',
-          formas: []
-        }
-      }
-      if (key === 'valor') {
-        combustiveis[combustiveis.length - 1].valor = value
-      }
-      if (key === 'forma_pagamento') {
-        combustiveis[combustiveis.length - 1].formas[value] = {
-          forma_pagamento: value,
-          forma_abastecimento: ''
-        }
-      }
-      console.log(combustiveis)
-      console.log(combustiveis[combustiveis.length - 1])
-      console.log(combustiveis[combustiveis.length - 1].formas)
-      console.log(combustiveis[combustiveis.length - 1].formas[combustiveis[combustiveis.length - 1].formas.length - 1])
-
-      // if (key === 'forma_pagamento') {
-      //   combustiveis[combustiveis.length - 1].formas[combustiveis.formas.length - 1].forma_abastecimento = value
-      // }
-    }
-
-
-    let form = Object.fromEntries(myForm)
-
-    const response = await fetch(urlCadastrar, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${tokenUser}`
-      },
-      body: JSON.stringify(form)
-    })
-  }
-
-  async function hundleSubmit(e) {
-    e.preventDefault()
     setLoading(true)
 
-    let checkboxes = document.querySelectorAll(".input-checkbox")
-    let metodoscheckbox = document.querySelectorAll(".input-metodo-checkbox")
+    try {
+      let combustiveis = {}
+      let lastPay = null
+      let lastCombustivel = null
 
-    const myForm = document.getElementById('form-cadastro')
-    const formData = new FormData(myForm)
-    formData.append('categoria', [categoria])
-
-    checkboxes.forEach((checkbox) => {
-      formData.delete(checkbox.name)
-      formData.append(checkbox.name, checkbox.checked)
-    })
-
-    metodoscheckbox.forEach((box) => {
-      let name = box.getAttribute('name')
-      formData.delete(`${name}_abastecimento`)
-      formData.delete(name)
-      let selectValue = document.getElementById(`${name}_abastecimento`).value
-
-      if (!box.checked) {
-        selectValue = 'Não trabalhamos'
+      let form = new FormData(document.getElementById('form-cadastro'))
+      let formCombustivel = new FormData(document.getElementById('form-combustivel'))
+      for (let [key, value] of formCombustivel.entries()) {
+        if (key === 'combustiveis') {
+          combustiveis[value] = {
+            combustivel: value,
+            valor: '',
+            formas: {}
+          }
+          lastCombustivel = value
+        }
+        if (key === 'valor' && lastCombustivel) {
+          combustiveis[lastCombustivel].valor = value
+        }
+        if (key === 'forma_pagamento' && lastCombustivel) {
+          if (!combustiveis[lastCombustivel].formas[value]) {
+            combustiveis[lastCombustivel].formas[value] = {
+              forma_pagamento: value,
+              forma_abastecimento: ''
+            }
+            lastPay = value
+          }
+        }
+        if (key === 'forma_abastecimento' && lastPay) {
+          combustiveis[lastCombustivel].formas[lastPay].forma_abastecimento = value
+          lastPay = null
+        }
       }
 
-      formData.append(box.name, selectValue)
-    })
+      form.append('categoria', [categoria])
+      form.append('combustiveis', JSON.stringify(combustiveis))
 
-    try {
       const response = await fetch(urlCadastrar, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${tokenUser}`
         },
-        body: formData
+        body: form
       })
       const dataResponse = await response.json()
 
@@ -230,10 +196,8 @@ const NewPostosServices = () => {
         navigate('/', { replace: true })
       }
 
-      if (response.status != 200 || response.status === 200) {
-        setModalMessage(dataResponse.message)
-        setModalVisible(true)
-      }
+      setModalMessage(dataResponse.message)
+      setModalVisible(true)
     } catch (err) {
       setModalMessage(`Ocorreu um erro inesperado. Tente novamente mais tarde.` + err.message)
       setModalVisible(true)
@@ -510,9 +474,15 @@ const NewPostosServices = () => {
             )}
           </form>
         </div>
-        {!formCombustivel && (
+        {formCombustivel && (
           <div className='container-form-combustivel'>
             <form id='form-combustivel' onSubmit={(e) => sendForms(e)}>
+              <div className='container-close-btn'>
+                <button className='close-btn' onClick={() => setFormCombustivel(false)}>
+                  <FontAwesomeIcon className='x-icon' icon={faXmark} />
+                </button>
+              </div>
+
               <div className='cadastrar-combustivel'>
                 <p className='text-info'>
                   Com qual combustivel deseja trabalhar?
@@ -520,17 +490,19 @@ const NewPostosServices = () => {
 
                 {combustiveis.map((combustivel) => (
                   <div key={combustivel.value} className="container-combustivel">
-                    <input type="checkbox" name='combustiveis' id={combustivel.label} value={combustivel.value} onChange={() => toggleOptions(combustivel.label)} />
-                    <label htmlFor={combustivel.label}>{combustivel.label.charAt(0).toUpperCase() + combustivel.label.slice(1)}</label>
+                    <div className='conatiner-checkbox-combustivel'>
+                      <input className='checkbox-combustivel' type="checkbox" name='combustiveis' id={combustivel.label} value={combustivel.value} onChange={() => toggleOptions(combustivel.label)} />
+                      <label className='text-combustivel' htmlFor={combustivel.label}>{combustivel.label.charAt(0).toUpperCase() + combustivel.label.slice(1)}</label>
+                    </div>
 
                     {showOptions[combustivel.label] && (
                       <div className='container-valor-formas'>
-                        <input type="text" name={`valor`} />
+                        <input className='combustivel-valor' type="text" name={`valor`} placeholder='Valor' />
 
                         {formasPagamento.map((pagamento) => (
                           <div className="container-forma">
                             <div className='container-forma-pagamento'>
-                              <input type="checkbox" name='forma_pagamento' value={pagamento.value} id={`${pagamento.label}_${combustivel.label}`} />
+                              <input className='checkbox-combustivel' type="checkbox" name='forma_pagamento' value={pagamento.value} id={`${pagamento.label}_${combustivel.label}`} />
                               <label htmlFor={`${pagamento.label}_${combustivel.label}`}>{pagamento.label.charAt(0).toUpperCase() + pagamento.label.slice(1)}</label>
                             </div>
 
@@ -547,7 +519,7 @@ const NewPostosServices = () => {
                 ))}
               </div>
 
-              <button type='submit'>Criar</button>
+              <button className='btn-criar' type='submit'>Criar</button>
             </form>
           </div>
         )}
