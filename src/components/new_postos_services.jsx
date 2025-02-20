@@ -42,16 +42,16 @@ const NewPostosServices = () => {
   }
 
   const combustiveis = [
-    {value: '1', label: 'etanol'},
-    {value: '2', label: 'gasolina'},
-    {value: '3', label: 'diesel'}
+    { value: '1', label: 'etanol' },
+    { value: '2', label: 'gasolina' },
+    { value: '3', label: 'diesel' }
   ];
 
   const formasPagamento = [
-    {value: '1', label: 'dinheiro'},
-    {value: '2', label: 'pix'},
-    {value: '3', label: 'debito'},
-    {value: '4', label: 'credito'},
+    { value: '1', label: 'dinheiro' },
+    { value: '2', label: 'pix' },
+    { value: '3', label: 'debito' },
+    { value: '4', label: 'credito' },
   ];
 
   const formasAbastecimentos = [
@@ -142,12 +142,33 @@ const NewPostosServices = () => {
     setFormCombustivel(true)
   }
 
-  function sendForms(e) {
+  async function sendForms(e) {
     e.preventDefault()
     let myForm = new FormData(document.getElementById('form-combustivel'))
-    for(let [key, value] of myForm.entries()) {
-      console.log(key, value)
+    let combustiveis = [{}]
+    for (let [key, value] of myForm.entries()) {
+      console.log(key)
+      if (key === 'combustiveis[]') {
+        combustiveis[value] = {
+          combustivel: value,
+          valor: '',
+          formas: ''
+        }
+      }
     }
+
+    console.log(combustiveis)
+
+    let form = Object.fromEntries(myForm)
+
+    const response = await fetch(urlCadastrar, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${tokenUser}`
+      },
+      body: JSON.stringify(form)
+    })
   }
 
   async function hundleSubmit(e) {
@@ -482,26 +503,26 @@ const NewPostosServices = () => {
                 </p>
 
                 {combustiveis.map((combustivel) => (
-                  <div className="container-combustivel">
-                    <input type="checkbox" name={combustivel.label} id={combustivel.label} value={combustivel.value} onChange={() => toggleOptions(combustivel.label)}/>
+                  <div key={combustivel.value} className="container-combustivel">
+                    <input type="checkbox" name='combustiveis[]' id={combustivel.label} value={combustivel.value} onChange={() => toggleOptions(combustivel.label)} />
                     <label htmlFor={combustivel.label}>{combustivel.label.charAt(0).toUpperCase() + combustivel.label.slice(1)}</label>
 
                     {showOptions[combustivel.label] && (
                       <div className='container-valor-formas'>
-                        <input type="text" name={`${combustivel.label}_valor`} />
+                        <input type="text" name={`valor`} />
 
                         {formasPagamento.map((pagamento) => (
                           <div className="container-forma">
                             <div className='container-forma-pagamento'>
-                              <input type="checkbox" name={`${pagamento.label}_${combustivel.label}`} value={pagamento.value} id={`${pagamento.label}_gasolina`}/>
-                              <label htmlFor={`${pagamento.label}_gasolina`}>{pagamento.label.charAt(0).toUpperCase() + pagamento.label.slice(1)}</label>
+                              <input type="checkbox" name={`${pagamento.label}_${combustivel.label}`} value={pagamento.value} id={`${pagamento.label}_${combustivel.label}`} />
+                              <label htmlFor={`${pagamento.label}_${combustivel.label}`}>{pagamento.label.charAt(0).toUpperCase() + pagamento.label.slice(1)}</label>
                             </div>
 
                             <select name="forma_abastecimento" id="forma_abastecimento">
                               {formasAbastecimentos.map((abastecimento) => (
-                                  <option value={abastecimento.value}>{abastecimento.label}</option>
-                                ))}
-                              </select>
+                                <option value={abastecimento.value}>{abastecimento.label}</option>
+                              ))}
+                            </select>
                           </div>
                         ))}
                       </div>
