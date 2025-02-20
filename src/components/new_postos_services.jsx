@@ -145,19 +145,31 @@ const NewPostosServices = () => {
   async function sendForms(e) {
     e.preventDefault()
     let myForm = new FormData(document.getElementById('form-combustivel'))
-    let combustiveis = [{}]
+    let combustiveis = {}
     for (let [key, value] of myForm.entries()) {
       console.log(key)
-      if (key === 'combustiveis[]') {
+      if (key === 'combustiveis') {
         combustiveis[value] = {
           combustivel: value,
           valor: '',
-          formas: ''
+          formas: []
         }
       }
+      if (key === 'valor') {
+        combustiveis[combustiveis.length - 1].valor = value
+      }
+      if (key === 'forma_pagamento') {
+        combustiveis[combustiveis.length - 1].formas[value] = {
+          forma_pagamento: value,
+          forma_abastecimento: ''
+        }
+      }
+      if (key === 'forma_pagamento') {
+        combustiveis[combustiveis.length - 1].formas[combustiveis.formas.length - 1].forma_abastecimento = value
+      }
     }
-
     console.log(combustiveis)
+
 
     let form = Object.fromEntries(myForm)
 
@@ -504,7 +516,7 @@ const NewPostosServices = () => {
 
                 {combustiveis.map((combustivel) => (
                   <div key={combustivel.value} className="container-combustivel">
-                    <input type="checkbox" name='combustiveis[]' id={combustivel.label} value={combustivel.value} onChange={() => toggleOptions(combustivel.label)} />
+                    <input type="checkbox" name='combustiveis' id={combustivel.label} value={combustivel.value} onChange={() => toggleOptions(combustivel.label)} />
                     <label htmlFor={combustivel.label}>{combustivel.label.charAt(0).toUpperCase() + combustivel.label.slice(1)}</label>
 
                     {showOptions[combustivel.label] && (
@@ -514,7 +526,7 @@ const NewPostosServices = () => {
                         {formasPagamento.map((pagamento) => (
                           <div className="container-forma">
                             <div className='container-forma-pagamento'>
-                              <input type="checkbox" name={`${pagamento.label}_${combustivel.label}`} value={pagamento.value} id={`${pagamento.label}_${combustivel.label}`} />
+                              <input type="checkbox" name='forma_pagamento' value={pagamento.value} id={`${pagamento.label}_${combustivel.label}`} />
                               <label htmlFor={`${pagamento.label}_${combustivel.label}`}>{pagamento.label.charAt(0).toUpperCase() + pagamento.label.slice(1)}</label>
                             </div>
 
