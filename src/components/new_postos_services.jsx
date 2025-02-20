@@ -145,7 +145,7 @@ const NewPostosServices = () => {
   async function sendForms(e) {
     e.preventDefault()
     let myForm = new FormData(document.getElementById('form-combustivel'))
-    let combustiveis = {}
+    let combustiveis = []
     for (let [key, value] of myForm.entries()) {
       console.log(key)
       if (key === 'combustiveis') {
@@ -164,11 +164,15 @@ const NewPostosServices = () => {
           forma_abastecimento: ''
         }
       }
-      if (key === 'forma_pagamento') {
-        combustiveis[combustiveis.length - 1].formas[combustiveis.formas.length - 1].forma_abastecimento = value
-      }
+      console.log(combustiveis)
+      console.log(combustiveis[combustiveis.length - 1])
+      console.log(combustiveis[combustiveis.length - 1].formas)
+      console.log(combustiveis[combustiveis.length - 1].formas[combustiveis[combustiveis.length - 1].formas.length - 1])
+
+      // if (key === 'forma_pagamento') {
+      //   combustiveis[combustiveis.length - 1].formas[combustiveis.formas.length - 1].forma_abastecimento = value
+      // }
     }
-    console.log(combustiveis)
 
 
     let form = Object.fromEntries(myForm)
