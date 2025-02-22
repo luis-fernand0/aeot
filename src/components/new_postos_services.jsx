@@ -117,6 +117,19 @@ const NewPostosServices = () => {
     uf.value = `${infoCnpj.state}`
   }
 
+  function limitarCaracter(e) {
+    let uf = e.target
+    let ufValue = uf.value.replace(/[^a-zA-Z]/g, '')
+
+    if (ufValue.length > 2) {
+      ufValue = ufValue.slice(0, 2)
+    }
+
+    ufValue = ufValue.toUpperCase()
+
+    return uf.value = ufValue
+  }
+
   function nextStep(e) {
     e.preventDefault()
 
@@ -139,6 +152,11 @@ const NewPostosServices = () => {
       return
     }
 
+    if (categoria != 'postos') {
+      sendForms(e)
+      return
+    }
+
     setFormCombustivel(true)
   }
 
@@ -147,41 +165,52 @@ const NewPostosServices = () => {
     setLoading(true)
 
     try {
-      let combustiveis = {}
-      let lastPay = null
-      let lastCombustivel = null
-
       let form = new FormData(document.getElementById('form-cadastro'))
-      let formCombustivel = new FormData(document.getElementById('form-combustivel'))
-      for (let [key, value] of formCombustivel.entries()) {
-        if (key === 'combustiveis') {
-          combustiveis[value] = {
-            combustivel: value,
-            valor: '',
-            formas: {}
-          }
-          lastCombustivel = value
+      
+      if (categoria === 'postos') {
+        let inputCheckeds = document.querySelectorAll("input[name='combustiveis']:checked")
+
+        if (inputCheckeds.length === 0) {
+          setModalMessage('Selecione pelos menos um combustivel para trabalhar!')
+          setModalVisible(true)
+          return
         }
-        if (key === 'valor' && lastCombustivel) {
-          combustiveis[lastCombustivel].valor = value
-        }
-        if (key === 'forma_pagamento' && lastCombustivel) {
-          if (!combustiveis[lastCombustivel].formas[value]) {
-            combustiveis[lastCombustivel].formas[value] = {
-              forma_pagamento: value,
-              forma_abastecimento: ''
+
+        let combustiveis = {}
+        let lastPay = null
+        let lastCombustivel = null
+
+        let formCombustivel = new FormData(document.getElementById('form-combustivel'))
+        for (let [key, value] of formCombustivel.entries()) {
+          if (key === 'combustiveis') {
+            combustiveis[value] = {
+              combustivel: value,
+              valor: '',
+              formas: {}
             }
-            lastPay = value
+            lastCombustivel = value
+          }
+          if (key === 'valor' && lastCombustivel) {
+            combustiveis[lastCombustivel].valor = value
+          }
+          if (key === 'forma_pagamento' && lastCombustivel) {
+            if (!combustiveis[lastCombustivel].formas[value]) {
+              combustiveis[lastCombustivel].formas[value] = {
+                forma_pagamento: value,
+                forma_abastecimento: ''
+              }
+              lastPay = value
+            }
+          }
+          if (key === 'forma_abastecimento' && lastPay) {
+            combustiveis[lastCombustivel].formas[lastPay].forma_abastecimento = value
+            lastPay = null
           }
         }
-        if (key === 'forma_abastecimento' && lastPay) {
-          combustiveis[lastCombustivel].formas[lastPay].forma_abastecimento = value
-          lastPay = null
-        }
+        form.append('combustiveis', JSON.stringify(combustiveis))
       }
 
       form.append('categoria', [categoria])
-      form.append('combustiveis', JSON.stringify(combustiveis))
 
       const response = await fetch(urlCadastrar, {
         method: 'POST',
@@ -204,19 +233,6 @@ const NewPostosServices = () => {
     } finally {
       setLoading(false)
     }
-  }
-
-  function limitarCaracter(e) {
-    let uf = e.target
-    let ufValue = uf.value.replace(/[^a-zA-Z]/g, '')
-
-    if (ufValue.length > 2) {
-      ufValue = ufValue.slice(0, 2)
-    }
-
-    ufValue = ufValue.toUpperCase()
-
-    return uf.value = ufValue
   }
 
   return (
@@ -478,7 +494,12 @@ const NewPostosServices = () => {
           <div className='container-form-combustivel'>
             <form id='form-combustivel' onSubmit={(e) => sendForms(e)}>
               <div className='container-close-btn'>
-                <button className='close-btn' onClick={() => setFormCombustivel(false)}>
+                <button
+                  className='close-btn'
+                  onClick={() => {
+                    setFormCombustivel(false),
+                      setShowOptions({})
+                  }}>
                   <FontAwesomeIcon className='x-icon' icon={faXmark} />
                 </button>
               </div>
@@ -497,7 +518,7 @@ const NewPostosServices = () => {
 
                     {showOptions[combustivel.label] && (
                       <div className='container-valor-formas'>
-                        <input className='combustivel-valor' type="text" name={`valor`} placeholder='Valor' />
+                        <input onChange={(e) => checkValor(e)} className='combustivel-valor' type="text" name={`valor`} placeholder='Valor' />
 
                         {formasPagamento.map((pagamento) => (
                           <div className="container-forma">
