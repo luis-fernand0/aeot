@@ -14,6 +14,9 @@ const urlDatas = import.meta.env.VITE_URL_DATAS
 const urlDataGoogleMaps = import.meta.env.VITE_URL_QUERY_GOOGLE_MAPS
 
 const Home = () => {
+  const tokenUser = localStorage.getItem('token')
+  const typerUser = localStorage.getItem('type_user')
+
   const [postos, setPostos] = useState([])
   const [categoria, setCategoria] = useState({ categoria: 'postos' })
 
@@ -21,13 +24,16 @@ const Home = () => {
   const [distancia, setDistancia] = useState({})
 
   const [loading, setLoading] = useState(false)
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [modalMessage, setModalMessage] = useState('');
+  const [isModalVisible, setModalVisible] = useState(false)
+  const [modalMessage, setModalMessage] = useState('')
+
+  const combustivelMap = {
+    1: "ETANOL",
+    2: "GASOLINA",
+    3: "DIESEL"
+  }
 
   const navigate = useNavigate()
-
-  const tokenUser = localStorage.getItem('token');
-  const typerUser = localStorage.getItem('type_user')
 
   async function gasStation() {
     setLoading(true)
@@ -182,15 +188,13 @@ const Home = () => {
                       </div>
                     </div>
                     <div className='info-gas-services'>
-                      <p className='combustiveis-gas-station'>
-                        ETANOL: R$ {posto.combustivel?.etanol.valor}
-                      </p>
-                      <p className='combustiveis-gas-station'>
-                        GASOLINA: R$ {posto.combustivel?.gasolina.valor}
-                      </p>
-                      <p className='combustiveis-gas-station'>
-                        DIESEL: R$ {posto.combustivel?.diesel.valor}
-                      </p>
+                      {Object.keys(combustivelMap).map((key) => (
+                        <p key={key}>
+                          {posto.combustivel[key] && (
+                            `${combustivelMap[key]}: R$ ${posto.combustivel[key].valor}`
+                          )}
+                        </p>
+                      ))}
                       {distancia[posto.cod_posto] && (
                         <div className='container-km-time'>
                           <p className='km km-time'>
