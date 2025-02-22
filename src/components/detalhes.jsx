@@ -21,6 +21,7 @@ const Detalhes = () => {
   const typeUser = localStorage.getItem('type_user')
 
   const [detalhe, setDetalhe] = useState(itens[0] || {})
+  console.log(detalhe)
   const [distancia, setDistancia] = useState(itens[1] || {})
   const [local, setLocal] = useState(itens[2] || {})
   const [categoria, setCategoria] = useState(itens[3] || {})
@@ -88,6 +89,24 @@ const Detalhes = () => {
     }
   }
 
+  const combustivelMap = {
+    1: "ETANOL",
+    2: "GASOLINA",
+    3: "DIESEL"
+  }
+
+  const formaPagamentoMap = {
+    1: "Dinheiro",
+    2: "Pix",
+    3: "Debito",
+    4: "Credito"
+  }
+
+  const formaAbastecimentoMap = {
+    1: "Litragem Livre",
+    2: "Encher Tanque"
+  }
+
   return (
     <>
       <Header redirectTo={'/home'} />
@@ -125,7 +144,33 @@ const Detalhes = () => {
               {categoria.categoria === 'postos' && (
                 <>
                   <div className='container-edit-combustivel'>
-                    <p id='valor-etanol' className='combustivel-posto'>
+                    {Object.keys(combustivelMap).map((key) => (
+                      <>
+                        <p key={key}>
+                          {detalhe.combustivel[key] && (
+                            `${combustivelMap[key]}: R$ ${detalhe.combustivel[key].valor}`
+                          )}
+                        </p>
+
+                        <select name="" id="">
+                          {Object.keys(formaPagamentoMap).map((keyPagamento) => (
+                            <>
+                              {detalhe.combustivel[key].forma_pagamento === keyPagamento && (
+                                <option value="">teste</option>
+                              )}
+                            </>
+                          ))}
+                        </select>
+
+                        {Object.keys(formaAbastecimentoMap).map((key) => (
+                          <p>
+                            {formaAbastecimentoMap[key]}
+                          </p>
+                        ))}
+
+                      </>
+                    ))}
+                    {/* <p id='valor-etanol' className='combustivel-posto'>
                       Etanol: R$ {detalhe.combustivel?.etanol.valor}
                     </p>
 
@@ -193,7 +238,7 @@ const Detalhes = () => {
                       <span className="forma-abastecimento-text">
                         {detalhe.combustivel?.diesel[formaAbastecimento.diesel]}
                       </span>
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="container-formas-de-pagamento">
