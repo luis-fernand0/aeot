@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faGasPump, faPen, faFlagCheckered, faClock } from '@fortawesome/free-solid-svg-icons'
@@ -21,7 +21,11 @@ const Detalhes = () => {
   const typeUser = localStorage.getItem('type_user')
 
   const [detalhe, setDetalhe] = useState(itens[0] || {})
-  console.log(detalhe)
+
+  let formasEtanol = Object.keys(detalhe.combustivel?.etanol?.formas || {})
+  let formasGasolina = Object.keys(detalhe.combustivel?.gasolina?.formas || {})
+  let formasDiesel = Object.keys(detalhe.combustivel?.diesel?.formas || {})
+
   const [distancia, setDistancia] = useState(itens[1] || {})
   const [local, setLocal] = useState(itens[2] || {})
   const [categoria, setCategoria] = useState(itens[3] || {})
@@ -32,14 +36,14 @@ const Detalhes = () => {
   const [showEditPosto, setShowEditPosto] = useState(false)
 
   const [formaAbastecimento, setFormaAbastecimento] = useState({
-    etanol: 'dinheiro',
-    gasolina: 'dinheiro',
-    diesel: 'dinheiro'
+    etanol: null,
+    gasolina: null,
+    diesel: null
   })
   function hundleChange(combustivel, valor) {
     setFormaAbastecimento((prevState) => ({
       ...prevState,
-      [combustivel]: valor
+      [combustivel]: detalhe.combustivel[combustivel].formas[valor].forma_abastecimento
     }))
   }
 
@@ -89,23 +93,13 @@ const Detalhes = () => {
     }
   }
 
-  const combustivelMap = {
-    1: "ETANOL",
-    2: "GASOLINA",
-    3: "DIESEL"
-  }
-
-  const formaPagamentoMap = {
-    1: "Dinheiro",
-    2: "Pix",
-    3: "Debito",
-    4: "Credito"
-  }
-
-  const formaAbastecimentoMap = {
-    1: "Litragem Livre",
-    2: "Encher Tanque"
-  }
+  useEffect(() => {
+    let combustiveis = Object.keys(detalhe.combustivel)
+    combustiveis.forEach((key) => {
+      let formas = Object.keys(detalhe.combustivel[key].formas)
+      hundleChange(key, formas[0])
+    })
+  }, [])
 
   return (
     <>
@@ -143,99 +137,84 @@ const Detalhes = () => {
 
               {categoria.categoria === 'postos' && (
                 <>
-                  <div className='container-edit-combustivel'>
+                  <div className='container-combustivel'>
                     {detalhe.combustivel?.etanol && (
                       <>
-                        <p className="combustivel-posto">
-                          Etanol: R$ {detalhe.combustivel?.etanol.valor}
-                        </p>
+                        <div className="container-combustivel-formas">
+                          <p className="combustivel-posto">
+                            Etanol: R$ {detalhe.combustivel?.etanol.valor}
+                          </p>
 
-                        <select name="" id="">
-                          <option value=""></option>
-                        </select>
+                          <select
+                            name="formas_pagamento"
+                            className="metodo-pagamento"
+                            id="forma_pagamento_etanol"
+                            onChange={(e) => hundleChange('etanol', e.target.value)}>
+                            {formasEtanol.map((key, index) => (
+                              <option key={key} value={key}>
+                                {detalhe.combustivel?.etanol.formas[formasEtanol[index]]?.forma_pagamento}
+                              </option>
+                            ))}
+                          </select>
+
+                          <p>
+                            {formaAbastecimento.etanol}
+                          </p>
+                        </div>
                       </>
                     )}
 
                     {detalhe.combustivel?.gasolina && (
-                      <p className="combustivel-posto">
-                        Gasolina: R$ {detalhe.combustivel?.gasolina.valor}
-                      </p>
+                      <>
+                        <div className="container-combustivel-formas">
+                          <p className="combustivel-posto">
+                            Gasolina: R$ {detalhe.combustivel?.gasolina.valor}
+                          </p>
+
+                          <select
+                            className="metodo-pagamento"
+                            name="formas_pagamento"
+                            id="forma_pagamento_gasolina"
+                            onChange={(e) => hundleChange('gasolina', e.target.value)}>
+                            {formasGasolina.map((key, index) => (
+                              <option key={key} value={key}>
+                                {detalhe.combustivel?.gasolina.formas[formasGasolina[index]]?.forma_pagamento}
+                              </option>
+                            ))}
+                          </select>
+
+                          <p>
+                            {formaAbastecimento.gasolina}
+                          </p>
+                        </div>
+                      </>
                     )}
 
                     {detalhe.combustivel?.diesel && (
-                      <p className="combustivel-posto">
-                        Diese: R$ {detalhe.combustivel?.diesel.valor}
-                      </p>
+                      <>
+                        <div className="container-combustivel-formas">
+                          <p className="combustivel-posto">
+                            Diesel: R$ {detalhe.combustivel?.diesel.valor}
+                          </p>
+
+                          <select
+                            className="metodo-pagamento"
+                            name="formas_pagamento"
+                            id="forma_pagamento_diesel"
+                            onChange={(e) => hundleChange('diesel', e.target.value)}>
+                            {formasDiesel.map((key, index) => (
+                              <option key={key} value={key}>
+                                {detalhe.combustivel?.diesel.formas[formasDiesel[index]]?.forma_pagamento}
+                              </option>
+                            ))}
+                          </select>
+
+                          <p>
+                            {formaAbastecimento.diesel}
+                          </p>
+                        </div>
+                      </>
                     )}
-                    {/* <p id='valor-etanol' className='combustivel-posto'>
-                      Etanol: R$ {detalhe.combustivel?.etanol.valor}
-                    </p>
-
-                    <div className="container-metodo-pagamento-abastecimento">
-                      <select
-                        name="metodo_pagamento"
-                        id="metodo_pagamento"
-                        onChange={(e) => hundleChange("etanol", e.target.value)}
-                        value={formaAbastecimento.etanol}>
-
-                        <option value="dinheiro">Dinheiro</option>
-                        <option value="pix">Pix</option>
-                        <option value="debito">Debito</option>
-                        <option value="credito">Credito</option>
-                      </select>
-
-                      <span className="forma-abastecimento-text">
-                        {detalhe.combustivel?.etanol[formaAbastecimento.etanol]}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className='container-edit-combustivel'>
-                    <p id='valor-gasolina' className='combustivel-posto'>
-                      Gasolina: R$ {detalhe.combustivel?.gasolina.valor}
-                    </p>
-
-                    <div className="container-metodo-pagamento-abastecimento">
-                      <select
-                        name="metodo_pagamento"
-                        id="metodo_pagamento"
-                        onChange={(e) => hundleChange("gasolina", e.target.value)}
-                        value={formaAbastecimento.gasolina}>
-
-                        <option value="dinheiro">Dinheiro</option>
-                        <option value="pix">Pix</option>
-                        <option value="debito">Debito</option>
-                        <option value="credito">Credito</option>
-
-                      </select>
-                      <span className="forma-abastecimento-text">
-                        {detalhe.combustivel?.gasolina[formaAbastecimento.gasolina]}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className='container-edit-combustivel'>
-                    <p id='valor-diesel' className='combustivel-posto'>
-                      Diesel: R$ {detalhe.combustivel?.diesel.valor}
-                    </p>
-
-                    <div className="container-metodo-pagamento-abastecimento">
-                      <select
-                        name="metodo_pagamento"
-                        id="metodo_pagamento"
-                        onChange={(e) => hundleChange("diesel", e.target.value)}
-                        value={formaAbastecimento.diesel}>
-
-                        <option value="dinheiro">Dinheiro</option>
-                        <option value="pix">Pix</option>
-                        <option value="debito">Debito</option>
-                        <option value="credito">Credito</option>
-                      </select>
-
-                      <span className="forma-abastecimento-text">
-                        {detalhe.combustivel?.diesel[formaAbastecimento.diesel]}
-                      </span>
-                    </div> */}
                   </div>
 
                   <div className="container-formas-de-pagamento">
