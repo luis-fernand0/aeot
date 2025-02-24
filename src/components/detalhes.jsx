@@ -144,32 +144,29 @@ const Detalhes = () => {
               {categoria.categoria === 'postos' && (
                 <>
                   <div className='container-edit-combustivel'>
-                    {Object.keys(combustivelMap).map((key) => (
+                    {detalhe.combustivel?.etanol && (
                       <>
-                        <p key={key}>
-                          {detalhe.combustivel[key] && (
-                            `${combustivelMap[key]}: R$ ${detalhe.combustivel[key].valor}`
-                          )}
+                        <p className="combustivel-posto">
+                          Etanol: R$ {detalhe.combustivel?.etanol.valor}
                         </p>
 
                         <select name="" id="">
-                          {Object.keys(formaPagamentoMap).map((keyPagamento) => (
-                            <>
-                              {detalhe.combustivel[key].forma_pagamento === keyPagamento && (
-                                <option value="">teste</option>
-                              )}
-                            </>
-                          ))}
+                          <option value=""></option>
                         </select>
-
-                        {Object.keys(formaAbastecimentoMap).map((key) => (
-                          <p>
-                            {formaAbastecimentoMap[key]}
-                          </p>
-                        ))}
-
                       </>
-                    ))}
+                    )}
+
+                    {detalhe.combustivel?.gasolina && (
+                      <p className="combustivel-posto">
+                        Gasolina: R$ {detalhe.combustivel?.gasolina.valor}
+                      </p>
+                    )}
+
+                    {detalhe.combustivel?.diesel && (
+                      <p className="combustivel-posto">
+                        Diese: R$ {detalhe.combustivel?.diesel.valor}
+                      </p>
+                    )}
                     {/* <p id='valor-etanol' className='combustivel-posto'>
                       Etanol: R$ {detalhe.combustivel?.etanol.valor}
                     </p>
