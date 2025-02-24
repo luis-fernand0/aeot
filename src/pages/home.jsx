@@ -27,12 +27,6 @@ const Home = () => {
   const [isModalVisible, setModalVisible] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
 
-  const combustivelMap = {
-    1: "ETANOL",
-    2: "GASOLINA",
-    3: "DIESEL"
-  }
-
   const navigate = useNavigate()
 
   async function gasStation() {
