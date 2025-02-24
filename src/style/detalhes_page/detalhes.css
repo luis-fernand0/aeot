@@ -63,7 +63,7 @@
   color: #666;
   text-align: center;
 }
-.container-item .container-sobre-item .container-edit-combustivel {
+.container-item .container-sobre-item .container-combustivel {
   width: 100%;
   margin-bottom: 25px;
   color: #333;
@@ -71,11 +71,11 @@
   display: flex;
   flex-direction: column;
 }
-.container-item .container-sobre-item .container-edit-combustivel .container-metodo-pagamento-abastecimento {
-  margin-top: 5px;
+.container-item .container-sobre-item .container-combustivel .container-combustivel-formas {
+  margin-bottom: 15px;
 }
-.container-item .container-sobre-item .container-edit-combustivel .container-metodo-pagamento-abastecimento #metodo_pagamento {
-  margin-right: 15px;
+.container-item .container-sobre-item .container-combustivel .container-combustivel-formas .metodo-pagamento {
+  margin: 5px 0;
 }
 .container-item .container-km-time-btn {
   width: 100%;
