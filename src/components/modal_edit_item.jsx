@@ -66,57 +66,60 @@ const EditItem = ({ show, close, categoria, item }) => {
 
     async function editarItem(e) {
         e.preventDefault()
-        setLoading(true)
-
-        const formData = new FormData(document.getElementById('form-editar-item'))
-
-        if (categoria.categoria === 'postos') {
-            let combustiveis = {}
-            let lastPay = null
-            let lastCombustivel = null
-
-            for (let [key, value] of formData.entries()) {
-                if (key === 'combustivel') {
-                    combustiveis[value] = {
-                        combustivel: value,
-                        valor: '',
-                        formas: {}
-                    }
-                    lastCombustivel = value
-                }
-                if (key === 'valor' && lastCombustivel) {
-                    combustiveis[lastCombustivel].valor = value
-                }
-                if (key === 'forma_pagamento' && lastCombustivel) {
-                    if (!combustiveis[lastCombustivel].formas[value]) {
-                        combustiveis[lastCombustivel].formas[value] = {
-                            forma_pagamento: value,
-                            forma_abastecimento: ''
-                        }
-                        lastPay = value
-                    }
-                }
-                if (key === 'forma_abastecimento' && lastPay) {
-                    combustiveis[lastCombustivel].formas[lastPay].forma_abastecimento = value
-                    lastPay = null
-                }
-            }
-            formData.append('combustiveis', JSON.stringify(combustiveis))
-            formData.delete('combustivel')
-            formData.delete('valor')
-            formData.delete('forma_pagamento')
-            formData.delete('forma_abastecimento')
-        }
-        formData.append('item_id', item.cod_posto || item.cod_anuncio)
-        formData.append('categoria', categoria.categoria)
-
-        for (let [key, value] of formData.entries()) {
-            console.log(key, value)
-        }
-
-        const formObject = Object.fromEntries(formData)
-
+        setLoading(true)        
         try {
+            const formData = new FormData(document.getElementById('form-editar-item'))
+    
+            if (categoria.categoria === 'postos') {
+                let inputCheckeds = document.querySelectorAll("input[name='combustivel']:checked")
+    
+                if (inputCheckeds.length === 0) {
+                    setModalMessage('Selecione pelos menos um combustivel para trabalhar!')
+                    setModalVisible(true)
+                    return
+                }
+    
+                let combustiveis = {}
+                let lastPay = null
+                let lastCombustivel = null
+    
+                for (let [key, value] of formData.entries()) {
+                    if (key === 'combustivel') {
+                        combustiveis[value] = {
+                            combustivel: value,
+                            valor: '',
+                            formas: {}
+                        }
+                        lastCombustivel = value
+                    }
+                    if (key === 'valor' && lastCombustivel) {
+                        combustiveis[lastCombustivel].valor = value
+                    }
+                    if (key === 'forma_pagamento' && lastCombustivel) {
+                        if (!combustiveis[lastCombustivel].formas[value]) {
+                            combustiveis[lastCombustivel].formas[value] = {
+                                forma_pagamento: value,
+                                forma_abastecimento: ''
+                            }
+                            lastPay = value
+                        }
+                    }
+                    if (key === 'forma_abastecimento' && lastPay) {
+                        combustiveis[lastCombustivel].formas[lastPay].forma_abastecimento = value
+                        lastPay = null
+                    }
+                }
+                formData.append('combustiveis', JSON.stringify(combustiveis))
+                formData.delete('combustivel')
+                formData.delete('valor')
+                formData.delete('forma_pagamento')
+                formData.delete('forma_abastecimento')
+            }
+            formData.append('item_id', item.cod_posto || item.cod_anuncio)
+            formData.append('categoria', categoria.categoria)
+    
+            const formObject = Object.fromEntries(formData)
+
             const response = await fetch(urlEditarItem, {
                 method: 'PUT',
                 headers: {
@@ -225,7 +228,9 @@ const EditItem = ({ show, close, categoria, item }) => {
                                                 </label>
                                             </div>
                                             {showOptions[combustivel.label] && (
-                                                <div className='container-valor-formas'>
+                                                <div
+                                                    key={combustivel.value}
+                                                    className='container-valor-formas'>
                                                     <input
                                                         defaultValue={itemFormatado.combustivel[combustivel.label]?.valor}
                                                         onChange={(e) => checkValor(e)} className='combustivel-valor'
@@ -233,7 +238,9 @@ const EditItem = ({ show, close, categoria, item }) => {
                                                         placeholder='Valor' />
 
                                                     {formasPagamento.map((pagamento) => (
-                                                        <div className="container-forma">
+                                                        <div
+                                                            key={pagamento.value}
+                                                            className="container-forma">
                                                             <div className='container-forma-pagamento'>
                                                                 <input
                                                                     defaultChecked={itemFormatado.combustivel[combustivel.label]?.formas[pagamento.value]?.forma_pagamento}
@@ -247,12 +254,14 @@ const EditItem = ({ show, close, categoria, item }) => {
                                                                 </label>
                                                             </div>
 
-                                                            <select
+                                                            <select key={pagamento}
                                                                 name="forma_abastecimento"
                                                                 id="forma_abastecimento"
                                                                 defaultValue={itemFormatado.combustivel[combustivel.label]?.formas[pagamento.value]?.forma_abastecimento}>
                                                                 {formasAbastecimentos.map((abastecimento) => (
-                                                                    <option value={abastecimento.value}>
+                                                                    <option
+                                                                        key={abastecimento.value}
+                                                                        value={abastecimento.value}>
                                                                         {abastecimento.label}
                                                                     </option>
                                                                 ))}
