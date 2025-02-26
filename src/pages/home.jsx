@@ -46,7 +46,6 @@ const Home = () => {
       }
       await obterLocation()
       setPostos(data.itens)
-      console.log(data.itens)
     } catch (err) {
       setModalMessage(err.message)
       setModalVisible(true)

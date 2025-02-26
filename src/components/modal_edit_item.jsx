@@ -13,7 +13,9 @@ import '../style/modal_edit_item_component/edit_item.css'
 const urlEditarItem = import.meta.env.VITE_URL_EDITAR_ITEM
 
 const EditItem = ({ show, close, categoria, item }) => {
-    let itemFormatado = JSON.parse(JSON.stringify(item))
+
+    let itemFormatado = JSON.parse(JSON.stringify(item)) //APENAS COPIANDO O OBJETO ITEM
+
     const tokenUser = localStorage.getItem('token')
     const [loading, setLoading] = useState(false)
     const [isModalVisible, setModalVisible] = useState(false);
@@ -46,34 +48,71 @@ const EditItem = ({ show, close, categoria, item }) => {
         { value: '2', label: 'Encher Tanque' },
     ];
 
+    if (categoria.categoria === 'postos') {
+        //ITERANDO SOBRE CADA COMBUSTIVEL E CADA FORMA DE PAGAMENTO PARA DAR O VALOR 1 OU 2 NA FORMA DE ABASTECIMENTO DE CADA FORMA DE PAGAMENTO 
+        combustiveis.forEach((keyCombustivel) => {
+            let formasArray = Object.keys(itemFormatado.combustivel[keyCombustivel.label]?.formas || {})
+            formasArray.forEach((keyFormas) => {
+                formasAbastecimentos.map((keyAbastecimento) => {
+                    let formaAbastecimento = itemFormatado.combustivel[keyCombustivel.label].formas[keyFormas].forma_abastecimento
+                    if (formaAbastecimento === keyAbastecimento.label) {
+                        itemFormatado.combustivel[keyCombustivel.label].formas[keyFormas].forma_abastecimento = keyAbastecimento.value
+                    }
+
+                })
+            })
+        })
+    }
+
     async function editarItem(e) {
         e.preventDefault()
         setLoading(true)
 
-        let checkboxes = document.querySelectorAll(".forma-de-pagamento-checkbox")
-        let metodoscheckbox = document.querySelectorAll(".input-metodo-checkbox")
+        const formData = new FormData(document.getElementById('form-editar-item'))
 
-        const myForm = document.getElementById('form-editar-item')
-        const formData = new FormData(myForm)
-        formData.append('categoria', categoria.categoria)
-        formData.append('item_id', item.cod_posto || item.cod_anuncio)
-        checkboxes.forEach((checkbox) => {
-            formData.delete(checkbox.name)
-            formData.append(checkbox.name, checkbox.checked)
-        })
+        if (categoria.categoria === 'postos') {
+            let combustiveis = {}
+            let lastPay = null
+            let lastCombustivel = null
 
-        metodoscheckbox.forEach((box) => {
-            let name = box.getAttribute('name')
-            formData.delete(`${name}_abastecimento`)
-            formData.delete(name)
-            let selectValue = document.getElementById(`${name}_abastecimento`).value
-
-            if (!box.checked) {
-                selectValue = 'Não trabalhamos'
+            for (let [key, value] of formData.entries()) {
+                if (key === 'combustivel') {
+                    combustiveis[value] = {
+                        combustivel: value,
+                        valor: '',
+                        formas: {}
+                    }
+                    lastCombustivel = value
+                }
+                if (key === 'valor' && lastCombustivel) {
+                    combustiveis[lastCombustivel].valor = value
+                }
+                if (key === 'forma_pagamento' && lastCombustivel) {
+                    if (!combustiveis[lastCombustivel].formas[value]) {
+                        combustiveis[lastCombustivel].formas[value] = {
+                            forma_pagamento: value,
+                            forma_abastecimento: ''
+                        }
+                        lastPay = value
+                    }
+                }
+                if (key === 'forma_abastecimento' && lastPay) {
+                    combustiveis[lastCombustivel].formas[lastPay].forma_abastecimento = value
+                    lastPay = null
+                }
             }
+            formData.append('combustiveis', JSON.stringify(combustiveis))
+            formData.delete('combustivel')
+            formData.delete('valor')
+            formData.delete('forma_pagamento')
+            formData.delete('forma_abastecimento')
+        }
+        formData.append('item_id', item.cod_posto || item.cod_anuncio)
+        formData.append('categoria', categoria.categoria)
 
-            formData.append(box.name, selectValue)
-        })
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value)
+        }
 
         const formObject = Object.fromEntries(formData)
 
@@ -111,29 +150,17 @@ const EditItem = ({ show, close, categoria, item }) => {
     }
 
     useEffect(() => {
-        let optionsInitial = {}
+        if (categoria.categoria === 'postos') {
+            let optionsInitial = {}
 
-        combustiveis.forEach((combustivel) => {
-            if (itemFormatado.combustivel[combustivel.label]) {
-                optionsInitial[combustivel.label] = true
-            }
+            combustiveis.forEach((combustivel) => {
+                if (itemFormatado.combustivel[combustivel.label]) {
+                    optionsInitial[combustivel.label] = true
+                }
 
-            setShowOptions(optionsInitial)
-        })
-
-        combustiveis.forEach((keyCombustivel) => {
-            let formasArray = Object.keys(itemFormatado.combustivel[keyCombustivel.label]?.formas || {})
-            formasArray.forEach((keyFormas) => {
-                formasAbastecimentos.map((keyAbastecimento) => {
-                    let formaAbastecimento = itemFormatado.combustivel[keyCombustivel.label].formas[keyFormas].forma_abastecimento
-                    if (formaAbastecimento === keyAbastecimento.label) {
-                        itemFormatado.combustivel[keyCombustivel.label].formas[keyFormas].forma_abastecimento = keyAbastecimento.value
-                        console.log(itemFormatado)
-                    }
-
-                })
+                setShowOptions(optionsInitial)
             })
-        })
+        }
     }, [])
 
     return (
@@ -186,7 +213,7 @@ const EditItem = ({ show, close, categoria, item }) => {
                                                     defaultChecked={itemFormatado.combustivel[combustivel.label]}
                                                     className='checkbox-combustivel'
                                                     type="checkbox"
-                                                    name='combustiveis'
+                                                    name='combustivel'
                                                     id={combustivel.label}
                                                     value={combustivel.value}
                                                     onChange={() => toggleOptions(combustivel.label)} />
@@ -200,7 +227,7 @@ const EditItem = ({ show, close, categoria, item }) => {
                                             {showOptions[combustivel.label] && (
                                                 <div className='container-valor-formas'>
                                                     <input
-                                                        defaultValue={itemFormatado.combustivel[combustivel.label].valor}
+                                                        defaultValue={itemFormatado.combustivel[combustivel.label]?.valor}
                                                         onChange={(e) => checkValor(e)} className='combustivel-valor'
                                                         type="text" name={`valor`}
                                                         placeholder='Valor' />
@@ -223,7 +250,6 @@ const EditItem = ({ show, close, categoria, item }) => {
                                                             <select
                                                                 name="forma_abastecimento"
                                                                 id="forma_abastecimento"
-                                                                className={itemFormatado.combustivel[combustivel.label]?.formas[pagamento.value]?.forma_abastecimento}
                                                                 defaultValue={itemFormatado.combustivel[combustivel.label]?.formas[pagamento.value]?.forma_abastecimento}>
                                                                 {formasAbastecimentos.map((abastecimento) => (
                                                                     <option value={abastecimento.value}>
