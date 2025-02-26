@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark, faGasPump, faPen, faFlagCheckered, faClock } from '@fortawesome/free-solid-svg-icons'
+import { faGasPump, faPen, faFlagCheckered, faClock } from '@fortawesome/free-solid-svg-icons'
 
 import Header from "./header";
 import Loading from "./loading"
@@ -13,22 +13,22 @@ import '../style/detalhes_page/detalhes.css'
 const urlCallItem = import.meta.env.VITE_URL_CALL_ITEM
 
 const Detalhes = () => {
-  const itens = JSON.parse(localStorage.getItem('detalhes'))
+  const item = JSON.parse(localStorage.getItem('dadosItem'))
+  const detalhesItem = JSON.parse(localStorage.getItem('detalhes'))
 
   const navigate = useNavigate()
 
   const tokenUser = localStorage.getItem('token');
   const typeUser = localStorage.getItem('type_user')
 
-  const [detalhe, setDetalhe] = useState(itens[0] || {})
-
+  const [detalhe, setDetalhe] = useState(item || {})
   let formasEtanol = Object.keys(detalhe.combustivel?.etanol?.formas || {})
   let formasGasolina = Object.keys(detalhe.combustivel?.gasolina?.formas || {})
   let formasDiesel = Object.keys(detalhe.combustivel?.diesel?.formas || {})
 
-  const [distancia, setDistancia] = useState(itens[1] || {})
-  const [local, setLocal] = useState(itens[2] || {})
-  const [categoria, setCategoria] = useState(itens[3] || {})
+  const [distancia, setDistancia] = useState(detalhesItem[0] || {})
+  const [local, setLocal] = useState(detalhesItem[1] || {})
+  const [categoria, setCategoria] = useState(detalhesItem[2] || {})
 
   const [loading, setLoading] = useState(false)
   const [isModalVisible, setModalVisible] = useState(false);
@@ -85,6 +85,7 @@ const Detalhes = () => {
       }
 
       setDetalhe(data.query)
+      localStorage.setItem('dadosItem', JSON.stringify(data.query))
     } catch (err) {
       setModalMessage(`Desculpe ocorreu um erro inesperado! ${err.message}`)
       setModalVisible(true)
