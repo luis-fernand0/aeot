@@ -94,11 +94,13 @@ const Detalhes = () => {
   }
 
   useEffect(() => {
-    let combustiveis = Object.keys(detalhe.combustivel)
-    combustiveis.forEach((key) => {
-      let formas = Object.keys(detalhe.combustivel[key].formas)
-      hundleChange(key, formas[0])
-    })
+    if (categoria.categoria === 'postos') {
+      let combustiveis = Object.keys(detalhe.combustivel)
+      combustiveis.forEach((key) => {
+        let formas = Object.keys(detalhe.combustivel[key].formas)
+        hundleChange(key, formas[0])
+      })
+    }
   }, [])
 
   return (
