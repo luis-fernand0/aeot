@@ -99,7 +99,8 @@ const Home = () => {
   }
 
   function detalhes(posto, distancia, local, categoria) {
-    localStorage.setItem('detalhes', JSON.stringify([posto, distancia, local, categoria]))
+    localStorage.setItem('dadosItem', JSON.stringify(posto))
+    localStorage.setItem('detalhes', JSON.stringify([distancia, local, categoria]))
     navigate('/detalhes')
   }
 
