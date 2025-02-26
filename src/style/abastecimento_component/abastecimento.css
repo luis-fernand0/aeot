@@ -99,7 +99,7 @@
   justify-content: space-between;
 }
 .container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-btns-input .container-btns .btn-option {
-  width: 50%;
+  width: 100%;
   background-color: #f5f5f5;
   border: none;
   font-size: 18px;
