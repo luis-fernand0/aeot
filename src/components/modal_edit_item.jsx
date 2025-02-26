@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
@@ -13,18 +13,37 @@ import '../style/modal_edit_item_component/edit_item.css'
 const urlEditarItem = import.meta.env.VITE_URL_EDITAR_ITEM
 
 const EditItem = ({ show, close, categoria, item }) => {
+    let itemFormatado = JSON.parse(JSON.stringify(item))
     const tokenUser = localStorage.getItem('token')
-
     const [loading, setLoading] = useState(false)
     const [isModalVisible, setModalVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
 
-    const combustiveis = ['etanol', 'gasolina', 'diesel'];
-    const metodosPagamento = ['dinheiro', 'pix', 'debito', 'credito'];
-    const abastecimentos = [
+    const [showOptions, setShowOptions] = useState({})
+    function toggleOptions(combustivel) {
+        setShowOptions((prev) => ({
+            ...prev,
+            [combustivel]: !prev[combustivel],
+        }))
+    }
+
+    const combustiveis = [
+        { value: '1', label: 'etanol' },
+        { value: '2', label: 'gasolina' },
+        { value: '3', label: 'diesel' }
+    ];
+
+    const formasPagamento = [
+        { value: '1', label: 'dinheiro' },
+        { value: '2', label: 'pix' },
+        { value: '3', label: 'debito' },
+        { value: '4', label: 'credito' },
+    ];
+
+    const formasAbastecimentos = [
         { value: '', label: 'Escolha a forma de abastecimento' },
-        { value: 'Litragem Livre', label: 'Litragem Livre' },
-        { value: 'Encher Tanque', label: 'Encher Tanque' },
+        { value: '1', label: 'Litragem Livre' },
+        { value: '2', label: 'Encher Tanque' },
     ];
 
     async function editarItem(e) {
@@ -91,6 +110,32 @@ const EditItem = ({ show, close, categoria, item }) => {
         }
     }
 
+    useEffect(() => {
+        let optionsInitial = {}
+
+        combustiveis.forEach((combustivel) => {
+            if (itemFormatado.combustivel[combustivel.label]) {
+                optionsInitial[combustivel.label] = true
+            }
+
+            setShowOptions(optionsInitial)
+        })
+
+        combustiveis.forEach((keyCombustivel) => {
+            let formasArray = Object.keys(itemFormatado.combustivel[keyCombustivel.label]?.formas || {})
+            formasArray.forEach((keyFormas) => {
+                formasAbastecimentos.map((keyAbastecimento) => {
+                    let formaAbastecimento = itemFormatado.combustivel[keyCombustivel.label].formas[keyFormas].forma_abastecimento
+                    if (formaAbastecimento === keyAbastecimento.label) {
+                        itemFormatado.combustivel[keyCombustivel.label].formas[keyFormas].forma_abastecimento = keyAbastecimento.value
+                        console.log(itemFormatado)
+                    }
+
+                })
+            })
+        })
+    }, [])
+
     return (
         <>
             <Loading loading={loading} />
@@ -117,109 +162,82 @@ const EditItem = ({ show, close, categoria, item }) => {
                             className="editar-item-descricao"
                             name="descricao"
                             id="descricao-item"
-                            defaultValue={item.descricao}
-                            placeholder={item.descricao} />
+                            defaultValue={itemFormatado.descricao}
+                            placeholder={itemFormatado.descricao} />
                         <input
                             className="input-editar-item"
                             type="text"
                             name="endereco"
                             id="endereco-item"
-                            defaultValue={item.endereco}
-                            placeholder={item.endereco} />
+                            defaultValue={itemFormatado.endereco}
+                            placeholder={itemFormatado.endereco} />
 
                         {categoria.categoria === 'postos' && (
                             <>
-                                <p className='text-editar-item'>
-                                    Formas de Pagamento
-                                </p>
-                                <div className='container-formas-de-pagamento'>
-                                    <div className='container-forma-de-pagamento'>
-                                        <input
-                                            className='forma-de-pagamento-checkbox'
-                                            type="checkbox"
-                                            name="dinheiro"
-                                            id="dinheiro"
-                                            defaultChecked={item.dinheiro} />
-                                        <label className='text-forma-de-pagamento' htmlFor="dinheiro">Dinheiro</label>
-                                    </div>
+                                <div className='cadastrar-combustivel'>
+                                    <p className='text-info'>
+                                        Com qual combustivel deseja trabalhar?
+                                    </p>
 
-                                    <div className='container-forma-de-pagamento'>
-                                        <input
-                                            className='forma-de-pagamento-checkbox'
-                                            type="checkbox"
-                                            name="pix"
-                                            id="pix"
-                                            defaultChecked={item.pix} />
-                                        <label className='text-forma-de-pagamento' htmlFor="pix">Pix</label>
-                                    </div>
-
-                                    <div className='container-forma-de-pagamento'>
-                                        <input
-                                            className='forma-de-pagamento-checkbox'
-                                            type="checkbox"
-                                            name="debito"
-                                            id="debito"
-                                            defaultChecked={item.debito} />
-                                        <label className='text-forma-de-pagamento' htmlFor="debito">Debito</label>
-                                    </div>
-
-                                    <div className='container-forma-de-pagamento'>
-                                        <input
-                                            className='forma-de-pagamento-checkbox'
-                                            type="checkbox"
-                                            name="credito"
-                                            id="credito"
-                                            defaultChecked={item.credito} />
-                                        <label className='text-forma-de-pagamento' htmlFor="credito">Credito</label>
-                                    </div>
-
-                                </div>
-
-                                <p className='text-editar-item'>
-                                    Valores dos combustiveis
-                                </p>
-                                {combustiveis.map(typeCombustivel => (
-                                    <div key={typeCombustivel} className="combustivel-container">
-                                        <input
-                                            onChange={(e) => checkValor(e)}
-                                            className='input-editar-item'
-                                            id={typeCombustivel}
-                                            name={typeCombustivel}
-                                            defaultValue={item.combustivel?.[typeCombustivel]?.valor}
-                                            type="text"
-                                            placeholder={typeCombustivel.charAt(0).toUpperCase() + typeCombustivel.slice(1)}
-                                        />
-
-                                        {metodosPagamento.map(metodo => (
-                                            <div key={`${typeCombustivel}-${metodo}`} className="metodo-container">
-
+                                    {combustiveis.map((combustivel) => (
+                                        <div key={combustivel.value} className="container-combustivel">
+                                            <div className='conatiner-checkbox-combustivel'>
                                                 <input
-                                                    className='input-metodo-checkbox'
+                                                    defaultChecked={itemFormatado.combustivel[combustivel.label]}
+                                                    className='checkbox-combustivel'
                                                     type="checkbox"
-                                                    id={`${typeCombustivel}-${metodo}`}
-                                                    name={`${typeCombustivel}_${metodo}`}
-                                                    defaultChecked=
-                                                    {item.combustivel?.[typeCombustivel]?.[metodo] != 'Não trabalhamos' ? true : false} />
+                                                    name='combustiveis'
+                                                    id={combustivel.label}
+                                                    value={combustivel.value}
+                                                    onChange={() => toggleOptions(combustivel.label)} />
+
                                                 <label
-                                                    className='text-checkbox'
-                                                    htmlFor={`${typeCombustivel}-${metodo}`}>
-                                                    {metodo.charAt(0).toUpperCase() + metodo.slice(1)}
+                                                    className='text-combustivel'
+                                                    htmlFor={combustivel.label}>
+                                                    {combustivel.label.charAt(0).toUpperCase() + combustivel.label.slice(1)}
                                                 </label>
-
-                                                <select
-                                                    name={`${typeCombustivel}_${metodo}_abastecimento`}
-                                                    id={`${typeCombustivel}_${metodo}_abastecimento`}
-                                                    defaultValue=
-                                                    {item.combustivel?.[typeCombustivel]?.[metodo]}>
-
-                                                    {abastecimentos.map(opcao => (
-                                                        <option key={opcao.value} value={opcao.value}>{opcao.label}</option>
-                                                    ))}
-                                                </select>
                                             </div>
-                                        ))}
-                                    </div>
-                                ))}
+                                            {showOptions[combustivel.label] && (
+                                                <div className='container-valor-formas'>
+                                                    <input
+                                                        defaultValue={itemFormatado.combustivel[combustivel.label].valor}
+                                                        onChange={(e) => checkValor(e)} className='combustivel-valor'
+                                                        type="text" name={`valor`}
+                                                        placeholder='Valor' />
+
+                                                    {formasPagamento.map((pagamento) => (
+                                                        <div className="container-forma">
+                                                            <div className='container-forma-pagamento'>
+                                                                <input
+                                                                    defaultChecked={itemFormatado.combustivel[combustivel.label]?.formas[pagamento.value]?.forma_pagamento}
+                                                                    className='checkbox-combustivel'
+                                                                    type="checkbox"
+                                                                    name='forma_pagamento'
+                                                                    value={pagamento.value}
+                                                                    id={`${pagamento.label}_${combustivel.label}`} />
+                                                                <label htmlFor={`${pagamento.label}_${combustivel.label}`}>
+                                                                    {pagamento.label.charAt(0).toUpperCase() + pagamento.label.slice(1)}
+                                                                </label>
+                                                            </div>
+
+                                                            <select
+                                                                name="forma_abastecimento"
+                                                                id="forma_abastecimento"
+                                                                className={itemFormatado.combustivel[combustivel.label]?.formas[pagamento.value]?.forma_abastecimento}
+                                                                defaultValue={itemFormatado.combustivel[combustivel.label]?.formas[pagamento.value]?.forma_abastecimento}>
+                                                                {formasAbastecimentos.map((abastecimento) => (
+                                                                    <option value={abastecimento.value}>
+                                                                        {abastecimento.label}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
 
                             </>
                         )}
