@@ -6,14 +6,46 @@ import { faChevronLeft, faGasPump } from '@fortawesome/free-solid-svg-icons'
 import { checkValor } from '../functions/checkValor'
 
 import '../style/abastecimento_component/abastecimento.css'
+import { use } from 'react';
 
 const Abastecimento = () => {
     const navigate = useNavigate()
 
-    const posto = JSON.parse(localStorage.getItem('detalhes'))
+    const posto = JSON.parse(localStorage.getItem('dadosItem'))
 
-    const [btnChecked, setBtnChecked] = useState('btn-litro')
+    const [formasPagamento, setFormasPagamento] = useState([])
+    const [formaAbastecimento, setFormaAbastecimento] = useState()
+    const [combustivelAtual, setCombustivelAtual] = useState()
+    const [formaPagamentoAtual, setFormaPagamentoAtual] = useState()
+    const [btnChecked, setBtnChecked] = useState()
 
+    let combustiveis = Object.keys(posto.combustivel)
+    let pagamentos = []
+    function changePagamento(combustivel) {
+        setBtnChecked()
+        setCombustivelAtual(combustivel)
+        let keyPagamento = Object.keys(posto.combustivel[combustivel].formas)
+        keyPagamento.forEach((key, index) => {
+            pagamentos[index] = posto.combustivel[combustivel].formas[key].forma_pagamento
+        })
+        setFormasPagamento(pagamentos)
+    }
+    function changeAbastecimento(formaAbastecimento) {
+        setBtnChecked()
+        const formasPagamento = [
+            { value: '1', label: 'dinheiro' },
+            { value: '2', label: 'pix' },
+            { value: '3', label: 'debito' },
+            { value: '4', label: 'credito' },
+        ];
+        formasPagamento.forEach((pagamento) => {
+            if (pagamento.label === formaAbastecimento) {
+                console.log(formaAbastecimento)
+                setFormaAbastecimento(posto.combustivel[combustivelAtual].formas[pagamento.value].forma_abastecimento)
+                console.log(posto.combustivel[combustivelAtual].formas[pagamento.value].forma_abastecimento)
+            }
+        })
+    }
     function formatLitro(e) {
         let input = e.target
         let inputValue = input.value.replace(/[^0-9]/g, '')
@@ -36,6 +68,7 @@ const Abastecimento = () => {
     function enviarDados() {
         const Typecombustivel = document.getElementById('combustivel').value
         const payMethod = document.getElementById('pagamento').value
+        console.log(payMethod, Typecombustivel)
 
         let valor = null
         let abastecimento = null
@@ -67,6 +100,9 @@ const Abastecimento = () => {
             navigate('/home', { replace: true })
             return
         }
+        combustiveis.forEach((combustivel) => {
+            changePagamento(combustivel)
+        })
     }, [])
 
     return (
@@ -87,10 +123,17 @@ const Abastecimento = () => {
                                 <label htmlFor='combustivel' className="text-label">
                                     Qual tipo de combustivel deseja abasetcer ?
                                 </label>
-                                <select name="combustivel" id="combustivel">
-                                    <option value="etanol">Etanol</option>
-                                    <option value="gasolina">Gasolina</option>
-                                    <option value="diesel">Diesel</option>
+                                <select
+                                    onChange={(e) => changePagamento(e.target.value)}
+                                    name="combustivel"
+                                    id="combustivel"
+                                    defaultValue={''}>
+                                    <option value=''>Combustivel que deseja abastecer</option>
+                                    {combustiveis.map((keyCombustivel) => (
+                                        <option key={keyCombustivel} value={keyCombustivel}>
+                                            {keyCombustivel.charAt(0).toUpperCase() + keyCombustivel.slice(1)}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
                         </div>
@@ -102,11 +145,20 @@ const Abastecimento = () => {
                                 <label htmlFor='pagamento' className="text-label">
                                     Qual será a forma de pagamento?
                                 </label>
-                                <select name="pagamento" id="pagamento">
-                                    <option value="debito">Debito</option>
-                                    <option value="credito">Credito</option>
-                                    <option value="dinheiro">Dinheiro</option>
-                                    <option value="pix">Pix</option>
+                                <select
+                                    onChange={(e) => changeAbastecimento(e.target.value)}
+                                    name="pagamento"
+                                    id="pagamento"
+                                    defaultValue={''}>
+                                    <option value=''>Escolha o metodo de pagamento</option>
+                                    {formasPagamento &&
+                                        formasPagamento.map((pagamento) => (
+                                            <option
+                                                value={pagamento.charAt(0).toLowerCase() + pagamento.slice(1)}
+                                                key={pagamento}>
+                                                {pagamento}
+                                            </option>
+                                        ))}
                                 </select>
                             </div>
                         </div>
@@ -121,19 +173,23 @@ const Abastecimento = () => {
 
                         <div className='container-btns-input'>
                             <div className='container-btns'>
-                                <button
-                                    onClick={() => { setBtnChecked('btn-litro') }}
-                                    className={`btn-litro btn-option ${btnChecked != 'btn-litro' ? '' : 'checked'}`}
-                                    type="button">
-                                    Litro
-                                </button>
+                                {formaAbastecimento === 'Litragem Livre' && (
+                                    <>
+                                        <button
+                                            onClick={() => { setBtnChecked('btn-litro') }}
+                                            className={`btn-litro btn-option ${btnChecked != 'btn-litro' ? '' : 'checked'}`}
+                                            type="button">
+                                            Litro
+                                        </button>
 
-                                <button
-                                    onClick={() => { setBtnChecked('btn-valor') }}
-                                    className={`btn-valor btn-option ${btnChecked != 'btn-valor' ? '' : 'checked'}`}
-                                    type="button">
-                                    Preço
-                                </button>
+                                        <button
+                                            onClick={() => { setBtnChecked('btn-valor') }}
+                                            className={`btn-valor btn-option ${btnChecked != 'btn-valor' ? '' : 'checked'}`}
+                                            type="button">
+                                            Preço
+                                        </button>
+                                    </>
+                                )}
 
                                 <button
                                     onClick={() => { setBtnChecked('btn-tanque') }}
@@ -144,59 +200,59 @@ const Abastecimento = () => {
                             </div>
 
                             <div className='container-text-input'>
-                                {btnChecked === 'btn-litro' && (
+                                {formaAbastecimento === 'Litragem Livre' && (
                                     <>
-                                        <div className='container-option'>
-                                            <p className='text-option'>
-                                                Quantos litros deseja abastecer?
-                                            </p>
-                                            <input
-                                                onChange={(e) => formatLitro(e)}
-                                                id='input-litro'
-                                                className='input-option'
-                                                type="text"
-                                                placeholder='Litros' />
-                                        </div>
-                                    </>
-                                )}
+                                        {btnChecked === 'btn-litro' && (
+                                            <div className='container-option'>
+                                                <p className='text-option'>
+                                                    Quantos litros deseja abastecer?
+                                                </p>
+                                                <input
+                                                    onChange={(e) => formatLitro(e)}
+                                                    id='input-litro'
+                                                    className='input-option'
+                                                    type="text"
+                                                    placeholder='Litros' />
+                                            </div>
+                                        )}
 
-                                {btnChecked === 'btn-valor' && (
-                                    <>
-                                        <div className='container-option'>
-                                            <p className='text-option'>
-                                                Qual valor deseja abastecer?
-                                            </p>
-                                            <input
-                                                onChange={(e) => checkValor(e)}
-                                                id='input-valor'
-                                                className='input-option'
-                                                type="text"
-                                                placeholder='Valor' />
-                                        </div>
+                                        {btnChecked === 'btn-valor' && (
+                                            <div className='container-option'>
+                                                <p className='text-option'>
+                                                    Qual valor deseja abastecer?
+                                                </p>
+                                                <input
+                                                    onChange={(e) => checkValor(e)}
+                                                    id='input-valor'
+                                                    className='input-option'
+                                                    type="text"
+                                                    placeholder='Valor' />
+                                            </div>
+                                        )}
                                     </>
                                 )}
 
                                 {btnChecked === 'btn-tanque' && (
-                                    <>
-                                        <div className="container-option">
-                                            <p className='text-option'>
-                                                Enche o tanque!
-                                            </p>
-                                        </div>
-                                    </>
+                                    <div className="container-option">
+                                        <p className='text-option'>
+                                            Enche o tanque!
+                                        </p>
+                                    </div>
                                 )}
                             </div>
 
                         </div>
                     </div>
 
-                    <button
-                        onClick={() => enviarDados()}
-                        className='btn-abastecer btn-enche-o-tanque'
-                        type="button">
-                        Abastecer!
-                        <FontAwesomeIcon className='gas-pump-icon' icon={faGasPump} />
-                    </button>
+                    {btnChecked && (
+                        <button
+                            onClick={() => enviarDados()}
+                            className='btn-abastecer btn-enche-o-tanque'
+                            type="button">
+                            Abastecer!
+                            <FontAwesomeIcon className='gas-pump-icon' icon={faGasPump} />
+                        </button>
+                    )}
                 </div>
             </div>
         </>
