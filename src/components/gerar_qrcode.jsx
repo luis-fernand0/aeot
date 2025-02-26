@@ -19,6 +19,7 @@ const GerarQrCode = () => {
     const navigate = useNavigate()
 
     const abastecimento = JSON.parse(localStorage.getItem('dadosAbastecimento'))
+    console.log(abastecimento)
     const tokenUser = localStorage.getItem('token');
 
     const [dataUser, setDataUser] = useState()
@@ -172,23 +173,23 @@ const GerarQrCode = () => {
                                 </h2>
 
                                 <p className="text-container dado-posto-nome">
-                                    {dataPosto[0].nome}
+                                    {dataPosto?.nome}
                                 </p>
 
                                 <div className="container-img-posto">
                                     <img
                                         className="img-posto"
-                                        src={`https://aeotnew.s3.amazonaws.com/${dataPosto[0].foto}`}
+                                        src={`https://aeotnew.s3.amazonaws.com/${dataPosto?.foto}`}
                                         alt="foto_posto" />
                                 </div>
 
                                 <p className="text-container dado-posto-endereco">
-                                    {dataPosto[0].endereco}
+                                    {dataPosto?.endereco}
                                 </p>
 
                                 <p className="text-container dado-posto-combustivel">
                                     {dataAbastecimento.tipo_combustivel}:
-                                    R$ {dataPosto[0].combustivel[dataAbastecimento.tipo_combustivel].valor}
+                                    R$ {dataPosto?.combustivel[dataAbastecimento.tipo_combustivel]?.valor}
                                 </p>
                             </div>
 
@@ -199,18 +200,18 @@ const GerarQrCode = () => {
 
                                 <div className="container-sobre-abastecimento">
                                     <p className="text-container abastecimento-tipo-combustivel">
-                                        Tipo de combustivel: {dataAbastecimento.tipo_combustivel}
+                                        Tipo de combustivel: {dataAbastecimento?.tipo_combustivel}
                                     </p>
 
                                     <p className="text-container abastecimento-forma-abastecimento">
-                                        Vai abastecer por: {dataAbastecimento.forma_abastecimento}
+                                        Vai abastecer por: {dataAbastecimento?.forma_abastecimento}
                                     </p>
 
                                     <p className="text-container abastecimento-metodo-pagamento">
-                                        Metodo de Pagamento: {dataAbastecimento.metodo_pagamento}
+                                        Metodo de Pagamento: {dataAbastecimento?.metodo_pagamento}
                                     </p>
 
-                                    {dataAbastecimento.forma_abastecimento != 'encher-tanque' && (
+                                    {dataAbastecimento?.forma_abastecimento != 'encher-tanque' && (
                                         <>
                                             <p className="text-container abastecimento-preco-ou-litro">
                                                 Quantidade que vai abastecer:
@@ -227,8 +228,8 @@ const GerarQrCode = () => {
                                             <p className="text-container abastecimento-preco-ou-litro">
                                                 Valor total:
                                                 {` R$ ${calcularPagamento(dataAbastecimento?.forma_abastecimento,
-                                                    Number(dataPosto[0].combustivel[dataAbastecimento.tipo_combustivel]?.valor),
-                                                    Number(dataAbastecimento.litros),
+                                                    Number(dataPosto[0]?.combustivel[dataAbastecimento.tipo_combustivel]?.valor),
+                                                    Number(dataAbastecimento?.litros),
                                                 )}`}
                                             </p>
                                         </>
