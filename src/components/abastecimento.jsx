@@ -6,7 +6,6 @@ import { faChevronLeft, faGasPump } from '@fortawesome/free-solid-svg-icons'
 import { checkValor } from '../functions/checkValor'
 
 import '../style/abastecimento_component/abastecimento.css'
-import { use } from 'react';
 
 const Abastecimento = () => {
     const navigate = useNavigate()
