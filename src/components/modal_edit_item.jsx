@@ -211,7 +211,7 @@ const EditItem = ({ show, close, categoria, item }) => {
 
                                     {combustiveis.map((combustivel) => (
                                         <div key={combustivel.value} className="container-combustivel">
-                                            <div className='conatiner-checkbox-combustivel'>
+                                            <div className='container-checkbox-combustivel'>
                                                 <input
                                                     defaultChecked={itemFormatado.combustivel[combustivel.label]}
                                                     className='checkbox-combustivel'
