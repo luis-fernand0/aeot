@@ -23,8 +23,10 @@ const Detalhes = () => {
 
   const [detalhe, setDetalhe] = useState(item || {})
   let formasEtanol = Object.keys(detalhe.combustivel?.etanol?.formas || {})
+  console.log(detalhe.combustivel?.etanol?.formas[formasEtanol[1]])
   let formasGasolina = Object.keys(detalhe.combustivel?.gasolina?.formas || {})
   let formasDiesel = Object.keys(detalhe.combustivel?.diesel?.formas || {})
+  const [formasDePagamento, setFormasDePagamento] = useState([])
 
   const [distancia, setDistancia] = useState(detalhesItem[0] || {})
   const [local, setLocal] = useState(detalhesItem[1] || {})
@@ -96,6 +98,27 @@ const Detalhes = () => {
 
   useEffect(() => {
     if (categoria.categoria === 'postos') {
+      const formasPagamento = [
+        { value: '1', label: 'Dinheiro' },
+        { value: '2', label: 'Pix' },
+        { value: '3', label: 'Debito' },
+        { value: '4', label: 'Credito' },
+      ];
+      let todasAsFormas = [...formasEtanol, ...formasGasolina, ...formasDiesel]
+      todasAsFormas.forEach((keyForma) => {
+        formasPagamento.forEach((key) => {
+          if (key.value == keyForma) {
+            setFormasDePagamento((prevState) => {
+              if (!prevState.includes(key.label)) {
+                return [...prevState, key.label]
+              }
+              return prevState
+            })
+          }
+        })
+      })
+      console.log(todasAsFormas)
+
       let combustiveis = Object.keys(detalhe.combustivel)
       combustiveis.forEach((key) => {
         let formas = Object.keys(detalhe.combustivel[key].formas)
@@ -224,21 +247,11 @@ const Detalhes = () => {
                     <p className="title-formas-de-pagamento">Formas de pagamento</p>
 
                     <div className="formas-de-pagamento">
-                      <p className="text-forma-de-pagamento">
-                        Dinheiro: {detalhe.dinheiro === true ? 'Sim' : 'Não'}
-                      </p>
-
-                      <p className="text-forma-de-pagamento">
-                        Pix: {detalhe.pix === true ? 'Sim' : 'Não'}
-                      </p>
-
-                      <p className="text-forma-de-pagamento">
-                        Debito: {detalhe.debito === true ? 'Sim' : 'Não'}
-                      </p>
-
-                      <p className="text-forma-de-pagamento">
-                        Credito: {detalhe.credito === true ? 'Sim' : 'Não'}
-                      </p>
+                      {formasDePagamento.map((formaPagamento) => (
+                        <p className="text-forma-de-pagamento">
+                          {formaPagamento}
+                        </p>
+                      ))}
                     </div>
                   </div>
                 </>
