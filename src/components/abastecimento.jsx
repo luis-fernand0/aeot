@@ -16,7 +16,6 @@ const Abastecimento = () => {
     const [formasPagamento, setFormasPagamento] = useState([])
     const [formaAbastecimento, setFormaAbastecimento] = useState()
     const [combustivelAtual, setCombustivelAtual] = useState()
-    const [formaPagamentoAtual, setFormaPagamentoAtual] = useState()
     const [btnChecked, setBtnChecked] = useState()
 
     let combustiveis = Object.keys(posto.combustivel)
