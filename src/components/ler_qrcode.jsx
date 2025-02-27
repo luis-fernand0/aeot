@@ -28,6 +28,18 @@ const LerQrCode = () => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
 
+    const combustiveis = [
+        { value: '1', label: 'etanol' },
+        { value: '2', label: 'gasolina' },
+        { value: '3', label: 'diesel' }
+    ]
+    const formasPagamento = [
+        { value: '1', label: 'dinheiro' },
+        { value: '2', label: 'pix' },
+        { value: '3', label: 'debito' },
+        { value: '4', label: 'credito' },
+    ]
+
     function formatLitro(e) {
         let input = e.target
         let inputValue = input.value.replace(/[^0-9]/g, '')
@@ -128,8 +140,6 @@ const LerQrCode = () => {
 
             }
         }
-
-
     }
 
     function stopScanning() {
@@ -154,37 +164,59 @@ const LerQrCode = () => {
 
     async function confirmarVenda() {
         setLoading(true)
-
-        if (result.forma_abastecimento === 'encher-tanque') {
-            if (!valorTotal || valorTotal == 0.00) {
-                setLoading(false)
-                setModalMessage('*Por favor informe a quantidade abastecida antes de finalizar a venda!')
-                setModalVisible(true)
-                document.getElementById('litros-abastecidos').classList.add('litros-abastecidos-alert')
-
-                return
-            }
-        }
-        const myForm = new FormData()
-        myForm.append('chave', result.chave)
-        myForm.append('driver_id', result.driver_id || result.driver_user_id)
-        myForm.append('posto_id', result.posto_user_id)
-        myForm.append('combustivel', result.tipo_combustivel)
-        myForm.append('forma', result.forma_abastecimento)
-        myForm.append('valor', result.valor_combustivel)
-        if (result.forma_abastecimento === 'encher-tanque') {
-            const litros = document.getElementById('litros-abastecidos').value
-            myForm.append('quantidade', litros)
-            myForm.append('valor_total', valorTotal)
-        } else {
-            myForm.append('quantidade', result.quantidade)
-            myForm.append('valor_total', result.valor_total)
-        }
-        myForm.append('metodo_pagamento', result.metodo_pagamento)
-
-        const myFormData = Object.fromEntries(myForm)
-
         try {
+            if (result.forma_abastecimento === 'encher-tanque') {
+                if (!valorTotal || valorTotal == 0.00) {
+                    setLoading(false)
+                    setModalMessage('*Por favor informe a quantidade abastecida antes de finalizar a venda!')
+                    setModalVisible(true)
+                    document.getElementById('litros-abastecidos').classList.add('litros-abastecidos-alert')
+
+                    return
+                }
+            }
+            const myForm = new FormData()
+            myForm.append('chave', result.chave)
+            myForm.append('driver_id', result.driver_id || result.driver_user_id)
+            myForm.append('posto_id', result.posto_user_id)
+
+            combustiveis.forEach((combustivel) => {
+                if (combustivel.label === result.tipo_combustivel) {
+                    result.tipo_combustivel = combustivel.value
+                }
+            })
+            myForm.append('combustivel', result.tipo_combustivel)
+
+            if(result.forma_abastecimento === 'valor' || result.forma_abastecimento === 'litro') {
+                result.forma_abastecimento = 1
+            } else {
+                result.forma_abastecimento = 2
+            }
+            myForm.append('forma_abastecimento', result.forma_abastecimento)
+
+            myForm.append('valor', result.valor_combustivel)
+            if (result.forma_abastecimento === 'encher-tanque') {
+                const litros = document.getElementById('litros-abastecidos').value
+                myForm.append('quantidade', litros)
+                myForm.append('valor_total', valorTotal)
+            } else {
+                myForm.append('quantidade', result.quantidade)
+                myForm.append('valor_total', result.valor_total)
+            }
+
+            formasPagamento.forEach((pagamento) => {
+                if (pagamento.label === result.metodo_pagamento) {
+                    result.metodo_pagamento = pagamento.value
+                }
+            })
+            myForm.append('forma_pagamento', result.metodo_pagamento)
+
+            const myFormData = Object.fromEntries(myForm)
+
+            for (let [key, value] of myForm.entries()) {
+                console.log(key, value)
+            }
+
             const response = await fetch(urlVenda, {
                 method: 'POST',
                 headers: {
