@@ -195,7 +195,7 @@ const LerQrCode = () => {
             myForm.append('forma_abastecimento', result.forma_abastecimento)
 
             myForm.append('valor', result.valor_combustivel)
-            if (result.forma_abastecimento === 'encher-tanque') {
+            if (result.forma_abastecimento === 2) {
                 const litros = document.getElementById('litros-abastecidos').value
                 myForm.append('quantidade', litros)
                 myForm.append('valor_total', valorTotal)
