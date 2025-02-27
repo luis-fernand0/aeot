@@ -286,15 +286,23 @@ const Home = () => {
                       </div>
                     </div>
                     <div className='info-gas-services'>
-                      <p className='combustiveis-gas-station'>
-                        ETANOL: R$ {posto.etanol}
-                      </p>
-                      <p className='combustiveis-gas-station'>
-                        GASOLINA: R$ {posto.gasolina}
-                      </p>
-                      <p className='combustiveis-gas-station'>
-                        DIESEL: R$ {posto.diesel}
-                      </p>
+                      {posto.combustivel?.etanol && (
+                        <p className='combustiveis-gas-station'>
+                          ETANOL: R$ {posto.combustivel?.etanol.valor}
+                        </p>
+                      )}
+
+                      {posto.combustivel?.gasolina && (
+                        <p className='combustiveis-gas-station'>
+                          GASOLINA: R$ {posto.combustivel?.gasolina.valor}
+                        </p>
+                      )}
+
+                      {posto.combustivel?.diesel && (
+                        <p className='combustiveis-gas-station'>
+                          DIESEL: R$ {posto.combustivel?.diesel.valor}
+                        </p>
+                      )}
                       {distancia[posto.cod_posto] && (
                         <div className='container-km-time'>
                           <p className='km km-time'>
