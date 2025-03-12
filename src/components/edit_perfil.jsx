@@ -86,7 +86,7 @@ const EditPerfil = () => {
     }, [newFoto])
     return (
         <>
-            <div className='container-datas-user'>
+            {/* <div className='container-datas-user'>
                 <div className='container-icon'>
                     <Link to={'/home'}>
                         <FontAwesomeIcon className='arrow-icon' icon={faChevronLeft} />
@@ -121,6 +121,76 @@ const EditPerfil = () => {
                         </div>
                     </>
                 )}
+            </div> */}
+
+            <div className='container-datas'>
+                <div className='container-btn-voltar'>
+                    <Link to={'/home'}>
+                        <FontAwesomeIcon className='arrow-icon' icon={faChevronLeft} />
+                    </Link>
+                </div>
+
+                <div className='container-datas-user'>
+                    {user && (
+                        <>
+                            <div className='container-foto-user'>
+                                <img src={`https://aeotnew.s3.amazonaws.com/${user.foto}`} alt="foto-user" className='foto-user' />
+                            </div>
+
+                            <div className='container-btns-datas'>
+                                <div className='container-btns'>
+                                    <button className='btn-option'>
+                                        Brindes
+                                    </button>
+
+                                    <button className='btn-option'>
+                                        Teste
+                                    </button>
+                                </div>
+
+                                <div className='container-btns-brindes'>
+                                    <div className='container-options-brinde'>
+                                        <button className='option-brinde'>
+                                            Criar brinde
+                                        </button>
+
+                                        <button className='option-brinde'>
+                                            Editar brinde
+                                        </button>
+
+                                        <button className='option-brinde'>
+                                            Adicionar brinde
+                                        </button>
+                                    </div>
+
+                                    <div className='container-form-cadastrar-brinde'>
+                                        <form className='cadastrar-brinde'>
+                                            <div className='container-inputs'>
+                                                <label className='text-input' htmlFor="nome-brinde">Nome do brinde</label>
+                                                <input className='input-info' id='nome-brinde' type="text" placeholder='Nome do brinde' required />
+                                            </div>
+
+                                            <div className='container-inputs'>
+                                                <label className='text-input' htmlFor="descricao">Descrição</label>
+                                                <textarea className='textarea' name="descricao" id="descricao" placeholder='Descrição do brinde'required />
+                                            </div>
+
+                                            <div className='container-inputs'>
+                                                <label className='text-input' htmlFor="expiracao">Tempo de expiração</label>
+                                                <input className='input-info' id='expiracao' type="number" placeholder='Tempo em dias' required />
+                                            </div>
+
+                                            <button className='btn-criar' type='submit'>
+                                                Criar brinde!
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </>
+                    )}
+                </div>
             </div>
         </>
     )
