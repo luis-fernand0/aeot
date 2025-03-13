@@ -13,6 +13,8 @@ const urlAtualizarFoto = import.meta.env.VITE_URL_ATUALIZAR_FOTO_USER
 const EditPerfil = () => {
     const [user, setUser] = useState()
     const [newFoto, setNewFoto] = useState()
+    const [options, setOptions] = useState()
+    const [optionsBrinde, setOptionsBrinde] = useState()
 
     const navigate = useNavigate()
 
@@ -33,23 +35,11 @@ const EditPerfil = () => {
         setUser(data)
     }
 
-    function anexarFoto(input) { document.getElementById(input).click() }
-    function checkFoto(e) {
-        const foto = e.target.files[0]
-        const novaFoto = document.getElementById('new-foto-user')
-        if (foto) {
-            const reader = new FileReader()
-            reader.onload = (e) => {
-                novaFoto.src = e.target.result
-            }
-            reader.readAsDataURL(foto)
+    function formatarInput(e) {
+        let input = e.target
+        var inputValue = input.value.replace(/[^0-9]/g, '')
 
-            document.querySelector('.modal-confirm').classList.remove('modal-confirm-hidden')
-
-            comprimirFoto('edit_foto')
-        }
-
-        return
+        return input.value = inputValue
     }
 
     async function changeFoto(input) {
@@ -74,11 +64,40 @@ const EditPerfil = () => {
         setNewFoto(file)
         document.querySelector('.modal-confirm').classList.add('modal-confirm-hidden')
     }
+    function anexarFoto(input) { document.getElementById(input).click() }
+    function checkFoto(e) {
+        const foto = e.target.files[0]
+        const novaFoto = document.getElementById('new-foto-user')
+        if (foto) {
+            const reader = new FileReader()
+            reader.onload = (e) => {
+                novaFoto.src = e.target.result
+            }
+            reader.readAsDataURL(foto)
 
+            document.querySelector('.modal-confirm').classList.remove('modal-confirm-hidden')
+
+            comprimirFoto('edit_foto')
+        }
+
+        return
+    }
     function cancelFoto() {
         const inputFoto = document.getElementById('edit_foto')
         inputFoto.value = ''
         document.querySelector('.modal-confirm').classList.add('modal-confirm-hidden')
+    }
+
+    async function cadastrarBrinde(e) {
+        e.preventDefault()
+
+        try {
+            const response = await fetch('', {
+                method: 'POST'
+            })
+        } catch (err) {
+            
+        }
     }
 
     useEffect(() => {
@@ -139,53 +158,58 @@ const EditPerfil = () => {
 
                             <div className='container-btns-datas'>
                                 <div className='container-btns'>
-                                    <button className='btn-option'>
+                                    <button onClick={() => setOptions('brindes')} className={`btn-option ${options === 'brindes' ? 'checked' : ''}`}>
                                         Brindes
                                     </button>
 
-                                    <button className='btn-option'>
+                                    <button onClick={() => setOptions('')} className='btn-option'>
                                         Teste
                                     </button>
                                 </div>
 
-                                <div className='container-btns-brindes'>
-                                    <div className='container-options-brinde'>
-                                        <button className='option-brinde'>
-                                            Criar brinde
-                                        </button>
-
-                                        <button className='option-brinde'>
-                                            Editar brinde
-                                        </button>
-
-                                        <button className='option-brinde'>
-                                            Adicionar brinde
-                                        </button>
-                                    </div>
-
-                                    <div className='container-form-cadastrar-brinde'>
-                                        <form className='cadastrar-brinde'>
-                                            <div className='container-inputs'>
-                                                <label className='text-input' htmlFor="nome-brinde">Nome do brinde</label>
-                                                <input className='input-info' id='nome-brinde' type="text" placeholder='Nome do brinde' required />
-                                            </div>
-
-                                            <div className='container-inputs'>
-                                                <label className='text-input' htmlFor="descricao">Descrição</label>
-                                                <textarea className='textarea' name="descricao" id="descricao" placeholder='Descrição do brinde'required />
-                                            </div>
-
-                                            <div className='container-inputs'>
-                                                <label className='text-input' htmlFor="expiracao">Tempo de expiração</label>
-                                                <input className='input-info' id='expiracao' type="number" placeholder='Tempo em dias' required />
-                                            </div>
-
-                                            <button className='btn-criar' type='submit'>
-                                                Criar brinde!
+                                {options === 'brindes' && (
+                                    <div className='container-btns-brindes'>
+                                        <div className='container-options-brinde'>
+                                            <button onClick={() => setOptionsBrinde('criar_brinde')} className={`option-brinde ${optionsBrinde === 'criar_brinde' ? 'checked' : ''}`}>
+                                                Criar brinde
                                             </button>
-                                        </form>
+
+                                            <button onClick={() => setOptionsBrinde('editar_brinde')} className={`option-brinde ${optionsBrinde === 'editar_brinde' ? 'checked' : ''}`}>
+                                                Editar brinde
+                                            </button>
+
+                                            <button onClick={() => setOptionsBrinde('add_brinde')} className={`option-brinde ${optionsBrinde === 'add_brinde' ? 'checked' : ''}`}>
+                                                Adicionar brinde
+                                            </button>
+                                        </div>
+
+                                        {optionsBrinde === 'criar_brinde' && (
+                                            <div className='container-form-cadastrar-brinde'>
+                                                <form className='cadastrar-brinde' onSubmit={(e) => cadastrarBrinde(e)}>
+                                                    <div className='container-inputs'>
+                                                        <label className='text-input' htmlFor="nome-brinde">Nome do brinde</label>
+                                                        <input className='input-info' id='nome-brinde' type="text" placeholder='Nome do brinde' required />
+                                                    </div>
+
+                                                    <div className='container-inputs'>
+                                                        <label className='text-input' htmlFor="descricao">Descrição</label>
+                                                        <textarea className='textarea' name="descricao" id="descricao" placeholder='Descrição do brinde' required />
+                                                    </div>
+
+                                                    <div className='container-inputs'>
+                                                        <label className='text-input' htmlFor="expiracao">Tempo de expiração</label>
+                                                        <input onChange={(e) => formatarInput(e)} className='input-info' id='expiracao' type="text" placeholder='Tempo em dias' required />
+                                                    </div>
+
+                                                    <button className='btn-criar' type='submit'>
+                                                        Criar brinde!
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        )}
                                     </div>
-                                </div>
+
+                                )}
 
                             </div>
                         </>
