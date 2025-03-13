@@ -9,6 +9,7 @@ import ModalResponse from '../components/modalResponse'
 import Header from '../components/header';
 
 import '../style/home_page/home.css'
+import HomePosto from '../components/homePosto';
 
 const urlDatas = import.meta.env.VITE_URL_DATAS
 const urlDataGoogleMaps = import.meta.env.VITE_URL_QUERY_GOOGLE_MAPS
@@ -100,7 +101,8 @@ const Home = () => {
 
   function detalhes(posto, distancia, local, categoria) {
     localStorage.setItem('dadosItem', JSON.stringify(posto))
-    localStorage.setItem('detalhes', JSON.stringify([distancia, local, categoria]))
+    localStorage.setItem('categoria', JSON.stringify(categoria))
+    localStorage.setItem('location', JSON.stringify([distancia, local]))
     navigate('/detalhes')
   }
 
@@ -260,66 +262,9 @@ const Home = () => {
         )}
 
         {(typerUser === 'posto' || typerUser === 'frentista') && (
-          <>
-            <h2 className='title-home'>Seu anuncio</h2>
-            <div className="btns-ul">
-              <ul className='ul-gas-services'>
-
-                {postos && postos.map((posto) =>
-                  <li onClick={() => { detalhes(posto, distancia[posto.cod_posto], local, categoria) }}
-                    className='gas-services'
-                    key={posto.cod_posto}>
-
-                    <div className='container-img-title'>
-                      <div className='container-img'>
-                        <img className='img-gas-services' src={`https://aeotnew.s3.amazonaws.com/${posto.foto}`} alt="imagem-do-posto-de-gasolina" />
-                      </div>
-
-                      <div className='container-title-endereco'>
-                        <h3 className='title-gas-services'>
-                          {posto.nome}
-                        </h3>
-
-                        <p className='endereco-gas-services'>
-                          {posto.endereco}
-                        </p>
-                      </div>
-                    </div>
-                    <div className='info-gas-services'>
-                      {posto.combustivel?.etanol && (
-                        <p className='combustiveis-gas-station'>
-                          ETANOL: R$ {posto.combustivel?.etanol.valor}
-                        </p>
-                      )}
-
-                      {posto.combustivel?.gasolina && (
-                        <p className='combustiveis-gas-station'>
-                          GASOLINA: R$ {posto.combustivel?.gasolina.valor}
-                        </p>
-                      )}
-
-                      {posto.combustivel?.diesel && (
-                        <p className='combustiveis-gas-station'>
-                          DIESEL: R$ {posto.combustivel?.diesel.valor}
-                        </p>
-                      )}
-                      {distancia[posto.cod_posto] && (
-                        <div className='container-km-time'>
-                          <p className='km km-time'>
-                            <FontAwesomeIcon icon={faFlagCheckered} style={{ color: "#4caf50", }} /> {distancia[posto.cod_posto].distancia}
-                          </p>
-
-                          <p className='time km-time'>
-                            <FontAwesomeIcon icon={faClock} style={{ color: "#4caf50", }} /> {distancia[posto.cod_posto].tempo}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </li>
-                )}
-              </ul>
-            </div>
-          </>
+          <HomePosto
+            postos={postos}
+            categoria={categoria} />
         )}
       </div>
     </>
