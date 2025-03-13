@@ -3,12 +3,16 @@ import { useNavigate, Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 
-import '../style/edit_perfil_page/edit_perfil.css'
+import CriarBrinde from '../components/criarBrinde';
+import AdicionarBrinde from './adicionarBrinde';
+
 import { comprimirFoto } from '../functions/comprimirFoto';
+
+import '../style/edit_perfil_page/edit_perfil.css'
+import adicionarBrinde from './adicionarBrinde';
 
 const urlData = import.meta.env.VITE_URL_DATAS_USER
 const urlAtualizarFoto = import.meta.env.VITE_URL_ATUALIZAR_FOTO_USER
-
 
 const EditPerfil = () => {
     const [user, setUser] = useState()
@@ -33,13 +37,6 @@ const EditPerfil = () => {
             navigate('/', { replace: true })
         }
         setUser(data)
-    }
-
-    function formatarInput(e) {
-        let input = e.target
-        var inputValue = input.value.replace(/[^0-9]/g, '')
-
-        return input.value = inputValue
     }
 
     async function changeFoto(input) {
@@ -86,25 +83,6 @@ const EditPerfil = () => {
         const inputFoto = document.getElementById('edit_foto')
         inputFoto.value = ''
         document.querySelector('.modal-confirm').classList.add('modal-confirm-hidden')
-    }
-
-    async function cadastrarBrinde(e) {
-        e.preventDefault()
-        try {
-            const myForm = FormData(document.getElementById('cadastrar-brinde'))
-            const formCadastro = Object.fromEntries(myForm)
-
-            const response = await fetch('', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${tokenUser}`,
-                    'Content-Type': 'application/json'
-                },
-                body: formCadastro
-            })
-        } catch (err) {
-            
-        }
     }
 
     useEffect(() => {
@@ -191,28 +169,11 @@ const EditPerfil = () => {
                                         </div>
 
                                         {optionsBrinde === 'criar_brinde' && (
-                                            <div className='container-form-cadastrar-brinde'>
-                                                <form id='cadastrar-brinde' onSubmit={(e) => cadastrarBrinde(e)}>
-                                                    <div className='container-inputs'>
-                                                        <label className='text-input' htmlFor="nome-brinde">Nome do brinde</label>
-                                                        <input className='input-info' id='nome-brinde' type="text" placeholder='Nome do brinde' required />
-                                                    </div>
+                                            <CriarBrinde user={user}/>
+                                        )}
 
-                                                    <div className='container-inputs'>
-                                                        <label className='text-input' htmlFor="descricao">Descrição</label>
-                                                        <textarea className='textarea' name="descricao" id="descricao" placeholder='Descrição do brinde' required />
-                                                    </div>
-
-                                                    <div className='container-inputs'>
-                                                        <label className='text-input' htmlFor="expiracao">Tempo de expiração</label>
-                                                        <input onChange={(e) => formatarInput(e)} className='input-info' id='expiracao' type="text" placeholder='Tempo em dias' required />
-                                                    </div>
-
-                                                    <button className='btn-criar' type='submit'>
-                                                        Criar brinde!
-                                                    </button>
-                                                </form>
-                                            </div>
+                                        {optionsBrinde === 'add_brinde' && (
+                                            <AdicionarBrinde/>
                                         )}
                                     </div>
 
