@@ -48,7 +48,7 @@ const EditItem = ({ show, close, categoria, item }) => {
         { value: '2', label: 'Encher Tanque' },
     ];
 
-    if (categoria.categoria === 'postos') {
+    if (categoria === 'postos') {
         //ITERANDO SOBRE CADA COMBUSTIVEL E CADA FORMA DE PAGAMENTO PARA DAR O VALOR 1 OU 2 NA FORMA DE ABASTECIMENTO DE CADA FORMA DE PAGAMENTO 
         combustiveis.forEach((keyCombustivel) => {
             let formasArray = Object.keys(itemFormatado.combustivel[keyCombustivel.label]?.formas || {})
@@ -70,7 +70,7 @@ const EditItem = ({ show, close, categoria, item }) => {
         try {
             const formData = new FormData(document.getElementById('form-editar-item'))
     
-            if (categoria.categoria === 'postos') {
+            if (categoria === 'postos') {
                 let inputCheckeds = document.querySelectorAll("input[name='combustivel']:checked")
     
                 if (inputCheckeds.length === 0) {
@@ -116,7 +116,7 @@ const EditItem = ({ show, close, categoria, item }) => {
                 formData.delete('forma_abastecimento')
             }
             formData.append('item_id', item.cod_posto || item.cod_anuncio)
-            formData.append('categoria', categoria.categoria)
+            formData.append('categoria', categoria)
     
             const formObject = Object.fromEntries(formData)
 
@@ -153,7 +153,7 @@ const EditItem = ({ show, close, categoria, item }) => {
     }
 
     useEffect(() => {
-        if (categoria.categoria === 'postos') {
+        if (categoria === 'postos') {
             let optionsInitial = {}
 
             combustiveis.forEach((combustivel) => {
@@ -202,7 +202,7 @@ const EditItem = ({ show, close, categoria, item }) => {
                             defaultValue={itemFormatado.endereco}
                             placeholder={itemFormatado.endereco} />
 
-                        {categoria.categoria === 'postos' && (
+                        {categoria === 'postos' && (
                             <>
                                 <div className='cadastrar-combustivel'>
                                     <p className='text-info'>
