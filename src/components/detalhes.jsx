@@ -13,8 +13,9 @@ import '../style/detalhes_page/detalhes.css'
 const urlCallItem = import.meta.env.VITE_URL_CALL_ITEM
 
 const Detalhes = () => {
-  const item = JSON.parse(localStorage.getItem('dadosItem'))
-  const detalhesItem = JSON.parse(localStorage.getItem('detalhes'))
+  const item = JSON.parse(localStorage.getItem('dadosItem')) || {}
+  const itemCategoria = JSON.parse(localStorage.getItem('categoria')) || {}
+  const location = JSON.parse(localStorage.getItem('location')) || {}
 
   const navigate = useNavigate()
 
@@ -23,14 +24,13 @@ const Detalhes = () => {
 
   const [detalhe, setDetalhe] = useState(item || {})
   let formasEtanol = Object.keys(detalhe.combustivel?.etanol?.formas || {})
-  console.log(detalhe.combustivel?.etanol?.formas[formasEtanol[1]])
   let formasGasolina = Object.keys(detalhe.combustivel?.gasolina?.formas || {})
   let formasDiesel = Object.keys(detalhe.combustivel?.diesel?.formas || {})
   const [formasDePagamento, setFormasDePagamento] = useState([])
 
-  const [distancia, setDistancia] = useState(detalhesItem[0] || {})
-  const [local, setLocal] = useState(detalhesItem[1] || {})
-  const [categoria, setCategoria] = useState(detalhesItem[2] || {})
+  const [distancia, setDistancia] = useState(location[0] || {})
+  const [local, setLocal] = useState(location[1] || {})
+  const [categoria, setCategoria] = useState(itemCategoria || {})
 
   const [loading, setLoading] = useState(false)
   const [isModalVisible, setModalVisible] = useState(false);
@@ -71,7 +71,7 @@ const Detalhes = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          categoria: categoria.categoria,
+          categoria: categoria,
           item_id: detalhe.cod_posto || detalhe.cod_anuncio
         })
       })
@@ -97,7 +97,7 @@ const Detalhes = () => {
   }
 
   useEffect(() => {
-    if (categoria.categoria === 'postos') {
+    if (categoria === 'postos') {
       const formasPagamento = [
         { value: '1', label: 'Dinheiro' },
         { value: '2', label: 'Pix' },
@@ -117,7 +117,6 @@ const Detalhes = () => {
           }
         })
       })
-      console.log(todasAsFormas)
 
       let combustiveis = Object.keys(detalhe.combustivel)
       combustiveis.forEach((key) => {
@@ -161,7 +160,7 @@ const Detalhes = () => {
                 <p className='info-item item-endereco'>{detalhe.endereco}</p>
               </div>
 
-              {categoria.categoria === 'postos' && (
+              {categoria === 'postos' && (
                 <>
                   <div className='container-combustivel'>
                     {detalhe.combustivel?.etanol && (
@@ -248,7 +247,7 @@ const Detalhes = () => {
 
                     <div className="formas-de-pagamento">
                       {formasDePagamento.map((formaPagamento) => (
-                        <p className="text-forma-de-pagamento">
+                        <p key={formaPagamento} className="text-forma-de-pagamento">
                           {formaPagamento}
                         </p>
                       ))}
