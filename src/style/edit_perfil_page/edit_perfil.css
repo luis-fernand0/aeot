@@ -54,6 +54,9 @@
 .container-datas .container-datas-user .container-btns-datas .container-btns .btn-option:hover {
   border-bottom: 5px solid #fff100;
 }
+.container-datas .container-datas-user .container-btns-datas .container-btns .checked {
+  border-bottom: 5px solid #fff100;
+}
 .container-datas .container-datas-user .container-btns-datas .container-btns-brindes {
   height: 100%;
   width: 100%;
@@ -76,6 +79,9 @@
   transition: all 0.2s linear;
 }
 .container-datas .container-datas-user .container-btns-datas .container-btns-brindes .container-options-brinde .option-brinde:hover {
+  border-bottom: 5px solid #fff100;
+}
+.container-datas .container-datas-user .container-btns-datas .container-btns-brindes .container-options-brinde .checked {
   border-bottom: 5px solid #fff100;
 }
 .container-datas .container-datas-user .container-btns-datas .container-btns-brindes .container-form-cadastrar-brinde {
