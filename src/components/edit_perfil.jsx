@@ -90,10 +90,17 @@ const EditPerfil = () => {
 
     async function cadastrarBrinde(e) {
         e.preventDefault()
-
         try {
+            const myForm = FormData(document.getElementById('cadastrar-brinde'))
+            const formCadastro = Object.fromEntries(myForm)
+
             const response = await fetch('', {
-                method: 'POST'
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${tokenUser}`,
+                    'Content-Type': 'application/json'
+                },
+                body: formCadastro
             })
         } catch (err) {
             
@@ -185,7 +192,7 @@ const EditPerfil = () => {
 
                                         {optionsBrinde === 'criar_brinde' && (
                                             <div className='container-form-cadastrar-brinde'>
-                                                <form className='cadastrar-brinde' onSubmit={(e) => cadastrarBrinde(e)}>
+                                                <form id='cadastrar-brinde' onSubmit={(e) => cadastrarBrinde(e)}>
                                                     <div className='container-inputs'>
                                                         <label className='text-input' htmlFor="nome-brinde">Nome do brinde</label>
                                                         <input className='input-info' id='nome-brinde' type="text" placeholder='Nome do brinde' required />
