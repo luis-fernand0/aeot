@@ -1,8 +1,17 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const HomePosto = ({ postos, categoria }) => {
+import CriarBrinde from './criarBrinde'
+import AdicionarBrinde from './adicionarBrinde'
+import ListarBrindes from './listarBrindes'
+
+import '../style/homePosto_combonent/homePosto.css'
+
+const HomePosto = ({ posto, categoria }) => {
     const navigate = useNavigate()
-    console.log(categoria)
+
+    const [exibir, setExibir] = useState('meu_anuncio')
+    const [gerenciarBrinde, setGerenciarBrinde] = useState('')
 
     function detalhes(posto, categoria) {
         localStorage.setItem('dadosItem', JSON.stringify(posto))
@@ -13,64 +22,96 @@ const HomePosto = ({ postos, categoria }) => {
         <>
             <div className="container-home">
                 <h2 className='title-home'>Seu anuncio</h2>
-                <div className="btns-ul">
-                    <div className='btns-fuel-services'>
+                <div className="container-anuncio-brinde">
+                    <div className='container-btns'>
                         <button
-                            onClick={() => { setCategoria({ categoria: 'postos' }) }}
-                            className={`btn-option btn-combustivel 
-                            ${categoria.categoria === 'postos' ? 'checked' : ''}`} type="button">
+                            onClick={() => setExibir('meu_anuncio')}
+                            className={`btn-option 
+                            ${exibir === 'meu_anuncio' ? 'checked' : ''}`} type="button">
                             Meu anuncio
                         </button>
 
-                        <button onClick={() => { setCategoria({ categoria: 'anuncios' }) }}
-                            className={`btn-option btn-services ${categoria.categoria === 'anuncios' ? 'checked' : ''}`} type="button">
-                            Serviços
+                        <button onClick={() => setExibir('brindes')}
+                            className={`btn-option ${exibir === 'brindes' ? 'checked' : ''}`} type="button">
+                            Brindes
                         </button>
                     </div>
-                    <div className='ul-gas-services'>
-                        {postos && postos.map((posto) =>
-                            <div onClick={() => { detalhes(posto, categoria) }}
-                                className='gas-services'
-                                key={posto.cod_posto}>
+                    {exibir === 'meu_anuncio' && (
+                        <div className='container-anuncio'>
+                            {posto && posto.map((posto) =>
+                                <div onClick={() => { detalhes(posto, categoria) }}
+                                    className='gas-services'
+                                    key={posto.cod_posto}>
 
-                                <div className='container-img-title'>
-                                    <div className='container-img'>
-                                        <img className='img-gas-services' src={`https://aeotnew.s3.amazonaws.com/${posto.foto}`} alt="imagem-do-posto-de-gasolina" />
+                                    <div className='container-img-title'>
+                                        <div className='container-img'>
+                                            <img className='img-gas-services' src={`https://aeotnew.s3.amazonaws.com/${posto.foto}`} alt="imagem-do-posto-de-gasolina" />
+                                        </div>
+
+                                        <div className='container-title-endereco'>
+                                            <h3 className='title-gas-services'>
+                                                {posto.nome}
+                                            </h3>
+
+                                            <p className='endereco-gas-services'>
+                                                {posto.endereco}
+                                            </p>
+                                        </div>
                                     </div>
 
-                                    <div className='container-title-endereco'>
-                                        <h3 className='title-gas-services'>
-                                            {posto.nome}
-                                        </h3>
+                                    <div className='info-gas-services'>
+                                        {posto.combustivel?.etanol && (
+                                            <p className='combustiveis-gas-station'>
+                                                ETANOL: R$ {posto.combustivel?.etanol.valor}
+                                            </p>
+                                        )}
 
-                                        <p className='endereco-gas-services'>
-                                            {posto.endereco}
-                                        </p>
+                                        {posto.combustivel?.gasolina && (
+                                            <p className='combustiveis-gas-station'>
+                                                GASOLINA: R$ {posto.combustivel?.gasolina.valor}
+                                            </p>
+                                        )}
+
+                                        {posto.combustivel?.diesel && (
+                                            <p className='combustiveis-gas-station'>
+                                                DIESEL: R$ {posto.combustivel?.diesel.valor}
+                                            </p>
+                                        )}
                                     </div>
                                 </div>
+                            )}
+                        </div>
+                    )}
 
-                                <div className='info-gas-services'>
-                                    {posto.combustivel?.etanol && (
-                                        <p className='combustiveis-gas-station'>
-                                            ETANOL: R$ {posto.combustivel?.etanol.valor}
-                                        </p>
-                                    )}
+                    {exibir === 'brindes' && (
+                        <div className='container-brinde-btns'>
+                            <div className='container-btn-brinde'>
+                                <button onClick={() => setGerenciarBrinde('meus_brindes')} className={`option-brinde ${gerenciarBrinde === 'meus_brindes' ? 'checked' : ''}`}>
+                                    Meus brindes
+                                </button>
 
-                                    {posto.combustivel?.gasolina && (
-                                        <p className='combustiveis-gas-station'>
-                                            GASOLINA: R$ {posto.combustivel?.gasolina.valor}
-                                        </p>
-                                    )}
+                                <button onClick={() => setGerenciarBrinde('criar_brinde')} className={`option-brinde ${gerenciarBrinde === 'criar_brinde' ? 'checked' : ''}`}>
+                                    Criar brinde
+                                </button>
 
-                                    {posto.combustivel?.diesel && (
-                                        <p className='combustiveis-gas-station'>
-                                            DIESEL: R$ {posto.combustivel?.diesel.valor}
-                                        </p>
-                                    )}
-                                </div>
+                                <button onClick={() => setGerenciarBrinde('add_brinde')} className={`option-brinde ${gerenciarBrinde === 'add_brinde' ? 'checked' : ''}`}>
+                                    Adicionar brinde
+                                </button>
                             </div>
-                        )}
-                    </div>
+
+                            {gerenciarBrinde === 'meus_brindes' && (
+                                <ListarBrindes />
+                            )}
+
+                            {gerenciarBrinde === 'criar_brinde' && (
+                                <CriarBrinde user={posto} />
+                            )}
+
+                            {gerenciarBrinde === 'add_brinde' && (
+                                <AdicionarBrinde />
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
         </>
