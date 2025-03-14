@@ -9,7 +9,7 @@ const CriarBrinde = ({ user }) => {
         e.preventDefault()
         try {
             const myForm = new FormData(document.getElementById('cadastrar-brinde'))
-            myForm.append('cod_posto', user.cod_posto)
+            myForm.append('cod_posto', user[0].cod_posto)
             const formCadastro = Object.fromEntries(myForm)
 
             const response = await fetch(urlCadastrarBrinde, {
