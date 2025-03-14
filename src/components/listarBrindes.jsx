@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 
+import '../style/listarBrindes_component/listarBrindes.css'
+
 
 const ListarBrindes = () => {
     const tokenUser = localStorage.getItem('token');
@@ -29,10 +31,11 @@ const ListarBrindes = () => {
                     <ul className="lista-brindes">
                         {brindes && brindes.map((brinde, index) => 
                             <li key={index} className="brinde">
-                                <p>{index}</p>
-                                <p>{brinde.nome_brinde}</p>
+                                <p className='nome-brinde'>{brinde.nome_brinde.toUpperCase()}</p>
 
-                                <p>{brinde.descricao}</p>
+                                <p className='brinde-descricao'>{brinde.descricao.toUpperCase()}</p>
+
+                                <p className='brinde-expiracao'>Brinde valido por: {brinde.expiracao} {brinde.expiracao > 1 ? 'Dias' : 'Dia'}</p>
                             </li>
                         )}
                     </ul>
