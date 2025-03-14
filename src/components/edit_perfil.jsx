@@ -140,46 +140,6 @@ const EditPerfil = () => {
                             <div className='container-foto-user'>
                                 <img src={`https://aeotnew.s3.amazonaws.com/${user.foto}`} alt="foto-user" className='foto-user' />
                             </div>
-
-                            <div className='container-btns-datas'>
-                                <div className='container-btns'>
-                                    <button onClick={() => setOptions('brindes')} className={`btn-option ${options === 'brindes' ? 'checked' : ''}`}>
-                                        Brindes
-                                    </button>
-
-                                    <button onClick={() => setOptions('')} className='btn-option'>
-                                        Teste
-                                    </button>
-                                </div>
-
-                                {options === 'brindes' && (
-                                    <div className='container-btns-brindes'>
-                                        <div className='container-options-brinde'>
-                                            <button onClick={() => setOptionsBrinde('criar_brinde')} className={`option-brinde ${optionsBrinde === 'criar_brinde' ? 'checked' : ''}`}>
-                                                Criar brinde
-                                            </button>
-
-                                            <button onClick={() => setOptionsBrinde('editar_brinde')} className={`option-brinde ${optionsBrinde === 'editar_brinde' ? 'checked' : ''}`}>
-                                                Editar brinde
-                                            </button>
-
-                                            <button onClick={() => setOptionsBrinde('add_brinde')} className={`option-brinde ${optionsBrinde === 'add_brinde' ? 'checked' : ''}`}>
-                                                Adicionar brinde
-                                            </button>
-                                        </div>
-
-                                        {optionsBrinde === 'criar_brinde' && (
-                                            <CriarBrinde user={user}/>
-                                        )}
-
-                                        {optionsBrinde === 'add_brinde' && (
-                                            <AdicionarBrinde/>
-                                        )}
-                                    </div>
-
-                                )}
-
-                            </div>
                         </>
                     )}
                 </div>
