@@ -16,7 +16,6 @@ const ListarBrindes = () => {
             }
         })
         const data = await response.json()
-        console.log(data)
         setBrindes(data)
     }
 
@@ -31,11 +30,17 @@ const ListarBrindes = () => {
                     <ul className="lista-brindes">
                         {brindes && brindes.map((brinde, index) => 
                             <li key={index} className="brinde">
-                                <p className='nome-brinde'>{brinde.nome_brinde.toUpperCase()}</p>
+                                <p className='nome-brinde'>
+                                    Nome do brinde: {brinde.nome_brinde.toUpperCase()}
+                                </p>
 
-                                <p className='brinde-descricao'>{brinde.descricao.toUpperCase()}</p>
+                                <p className='brinde-descricao'>
+                                    {brinde.descricao.toUpperCase()}
+                                </p>
 
-                                <p className='brinde-expiracao'>Brinde valido por: {brinde.expiracao} {brinde.expiracao > 1 ? 'Dias' : 'Dia'}</p>
+                                <p className='brinde-expiracao'>
+                                    Brinde valido por: {brinde.expiracao} {brinde.expiracao > 1 ? 'Dias' : 'Dia'}
+                                </p>
                             </li>
                         )}
                     </ul>
