@@ -263,7 +263,7 @@ const Home = () => {
 
         {(typerUser === 'posto' || typerUser === 'frentista') && (
           <HomePosto
-            postos={postos}
+            posto={postos}
             categoria={categoria} />
         )}
       </div>
