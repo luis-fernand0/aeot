@@ -1,0 +1,137 @@
+.container-home {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container-home .title-home {
+  width: 100%;
+  text-align: center;
+  margin: 20px 0 20px 0;
+}
+.container-home .container-anuncio-brinde {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container-home .container-anuncio-brinde .container-btns {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: space-between;
+}
+.container-home .container-anuncio-brinde .container-btns .btn-option {
+  width: 50%;
+  padding: 5px 0 5px 0;
+  background-color: transparent;
+  border: none;
+  text-align: center;
+  font-size: 22px;
+  color: #57636c;
+  transition: all 0.2s;
+}
+.container-home .container-anuncio-brinde .container-btns .btn-option:hover {
+  border-bottom: 5px solid #fff100;
+}
+.container-home .container-anuncio-brinde .container-btns .checked {
+  border-bottom: 5px solid #fff100;
+}
+.container-home .container-anuncio-brinde .container-anuncio {
+  background-color: #fff;
+  height: auto;
+  width: 100%;
+  min-width: 350px;
+  max-width: 665px;
+  margin: 30px 0 20px 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.container-home .container-anuncio-brinde .container-anuncio .gas-services {
+  display: flex;
+  flex-flow: row wrap;
+  margin-bottom: 30px;
+  cursor: pointer;
+}
+.container-home .container-anuncio-brinde .container-anuncio .gas-services .container-img-title {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.container-home .container-anuncio-brinde .container-anuncio .gas-services .container-img-title .container-img {
+  width: auto;
+}
+.container-home .container-anuncio-brinde .container-anuncio .gas-services .container-img-title .container-img .img-gas-services {
+  min-width: 150px;
+  max-width: 150px;
+  height: 150px;
+  border-radius: 20px;
+}
+.container-home .container-anuncio-brinde .container-anuncio .gas-services .container-img-title .container-title-endereco {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.container-home .container-anuncio-brinde .container-anuncio .gas-services .container-img-title .container-title-endereco .title-gas-services {
+  font-size: 18px;
+  font-weight: 400;
+}
+.container-home .container-anuncio-brinde .container-anuncio .gas-services .container-img-title .container-title-endereco .endereco-gas-services {
+  font-size: 15px;
+}
+.container-home .container-anuncio-brinde .container-anuncio .gas-services .info-gas-services {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 100%;
+  height: 150px;
+  margin-left: 10px;
+}
+.container-home .container-anuncio-brinde .container-anuncio .gas-services .info-gas-services .combustiveis-gas-station {
+  font-size: 15px;
+  color: #333;
+}
+.container-home .container-anuncio-brinde .container-anuncio .gas-services .info-gas-services .container-km-time {
+  display: flex;
+  flex-direction: row;
+}
+.container-home .container-anuncio-brinde .container-anuncio .gas-services .info-gas-services .container-km-time .km {
+  margin-right: 15px;
+}
+.container-home .container-anuncio-brinde .container-anuncio .gas-services .info-gas-services .descricao-services {
+  height: 40%;
+  overflow: scroll;
+}
+.container-home .container-anuncio-brinde .container-brinde-btns {
+  height: 100%;
+  width: 100%;
+}
+.container-home .container-anuncio-brinde .container-brinde-btns .container-btn-brinde {
+  width: 100%;
+  margin-top: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.container-home .container-anuncio-brinde .container-brinde-btns .container-btn-brinde .option-brinde {
+  width: 100%;
+  height: 35px;
+  background-color: transparent;
+  text-align: center;
+  font-size: 14px;
+  color: #57636c;
+  border: none;
+  transition: all 0.2s linear;
+}
+.container-home .container-anuncio-brinde .container-brinde-btns .container-btn-brinde .option-brinde:hover {
+  border-bottom: 5px solid #fff100;
+}
+.container-home .container-anuncio-brinde .container-brinde-btns .container-btn-brinde .checked {
+  border-bottom: 5px solid #fff100;
+}/*# sourceMappingURL=homePosto.css.map */
