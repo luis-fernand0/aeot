@@ -12,4 +12,8 @@
 .container-brindes .lista-brindes .brinde {
   background-color: #fff;
   margin: 15px;
+  padding: 15px;
+}
+.container-brindes .lista-brindes .brinde p {
+  margin-bottom: 15px;
 }/*# sourceMappingURL=listarBrindes.css.map */
