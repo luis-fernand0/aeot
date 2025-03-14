@@ -5,7 +5,7 @@ import CriarBrinde from './criarBrinde'
 import AdicionarBrinde from './adicionarBrinde'
 import ListarBrindes from './listarBrindes'
 
-import '../style/homePosto_combonent/homePosto.css'
+import '../style/homePosto_component/homePosto.css'
 
 const HomePosto = ({ posto, categoria }) => {
     const navigate = useNavigate()
