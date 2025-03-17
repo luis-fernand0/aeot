@@ -57,40 +57,12 @@ const AdicionarBrinde = ({ combustiveis }) => {
             { value: '1', label: 'Litragem Livre' },
             { value: '2', label: 'Encher Tanque' },
         ];
-        let request = []
-        combustiveis.forEach((combustivel) => {
-            combustiveisSelecionados.forEach((combustivelSelecionado) => {
-                if (combustivelSelecionado === combustivel.label) {
-                    request.push({'combustivel': combustivel.value})
-                }
-                pagamentosSelecionados[combustivelSelecionado]?.forEach((formaPagamento) => {
-                    formasPagamento.forEach((forma) => {
-                        if (forma.label === formaPagamento) {
-                            request.push({'forma_pagamento': forma.value})
-                        }
-                    })
-                    formasAbastecimentos.forEach((formaAbastecimento) => {
-                        if (abastecimentosSelecionados[combustivelSelecionado]?.[formaPagamento] === formaAbastecimento.label) {
-                            request.push({'forma_abastecimento': formaAbastecimento.value})
-                        }
-                    })
-                })
-            })
-        })
 
-        console.log(request)
-
-        const resultado = combustiveisSelecionados.map((combustivel) => ({
-            combustivel: combustivel.toString(),
-            formas: (pagamentosSelecionados[combustivel] || []).map((formaPagamento) => ({
-                forma_pagamento: formaPagamento.toString(),
-                forma_abastecimento: (abastecimentosSelecionados[combustivel]?.[formaPagamento] || '').toString()
-            }))
-        }));
-        console.log(combustiveisSelecionados);
-        console.log(pagamentosSelecionados);
-        console.log(abastecimentosSelecionados);
-        console.log(resultado);
+        let request = {}
+        let lastPay = null
+        let lastCombustivel = null
+        
+        console.log(abastecimentosSelecionados)
     };
 
     return (
@@ -128,8 +100,7 @@ const AdicionarBrinde = ({ combustiveis }) => {
                                                 <select
                                                     id={`${combustivel}-${forma.forma_pagamento}-abastecimento`}
                                                     value={abastecimentosSelecionados[combustivel]?.[forma.forma_pagamento] || ''}
-                                                    onChange={(e) => selecionarAbastecimento(combustivel, forma.forma_pagamento, e.target.value)}
-                                                >
+                                                    onChange={(e) => selecionarAbastecimento(combustivel, forma.forma_pagamento, e.target.value)}>
                                                     <option value=''>Selecione</option>
                                                     <option value={forma.forma_abastecimento}>{forma.forma_abastecimento}</option>
                                                     {forma.forma_abastecimento === 'Litragem Livre' && (
