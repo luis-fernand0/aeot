@@ -1,127 +1,124 @@
-import { useState } from 'react';
+import { useState } from 'react'
+import { combustiveis, formasPagamento, formasAbastecimentos } from '../functions/contants'
+import ListarBrindes from './listarBrindes'
 
-const AdicionarBrinde = ({ combustiveis }) => {
-    const [combustiveisSelecionados, setCombustiveisSelecionados] = useState([]);
-    const [pagamentosSelecionados, setPagamentosSelecionados] = useState({});
-    const [abastecimentosSelecionados, setAbastecimentosSelecionados] = useState({});
+const AdicionarBrinde = ({ propCombustiveis }) => {
+    const [combustiveisSelecionados, setCombustiveisSelecionados] = useState([])
+    const [formasSelecionadas, setFormasSelecionadas] = useState({})
+    const [selecionarBrinde, setSelecionarBrinde] = useState(false)
 
-    const toggleCombustivel = (combustivel) => {
+    const handleCombustivelChange = (combustivelLabel) => {
         setCombustiveisSelecionados((prev) =>
-            prev.includes(combustivel)
-                ? prev.filter((item) => item !== combustivel)
-                : [...prev, combustivel]
-        );
-        setPagamentosSelecionados((prev) => ({ ...prev, [combustivel]: [] }));
-        setAbastecimentosSelecionados((prev) => ({ ...prev, [combustivel]: {} }));
-    };
+            prev.includes(combustivelLabel)
+                ? prev.filter((item) => item !== combustivelLabel)
+                : [...prev, combustivelLabel]
+        )
+    }
 
-    const togglePagamento = (combustivel, formaPagamento) => {
-        setPagamentosSelecionados((prev) => {
-            const pagamentosAtuais = prev[combustivel] || [];
-            return {
-                ...prev,
-                [combustivel]: pagamentosAtuais.includes(formaPagamento)
-                    ? pagamentosAtuais.filter((pag) => pag !== formaPagamento)
-                    : [...pagamentosAtuais, formaPagamento],
-            };
-        });
-    };
+    const handleFormaPagamentoChange = (combustivel, formaLabel) => {
+        setFormasSelecionadas((prev) => {
+            const novasFormas = { ...prev }
 
-    const selecionarAbastecimento = (combustivel, formaPagamento, formaAbastecimento) => {
-        setAbastecimentosSelecionados((prev) => ({
-            ...prev,
-            [combustivel]: {
-                ...prev[combustivel],
-                [formaPagamento]: formaAbastecimento,
-            },
-        }));
-    };
+            if (!novasFormas[combustivel]) {
+                novasFormas[combustivel] = []
+            }
+
+            novasFormas[combustivel] = novasFormas[combustivel].includes(formaLabel)
+                ? novasFormas[combustivel].filter((item) => item !== formaLabel)
+                : [...novasFormas[combustivel], formaLabel]
+
+            return novasFormas
+        })
+    }
 
     const verDados = (e) => {
         e.preventDefault();
-        const combustiveis = [
-            { value: '1', label: 'etanol' },
-            { value: '2', label: 'gasolina' },
-            { value: '3', label: 'diesel' }
-        ];
+        setSelecionarBrinde(true)
 
-        const formasPagamento = [
-            { value: '1', label: 'dinheiro' },
-            { value: '2', label: 'pix' },
-            { value: '3', label: 'debito' },
-            { value: '4', label: 'credito' },
-        ];
-
-        const formasAbastecimentos = [
-            { value: '', label: 'Escolha a forma de abastecimento' },
-            { value: '1', label: 'Litragem Livre' },
-            { value: '2', label: 'Encher Tanque' },
-        ];
-
-        let request = {}
-        let lastPay = null
-        let lastCombustivel = null
-        
-        console.log(abastecimentosSelecionados)
-    };
+        let formData = new FormData(e.target)
+        for (let [key, value] of formData.entries()) {
+            console.log(key, value)
+        }
+    }
 
     return (
-        <div className='container-add-brinde'>
-            <h3 className='title-add-brinde'>
-                Em qual combustível deseja adicionar o brinde?
-            </h3>
+        <>
+            <div className='container-add-brinde'>
+                <h3 className='title-add-brinde'>
+                    Em qual combustível deseja adicionar o brinde?
+                </h3>
+                
+                <form onSubmit={verDados} id='form-combustivel' className='container-combustiveis'>
+                    {Object.keys(propCombustiveis).map((keyCombustivel) => {
+                        const combustivel = combustiveis.find(c => c.label === keyCombustivel);
+                        if (!combustivel) return null;
 
-            <form onSubmit={verDados} id='form-combustivel' className='container-combustiveis'>
-                {Object.keys(combustiveis).map((combustivel) => (
-                    <div key={combustivel}>
-                        <input
-                            type='checkbox'
-                            id={combustivel}
-                            checked={combustiveisSelecionados.includes(combustivel)}
-                            onChange={() => toggleCombustivel(combustivel)}
-                        />
-                        <label htmlFor={combustivel}>{combustivel.toUpperCase()}</label>
+                        return (
+                            <div key={combustivel.value} className='combustiveis'>
+                                <input
+                                    type='checkbox'
+                                    id={combustivel.label}
+                                    name='combustivel'
+                                    value={combustivel.value}
+                                    checked={combustiveisSelecionados.includes(combustivel.label)}
+                                    onChange={() => handleCombustivelChange(combustivel.label)}
+                                />
+                                <label htmlFor={combustivel.label}>{combustivel.label.toUpperCase()}</label>
 
-                        {combustiveisSelecionados.includes(combustivel) && (
-                            <div className='formas-pagamento'>
-                                {Object.values(combustiveis[combustivel].formas).map((forma) => (
-                                    <div key={forma.forma_pagamento}>
-                                        <input
-                                            type='checkbox'
-                                            id={`${combustivel}-${forma.forma_pagamento}`}
-                                            checked={pagamentosSelecionados[combustivel]?.includes(forma.forma_pagamento)}
-                                            onChange={() => togglePagamento(combustivel, forma.forma_pagamento)}
-                                        />
-                                        <label htmlFor={`${combustivel}-${forma.forma_pagamento}`}>{forma.forma_pagamento}</label>
+                                {combustiveisSelecionados.includes(combustivel.label) &&
+                                    Object.keys(propCombustiveis[keyCombustivel].formas).map((keyForma) => {
+                                        const forma = formasPagamento.find(f =>
+                                            f.label === propCombustiveis[keyCombustivel].formas[keyForma].forma_pagamento.toLowerCase()
+                                        )
+                                        if (!forma) return null;
 
-                                        {pagamentosSelecionados[combustivel]?.includes(forma.forma_pagamento) && (
-                                            <div className='formas-abastecimento'>
-                                                <label htmlFor={`${combustivel}-${forma.forma_pagamento}-abastecimento`}>Forma de Abastecimento:</label>
-                                                <select
-                                                    id={`${combustivel}-${forma.forma_pagamento}-abastecimento`}
-                                                    value={abastecimentosSelecionados[combustivel]?.[forma.forma_pagamento] || ''}
-                                                    onChange={(e) => selecionarAbastecimento(combustivel, forma.forma_pagamento, e.target.value)}>
-                                                    <option value=''>Selecione</option>
-                                                    <option value={forma.forma_abastecimento}>{forma.forma_abastecimento}</option>
-                                                    {forma.forma_abastecimento === 'Litragem Livre' && (
-                                                        <option value='Encher Tanque'>Encher Tanque</option>
-                                                    )}
-                                                </select>
+                                        return (
+                                            <div key={forma.value} className='formas-pagamento'>
+                                                <input
+                                                    type='checkbox'
+                                                    id={`${combustivel.label}-${forma.label}`}
+                                                    name='forma_pagamento'
+                                                    value={forma.value}
+                                                    checked={formasSelecionadas[combustivel.label]?.includes(forma.label)}
+                                                    onChange={() => handleFormaPagamentoChange(combustivel.label, forma.label)}
+                                                />
+                                                <label htmlFor={`${combustivel.label}-${forma.label}`}>
+                                                    {forma.label.toUpperCase()}
+                                                </label>
+
+                                                {formasSelecionadas[combustivel.label]?.includes(forma.label) &&
+                                                    formasAbastecimentos.map((abastecimento) => {
+                                                        if (propCombustiveis[keyCombustivel].formas[keyForma].forma_abastecimento !== abastecimento.label) {
+                                                            return null;
+                                                        }
+
+                                                        return (
+                                                            <select key={abastecimento.value} name="forma_abastecimento">
+                                                                <option value={abastecimento.value}>{abastecimento.label}</option>
+                                                                {abastecimento.label === 'Litragem Livre' && (
+                                                                    <option value='2'>
+                                                                        Encher Tanque
+                                                                    </option>
+                                                                )}
+                                                            </select>
+                                                        )
+                                                    })}
                                             </div>
-                                        )}
-                                    </div>
-                                ))}
+                                        )
+                                    })}
                             </div>
-                        )}
-                    </div>
-                ))}
+                        )
+                    })}
 
-                <button type='submit'>
-                    Selecionar brinde
-                </button>
-            </form>
-        </div>
-    );
-};
+                    <button type='submit'>Selecionar brinde</button>
+                </form>
+            </div>
+
+            {selecionarBrinde && (
+                <ListarBrindes />
+            )}
+        </>
+    )
+}
 
 export default AdicionarBrinde;
