@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import '../style/listarBrindes_component/listarBrindes.css'
 
 
-const ListarBrindes = () => {
+const ListarBrindes = ({ clickBrinde, closeModal }) => {
     const tokenUser = localStorage.getItem('token');
 
     const [brindes, setBrindes] = useState([])
@@ -26,10 +26,18 @@ const ListarBrindes = () => {
     return (
         <>
             <div className="container-brindes">
+                {closeModal && (
+                    <button onClick={() => {closeModal(false)}}>
+                        X
+                    </button>
+                )}
                 {brindes && (
                     <ul className="lista-brindes">
-                        {brindes && brindes.map((brinde, index) => 
-                            <li key={index} className="brinde">
+                        {brindes && brindes.map((brinde, index) =>
+                            <li
+                                key={index}
+                                onClick={() => clickBrinde && clickBrinde(brinde)}
+                                className="brinde">
                                 <p className='nome-brinde'>
                                     Nome do brinde: {brinde.nome_brinde.toUpperCase()}
                                 </p>
