@@ -9,6 +9,8 @@ const AdicionarBrinde = ({ propCombustiveis }) => {
     const [formasSelecionadas, setFormasSelecionadas] = useState({})
     const [selecionarBrinde, setSelecionarBrinde] = useState(false)
 
+    const tokenUser = localStorage.getItem('token');
+
     const handleCombustivelChange = (combustivelLabel) => {
         setCombustiveisSelecionados((prev) =>
             prev.includes(combustivelLabel)
@@ -37,14 +39,52 @@ const AdicionarBrinde = ({ propCombustiveis }) => {
         e.preventDefault();
         setSelecionarBrinde(true)
 
-        let formData = new FormData(e.target)
-        for (let [key, value] of formData.entries()) {
-            console.log(key, value)
-        }
     }
-
+    
     async function cadastrarBrinde(brinde) {
-        console.log(brinde.cod_posto)
+        let combustiveis = {}
+        let lastPay = null
+        let lastCombustivel = null
+
+        let formCombustivel = new FormData(document.getElementById('form-combustivel'))
+        for (let [key, value] of formCombustivel.entries()) {
+          if (key === 'combustiveis') {
+            combustiveis[value] = {
+              combustivel: value,
+              valor: '',
+              formas: {}
+            }
+            lastCombustivel = value
+          }
+          if (key === 'valor' && lastCombustivel) {
+            combustiveis[lastCombustivel].valor = value
+          }
+          if (key === 'forma_pagamento' && lastCombustivel) {
+            if (!combustiveis[lastCombustivel].formas[value]) {
+              combustiveis[lastCombustivel].formas[value] = {
+                forma_pagamento: value,
+                forma_abastecimento: ''
+              }
+              lastPay = value
+            }
+          }
+          if (key === 'forma_abastecimento' && lastPay) {
+            combustiveis[lastCombustivel].formas[lastPay].forma_abastecimento = value
+            lastPay = null
+          }
+        }
+        try {
+            const response = await fetch('', {
+                methot: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${tokenUser}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({})
+            })
+        } catch (err) {
+            
+        }
     }
 
     return (
