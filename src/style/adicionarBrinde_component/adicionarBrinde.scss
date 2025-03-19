@@ -79,7 +79,8 @@
 
     .container-component-brindes {
         background-color: rgba(0, 0, 0, 0.342);
-        position: absolute;
+        position: fixed;
+        top: 0;
 
         width: 100%;
         height: 100%;
@@ -96,10 +97,32 @@
             height: 90%;
 
             border-radius: 15px;
+
+            .container-close-listar-brindes {
+                width: 100%;
+
+                text-align: right;
+
+                padding: 25px 25px 15px 0;
+                .btn-close-listar-brindes {
+                    background-color: transparent;
+
+                    border: none;
+
+                    font-size: 20px;
+                    
+                    .x-icon {
+                        transition: all 0.3s linear;    
+
+                        &:hover {
+                            transform: scale(1.1);
+                        }
+                    }
+                }
+            }
             
             .lista-brindes {
-                overflow-x: scroll;
-
+                overflow: auto;
 
                 .brinde {
                     border-bottom: 1px solid #fff100;
