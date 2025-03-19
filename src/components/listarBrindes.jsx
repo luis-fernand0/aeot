@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
 import '../style/listarBrindes_component/listarBrindes.css'
 
@@ -27,9 +29,13 @@ const ListarBrindes = ({ clickBrinde, closeModal }) => {
         <>
             <div className="container-brindes">
                 {closeModal && (
-                    <button onClick={() => {closeModal(false)}}>
-                        X
-                    </button>
+                    <div className='container-close-listar-brindes'>
+                        <button
+                            className='btn-close-listar-brindes'
+                            onClick={() => { closeModal(false) }}>
+                            <FontAwesomeIcon className='x-icon' icon={faXmark} />
+                        </button>
+                    </div>
                 )}
                 {brindes && (
                     <ul className="lista-brindes">
