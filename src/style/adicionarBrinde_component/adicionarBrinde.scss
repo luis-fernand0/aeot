@@ -1,0 +1,118 @@
+.container-add-brinde {
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .title-add-brinde {
+        margin: 15px 15px;
+
+        font-size: 22px;
+        font-weight: 500;
+    }
+
+    .form-combustivel {
+        height: 90%;
+        min-width: 350px;
+        max-width: 665px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .combustiveis {
+            width: 100%;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .combustivel-container {
+                background-color: aliceblue;
+
+                margin-bottom: 20px;
+
+                .combustivel {
+                    margin-right: 15px;
+                }
+            }
+
+            .formas-pagamento {
+                width: 100%;
+
+                margin-bottom: 10px;
+
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+
+                .forma-pagamento-container {
+                    margin-bottom: 10px;
+
+                    .forma_pagamento {
+                        margin-right: 10px;
+                    }
+                }
+            }
+        }
+
+        .btn-selecionar-brinde {
+            width: 180px;
+            height: 60px;
+
+            border-radius: 15px;
+            border: none;
+
+            font-size: 15px;
+
+            background-color: #fff100;
+
+            transition: all 0.2s linear;
+
+            &:hover {
+                background-color: #fcf460;
+            }
+        }
+    }
+
+    .container-component-brindes {
+        background-color: rgba(0, 0, 0, 0.342);
+        position: absolute;
+
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        // ESSAS CLASSES VEM DO COMPONENT listarBrindes.jsx
+        .container-brindes {
+            background-color: #ffffff;
+
+            width: 90%;
+            height: 90%;
+
+            border-radius: 15px;
+            
+            .lista-brindes {
+                overflow-x: scroll;
+
+
+                .brinde {
+                    border-bottom: 1px solid #fff100;
+
+                    cursor: pointer;
+
+                    transition: all 0.3s linear;
+
+                    &:hover {
+                        transform: scale(0.99);
+                    }
+                }
+            }
+        }
+    }
+}

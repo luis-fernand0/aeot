@@ -1,0 +1,82 @@
+.container-add-brinde {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container-add-brinde .title-add-brinde {
+  margin: 15px 15px;
+  font-size: 22px;
+  font-weight: 500;
+}
+.container-add-brinde .form-combustivel {
+  height: 90%;
+  min-width: 350px;
+  max-width: 665px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container-add-brinde .form-combustivel .combustiveis {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container-add-brinde .form-combustivel .combustiveis .combustivel-container {
+  background-color: aliceblue;
+  margin-bottom: 20px;
+}
+.container-add-brinde .form-combustivel .combustiveis .combustivel-container .combustivel {
+  margin-right: 15px;
+}
+.container-add-brinde .form-combustivel .combustiveis .formas-pagamento {
+  width: 100%;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.container-add-brinde .form-combustivel .combustiveis .formas-pagamento .forma-pagamento-container {
+  margin-bottom: 10px;
+}
+.container-add-brinde .form-combustivel .combustiveis .formas-pagamento .forma-pagamento-container .forma_pagamento {
+  margin-right: 10px;
+}
+.container-add-brinde .form-combustivel .btn-selecionar-brinde {
+  width: 180px;
+  height: 60px;
+  border-radius: 15px;
+  border: none;
+  font-size: 15px;
+  background-color: #fff100;
+  transition: all 0.2s linear;
+}
+.container-add-brinde .form-combustivel .btn-selecionar-brinde:hover {
+  background-color: #fcf460;
+}
+.container-add-brinde .container-component-brindes {
+  background-color: rgba(0, 0, 0, 0.342);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.container-add-brinde .container-component-brindes .container-brindes {
+  background-color: #ffffff;
+  width: 90%;
+  height: 90%;
+  overflow-x: scroll;
+  border-radius: 15px;
+}
+.container-add-brinde .container-component-brindes .container-brindes .lista-brindes .brinde {
+  border-bottom: 1px solid #fff100;
+  cursor: pointer;
+  transition: all 0.3s linear;
+}
+.container-add-brinde .container-component-brindes .container-brindes .lista-brindes .brinde:hover {
+  transform: scale(0.99);
+}/*# sourceMappingURL=adicionarBrinde.css.map */
