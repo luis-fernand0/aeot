@@ -1,12 +1,24 @@
+import { useNavigate } from 'react-router-dom'
+import { useState } from 'react';
+
+import Loading from './loading'
+import ModalResponse from './modalResponse';
+
 import '../style/criarBrinde_component/criarBrinde.css'
 
 const urlCadastrarBrinde = import.meta.env.VITE_URL_CADASTRAR_BRINDE
 
 const CriarBrinde = ({ user }) => {
     const tokenUser = localStorage.getItem('token');
+    const navigate = useNavigate()
+
+    const [loading, setLoading] = useState(false)
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
 
     async function cadastrarBrinde(e) {
         e.preventDefault()
+        setLoading(true)
         try {
             const myForm = new FormData(document.getElementById('cadastrar-brinde'))
             myForm.append('cod_posto', user[0].cod_posto)
@@ -20,8 +32,19 @@ const CriarBrinde = ({ user }) => {
                 },
                 body: JSON.stringify(formCadastro)
             })
+            const data = await response.json()
+
+            if (response.status === 403) {
+                navigate('/', { replace: true })
+            }
+            setModalMessage(data.message)
+            setModalVisible(true)
+            e.target.reset()
         } catch (err) {
-            console.log(err)
+            setModalMessage(`Desculpe! Ocorreu um erro inesperado. Não foi possível cadastrar o brinde.` + err.message)
+            setModalVisible(true)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -33,6 +56,12 @@ const CriarBrinde = ({ user }) => {
     }
     return (
         <>
+            <Loading loading={loading} />
+            <ModalResponse
+                isVisible={isModalVisible}
+                onClose={() => setModalVisible(false)}
+                message={modalMessage}
+            />
             <div className='container-form-cadastrar-brinde'>
                 <form id='cadastrar-brinde' onSubmit={(e) => cadastrarBrinde(e)}>
                     <div className='container-inputs'>
