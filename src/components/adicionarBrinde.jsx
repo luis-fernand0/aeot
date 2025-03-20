@@ -40,50 +40,48 @@ const AdicionarBrinde = ({ propCombustiveis }) => {
         setSelecionarBrinde(true)
 
     }
-    
-    async function cadastrarBrinde(brinde) {
-        let combustiveis = {}
-        let lastPay = null
-        let lastCombustivel = null
 
-        let formCombustivel = new FormData(document.getElementById('form-combustivel'))
-        for (let [key, value] of formCombustivel.entries()) {
-          if (key === 'combustiveis') {
-            combustiveis[value] = {
-              combustivel: value,
-              valor: '',
-              formas: {}
-            }
-            lastCombustivel = value
-          }
-          if (key === 'valor' && lastCombustivel) {
-            combustiveis[lastCombustivel].valor = value
-          }
-          if (key === 'forma_pagamento' && lastCombustivel) {
-            if (!combustiveis[lastCombustivel].formas[value]) {
-              combustiveis[lastCombustivel].formas[value] = {
-                forma_pagamento: value,
-                forma_abastecimento: ''
-              }
-              lastPay = value
-            }
-          }
-          if (key === 'forma_abastecimento' && lastPay) {
-            combustiveis[lastCombustivel].formas[lastPay].forma_abastecimento = value
-            lastPay = null
-          }
-        }
+    async function cadastrarBrinde(brinde) {
         try {
-            const response = await fetch('', {
-                methot: 'POST',
+            let combustiveis = {}
+            let lastPay = null
+            let lastCombustivel = null
+
+            let formCombustivel = new FormData(document.getElementById('form-combustivel'))
+            for (let [key, value] of formCombustivel.entries()) {
+                if (key === 'combustivel') {
+                    combustiveis[value] = {
+                        combustivel: value,
+                        brinde: brinde.cod_brinde,
+                        formas: {}
+                    }
+                    lastCombustivel = value
+                }
+                if (key === 'forma_pagamento' && lastCombustivel) {
+                    if (!combustiveis[lastCombustivel].formas[value]) {
+                        combustiveis[lastCombustivel].formas[value] = {
+                            forma_pagamento: value,
+                            forma_abastecimento: ''
+                        }
+                        lastPay = value
+                    }
+                }
+                if (key === 'forma_abastecimento' && lastPay) {
+                    combustiveis[lastCombustivel].formas[lastPay].forma_abastecimento = value
+                    lastPay = null
+                }
+            }
+
+            const response = await fetch('http://localhost:3000/aeot/auth/adicionar_brinde', {
+                method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${tokenUser}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({})
+                body: JSON.stringify({combustiveis: combustiveis})
             })
         } catch (err) {
-            
+            console.log(err)
         }
     }
 
