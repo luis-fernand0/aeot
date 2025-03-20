@@ -108,7 +108,9 @@ const HomePosto = ({ posto, categoria }) => {
                             )}
 
                             {gerenciarBrinde === 'add_brinde' && (
-                                <AdicionarBrinde propCombustiveis={posto[0].combustivel}/>
+                                <AdicionarBrinde
+                                    propCodPosto={posto[0].cod_posto}
+                                    propCombustiveis={posto[0].combustivel}/>
                             )}
                         </div>
                     )}
