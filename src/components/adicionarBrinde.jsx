@@ -1,15 +1,22 @@
 import { useState } from 'react'
 import { combustiveis, formasPagamento, formasAbastecimentos } from '../functions/contants'
+
 import ListarBrindes from './listarBrindes'
+import Loading from './loading'
+import ModalResponse from './modalResponse';
 
 import '../style/adicionarBrinde_component/adicionarBrinde.css'
 
-const AdicionarBrinde = ({ propCombustiveis }) => {
+const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
+    const tokenUser = localStorage.getItem('token');
+
     const [combustiveisSelecionados, setCombustiveisSelecionados] = useState([])
     const [formasSelecionadas, setFormasSelecionadas] = useState({})
     const [selecionarBrinde, setSelecionarBrinde] = useState(false)
 
-    const tokenUser = localStorage.getItem('token');
+    const [loading, setLoading] = useState(false)
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
 
     const handleCombustivelChange = (combustivelLabel) => {
         setCombustiveisSelecionados((prev) =>
@@ -37,8 +44,18 @@ const AdicionarBrinde = ({ propCombustiveis }) => {
 
     const verDados = (e) => {
         e.preventDefault();
-        setSelecionarBrinde(true)
+        setLoading(true)
+        let combustiveisCheckeds = document.querySelectorAll("input[name='combustivel']:checked")
+        let pagamentosCheckeds = document.querySelectorAll("input[name='forma_pagamento']:checked")
 
+        if (combustiveisCheckeds.length === 0 || pagamentosCheckeds.length === 0) {
+            setModalMessage('Selecione pelo menos um combustível e uma forma de pagamento!')
+            setModalVisible(true)
+            setLoading(false)
+            return
+        }
+        setLoading(false)
+        setSelecionarBrinde(true)
     }
 
     async function cadastrarBrinde(brinde) {
@@ -78,7 +95,7 @@ const AdicionarBrinde = ({ propCombustiveis }) => {
                     'Authorization': `Bearer ${tokenUser}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({combustiveis: combustiveis})
+                body: JSON.stringify({ combustiveis: combustiveis, cod_posto: propCodPosto })
             })
         } catch (err) {
             console.log(err)
@@ -87,6 +104,12 @@ const AdicionarBrinde = ({ propCombustiveis }) => {
 
     return (
         <>
+            <Loading loading={loading} />
+            <ModalResponse
+                isVisible={isModalVisible}
+                onClose={() => setModalVisible(false)}
+                message={modalMessage}
+            />
             <div className='container-add-brinde'>
                 <h3 className='title-add-brinde'>
                     Em qual combustível deseja adicionar o brinde?
@@ -105,7 +128,6 @@ const AdicionarBrinde = ({ propCombustiveis }) => {
                                         type='checkbox'
                                         id={combustivel.label}
                                         name='combustivel'
-                                        value={combustivel.value}
                                         checked={combustiveisSelecionados.includes(combustivel.label)}
                                         onChange={() => handleCombustivelChange(combustivel.label)}
                                     />
@@ -129,7 +151,6 @@ const AdicionarBrinde = ({ propCombustiveis }) => {
                                                         type='checkbox'
                                                         id={`${combustivel.label}-${forma.label}`}
                                                         name='forma_pagamento'
-                                                        value={forma.value}
                                                         checked={formasSelecionadas[combustivel.label]?.includes(forma.label)}
                                                         onChange={() => handleFormaPagamentoChange(combustivel.label, forma.label)}
                                                     />
@@ -146,7 +167,9 @@ const AdicionarBrinde = ({ propCombustiveis }) => {
 
                                                         return (
                                                             <select key={abastecimento.value} name="forma_abastecimento">
-                                                                <option value={abastecimento.value}>{abastecimento.label}</option>
+                                                                <option value={abastecimento.value}>
+                                                                    {abastecimento.label}
+                                                                </option>
                                                                 {abastecimento.label === 'Litragem Livre' && (
                                                                     <option value='2'>
                                                                         Encher Tanque
@@ -162,7 +185,9 @@ const AdicionarBrinde = ({ propCombustiveis }) => {
                         )
                     })}
 
-                    <button className='btn-selecionar-brinde' type='submit'>Selecionar brinde</button>
+                    <button className='btn-selecionar-brinde' type='submit'>
+                        Selecionar brinde
+                    </button>
                 </form>
 
                 {selecionarBrinde && (
