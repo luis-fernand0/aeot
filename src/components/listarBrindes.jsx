@@ -1,24 +1,46 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
+
+import Loading from './loading'
+import ModalResponse from './modalResponse';
 
 import '../style/listarBrindes_component/listarBrindes.css'
 
 
 const ListarBrindes = ({ clickBrinde, closeModal }) => {
     const tokenUser = localStorage.getItem('token');
+    const navigate = useNavigate()
 
     const [brindes, setBrindes] = useState([])
 
+    const [loading, setLoading] = useState(false)
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+
     async function listarBrindes() {
-        const response = await fetch('http://localhost:3000/aeot/auth/listar_brindes', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${tokenUser}`
+        setLoading(true)
+        try {
+            const response = await fetch('http://localhost:3000/aeot/auth/listar_brindes', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${tokenUser}`
+                }
+            })
+            const data = await response.json()
+
+            if (response.status === 403) {
+                navigate('/', { replace: true })
             }
-        })
-        const data = await response.json()
-        setBrindes(data)
+            
+            setBrindes(data)
+        } catch (err) {
+            setModalMessage(`Desculpe! Ocorreu um erro inesperado. Não foi possível listar os brinde.` + err.message)
+            setModalVisible(true)
+        } finally {
+            setLoading(false)
+        }
     }
 
     useEffect(() => {
@@ -27,6 +49,12 @@ const ListarBrindes = ({ clickBrinde, closeModal }) => {
 
     return (
         <>
+            <Loading loading={loading} />
+            <ModalResponse
+                isVisible={isModalVisible}
+                onClose={() => setModalVisible(false)}
+                message={modalMessage}
+            />
             <div className="container-brindes">
                 {closeModal && (
                     <div className='container-close-listar-brindes'>
