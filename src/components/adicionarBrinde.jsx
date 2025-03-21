@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { combustiveis, formasPagamento, formasAbastecimentos } from '../functions/contants'
 
 import ListarBrindes from './listarBrindes'
@@ -59,6 +60,7 @@ const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
     }
 
     async function cadastrarBrinde(brinde) {
+        setLoading(true)
         try {
             let combustiveis = {}
             let lastPay = null
@@ -97,8 +99,24 @@ const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
                 },
                 body: JSON.stringify({ combustiveis: combustiveis, cod_posto: propCodPosto })
             })
+            const data = await response.json()
+
+            if (response.status === 403) {
+                navigate('/', { replace: true })
+            }
+
+            setModalMessage(data.message)
+            setModalVisible(true)
+            setSelecionarBrinde(false)
+            if (response.ok) {
+                setCombustiveisSelecionados([])
+                setFormasSelecionadas({})
+            }
         } catch (err) {
-            console.log(err)
+            setModalMessage(`Desculpe! Ocorreu um erro inesperado. ` + err.message)
+            setModalVisible(true)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -127,6 +145,7 @@ const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
                                         className='combustivel'
                                         type='checkbox'
                                         id={combustivel.label}
+                                        value={combustivel.value}
                                         name='combustivel'
                                         checked={combustiveisSelecionados.includes(combustivel.label)}
                                         onChange={() => handleCombustivelChange(combustivel.label)}
@@ -150,6 +169,7 @@ const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
                                                         className='forma_pagamento'
                                                         type='checkbox'
                                                         id={`${combustivel.label}-${forma.label}`}
+                                                        value={forma.value}
                                                         name='forma_pagamento'
                                                         checked={formasSelecionadas[combustivel.label]?.includes(forma.label)}
                                                         onChange={() => handleFormaPagamentoChange(combustivel.label, forma.label)}
