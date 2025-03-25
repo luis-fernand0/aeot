@@ -30,7 +30,7 @@ const Detalhes = () => {
 
   const [distancia, setDistancia] = useState(location[0] || {})
   const [local, setLocal] = useState(location[1] || {})
-  const [categoria, setCategoria] = useState(itemCategoria || {})
+  const [categoria, setCategoria] = useState(itemCategoria.categoria || {})
 
   const [loading, setLoading] = useState(false)
   const [isModalVisible, setModalVisible] = useState(false);
@@ -42,10 +42,17 @@ const Detalhes = () => {
     gasolina: null,
     diesel: null
   })
-  function hundleChange(combustivel, valor) {
+  function hundleChange(combustivel, pagamento) {
     setFormaAbastecimento((prevState) => ({
       ...prevState,
-      [combustivel]: detalhe.combustivel[combustivel].formas[valor].forma_abastecimento
+      [combustivel]: {
+        forma_abastecimento: detalhe.combustivel[combustivel].formas[pagamento].forma_abastecimento,
+        brinde: {
+          nome_brinde: detalhe?.combustivel[combustivel]?.formas[pagamento]?.brindes?.nome_brinde,
+          descricao_brinde: detalhe.combustivel[combustivel].formas[pagamento].brindes?.descricao_brinde,
+          expiracao_brinde: detalhe.combustivel[combustivel].formas[pagamento].brindes?.expiracao_brinde
+        }
+      }
     }))
   }
 
@@ -97,6 +104,7 @@ const Detalhes = () => {
   }
 
   useEffect(() => {
+    callItem()
     if (categoria === 'postos') {
       const formasPagamento = [
         { value: '1', label: 'Dinheiro' },
@@ -183,8 +191,20 @@ const Detalhes = () => {
                           </select>
 
                           <p>
-                            {formaAbastecimento.etanol}
+                            {formaAbastecimento?.etanol?.forma_abastecimento}
                           </p>
+                          {formaAbastecimento?.etanol?.brinde?.nome_brinde && (
+                            <div>
+                              <h4>Brindes:</h4>
+                              <p>
+                                Nome do brinde: {formaAbastecimento?.etanol?.brinde?.nome_brinde}
+                                <br />
+                                Descrição: {formaAbastecimento?.etanol?.brinde?.descricao_brinde}
+                                <br />
+                                Valido por: {formaAbastecimento?.etanol?.brinde?.expiracao_brinde} Dias
+                              </p>
+                            </div>
+                          )}
                         </div>
                       </>
                     )}
@@ -209,8 +229,20 @@ const Detalhes = () => {
                           </select>
 
                           <p>
-                            {formaAbastecimento.gasolina}
+                            {formaAbastecimento?.gasolina?.forma_abastecimento}
                           </p>
+                          {formaAbastecimento?.gasolina?.brinde?.nome_brinde && (
+                            <div className="container-brinde">
+                              <h4 className="title-brindes">Brindes:</h4>
+                              <p className="text-brindes">
+                                Nome do brinde: {formaAbastecimento?.gasolina?.brinde?.nome_brinde}
+                                <br />
+                                Descrição: {formaAbastecimento?.gasolina?.brinde?.descricao_brinde}
+                                <br />
+                                Valido por: {formaAbastecimento?.gasolina?.brinde?.expiracao_brinde} Dias
+                              </p>
+                            </div>
+                          )}
                         </div>
                       </>
                     )}
@@ -235,8 +267,20 @@ const Detalhes = () => {
                           </select>
 
                           <p>
-                            {formaAbastecimento.diesel}
+                            {formaAbastecimento?.diesel?.forma_abastecimento}
                           </p>
+                          {formaAbastecimento?.diesel?.brinde?.nome_brinde && (
+                            <div>
+                              <h4>Brindes:</h4>
+                              <p>
+                                Nome do brinde: {formaAbastecimento?.diesel?.brinde?.nome_brinde}
+                                <br />
+                                Descrição: {formaAbastecimento?.diesel?.brinde?.descricao_brinde}
+                                <br />
+                                Valido por: {formaAbastecimento?.diesel?.brinde?.expiracao_brinde} Dias
+                              </p>
+                            </div>
+                          )}
                         </div>
                       </>
                     )}
@@ -273,7 +317,7 @@ const Detalhes = () => {
                 <button className='btn-abrir-maps' onClick={() => { abrirMaps(detalhe.endereco) }} type="button">Abrir no Maps?</button>
               </div>
 
-              {categoria.categoria === 'postos' && (
+              {categoria === 'postos' && (
                 <div className="container-gas-pump-btn">
                   {(typeUser === 'driver' || typeUser === 'administrador') && (
                     <Link to={'/abastecimento'}>
