@@ -62,6 +62,12 @@ const PerfilUser = () => {
                                     <span className="data-user-span"> {dataUser.placa}</span>
                                 </p>
                             </div>
+
+                            <div className="container-btn-brinde">
+                                <button className="btn-brinde">
+                                    Meus brindes!
+                                </button>
+                            </div>
                         </div>
                     </>
                 )}
