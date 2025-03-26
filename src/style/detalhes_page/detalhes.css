@@ -29,28 +29,6 @@
   align-items: center;
   justify-content: center;
 }
-.container-item .container-sobre-item .container-formas-de-pagamento {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.container-item .container-sobre-item .container-formas-de-pagamento .title-formas-de-pagamento {
-  font-size: 18px;
-  font-weight: 500;
-  color: #14181b;
-  margin-bottom: 15px;
-}
-.container-item .container-sobre-item .container-formas-de-pagamento .formas-de-pagamento {
-  width: 100%;
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
-}
-.container-item .container-sobre-item .container-formas-de-pagamento .formas-de-pagamento .text-forma-de-pagamento {
-  margin-bottom: 10px;
-  color: #666;
-}
 .container-item .container-sobre-item .container-info-item {
   margin-bottom: 15px;
   display: flex;
@@ -76,6 +54,38 @@
 }
 .container-item .container-sobre-item .container-combustivel .container-combustivel-formas .metodo-pagamento {
   margin: 5px 0;
+}
+.container-item .container-sobre-item .container-combustivel .container-combustivel-formas .container-brinde {
+  margin-top: 5px;
+}
+.container-item .container-sobre-item .container-combustivel .container-combustivel-formas .container-brinde .title-brindes {
+  margin-bottom: 5px;
+}
+.container-item .container-sobre-item .container-combustivel .container-combustivel-formas .container-brinde .container-text-brindes .text-brinde {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+.container-item .container-sobre-item .container-formas-de-pagamento {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container-item .container-sobre-item .container-formas-de-pagamento .title-formas-de-pagamento {
+  font-size: 18px;
+  font-weight: 500;
+  color: #14181b;
+  margin-bottom: 15px;
+}
+.container-item .container-sobre-item .container-formas-de-pagamento .formas-de-pagamento {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+.container-item .container-sobre-item .container-formas-de-pagamento .formas-de-pagamento .text-forma-de-pagamento {
+  margin-bottom: 10px;
+  color: #666;
 }
 .container-item .container-km-time-btn {
   width: 100%;

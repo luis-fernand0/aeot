@@ -36,36 +36,6 @@
         align-items: center;
         justify-content: center;
 
-        .container-formas-de-pagamento {
-            width: 100%;
-
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-
-            .title-formas-de-pagamento {
-                font-size: 18px;
-                font-weight: 500;
-                color: #14181b;
-
-                margin-bottom: 15px;
-            }
-
-            .formas-de-pagamento {
-                width: 100%;
-
-                display: flex;
-                flex-flow: row wrap;
-                justify-content: space-between;
-
-                .text-forma-de-pagamento {
-                    margin-bottom: 10px;
-
-                    color: #666;
-                }
-            }
-        }
-
         .container-info-item {
             margin-bottom: 15px;
 
@@ -96,11 +66,57 @@
 
             .container-combustivel-formas {
                 margin-bottom: 15px;
+
                 .metodo-pagamento {
-                    margin: 5px 0 ;
+                    margin: 5px 0;
+                }
+
+                .container-brinde {
+                    margin-top: 5px;
+
+                    .title-brindes {
+                        margin-bottom: 5px;
+                    }
+
+                    .container-text-brindes {
+                        .text-brinde {
+                            display: inline-block;
+                            margin-bottom: 5px;
+                        }
+                    }
                 }
             }
 
+        }
+
+        .container-formas-de-pagamento {
+            width: 100%;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .title-formas-de-pagamento {
+                font-size: 18px;
+                font-weight: 500;
+                color: #14181b;
+
+                margin-bottom: 15px;
+            }
+
+            .formas-de-pagamento {
+                width: 100%;
+
+                display: flex;
+                flex-flow: row wrap;
+                justify-content: space-between;
+
+                .text-forma-de-pagamento {
+                    margin-bottom: 10px;
+
+                    color: #666;
+                }
+            }
         }
     }
 
@@ -197,6 +213,7 @@
 
         width: 50px;
         cursor: pointer;
+
         &:hover {
             background-color: #45a049;
         }
