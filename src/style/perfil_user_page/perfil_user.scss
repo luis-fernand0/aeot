@@ -71,5 +71,27 @@
                 }
             }
         }
+
+        .container-btn-brinde {
+            text-align: center;
+
+            .btn-brinde {
+                background-color: #fff100;
+
+                border: none;
+                border-radius: 15px;
+
+                height: 45px;
+                width: 150px;
+
+                font-weight: 500;
+                font-size: 14px;
+
+                transition: all 0.2s linear;
+                &:hover {
+                    background-color: #fff756;
+                }
+            }
+        }
     }
 }

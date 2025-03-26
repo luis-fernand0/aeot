@@ -52,4 +52,20 @@
 }
 .container-perfil .foto-user-datas .data-user-perfil .data-user .data-user-span {
   font-weight: 300;
+}
+.container-perfil .foto-user-datas .container-btn-brinde {
+  text-align: center;
+}
+.container-perfil .foto-user-datas .container-btn-brinde .btn-brinde {
+  background-color: #fff100;
+  border: none;
+  border-radius: 15px;
+  height: 45px;
+  width: 150px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s linear;
+}
+.container-perfil .foto-user-datas .container-btn-brinde .btn-brinde:hover {
+  background-color: #fff756;
 }/*# sourceMappingURL=perfil_user.css.map */
