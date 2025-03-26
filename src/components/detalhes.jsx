@@ -172,117 +172,129 @@ const Detalhes = () => {
                 <>
                   <div className='container-combustivel'>
                     {detalhe.combustivel?.etanol && (
-                      <>
-                        <div className="container-combustivel-formas">
-                          <p className="combustivel-posto">
-                            Etanol: R$ {detalhe.combustivel?.etanol.valor}
-                          </p>
+                      <div className="container-combustivel-formas">
+                        <p className="combustivel-posto">
+                          Etanol: R$ {detalhe.combustivel?.etanol.valor}
+                        </p>
 
-                          <select
-                            name="formas_pagamento"
-                            className="metodo-pagamento"
-                            id="forma_pagamento_etanol"
-                            onChange={(e) => hundleChange('etanol', e.target.value)}>
-                            {formasEtanol.map((key, index) => (
-                              <option key={key} value={key}>
-                                {detalhe.combustivel?.etanol.formas[formasEtanol[index]]?.forma_pagamento}
-                              </option>
-                            ))}
-                          </select>
+                        <select
+                          name="formas_pagamento"
+                          className="metodo-pagamento"
+                          id="forma_pagamento_etanol"
+                          onChange={(e) => hundleChange('etanol', e.target.value)}>
+                          {formasEtanol.map((key, index) => (
+                            <option key={key} value={key}>
+                              {detalhe.combustivel?.etanol.formas[formasEtanol[index]]?.forma_pagamento}
+                            </option>
+                          ))}
+                        </select>
 
-                          <p>
-                            {formaAbastecimento?.etanol?.forma_abastecimento}
-                          </p>
-                          {formaAbastecimento?.etanol?.brinde?.nome_brinde && (
-                            <div>
-                              <h4>Brindes:</h4>
-                              <p>
+                        <p>
+                          {formaAbastecimento?.etanol?.forma_abastecimento}
+                        </p>
+                        {formaAbastecimento?.etanol?.brinde?.nome_brinde && (
+                          <div className="container-brinde">
+                            <h4 className="title-brindes">Brindes:</h4>
+                            <p className="container-text-brindes">
+                              <span className="text-brinde">
                                 Nome do brinde: {formaAbastecimento?.etanol?.brinde?.nome_brinde}
-                                <br />
+                              </span>
+                              <br />
+                              <span className="text-brinde">
                                 Descrição: {formaAbastecimento?.etanol?.brinde?.descricao_brinde}
-                                <br />
-                                Valido por: {formaAbastecimento?.etanol?.brinde?.expiracao_brinde} Dias
-                              </p>
-                            </div>
-                          )}
-                        </div>
-                      </>
+                              </span>
+                              <br />
+                              <span className="text-brinde">
+                                Valido por: {formaAbastecimento?.etanol?.brinde?.expiracao_brinde} {formaAbastecimento?.etanol?.brinde?.expiracao_brinde > 1 ? 'Dias' : 'Dia'}
+                              </span>
+                            </p>
+                          </div>
+                        )}
+                      </div>
                     )}
 
                     {detalhe.combustivel?.gasolina && (
-                      <>
-                        <div className="container-combustivel-formas">
-                          <p className="combustivel-posto">
-                            Gasolina: R$ {detalhe.combustivel?.gasolina.valor}
-                          </p>
+                      <div className="container-combustivel-formas">
+                        <p className="combustivel-posto">
+                          Gasolina: R$ {detalhe.combustivel?.gasolina.valor}
+                        </p>
 
-                          <select
-                            className="metodo-pagamento"
-                            name="formas_pagamento"
-                            id="forma_pagamento_gasolina"
-                            onChange={(e) => hundleChange('gasolina', e.target.value)}>
-                            {formasGasolina.map((key, index) => (
-                              <option key={key} value={key}>
-                                {detalhe.combustivel?.gasolina.formas[formasGasolina[index]]?.forma_pagamento}
-                              </option>
-                            ))}
-                          </select>
+                        <select
+                          className="metodo-pagamento"
+                          name="formas_pagamento"
+                          id="forma_pagamento_gasolina"
+                          onChange={(e) => hundleChange('gasolina', e.target.value)}>
+                          {formasGasolina.map((key, index) => (
+                            <option key={key} value={key}>
+                              {detalhe.combustivel?.gasolina.formas[formasGasolina[index]]?.forma_pagamento}
+                            </option>
+                          ))}
+                        </select>
 
-                          <p>
-                            {formaAbastecimento?.gasolina?.forma_abastecimento}
-                          </p>
-                          {formaAbastecimento?.gasolina?.brinde?.nome_brinde && (
-                            <div className="container-brinde">
-                              <h4 className="title-brindes">Brindes:</h4>
-                              <p className="text-brindes">
+                        <p>
+                          {formaAbastecimento?.gasolina?.forma_abastecimento}
+                        </p>
+                        {formaAbastecimento?.gasolina?.brinde?.nome_brinde && (
+                          <div className="container-brinde">
+                            <h4 className="title-brindes">Brindes:</h4>
+                            <p className="container-text-brindes">
+                              <span className="text-brinde">
                                 Nome do brinde: {formaAbastecimento?.gasolina?.brinde?.nome_brinde}
-                                <br />
+                              </span>
+                              <br />
+                              <span className="text-brinde">
                                 Descrição: {formaAbastecimento?.gasolina?.brinde?.descricao_brinde}
-                                <br />
-                                Valido por: {formaAbastecimento?.gasolina?.brinde?.expiracao_brinde} Dias
-                              </p>
-                            </div>
-                          )}
-                        </div>
-                      </>
+                              </span>
+                              <br />
+                              <span className="text-brinde">
+                                Valido por: {formaAbastecimento?.gasolina?.brinde?.expiracao_brinde} {formaAbastecimento?.gasolina?.brinde?.expiracao_brinde > 1 ? 'Dias' : 'Dia'}
+                              </span>
+                            </p>
+                          </div>
+                        )}
+                      </div>
                     )}
 
                     {detalhe.combustivel?.diesel && (
-                      <>
-                        <div className="container-combustivel-formas">
-                          <p className="combustivel-posto">
-                            Diesel: R$ {detalhe.combustivel?.diesel.valor}
-                          </p>
+                      <div className="container-combustivel-formas">
+                        <p className="combustivel-posto">
+                          Diesel: R$ {detalhe.combustivel?.diesel.valor}
+                        </p>
 
-                          <select
-                            className="metodo-pagamento"
-                            name="formas_pagamento"
-                            id="forma_pagamento_diesel"
-                            onChange={(e) => hundleChange('diesel', e.target.value)}>
-                            {formasDiesel.map((key, index) => (
-                              <option key={key} value={key}>
-                                {detalhe.combustivel?.diesel.formas[formasDiesel[index]]?.forma_pagamento}
-                              </option>
-                            ))}
-                          </select>
+                        <select
+                          className="metodo-pagamento"
+                          name="formas_pagamento"
+                          id="forma_pagamento_diesel"
+                          onChange={(e) => hundleChange('diesel', e.target.value)}>
+                          {formasDiesel.map((key, index) => (
+                            <option key={key} value={key}>
+                              {detalhe.combustivel?.diesel.formas[formasDiesel[index]]?.forma_pagamento}
+                            </option>
+                          ))}
+                        </select>
 
-                          <p>
-                            {formaAbastecimento?.diesel?.forma_abastecimento}
-                          </p>
-                          {formaAbastecimento?.diesel?.brinde?.nome_brinde && (
-                            <div>
-                              <h4>Brindes:</h4>
-                              <p>
+                        <p>
+                          {formaAbastecimento?.diesel?.forma_abastecimento}
+                        </p>
+                        {formaAbastecimento?.diesel?.brinde?.nome_brinde && (
+                          <div className="container-brinde">
+                            <h4 className="title-brindes">Brindes:</h4>
+                            <p className="container-text-brindes">
+                              <span className="text-brinde">
                                 Nome do brinde: {formaAbastecimento?.diesel?.brinde?.nome_brinde}
-                                <br />
+                              </span>
+                              <br />
+                              <span className="text-brinde">
                                 Descrição: {formaAbastecimento?.diesel?.brinde?.descricao_brinde}
-                                <br />
-                                Valido por: {formaAbastecimento?.diesel?.brinde?.expiracao_brinde} Dias
-                              </p>
-                            </div>
-                          )}
-                        </div>
-                      </>
+                              </span>
+                              <br />
+                              <span className="text-brinde">
+                                Valido por: {formaAbastecimento?.diesel?.brinde?.expiracao_brinde} {formaAbastecimento?.diesel?.brinde?.expiracao_brinde > 1 ? 'Dias' : 'Dia'}
+                              </span>
+                            </p>
+                          </div>
+                        )}
+                      </div>
                     )}
                   </div>
 
