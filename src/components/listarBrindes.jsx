@@ -9,11 +9,11 @@ import ModalResponse from './modalResponse';
 import '../style/listarBrindes_component/listarBrindes.css'
 
 
-const ListarBrindes = ({ clickBrinde, closeModal }) => {
+const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde }) => {
     const tokenUser = localStorage.getItem('token');
     const navigate = useNavigate()
 
-    const [brindes, setBrindes] = useState([])
+    const [brindes, setBrindes] = useState(null)
 
     const [loading, setLoading] = useState(false)
     const [isModalVisible, setModalVisible] = useState(false);
@@ -33,7 +33,13 @@ const ListarBrindes = ({ clickBrinde, closeModal }) => {
             if (response.status === 403) {
                 navigate('/', { replace: true })
             }
-            
+
+            if (response.status === 404) {
+                setModalMessage(data.message)
+                setModalVisible(true)
+                return
+            }
+
             setBrindes(data)
         } catch (err) {
             setModalMessage(`Desculpe! Ocorreu um erro inesperado. Não foi possível listar os brinde.` + err.message)
@@ -72,12 +78,23 @@ const ListarBrindes = ({ clickBrinde, closeModal }) => {
                                 key={index}
                                 onClick={() => clickBrinde && clickBrinde(brinde)}
                                 className="brinde">
+                                {driverBrinde && (
+                                    <>
+                                        <p>
+                                            Posto: {brinde?.nome_posto}
+                                        </p>
+
+                                        <p>
+                                            Endereço: {brinde?.endereco_posto}
+                                        </p>
+                                    </>
+                                )}
                                 <p className='nome-brinde'>
-                                    Nome do brinde: {brinde.nome_brinde.toUpperCase()}
+                                    Nome do brinde: {brinde?.nome_brinde?.toUpperCase()}
                                 </p>
 
                                 <p className='brinde-descricao'>
-                                    {brinde.descricao.toUpperCase()}
+                                    {brinde?.descricao?.toUpperCase()}
                                 </p>
 
                                 <p className='brinde-expiracao'>
