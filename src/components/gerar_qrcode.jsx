@@ -19,7 +19,6 @@ const GerarQrCode = () => {
     const navigate = useNavigate()
 
     const abastecimento = JSON.parse(localStorage.getItem('dadosAbastecimento'))
-    console.log(abastecimento)
     const tokenUser = localStorage.getItem('token');
 
     const [dataUser, setDataUser] = useState()
