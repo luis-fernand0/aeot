@@ -104,7 +104,8 @@
   font-size: 20px;
 }
 .container-scan-respose #dados-do-abastecimento .container-dados-do-motorista,
-.container-scan-respose #dados-do-abastecimento .container-abastecimento {
+.container-scan-respose #dados-do-abastecimento .container-abastecimento,
+.container-scan-respose #dados-do-abastecimento .container-brinde {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -112,32 +113,37 @@
   justify-content: center;
 }
 .container-scan-respose #dados-do-abastecimento .container-dados-do-motorista .text-img-container,
-.container-scan-respose #dados-do-abastecimento .container-abastecimento .text-img-container {
+.container-scan-respose #dados-do-abastecimento .container-abastecimento .text-img-container,
+.container-scan-respose #dados-do-abastecimento .container-brinde .text-img-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 .container-scan-respose #dados-do-abastecimento .container-dados-do-motorista .text-img-container .img-foto-motorista,
-.container-scan-respose #dados-do-abastecimento .container-abastecimento .text-img-container .img-foto-motorista {
+.container-scan-respose #dados-do-abastecimento .container-abastecimento .text-img-container .img-foto-motorista,
+.container-scan-respose #dados-do-abastecimento .container-brinde .text-img-container .img-foto-motorista {
   width: 100px;
   height: 100px;
   border-radius: 100%;
   margin-top: 15px;
 }
 .container-scan-respose #dados-do-abastecimento .container-dados-do-motorista .text-container,
-.container-scan-respose #dados-do-abastecimento .container-abastecimento .text-container {
+.container-scan-respose #dados-do-abastecimento .container-abastecimento .text-container,
+.container-scan-respose #dados-do-abastecimento .container-brinde .text-container {
   margin-bottom: 15px;
   font-weight: 500;
 }
 .container-scan-respose #dados-do-abastecimento .container-dados-do-motorista .text-container .text-span-container,
-.container-scan-respose #dados-do-abastecimento .container-abastecimento .text-container .text-span-container {
+.container-scan-respose #dados-do-abastecimento .container-abastecimento .text-container .text-span-container,
+.container-scan-respose #dados-do-abastecimento .container-brinde .text-container .text-span-container {
   margin-left: 10px;
   font-weight: 300;
   text-transform: uppercase;
 }
 .container-scan-respose #dados-do-abastecimento .container-dados-do-motorista .text-container .text-span-container #litros-abastecidos,
-.container-scan-respose #dados-do-abastecimento .container-abastecimento .text-container .text-span-container #litros-abastecidos {
+.container-scan-respose #dados-do-abastecimento .container-abastecimento .text-container .text-span-container #litros-abastecidos,
+.container-scan-respose #dados-do-abastecimento .container-brinde .text-container .text-span-container #litros-abastecidos {
   width: 100px;
   height: 40px;
   border: 2px solid #4b39ef;
@@ -148,11 +154,13 @@
   font-weight: 300;
 }
 .container-scan-respose #dados-do-abastecimento .container-dados-do-motorista .text-container .text-span-container .litros-abastecidos-alert,
-.container-scan-respose #dados-do-abastecimento .container-abastecimento .text-container .text-span-container .litros-abastecidos-alert {
+.container-scan-respose #dados-do-abastecimento .container-abastecimento .text-container .text-span-container .litros-abastecidos-alert,
+.container-scan-respose #dados-do-abastecimento .container-brinde .text-container .text-span-container .litros-abastecidos-alert {
   border: 2px solid rgb(231, 84, 84) !important;
 }
 .container-scan-respose #dados-do-abastecimento .container-dados-do-motorista .title-container,
-.container-scan-respose #dados-do-abastecimento .container-abastecimento .title-container {
+.container-scan-respose #dados-do-abastecimento .container-abastecimento .title-container,
+.container-scan-respose #dados-do-abastecimento .container-brinde .title-container {
   color: #d0c613;
   font-weight: 600;
   font-size: 18px;
