@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faKey } from '@fortawesome/free-solid-svg-icons'
 
+import { formasPagamento, combustiveis } from "../functions/contants";
+
 import Loading from '../components/loading'
 import ModalResponse from '../components/modalResponse'
 
@@ -27,18 +29,6 @@ const LerQrCode = () => {
     const [loading, setLoading] = useState(false)
     const [isModalVisible, setModalVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
-
-    const combustiveis = [
-        { value: '1', label: 'etanol' },
-        { value: '2', label: 'gasolina' },
-        { value: '3', label: 'diesel' }
-    ]
-    const formasPagamento = [
-        { value: '1', label: 'dinheiro' },
-        { value: '2', label: 'pix' },
-        { value: '3', label: 'debito' },
-        { value: '4', label: 'credito' },
-    ]
 
     function formatLitro(e) {
         let input = e.target
@@ -83,7 +73,7 @@ const LerQrCode = () => {
                     },
                     (decodedText, decodedResult) => {
                         setResult(JSON.parse(decodedText))
-                        console.log(result)
+
                         setValorTotal(null)
                         if (document.getElementById('litros-abastecidos')) {
                             document.getElementById('litros-abastecidos').value = ''
@@ -187,7 +177,7 @@ const LerQrCode = () => {
             })
             myForm.append('combustivel', result.tipo_combustivel)
 
-            if(result.forma_abastecimento === 'valor' || result.forma_abastecimento === 'litro') {
+            if (result.forma_abastecimento === 'valor' || result.forma_abastecimento === 'litro') {
                 result.forma_abastecimento = 1
             } else {
                 result.forma_abastecimento = 2
@@ -244,6 +234,47 @@ const LerQrCode = () => {
         }
     }
 
+    async function resgatarBrinde() {
+        console.log('resgatando brinde')
+        setLoading(true)
+        try {
+            const myForm = new FormData()
+            myForm.append('chave', result.chave)
+            myForm.append('driver_id', result.driver_id || result.driver_user_id)
+            myForm.append('posto_id', result.posto_user_id)
+            myForm.append('cod_brinde', result.cod_brinde)
+
+            const myFormData = Object.fromEntries(myForm)
+
+            for (let [key, value] of myForm.entries()) {
+                console.log(key, value)
+            }
+
+            const response = await fetch('http://localhost:3000/aeot/auth/resgatar_brinde', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${tokenUser}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(myFormData)
+            })
+            const data = await response.json()
+            if (response.status === 403) {
+                navigate('/', { replace: true })
+                return
+            }
+
+            setModalMessage(data.message)
+            setModalVisible(true)
+            setResult(null)
+        } catch (err) {
+            setModalMessage(`Ocorreu um erro inesperado! ${err.message}`)
+            setModalVisible(true)
+        } finally {
+            setLoading(false)
+        }
+    }
+
     async function buscarChave(e) {
         try {
             setLoading(true)
@@ -274,7 +305,7 @@ const LerQrCode = () => {
             if (document.getElementById('litros-abastecidos')) {
                 document.getElementById('litros-abastecidos').value = ''
             }
-            setResult(data.abastecimento)
+            setResult(data.abastecimento || data.brinde)
             document.querySelector('.key-input').classList.remove('key-input-alert')
         } catch (err) {
             setModalMessage(`Desculpe ocorreu um erro inesperado! ${err.message}`)
@@ -345,11 +376,13 @@ const LerQrCode = () => {
                 <div id="dados-do-abastecimento">
                     {result && (
                         <>
-                            <div className="container-title-dados-abastecimento">
-                                <h2 className="title-dados-abastecimento">
-                                    Dados do abastecimento
-                                </h2>
-                            </div>
+                            {result.tipo != 'resgate_de_brinde' && (
+                                <div className="container-title-dados-abastecimento">
+                                    <h2 className="title-dados-abastecimento">
+                                        Dados do abastecimento
+                                    </h2>
+                                </div>
+                            )}
 
                             <div className="container-dados-do-motorista">
                                 <h2 className="title-container">Motorista</h2>
@@ -380,76 +413,93 @@ const LerQrCode = () => {
                                 </p>
                             </div>
 
-                            <div className="container-abastecimento">
-                                <h2 className="title-container">
-                                    Abastecimento
-                                </h2>
+                            {result.tipo === 'resgate_de_brinde' && (
+                                <div className="container-brinde">
+                                    <h2 className="title-container">
+                                        Brinde
+                                    </h2>
 
-                                <p className="text-container">
-                                    Tipo do combustivel:
-                                    <span className="text-span-container">
-                                        {result.tipo_combustivel}
-                                    </span>
-                                </p>
-                                <p className="text-container">
-                                    Valor do combustivel:
-                                    <span className="text-span-container">
-                                        R$ {result.valor_combustivel}
-                                    </span>
-                                </p>
+                                    <p className="text-container">
+                                        Nome do brinde:
+                                        <span className="text-span-container">
+                                            {result.brinde_nome}
+                                        </span>
+                                    </p>
+                                </div>
+                            )}
 
-                                <p className="text-container">
-                                    Forma de abastecimento:
-                                    <span className="text-span-container">
-                                        {result.forma_abastecimento}
-                                    </span>
-                                </p>
+                            {result.tipo != 'resgate_de_brinde' && (
+                                <div className="container-abastecimento">
+                                    <h2 className="title-container">
+                                        Abastecimento
+                                    </h2>
 
-                                <p className="text-container">
-                                    Quatidade abastecida:
-                                    {result.forma_abastecimento === 'encher-tanque' && (
-                                        <>
+                                    <p className="text-container">
+                                        Tipo do combustivel:
+                                        <span className="text-span-container">
+                                            {result.tipo_combustivel}
+                                        </span>
+                                    </p>
+                                    <p className="text-container">
+                                        Valor do combustivel:
+                                        <span className="text-span-container">
+                                            R$ {result.valor_combustivel}
+                                        </span>
+                                    </p>
+
+                                    <p className="text-container">
+                                        Forma de abastecimento:
+                                        <span className="text-span-container">
+                                            {result.forma_abastecimento}
+                                        </span>
+                                    </p>
+
+                                    <p className="text-container">
+                                        Quatidade abastecida:
+                                        {result.forma_abastecimento === 'encher-tanque' && (
+                                            <>
+                                                <span className="text-span-container">
+                                                    <input
+                                                        onChange={(e) => formatLitro(e)}
+                                                        onBlur={(e) => changeValorTotal(e)}
+                                                        id="litros-abastecidos"
+                                                        name="litros_abastecidos"
+                                                        type="text"
+                                                        placeholder="Litros abastecido" />
+                                                </span>
+                                            </>
+                                        )}
+                                        <span className="text-span-container">
+                                            {result?.quantidade} Litros
+                                        </span>
+                                    </p>
+
+                                    <p className="text-container">
+                                        Valor total:
+                                        {result.forma_abastecimento === 'encher-tanque' && (
                                             <span className="text-span-container">
-                                                <input
-                                                    onChange={(e) => formatLitro(e)}
-                                                    onBlur={(e) => changeValorTotal(e)}
-                                                    id="litros-abastecidos"
-                                                    name="litros_abastecidos"
-                                                    type="text"
-                                                    placeholder="Litros abastecido" />
+                                                R$ {valorTotal}
                                             </span>
-                                        </>
-                                    )}
-                                    <span className="text-span-container">
-                                        {result?.quantidade} Litros
-                                    </span>
-                                </p>
+                                        )}
 
-                                <p className="text-container">
-                                    Valor total:
-                                    {result.forma_abastecimento === 'encher-tanque' && (
+                                        {result.forma_abastecimento != 'encher-tanque' && (
+                                            <span className="text-span-container">
+                                                R$ {result.valor_total}
+                                            </span>
+                                        )}
+                                    </p>
+
+                                    <p className="text-container">
+                                        Metodo de pagamento:
                                         <span className="text-span-container">
-                                            R$ {valorTotal}
+                                            {result.metodo_pagamento}
                                         </span>
-                                    )}
-
-                                    {result.forma_abastecimento != 'encher-tanque' && (
-                                        <span className="text-span-container">
-                                            R$ {result.valor_total}
-                                        </span>
-                                    )}
-                                </p>
-
-                                <p className="text-container">
-                                    Metodo de pagamento:
-                                    <span className="text-span-container">
-                                        {result.metodo_pagamento}
-                                    </span>
-                                </p>
-                            </div>
+                                    </p>
+                                </div>
+                            )}
 
                             <button
-                                onClick={() => confirmarVenda()}
+                                onClick={() => result.tipo === 'resgate_de_brinde' ? resgatarBrinde() : confirmarVenda()}
                                 className="btn-abastecido">
                                 Confirmar!
                             </button>
