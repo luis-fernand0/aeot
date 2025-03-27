@@ -101,7 +101,7 @@ const Home = () => {
 
   function detalhes(posto, distancia, local, categoria) {
     localStorage.setItem('dadosItem', JSON.stringify(posto))
-    localStorage.setItem('categoria', JSON.stringify(categoria))
+    localStorage.setItem('categoria', JSON.stringify(categoria.categoria))
     localStorage.setItem('location', JSON.stringify([distancia, local]))
     navigate('/detalhes')
   }
