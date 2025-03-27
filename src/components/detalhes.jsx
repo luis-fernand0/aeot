@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGasPump, faPen, faFlagCheckered, faClock } from '@fortawesome/free-solid-svg-icons'
+import { formasPagamento } from "../functions/contants";
 
 import Header from "./header";
 import Loading from "./loading"
@@ -30,7 +31,7 @@ const Detalhes = () => {
 
   const [distancia, setDistancia] = useState(location[0] || {})
   const [local, setLocal] = useState(location[1] || {})
-  const [categoria, setCategoria] = useState(itemCategoria.categoria || {})
+  const [categoria, setCategoria] = useState(itemCategoria || {})
 
   const [loading, setLoading] = useState(false)
   const [isModalVisible, setModalVisible] = useState(false);
@@ -50,7 +51,8 @@ const Detalhes = () => {
         brinde: {
           nome_brinde: detalhe?.combustivel[combustivel]?.formas[pagamento]?.brindes?.nome_brinde,
           descricao_brinde: detalhe.combustivel[combustivel].formas[pagamento].brindes?.descricao_brinde,
-          expiracao_brinde: detalhe.combustivel[combustivel].formas[pagamento].brindes?.expiracao_brinde
+          expiracao_brinde: detalhe.combustivel[combustivel].formas[pagamento].brindes?.expiracao_brinde,
+          abastecimento_minimo: detalhe.combustivel[combustivel].formas[pagamento].brindes?.abastecimentos_minimos
         }
       }
     }))
@@ -106,12 +108,6 @@ const Detalhes = () => {
   useEffect(() => {
     callItem()
     if (categoria === 'postos') {
-      const formasPagamento = [
-        { value: '1', label: 'Dinheiro' },
-        { value: '2', label: 'Pix' },
-        { value: '3', label: 'Debito' },
-        { value: '4', label: 'Credito' },
-      ];
       let todasAsFormas = [...formasEtanol, ...formasGasolina, ...formasDiesel]
       todasAsFormas.forEach((keyForma) => {
         formasPagamento.forEach((key) => {
@@ -207,6 +203,10 @@ const Detalhes = () => {
                               <span className="text-brinde">
                                 Valido por: {formaAbastecimento?.etanol?.brinde?.expiracao_brinde} {formaAbastecimento?.etanol?.brinde?.expiracao_brinde > 1 ? 'Dias' : 'Dia'}
                               </span>
+                              <br />
+                              <span className="text-brinde">
+                                Abatecimento minimo: {formaAbastecimento?.etanol?.brinde?.abastecimento_minimo}
+                              </span>
                             </p>
                           </div>
                         )}
@@ -248,6 +248,10 @@ const Detalhes = () => {
                               <br />
                               <span className="text-brinde">
                                 Valido por: {formaAbastecimento?.gasolina?.brinde?.expiracao_brinde} {formaAbastecimento?.gasolina?.brinde?.expiracao_brinde > 1 ? 'Dias' : 'Dia'}
+                              </span>
+                              <br />
+                              <span className="text-brinde">
+                                Abatecimento minimo: {formaAbastecimento?.gasolina?.brinde?.abastecimento_minimo}
                               </span>
                             </p>
                           </div>
@@ -291,6 +295,10 @@ const Detalhes = () => {
                               <span className="text-brinde">
                                 Valido por: {formaAbastecimento?.diesel?.brinde?.expiracao_brinde} {formaAbastecimento?.diesel?.brinde?.expiracao_brinde > 1 ? 'Dias' : 'Dia'}
                               </span>
+                              <br />
+                              <span className="text-brinde">
+                                Abatecimento minimo: {formaAbastecimento?.diesel?.brinde?.abastecimento_minimo}
+                              </span>
                             </p>
                           </div>
                         )}
@@ -304,7 +312,7 @@ const Detalhes = () => {
                     <div className="formas-de-pagamento">
                       {formasDePagamento.map((formaPagamento) => (
                         <p key={formaPagamento} className="text-forma-de-pagamento">
-                          {formaPagamento}
+                          {formaPagamento.slice(0, 1).toUpperCase() + formaPagamento.slice(1)}
                         </p>
                       ))}
                     </div>
