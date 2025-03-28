@@ -8,8 +8,11 @@ import ModalResponse from './modalResponse';
 
 import '../style/adicionarBrinde_component/adicionarBrinde.css'
 
+const urlAddBrinde = import.meta.env.VITE_URL_ADICIONAR_BRINDE
+
 const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
     const tokenUser = localStorage.getItem('token');
+    const navigate = useNavigate()
 
     const [combustiveisSelecionados, setCombustiveisSelecionados] = useState([])
     const [formasSelecionadas, setFormasSelecionadas] = useState({})
@@ -91,7 +94,7 @@ const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
                 }
             }
 
-            const response = await fetch('http://localhost:3000/aeot/auth/adicionar_brinde', {
+            const response = await fetch(urlAddBrinde, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${tokenUser}`,
