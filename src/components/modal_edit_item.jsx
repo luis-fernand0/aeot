@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
 import { checkValor } from '../functions/checkValor'
+import { combustiveis, formasPagamento, formasAbastecimentos } from '../functions/contants';
+
 
 import ModalResponse from './modalResponse'
 import Loading from './loading'
@@ -28,25 +30,6 @@ const EditItem = ({ show, close, categoria, item }) => {
             [combustivel]: !prev[combustivel],
         }))
     }
-
-    const combustiveis = [
-        { value: '1', label: 'etanol' },
-        { value: '2', label: 'gasolina' },
-        { value: '3', label: 'diesel' }
-    ];
-
-    const formasPagamento = [
-        { value: '1', label: 'dinheiro' },
-        { value: '2', label: 'pix' },
-        { value: '3', label: 'debito' },
-        { value: '4', label: 'credito' },
-    ];
-
-    const formasAbastecimentos = [
-        { value: '', label: 'Escolha a forma de abastecimento' },
-        { value: '1', label: 'Litragem Livre' },
-        { value: '2', label: 'Encher Tanque' },
-    ];
 
     if (categoria === 'postos') {
         //ITERANDO SOBRE CADA COMBUSTIVEL E CADA FORMA DE PAGAMENTO PARA DAR O VALOR 1 OU 2 NA FORMA DE ABASTECIMENTO DE CADA FORMA DE PAGAMENTO 
