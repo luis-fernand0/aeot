@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faXmark, faPen, faTrash } from '@fortawesome/free-solid-svg-icons'
 
 import Loading from './loading'
 import ModalResponse from './modalResponse';
+import EditarBrinde from './editarBrinde'
 
 import '../style/listarBrindes_component/listarBrindes.css'
 
@@ -16,6 +17,7 @@ const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde }) => {
     const navigate = useNavigate()
 
     const [brindes, setBrindes] = useState(null)
+    const [showModal, setShowModal] = useState({ view: false, brinde: null })
 
     const [loading, setLoading] = useState(false)
     const [isModalVisible, setModalVisible] = useState(false);
@@ -99,14 +101,39 @@ const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde }) => {
                                     {brinde?.descricao_brinde?.toUpperCase()}
                                 </p>
 
+                                <p className='brinde-abastecimento'>
+                                    Abastecer no minimo: {brinde?.abastecimentos_minimos} {brinde?.abastecimentos_minimos > 1 ? 'Vezes' : 'Vez'}
+                                </p>
+
                                 <p className='brinde-expiracao'>
                                     Brinde valido por: {brinde.expiracao} {brinde.expiracao > 1 ? 'Dias' : 'Dia'}
                                 </p>
+
+                                <div className='container-btn-control'>
+                                    <button
+                                        onClick={() => { setShowModal({ view: true, brinde: brinde }) }}
+                                        className='btn-control btn-edit'>
+                                        <FontAwesomeIcon className='pen-icon' icon={faPen} />
+                                    </button>
+
+                                    <button className='btn-control btn-remove'>
+                                        <FontAwesomeIcon className='trash-icon' icon={faTrash} />
+                                    </button>
+                                </div>
                             </li>
                         )}
                     </ul>
                 )}
             </div>
+
+            {showModal.view && (
+                <EditarBrinde
+                    closeModal={(state) => {
+                        setShowModal(state)
+                        listarBrindes()
+                    }}
+                    brinde={showModal.brinde} />
+            )}
         </>
     )
 }
