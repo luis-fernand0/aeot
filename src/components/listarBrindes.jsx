@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
@@ -8,6 +9,7 @@ import ModalResponse from './modalResponse';
 
 import '../style/listarBrindes_component/listarBrindes.css'
 
+const urlListarBrindes = import.meta.env.VITE_URL_LISTAR_BRINDES
 
 const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde }) => {
     const tokenUser = localStorage.getItem('token');
@@ -22,7 +24,7 @@ const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde }) => {
     async function listarBrindes() {
         setLoading(true)
         try {
-            const response = await fetch('http://localhost:3000/aeot/auth/listar_brindes', {
+            const response = await fetch(urlListarBrindes, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${tokenUser}`
@@ -94,7 +96,7 @@ const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde }) => {
                                 </p>
 
                                 <p className='brinde-descricao'>
-                                    {brinde?.descricao?.toUpperCase()}
+                                    {brinde?.descricao_brinde?.toUpperCase()}
                                 </p>
 
                                 <p className='brinde-expiracao'>
