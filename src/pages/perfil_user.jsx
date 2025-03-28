@@ -50,7 +50,6 @@ const PerfilUser = () => {
 
     async function gerarQrCode(brinde) {
         setLoading(true)
-        console.log(brinde)
         try {
             let chaveID = qrCodeValue.chave || generateKey(dataUser?.placa)
 
