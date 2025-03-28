@@ -421,7 +421,7 @@ const LerQrCode = () => {
                                     <p className="text-container">
                                         Nome do brinde:
                                         <span className="text-span-container">
-                                            {result.brinde_nome}
+                                            {result.brinde_nome || result.nome_brinde}
                                         </span>
                                     </p>
                                 </div>
