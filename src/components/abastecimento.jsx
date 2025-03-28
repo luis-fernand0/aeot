@@ -1,9 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faGasPump } from '@fortawesome/free-solid-svg-icons'
 
 import { checkValor } from '../functions/checkValor'
+import { formasPagamento } from '../functions/contants';
 
 import '../style/abastecimento_component/abastecimento.css'
 
@@ -12,7 +14,7 @@ const Abastecimento = () => {
 
     const posto = JSON.parse(localStorage.getItem('dadosItem'))
 
-    const [formasPagamento, setFormasPagamento] = useState([])
+    const [formasPagamentos, setFormasPagamento] = useState([])
     const [formaAbastecimento, setFormaAbastecimento] = useState()
     const [combustivelAtual, setCombustivelAtual] = useState()
     const [btnChecked, setBtnChecked] = useState()
@@ -30,17 +32,9 @@ const Abastecimento = () => {
     }
     function changeAbastecimento(formaAbastecimento) {
         setBtnChecked()
-        const formasPagamento = [
-            { value: '1', label: 'dinheiro' },
-            { value: '2', label: 'pix' },
-            { value: '3', label: 'debito' },
-            { value: '4', label: 'credito' },
-        ];
         formasPagamento.forEach((pagamento) => {
             if (pagamento.label === formaAbastecimento) {
-                console.log(formaAbastecimento)
                 setFormaAbastecimento(posto.combustivel[combustivelAtual].formas[pagamento.value].forma_abastecimento)
-                console.log(posto.combustivel[combustivelAtual].formas[pagamento.value].forma_abastecimento)
             }
         })
     }
@@ -66,7 +60,6 @@ const Abastecimento = () => {
     function enviarDados() {
         const Typecombustivel = document.getElementById('combustivel').value
         const payMethod = document.getElementById('pagamento').value
-        console.log(payMethod, Typecombustivel)
 
         let valor = null
         let abastecimento = null
@@ -149,8 +142,8 @@ const Abastecimento = () => {
                                     id="pagamento"
                                     defaultValue={''}>
                                     <option value=''>Escolha o metodo de pagamento</option>
-                                    {formasPagamento &&
-                                        formasPagamento.map((pagamento) => (
+                                    {formasPagamentos &&
+                                        formasPagamentos.map((pagamento) => (
                                             <option
                                                 value={pagamento.charAt(0).toLowerCase() + pagamento.slice(1)}
                                                 key={pagamento}>
