@@ -235,7 +235,6 @@ const LerQrCode = () => {
     }
 
     async function resgatarBrinde() {
-        console.log('resgatando brinde')
         setLoading(true)
         try {
             const myForm = new FormData()
