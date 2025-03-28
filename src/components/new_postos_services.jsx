@@ -12,6 +12,7 @@ import { comprimirFoto } from '../functions/comprimirFoto';
 import { formatarEmail } from '../functions/formatarEmail';
 import { revealPass } from '../functions/revealPass';
 import { checkPass } from '../functions/checkPass';
+import { combustiveis, formasPagamento, formasAbastecimentos } from '../functions/contants';
 
 import Loading from './loading'
 import ModalResponse from './modalResponse';
@@ -40,26 +41,7 @@ const NewPostosServices = () => {
       [combustivel]: !prev[combustivel],
     }))
   }
-
-  const combustiveis = [
-    { value: '1', label: 'etanol' },
-    { value: '2', label: 'gasolina' },
-    { value: '3', label: 'diesel' }
-  ];
-
-  const formasPagamento = [
-    { value: '1', label: 'dinheiro' },
-    { value: '2', label: 'pix' },
-    { value: '3', label: 'debito' },
-    { value: '4', label: 'credito' },
-  ];
-
-  const formasAbastecimentos = [
-    { value: '', label: 'Escolha a forma de abastecimento' },
-    { value: '1', label: 'Litragem Livre' },
-    { value: '2', label: 'Encher Tanque' },
-  ];
-
+  
   function addFoto(input) { document.getElementById(input).click() }
   const callVerificarFoto = async (inputId, span, btnId) => {
     const foto = await comprimirFoto(inputId)
