@@ -9,6 +9,7 @@ import '../style/homePosto_component/homePosto.css'
 
 const HomePosto = ({ posto, categoria }) => {
     const navigate = useNavigate()
+    const typeUser = localStorage.getItem('type_user')
 
     const [exibir, setExibir] = useState('meu_anuncio')
     const [gerenciarBrinde, setGerenciarBrinde] = useState('')
@@ -31,10 +32,12 @@ const HomePosto = ({ posto, categoria }) => {
                             Meu anuncio
                         </button>
 
-                        <button onClick={() => setExibir('brindes')}
-                            className={`btn-option ${exibir === 'brindes' ? 'checked' : ''}`} type="button">
-                            Brindes
-                        </button>
+                        {typeUser === 'posto' && (
+                            <button onClick={() => setExibir('brindes')}
+                                className={`btn-option ${exibir === 'brindes' ? 'checked' : ''}`} type="button">
+                                Brindes
+                            </button>
+                        )}
                     </div>
                     {exibir === 'meu_anuncio' && (
                         <div className='container-anuncio'>
@@ -110,7 +113,7 @@ const HomePosto = ({ posto, categoria }) => {
                             {gerenciarBrinde === 'add_brinde' && (
                                 <AdicionarBrinde
                                     propCodPosto={posto[0].cod_posto}
-                                    propCombustiveis={posto[0].combustivel}/>
+                                    propCombustiveis={posto[0].combustivel} />
                             )}
                         </div>
                     )}
