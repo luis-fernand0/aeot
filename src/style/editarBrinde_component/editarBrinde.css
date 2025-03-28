@@ -1,0 +1,83 @@
+.container-form-edit-brinde {
+  background-color: rgba(0, 0, 0, 0.2431372549);
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.container-form-edit-brinde .form-editar-brinde {
+  background-color: #fff;
+  height: 90%;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+}
+.container-form-edit-brinde .form-editar-brinde .container-close-modal-editar-brindes {
+  width: 100%;
+  text-align: right;
+  padding: 25px 25px 15px 0;
+}
+.container-form-edit-brinde .form-editar-brinde .container-close-modal-editar-brindes .btn-close-editar-brindes {
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+}
+.container-form-edit-brinde .form-editar-brinde .container-close-modal-editar-brindes .btn-close-editar-brindes .x-icon {
+  transition: all 0.3s linear;
+}
+.container-form-edit-brinde .form-editar-brinde .container-close-modal-editar-brindes .btn-close-editar-brindes .x-icon:hover {
+  transform: scale(1.1);
+}
+.container-form-edit-brinde .form-editar-brinde .container-inputs {
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+}
+.container-form-edit-brinde .form-editar-brinde .container-inputs .text-input {
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.container-form-edit-brinde .form-editar-brinde .container-inputs .input-info,
+.container-form-edit-brinde .form-editar-brinde .container-inputs .textarea {
+  background-color: #f5f5f5;
+  height: 40px;
+  width: 100%;
+  padding-left: 15px;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
+  font-size: 15px;
+}
+.container-form-edit-brinde .form-editar-brinde .container-inputs .input-info:focus,
+.container-form-edit-brinde .form-editar-brinde .container-inputs .textarea:focus {
+  outline: none;
+  border: 2px solid #4b39ef;
+}
+.container-form-edit-brinde .form-editar-brinde .container-inputs .textarea {
+  padding: 15px;
+  height: 100px;
+  font-size: 16px;
+  resize: none;
+}
+.container-form-edit-brinde .form-editar-brinde .btn-editar {
+  width: 150px;
+  height: 40px;
+  margin: 15px 15px;
+  background-color: #00ff73;
+  border: none;
+  border-radius: 15px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.5s linear;
+}
+.container-form-edit-brinde .form-editar-brinde .btn-editar:hover {
+  background-color: #7af9b4;
+}/*# sourceMappingURL=editarBrinde.css.map */
