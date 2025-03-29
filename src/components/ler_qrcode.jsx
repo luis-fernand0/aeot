@@ -14,6 +14,7 @@ import '../style/ler_qrcode_component/ler_qrcode.css'
 
 const urlVenda = import.meta.env.VITE_URL_VENDA
 const urlBuscarChave = import.meta.env.VITE_URL_BUSCAR_CHAVE
+const urlResgatarBrinde = import.meta.env.VITE_URL_RESGATAR_BRINDE
 
 const LerQrCode = () => {
     const tokenUser = localStorage.getItem('token')
@@ -249,7 +250,7 @@ const LerQrCode = () => {
                 console.log(key, value)
             }
 
-            const response = await fetch('http://localhost:3000/aeot/auth/resgatar_brinde', {
+            const response = await fetch(urlResgatarBrinde, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${tokenUser}`,
