@@ -9,6 +9,8 @@ import ModalResponse from './modalResponse'
 
 import '../style/editarBrinde_component/editarBrinde.css'
 
+const urlEditarBrinde = import.meta.env.VITE_URL_EDITAR_BRINDE
+
 const EditarBrinde = ({ brinde, closeModal }) => {
     const tokenUser = localStorage.getItem('token');
     const navigate = useNavigate()
@@ -33,7 +35,7 @@ const EditarBrinde = ({ brinde, closeModal }) => {
             myForm.append('cod_brinde', brinde.cod_brinde)
             const formData = Object.fromEntries(myForm)
 
-            const response = await fetch('http://localhost:3000/aeot/auth/editar_brinde', {
+            const response = await fetch(urlEditarBrinde, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${tokenUser}`,
