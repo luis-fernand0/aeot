@@ -53,6 +53,17 @@ const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde }) => {
         }
     }
 
+    async function removeBrinde(brinde) {
+        const response = await fetch('http://localhost:3000/aeot/auth/remove_brinde', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${tokenUser}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(brinde)
+        })
+    }
+
     useEffect(() => {
         listarBrindes()
     }, [])
@@ -116,7 +127,9 @@ const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde }) => {
                                         <FontAwesomeIcon className='pen-icon' icon={faPen} />
                                     </button>
 
-                                    <button className='btn-control btn-remove'>
+                                    <button
+                                        className='btn-control btn-remove'
+                                        onClick={() => removeBrinde(brinde)}>
                                         <FontAwesomeIcon className='trash-icon' icon={faTrash} />
                                     </button>
                                 </div>
