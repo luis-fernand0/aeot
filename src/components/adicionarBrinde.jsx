@@ -217,6 +217,7 @@ const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
                     <>
                         <div className='container-component-brindes'>
                             <ListarBrindes
+                                showBtns={false}
                                 clickBrinde={cadastrarBrinde}
                                 closeModal={setSelecionarBrinde} />
                         </div>
