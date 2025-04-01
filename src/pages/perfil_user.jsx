@@ -158,6 +158,7 @@ const PerfilUser = () => {
             {exibirBrindes && (
                 <div className="container-brindes-user">
                     <ListarBrindes
+                        showBtns={false}
                         clickBrinde={gerarQrCode}
                         closeModal={setExibirBrindes}
                         driverBrinde={true} />
