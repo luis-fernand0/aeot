@@ -11,8 +11,9 @@ import EditarBrinde from './editarBrinde'
 import '../style/listarBrindes_component/listarBrindes.css'
 
 const urlListarBrindes = import.meta.env.VITE_URL_LISTAR_BRINDES
+const urlRemoveBrinde = import.meta.env.VITE_URL_REMOVE_BRINDE
 
-const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde }) => {
+const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde, showBtns = true }) => {
     const tokenUser = localStorage.getItem('token');
     const navigate = useNavigate()
 
@@ -23,7 +24,7 @@ const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde }) => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
 
-    async function listarBrindes() {
+    async function listandoBrindes() {
         setLoading(true)
         try {
             const response = await fetch(urlListarBrindes, {
@@ -41,9 +42,10 @@ const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde }) => {
             if (response.status === 404) {
                 setModalMessage(data.message)
                 setModalVisible(true)
+                setBrindes(null)
                 return
             }
-
+            console.log(data)
             setBrindes(data)
         } catch (err) {
             setModalMessage(`Desculpe! Ocorreu um erro inesperado. Não foi possível listar os brinde.` + err.message)
@@ -54,18 +56,31 @@ const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde }) => {
     }
 
     async function removeBrinde(brinde) {
-        const response = await fetch('http://localhost:3000/aeot/auth/remove_brinde', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${tokenUser}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(brinde)
-        })
+        setLoading(true)
+        try {
+            const response = await fetch(urlRemoveBrinde, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${tokenUser}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(brinde)
+            })
+            const data = await response.json()
+
+            setModalMessage(data.message)
+            setModalVisible(true)
+            listandoBrindes()
+        } catch {
+            setModalMessage(`Desculpe! Ocorreu um erro inesperado. Não foi possível excluir o brinde.` + err.message)
+            setModalVisible(true)
+        } finally {
+            setLoading(false)
+        }
     }
 
     useEffect(() => {
-        listarBrindes()
+        listandoBrindes()
     }, [])
 
     return (
@@ -120,19 +135,21 @@ const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde }) => {
                                     Brinde valido por: {brinde.expiracao} {brinde.expiracao > 1 ? 'Dias' : 'Dia'}
                                 </p>
 
-                                <div className='container-btn-control'>
-                                    <button
-                                        onClick={() => { setShowModal({ view: true, brinde: brinde }) }}
-                                        className='btn-control btn-edit'>
-                                        <FontAwesomeIcon className='pen-icon' icon={faPen} />
-                                    </button>
+                                {showBtns && (
+                                    <div className='container-btn-control'>
+                                        <button
+                                            onClick={() => { setShowModal({ view: true, brinde: brinde }) }}
+                                            className='btn-control btn-edit'>
+                                            <FontAwesomeIcon className='pen-icon' icon={faPen} />
+                                        </button>
 
-                                    <button
-                                        className='btn-control btn-remove'
-                                        onClick={() => removeBrinde(brinde)}>
-                                        <FontAwesomeIcon className='trash-icon' icon={faTrash} />
-                                    </button>
-                                </div>
+                                        <button
+                                            className='btn-control btn-remove'
+                                            onClick={() => removeBrinde(brinde)}>
+                                            <FontAwesomeIcon className='trash-icon' icon={faTrash} />
+                                        </button>
+                                    </div>
+                                )}
                             </li>
                         )}
                     </ul>
@@ -143,7 +160,7 @@ const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde }) => {
                 <EditarBrinde
                     closeModal={(state) => {
                         setShowModal(state)
-                        listarBrindes()
+                        listandoBrindes()
                     }}
                     brinde={showModal.brinde} />
             )}
