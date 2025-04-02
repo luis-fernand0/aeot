@@ -78,8 +78,8 @@ const CriarBrinde = ({ user }) => {
                     </div>
 
                     <div className='container-inputs'>
-                        <label className='text-input' htmlFor="expiracao">Abastecimento minimo</label>
-                        <input onChange={(e) => formatarInput(e)} className='input-info' name='abastecimento_minimo' id='abastecimento_minimo' type="text" placeholder='Quantidade minima de abastecimento' required />
+                        <label className='text-input' htmlFor="expiracao">Ganha X abastecimentos</label>
+                        <input onChange={(e) => formatarInput(e)} className='input-info' name='abastecimento_minimo' id='abastecimento_minimo' type="text" placeholder='Vezes que deve abastecer' required />
                     </div>
 
                     <div className='container-inputs'>
