@@ -67,7 +67,7 @@ const EditarBrinde = ({ brinde, closeModal }) => {
                 isVisible={isModalVisible}
                 onClose={() => {
                     setModalVisible(false)
-                    closeModal({view: false, brinde: null})
+                    closeModal({ view: false, brinde: null })
                 }}
                 message={modalMessage}
             />
@@ -113,7 +113,7 @@ const EditarBrinde = ({ brinde, closeModal }) => {
 
                     <div className='container-inputs'>
                         <label className='text-input' htmlFor="expiracao">
-                            Abastecimento minimo
+                            Ganha X abastecimentos
                         </label>
                         <input
                             defaultValue={brinde?.abastecimentos_minimos}
@@ -122,7 +122,7 @@ const EditarBrinde = ({ brinde, closeModal }) => {
                             name='abastecimento_minimo'
                             id='abastecimento_minimo'
                             type="text"
-                            placeholder='Quantidade minima de abastecimento'
+                            placeholder='Vezes que deve abastecer'
                             required />
                     </div>
 
@@ -142,7 +142,7 @@ const EditarBrinde = ({ brinde, closeModal }) => {
                     </div>
 
                     <button type='submit' className='btn-editar'>
-                        Editar
+                        Salvar
                     </button>
                 </form>
             </div>
