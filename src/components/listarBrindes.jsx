@@ -19,6 +19,7 @@ const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde, showBtns = true 
 
     const [brindes, setBrindes] = useState(null)
     const [showModal, setShowModal] = useState({ view: false, brinde: null })
+    const [modalConfirm, setModalConfirm] = useState({ view: false, brinde: null })
 
     const [loading, setLoading] = useState(false)
     const [isModalVisible, setModalVisible] = useState(false);
@@ -70,6 +71,7 @@ const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde, showBtns = true 
 
             setModalMessage(data.message)
             setModalVisible(true)
+            setModalConfirm({ view: false, brinde: null })
             listandoBrindes()
         } catch {
             setModalMessage(`Desculpe! Ocorreu um erro inesperado. Não foi possível excluir o brinde.` + err.message)
@@ -145,7 +147,7 @@ const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde, showBtns = true 
 
                                         <button
                                             className='btn-control btn-remove'
-                                            onClick={() => removeBrinde(brinde)}>
+                                            onClick={() => setModalConfirm({ view: true, brinde: brinde })}>
                                             <FontAwesomeIcon className='trash-icon' icon={faTrash} />
                                         </button>
                                     </div>
@@ -155,6 +157,35 @@ const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde, showBtns = true 
                     </ul>
                 )}
             </div>
+
+            {modalConfirm.view && (
+                <div className='container-modal-confirm'>
+                    <div className='modal-confirm'>
+                        <div className='container-modal-confirm-text'>
+                            <p className='modal-confirm-text'>
+                                Tem certeza que deseja excluir o brinde?
+                                <span className='modal-confirm-text-span'>
+                                    *Ao excluir um brinde, ele será removido de todos os combustíveis, mas motoristas que já receberam ainda poderão resgatá-lo até o vencimento!*
+                                </span>
+                            </p>
+                        </div>
+
+                        <div className="container-modal-confirm-btn">
+                            <button
+                                onClick={() => removeBrinde(modalConfirm.brinde)}
+                                className='btn-modal-confirm btn-excluir'>
+                                Excluir
+                            </button>
+
+                            <button
+                                onClick={() => setModalConfirm({ view: false, brinde: null })}
+                                className='btn-modal-confirm btn-cancelar'>
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {showModal.view && (
                 <EditarBrinde
