@@ -147,7 +147,7 @@ const PerfilUser = () => {
 
                             <div className="container-btn-brinde">
                                 <button onClick={() => { setExibirBrindes(true) }} className="btn-brinde">
-                                    Meus brindes!
+                                    Resgatar brinde
                                 </button>
                             </div>
                         </div>
