@@ -63,3 +63,104 @@
         }
     }
 }
+
+.container-modal-confirm {
+    position: fixed;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.5);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    .modal-confirm {
+        background: #fff;
+        
+        width: auto;
+        height: auto;
+
+        padding: 20px;
+
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        
+        text-align: center;
+
+        animation: fadeIn 0.3s ease-in-out;
+
+        .container-modal-confirm-text {
+            .modal-confirm-text {
+                font-size: 16px;
+                color: #333;
+                font-weight: 500;
+
+                margin-bottom: 15px;
+
+                .modal-confirm-text-span {
+                    display: block;
+                    
+                    margin-top: 5px;
+
+                    font-size: 14px;
+                    font-style: italic;
+                    color: #777;
+                }
+            }
+        }
+
+        .container-modal-confirm-btn {
+            display: flex;
+            justify-content: space-between;
+
+            margin-top: 20px;
+
+            .btn-modal-confirm {
+                width: 45%;
+
+                padding: 10px;
+                border: none;
+                border-radius: 5px;
+
+                font-size: 14px;
+                font-weight: bold;
+
+                transition: background 0.3s ease-in-out;
+
+                &.btn-excluir {
+                    background: #ff4d4d;
+                    color: white;
+
+                    &:hover {
+                        background: darkred;
+                    }
+                }
+
+                &.btn-cancelar {
+                    background: #ccc;
+                    color: #333;
+
+                    &:hover {
+                        background: #999;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
