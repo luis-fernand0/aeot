@@ -130,6 +130,34 @@ const Detalhes = () => {
     }
   }, [])
 
+  useEffect(() => {
+    if (Object.keys(detalhe).length > 0 && categoria === 'postos') {
+      let todasAsFormas = [...formasEtanol, ...formasGasolina, ...formasDiesel];
+
+      todasAsFormas.forEach((keyForma) => {
+        formasPagamento.forEach((key) => {
+          if (key.value === keyForma) {
+            setFormasDePagamento((prevState) => {
+              if (!prevState.includes(key.label)) {
+                return [...prevState, key.label];
+              }
+              return prevState;
+            })
+          }
+        })
+      })
+
+      let combustiveis = Object.keys(detalhe.combustivel || {});
+      combustiveis.forEach((key) => {
+        let formas = Object.keys(detalhe.combustivel[key]?.formas || {});
+        if (formas.length > 0) {
+          hundleChange(key, formas[0]);
+        }
+      })
+    }
+  }, [detalhe])
+
+
   return (
     <>
       <Header redirectTo={'/home'} />
@@ -205,7 +233,7 @@ const Detalhes = () => {
                               </span>
                               <br />
                               <span className="text-brinde">
-                                Abatecimento minimo: {formaAbastecimento?.etanol?.brinde?.abastecimento_minimo}
+                                Abastecer no minimo: {formaAbastecimento?.etanol?.brinde?.abastecimento_minimo} {formaAbastecimento?.etanol?.brinde?.abastecimento_minimo > 1 ? 'Vezes' : 'Vez'}
                               </span>
                             </p>
                           </div>
