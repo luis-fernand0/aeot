@@ -1,0 +1,115 @@
+.container-relatorio {
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container-relatorio .title-relatorio {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+.container-relatorio .container-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 15px;
+  width: auto;
+  background-color: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+.container-relatorio .filtro {
+  display: flex;
+  flex-direction: column;
+}
+.container-relatorio .filtro label {
+  font-weight: bold;
+  color: #1a1a1a;
+  margin-bottom: 5px;
+}
+.container-relatorio .filtro input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+.container-relatorio .filtro input:focus {
+  border-color: #E6C200;
+  outline: none;
+}
+.container-relatorio .btn-filtrar {
+  padding: 10px 20px;
+  background-color: #E6C200;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.container-relatorio .btn-filtrar:hover {
+  background-color: #D4AF37;
+  transform: scale(1.05);
+}
+.container-relatorio .container-tabela {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+  width: 100%;
+}
+.container-relatorio table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.container-relatorio table th,
+.container-relatorio table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+.container-relatorio table th {
+  background-color: #E6C200;
+  color: white;
+  font-weight: bold;
+}
+.container-relatorio table tr:hover {
+  background-color: #e8e8e8;
+}
+
+@media (max-width: 768px) {
+  .container-filtros {
+    flex-direction: column;
+    align-items: center;
+  }
+  .filtro {
+    width: 100%;
+  }
+  .btn-filtrar {
+    width: 100%;
+    font-size: 16px;
+  }
+  table {
+    display: block;
+    width: 100%;
+  }
+  th,
+  td {
+    display: inline-block;
+    width: 100%;
+  }
+  tr {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ddd;
+  }
+}/*# sourceMappingURL=relatorio.css.map */
