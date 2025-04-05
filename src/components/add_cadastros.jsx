@@ -44,6 +44,10 @@ const AdicionarCadastros = () => {
               <Link to={'/cadastrar_frentista'}>
                 <button className='btn-add-cadastro'>Cadastrar Frentista</button>
               </Link>
+
+              <Link to={'/relatorio'}>
+                <button className='btn-add-cadastro'>Relatorios</button>
+              </Link>
             </>
           )}
         </div>
