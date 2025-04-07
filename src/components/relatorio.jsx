@@ -18,6 +18,7 @@ const Relatorio = () => {
   }
 
   async function filtrarDados() {
+    console.log(filtros)
     try {
       const response = await fetch('http://localhost:3000/aeot/auth/relatorio', {
         method: 'POST',
