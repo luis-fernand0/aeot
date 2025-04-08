@@ -213,7 +213,7 @@ const LerQrCode = () => {
                 body: JSON.stringify(myFormData)
             })
             const data = await response.json()
-            if (response.status === 403) {
+            if (response.status === 401) {
                 navigate('/', { replace: true })
                 return
             }
@@ -255,7 +255,7 @@ const LerQrCode = () => {
                 body: JSON.stringify(myFormData)
             })
             const data = await response.json()
-            if (response.status === 403) {
+            if (response.status === 401) {
                 navigate('/', { replace: true })
                 return
             }
@@ -285,7 +285,7 @@ const LerQrCode = () => {
             })
             const data = await response.json()
 
-            if (response.status === 403) {
+            if (response.status === 401) {
                 navigate('/', { replace: true })
                 return
             }
