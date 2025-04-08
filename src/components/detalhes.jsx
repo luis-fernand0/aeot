@@ -85,7 +85,7 @@ const Detalhes = () => {
         })
       })
       const data = await response.json()
-      if (response.status === 403) {
+      if (response.status === 401) {
         navigate('/', { replace: true })
         return
       }

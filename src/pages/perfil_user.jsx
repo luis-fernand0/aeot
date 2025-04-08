@@ -41,7 +41,7 @@ const PerfilUser = () => {
             }
         })
         const data = await response.json()
-        if (response.status === 403) {
+        if (response.status === 401) {
             navigate('/', { replace: true })
         }
 
@@ -79,7 +79,7 @@ const PerfilUser = () => {
                     body: qrData
                 })
                 const data = await response.json()
-                if (response.status === 403) {
+                if (response.status === 401) {
                     navigate('/', { replace: true })
                     return
                 }

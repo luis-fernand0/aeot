@@ -56,7 +56,7 @@ const CadastrarFrentista = () => {
 
             const dataResponse = await response.json()
 
-            if (response.status === 403) {
+            if (response.status === 401) {
                 return navigate('/', { replace: true })
             }
 

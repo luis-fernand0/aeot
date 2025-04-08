@@ -47,7 +47,7 @@ const NewDrivers = () => {
                 'Content-Type': 'application/json'
             }
         })
-        if (response.status === 403) {
+        if (response.status === 401) {
             navigate('/home', { replace: true })
         }
         const data = await response.json()
