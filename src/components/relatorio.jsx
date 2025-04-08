@@ -1,16 +1,18 @@
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import "../style/relatorio_component/relatorio.css"
 
 const Relatorio = () => {
   const tokenUser = localStorage.getItem('token');
+  const typeUser = localStorage.getItem('type_user')
 
   const [filtros, setFiltros] = useState({
     dataInicial: "",
     dataFinal: "",
     frentista: "",
   })
-
   const [dados, setDados] = useState([])
+  const [frentistas, setFrentistas] = useState([])
+  const autoCompleteRef = useRef(null)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,9 +35,32 @@ const Relatorio = () => {
 
       setDados(data.relatorio)
     } catch (err) {
-      
+
     }
   }
+
+  async function buscarFrentista(nome) {
+    const response = await fetch(`http://localhost:3000/aeot/auth/buscar_frentista?nome=${nome}`, {
+      headers: {
+        'Authorization': `Bearer ${tokenUser}`
+      }
+    })
+    const data = await response.json()
+    setFrentistas(data.frentistas)
+  }
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (autoCompleteRef.current && !autoCompleteRef.current.contains(event.target)) {
+        setFrentistas([]);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="container-relatorio">
@@ -43,18 +68,47 @@ const Relatorio = () => {
 
       <div className="container-filtros">
         <div className="filtro">
-          <label>Data Inicial:</label>
-          <input type="date" name="dataInicial" value={filtros.dataInicial} onChange={handleChange} />
+          <label htmlFor="dataInicial">Data Inicial:</label>
+          <input type="date" id="dataInicial" name="dataInicial" value={filtros.dataInicial} onChange={handleChange} />
         </div>
 
         <div className="filtro">
-          <label>Data Final:</label>
-          <input type="date" name="dataFinal" value={filtros.dataFinal} onChange={handleChange} />
+          <label htmlFor="dataFinal">Data Final:</label>
+          <input type="date" id="dataFinal" name="dataFinal" value={filtros.dataFinal} onChange={handleChange} />
         </div>
 
-        <div className="filtro">
-          <label>Frentista:</label>
-          <input type="text" name="frentista" value={filtros.frentista} onChange={handleChange} />
+        {typeUser === 'administrador' && (
+          <div className="filtro">
+            <label htmlFor="posto">Posto:</label>
+            <input type="text" id="posto" name="posto" />
+          </div>
+        )}
+
+        <div className="filtro filtro-frentista">
+          <label htmlFor="frentista">Frentista:</label>
+          <div className="container-input-ul" ref={autoCompleteRef}>
+            <input className="input-frentista" id="frentista" type="text" name="frentista"
+              onChange={(e) => {
+                buscarFrentista(e.target.value)
+              }}/>
+            <div className="container-ul-autocomplete">
+              {frentistas.length > 0 && (
+                <ul className="autocomplete-list">
+                  {frentistas.map((frentista) => (
+                    <li
+                      key={frentista.user_id}
+                      onClick={() => {
+                        document.getElementById('frentista').value = frentista.nome.toUpperCase();
+                        setFiltros((prev) => ({ ...prev, frentista: frentista.user_id }));
+                        setFrentistas([]);
+                      }}>
+                      {frentista.nome.toUpperCase()}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
         </div>
 
         <button className="btn-filtrar" onClick={filtrarDados}>
@@ -69,6 +123,7 @@ const Relatorio = () => {
         <table>
           <thead>
             <tr>
+              <th>Posto</th>
               <th>Data</th>
               <th>Hora</th>
               <th>Motorista</th>
@@ -82,6 +137,7 @@ const Relatorio = () => {
           <tbody>
             {dados.map((item, index) => (
               <tr key={index}>
+                <td>{item.posto}</td>
                 <td>{item.data_venda}</td>
                 <td>{item.hora_venda}</td>
                 <td>{item.motorista}</td>
