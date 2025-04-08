@@ -204,10 +204,6 @@ const LerQrCode = () => {
 
             const myFormData = Object.fromEntries(myForm)
 
-            for (let [key, value] of myForm.entries()) {
-                console.log(key, value)
-            }
-
             const response = await fetch(urlVenda, {
                 method: 'POST',
                 headers: {
