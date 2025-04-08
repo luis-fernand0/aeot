@@ -26,16 +26,13 @@
   border-radius: 10px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
-.container-relatorio .filtro {
-  display: flex;
-  flex-direction: column;
-}
 .container-relatorio .filtro label {
   font-weight: bold;
   color: #1a1a1a;
   margin-bottom: 5px;
 }
 .container-relatorio .filtro input {
+  width: 100%;
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -44,6 +41,33 @@
 .container-relatorio .filtro input:focus {
   border-color: #E6C200;
   outline: none;
+}
+.container-relatorio .filtro-frentista .container-input-ul .container-ul-autocomplete {
+  position: relative;
+}
+.container-relatorio .filtro-frentista .container-input-ul .container-ul-autocomplete .autocomplete-list {
+  position: absolute;
+  z-index: 1;
+  margin-top: 5px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  max-height: 200px;
+  width: 100%;
+  overflow-y: auto;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+.container-relatorio .filtro-frentista .container-input-ul .container-ul-autocomplete .autocomplete-list li {
+  cursor: pointer;
+  padding: 10px;
+  color: #333;
+  transition: background-color 0.3s ease;
+}
+.container-relatorio .filtro-frentista .container-input-ul .container-ul-autocomplete .autocomplete-list li:hover {
+  background-color: #ffef9a;
+}
+.container-relatorio .filtro-frentista .container-input-ul .container-ul-autocomplete .autocomplete-list li:not(:last-child) {
+  border-bottom: 1px solid #ddd;
 }
 .container-relatorio .btn-filtrar {
   padding: 10px 20px;
