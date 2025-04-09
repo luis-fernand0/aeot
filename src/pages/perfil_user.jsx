@@ -51,6 +51,16 @@ const PerfilUser = () => {
     async function gerarQrCode(brinde) {
         setLoading(true)
         try {
+            if (brinde.resgatado) {
+                setModalMessage('Infelizmente o brinde só pode ser resgatado uma unica vez!')
+                setModalVisible(true)
+                return
+            }
+            if (brinde.expirado) {
+                setModalMessage('Infelizmente o brinde que está tentando resgatar já expirou!')
+                setModalVisible(true)
+                return
+            }
             let chaveID = qrCodeValue.chave || generateKey(dataUser?.placa)
 
             const qrData = JSON.stringify({
