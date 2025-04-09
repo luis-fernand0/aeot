@@ -118,9 +118,10 @@
         width: 90%;
 
         border-radius: 15px;
+
         .container-close-listar-brindes {
             width: 100%;
-            
+
             padding: 20px 20px 0;
 
             text-align: right;
@@ -133,6 +134,7 @@
                 font-size: 24px;
 
                 transition: all 0.3s linear;
+
                 &:hover {
                     transform: scale(0.80);
                 }
@@ -140,12 +142,32 @@
         }
 
         .lista-brindes {
+            overflow-x: scroll;
+
             .brinde {
                 border-bottom: 1px solid #fff100;
 
                 cursor: pointer;
 
                 transition: all 0.3s linear;
+
+                .status-brinde {
+                    font-weight: bold;
+                    padding: 4px 10px;
+                    border-radius: 5px;
+                    margin-top: 8px;
+                    display: inline-block;
+                    font-size: 0.9rem;
+                    color: #fff;
+
+                    &.status-resgatado, &.status-pendente {
+                        background-color: #27ae60;
+                    }
+
+                    &.status-expirado {
+                        background-color: #e74c3c;
+                    }
+                }
                 &:hover {
                     transform: scale(0.98);
                 }

@@ -101,10 +101,28 @@
 .container-brindes-user .container-brindes .container-close-listar-brindes .btn-close-listar-brindes:hover {
   transform: scale(0.8);
 }
+.container-brindes-user .container-brindes .lista-brindes {
+  overflow-x: scroll;
+}
 .container-brindes-user .container-brindes .lista-brindes .brinde {
   border-bottom: 1px solid #fff100;
   cursor: pointer;
   transition: all 0.3s linear;
+}
+.container-brindes-user .container-brindes .lista-brindes .brinde .status-brinde {
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 5px;
+  margin-top: 8px;
+  display: inline-block;
+  font-size: 0.9rem;
+  color: #fff;
+}
+.container-brindes-user .container-brindes .lista-brindes .brinde .status-brinde.status-resgatado, .container-brindes-user .container-brindes .lista-brindes .brinde .status-brinde.status-pendente {
+  background-color: #27ae60;
+}
+.container-brindes-user .container-brindes .lista-brindes .brinde .status-brinde.status-expirado {
+  background-color: #e74c3c;
 }
 .container-brindes-user .container-brindes .lista-brindes .brinde:hover {
   transform: scale(0.98);
