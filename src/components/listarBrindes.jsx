@@ -81,6 +81,17 @@ const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde, showBtns = true 
         }
     }
 
+    function getStatusBrinde(brinde) {
+        if (brinde.resgatado) {
+            return { texto: 'Resgatado', classe: 'status-resgatado' }
+        }
+        if (brinde.expirado) {
+            return { texto: 'Expirado', classe: 'status-expirado' }
+        }
+        return { texto: 'Pendente de resgate', classe: 'status-pendente' }
+    }
+
+
     useEffect(() => {
         listandoBrindes()
     }, [])
@@ -105,55 +116,62 @@ const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde, showBtns = true 
                 )}
                 {brindes && (
                     <ul className="lista-brindes">
-                        {brindes && brindes.map((brinde, index) =>
-                            <li
-                                key={index}
-                                onClick={() => clickBrinde && clickBrinde(brinde)}
-                                className="brinde">
-                                {driverBrinde && (
-                                    <>
-                                        <p>
-                                            Posto: {brinde?.nome_posto}
-                                        </p>
+                        {brindes && brindes.map((brinde, index) => {
+                            const statusBrinde = getStatusBrinde(brinde);
+                            return (
+                                <li
+                                    key={index}
+                                    onClick={() => clickBrinde && clickBrinde(brinde)}
+                                    className="brinde">
+                                    {driverBrinde && (
+                                        <>
+                                            <p>
+                                                Posto: {brinde?.nome_posto}
+                                            </p>
 
-                                        <p>
-                                            Endereço: {brinde?.endereco_posto}
-                                        </p>
-                                    </>
-                                )}
-                                <p className='nome-brinde'>
-                                    Nome do brinde: {brinde?.nome_brinde?.toUpperCase()}
-                                </p>
+                                            <p>
+                                                Endereço: {brinde?.endereco_posto}
+                                            </p>
+                                        </>
+                                    )}
+                                    <p className='nome-brinde'>
+                                        Nome do brinde: {brinde?.nome_brinde?.toUpperCase()}
+                                    </p>
 
-                                <p className='brinde-descricao'>
-                                    {brinde?.descricao_brinde?.toUpperCase()}
-                                </p>
+                                    <p className='brinde-descricao'>
+                                        {brinde?.descricao_brinde?.toUpperCase()}
+                                    </p>
 
-                                <p className='brinde-abastecimento'>
-                                    Abastecer no minimo: {brinde?.abastecimentos_minimos} {brinde?.abastecimentos_minimos > 1 ? 'Vezes' : 'Vez'}
-                                </p>
+                                    <p className='brinde-abastecimento'>
+                                        Abastecer no minimo: {brinde?.abastecimentos_minimos} {brinde?.abastecimentos_minimos > 1 ? 'Vezes' : 'Vez'}
+                                    </p>
 
-                                <p className='brinde-expiracao'>
-                                    Brinde valido por: {brinde.expiracao} {brinde.expiracao > 1 ? 'Dias' : 'Dia'}
-                                </p>
+                                    <p className='brinde-expiracao'>
+                                        Brinde valido por: {brinde.expiracao} {brinde.expiracao > 1 ? 'Dias' : 'Dia'}
+                                    </p>
 
-                                {showBtns && (
-                                    <div className='container-btn-control'>
-                                        <button
-                                            onClick={() => { setShowModal({ view: true, brinde: brinde }) }}
-                                            className='btn-control btn-edit'>
-                                            <FontAwesomeIcon className='pen-icon' icon={faPen} />
-                                        </button>
+                                    <p className={`status-brinde ${statusBrinde.classe}`}>
+                                        {statusBrinde.texto}
+                                    </p>
 
-                                        <button
-                                            className='btn-control btn-remove'
-                                            onClick={() => setModalConfirm({ view: true, brinde: brinde })}>
-                                            <FontAwesomeIcon className='trash-icon' icon={faTrash} />
-                                        </button>
-                                    </div>
-                                )}
-                            </li>
-                        )}
+                                    {showBtns && (
+                                        <div className='container-btn-control'>
+                                            <button
+                                                onClick={() => { setShowModal({ view: true, brinde: brinde }) }}
+                                                className='btn-control btn-edit'>
+                                                <FontAwesomeIcon className='pen-icon' icon={faPen} />
+                                            </button>
+
+                                            <button
+                                                className='btn-control btn-remove'
+                                                onClick={() => setModalConfirm({ view: true, brinde: brinde })}>
+                                                <FontAwesomeIcon className='trash-icon' icon={faTrash} />
+                                            </button>
+                                        </div>
+                                    )}
+                                </li>
+                            )
+                        })}
                     </ul>
                 )}
             </div>
