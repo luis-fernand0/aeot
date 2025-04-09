@@ -21,7 +21,11 @@ const urlCadastro = import.meta.env.VITE_URL_CADASTRO;
 const Cadastro = () => {
 
     const [erroModeloCor, setErroModeloCor] = useState(false);
-    const [fotoValid, setFotoValid] = useState(false)
+    const [fotoValid, setFotoValid] = useState({
+        fotoPerfil: false,
+        fotoCnh: false,
+        printApp: false
+    })
 
     const [loading, setLoading] = useState(false)
 
@@ -32,7 +36,7 @@ const Cadastro = () => {
         e.preventDefault()
         setLoading(true)
         try {
-            if (!erroModeloCor || !fotoValid || !checkPass()) {
+            if (!erroModeloCor || !checkPass()) {
                 setModalMessage('É necessario preencher todos os dados!')
                 setModalVisible(true)
 
@@ -41,9 +45,34 @@ const Cadastro = () => {
                 return
             }
 
+            if (!fotoValid.fotoPerfil || !fotoValid.fotoCnh || !fotoValid.printApp) {
+                let fotosFaltando = [];
+
+                if (!fotoValid.fotoPerfil) {
+                    document.querySelector('.alert-foto').classList.remove('hidden-span-alert');
+                    fotosFaltando.push('Foto de Perfil');
+                }
+                if (!fotoValid.fotoCnh) {
+                    document.querySelector('.alert-cnh').classList.remove('hidden-span-alert');
+                    fotosFaltando.push('Foto da CNH');
+                }
+                if (!fotoValid.printApp) {
+                    document.querySelector('.alert-print-app').classList.remove('hidden-span-alert');
+                    fotosFaltando.push('Print do APP de mobilidade');
+                }
+
+                if (fotosFaltando.length > 0) {
+                    setModalMessage(`É necessario preencher todos os dados:
+                        \n ${fotosFaltando.join('\n, ')}`);
+                    setModalVisible(true);
+                    setLoading(false);
+                    return;
+                }
+            }
+
             const myForm = document.getElementById('myFormCadastro')
             const formData = new FormData(myForm)
-            
+
             const response = await fetch(`${urlCadastro}`, {
                 method: 'POST',
                 body: formData
@@ -112,7 +141,7 @@ const Cadastro = () => {
         let ufValue = uf.value.replace(/[^a-zA-Z]/g, '')
 
         if (ufValue.length > 2) {
-            ufValue = ufValue.slice(0,2)
+            ufValue = ufValue.slice(0, 2)
         }
 
         ufValue = ufValue.toUpperCase()
@@ -149,15 +178,20 @@ const Cadastro = () => {
     }
 
     function anexarFoto(nomeFoto) { document.getElementById(nomeFoto).click() }
-    async function verificarFoto(inputId, span, btnId) {
+    async function verificarFoto(inputId, span, btnId, typeFoto) {
         const foto = await comprimirFoto(inputId)
         if (!foto) {
             document.querySelector(`.${span}`).classList.remove('hidden-span-alert')
             document.querySelector(`#${btnId}`).classList.remove('checked-foto')
+            setFotoValid((prevState) => {
+                return { ...prevState, [typeFoto]: foto }
+            })
             return false
         }
 
-        setFotoValid(foto)
+        setFotoValid((prevState) => {
+            return { ...prevState, [typeFoto]: foto }
+        })
         document.querySelector(`.${span}`).classList.add('hidden-span-alert')
         document.querySelector(`#${btnId}`).classList.add('checked-foto')
     }
@@ -301,7 +335,7 @@ const Cadastro = () => {
                                 *É NECESSARIO ADICIONAR UMA FOTO DE PERFIL!
                             </span>
                             <input
-                                onChange={() => { verificarFoto('foto_user', 'alert-foto', 'btn-foto-user') }}
+                                onChange={() => { verificarFoto('foto_user', 'alert-foto', 'btn-foto-user', 'fotoPerfil') }}
                                 type="file"
                                 className='input-foto-print'
                                 name="foto_user"
@@ -320,7 +354,7 @@ const Cadastro = () => {
                                 *É NECESSARIO ADICIONAR UMA FOTO DA CNH!
                             </span>
                             <input
-                                onChange={() => { verificarFoto('foto_cnh', 'alert-cnh', 'btn-foto-cnh') }} type="file"
+                                onChange={() => { verificarFoto('foto_cnh', 'alert-cnh', 'btn-foto-cnh', 'fotoCnh') }} type="file"
                                 className='input-foto-print'
                                 name="foto_cnh" id="foto_cnh"
                                 accept='image/*' />
@@ -336,7 +370,7 @@ const Cadastro = () => {
                                 *É NECESSARIO ADICIONAR UM PRINT DO APP DE MOBILIDADE!
                             </span>
                             <input
-                                onChange={() => { verificarFoto('print_app', 'alert-print-app', 'btn-print-app') }} type="file"
+                                onChange={() => { verificarFoto('print_app', 'alert-print-app', 'btn-print-app', 'printApp') }} type="file"
                                 className='input-foto-print'
                                 name="print_app"
                                 id="print_app"
