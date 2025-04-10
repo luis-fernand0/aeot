@@ -161,9 +161,11 @@ const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde, showBtns = true 
                                         Brinde valido por: {brinde.expiracao} {brinde.expiracao > 1 ? 'Dias' : 'Dia'}
                                     </p>
 
-                                    <p className={`status-brinde ${statusBrinde.classe}`}>
-                                        {statusBrinde.texto}
-                                    </p>
+                                    {driverBrinde && (
+                                        <p className={`status-brinde ${statusBrinde.classe}`}>
+                                            {statusBrinde.texto}
+                                        </p>
+                                    )}
 
                                     {showBtns && (
                                         <div className='container-btn-control'>
