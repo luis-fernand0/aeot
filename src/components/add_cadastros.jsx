@@ -6,10 +6,10 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import '../style/add_cadastros_page/add_cadastro.css'
 
 const AdicionarCadastros = () => {
-  const navigate= useNavigate()
+  const navigate = useNavigate()
 
   const typeUser = localStorage.getItem('type_user')
-  
+
   if (typeUser === 'driver' || typeUser === 'frentista') {
     return navigate('/', { replace: true })
   }
@@ -35,6 +35,10 @@ const AdicionarCadastros = () => {
                 <button className='btn-add-cadastro'>
                   Cadastrar Posto/Serviço
                 </button>
+              </Link>
+
+              <Link to={'/relatorio'}>
+                <button className='btn-add-cadastro'>Relatorios</button>
               </Link>
             </>
           )}
