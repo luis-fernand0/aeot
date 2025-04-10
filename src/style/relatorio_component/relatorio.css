@@ -7,6 +7,18 @@
   flex-direction: column;
   align-items: center;
 }
+.container-relatorio .continer-btn-voltar {
+  width: 100%;
+  padding: 0 0 20px 20px;
+}
+.container-relatorio .continer-btn-voltar .arrow-icon {
+  color: gray;
+  font-size: 24px;
+  transition: all 0.3s ease;
+}
+.container-relatorio .continer-btn-voltar .arrow-icon:hover {
+  transform: scale(0.8);
+}
 .container-relatorio .title-relatorio {
   font-size: 24px;
   font-weight: bold;
@@ -42,10 +54,12 @@
   border-color: #E6C200;
   outline: none;
 }
-.container-relatorio .filtro-frentista .container-input-ul .container-ul-autocomplete {
+.container-relatorio .filtro-frentista .container-input-ul .container-ul-autocomplete,
+.container-relatorio .filtro-posto .container-input-ul .container-ul-autocomplete {
   position: relative;
 }
-.container-relatorio .filtro-frentista .container-input-ul .container-ul-autocomplete .autocomplete-list {
+.container-relatorio .filtro-frentista .container-input-ul .container-ul-autocomplete .autocomplete-list,
+.container-relatorio .filtro-posto .container-input-ul .container-ul-autocomplete .autocomplete-list {
   position: absolute;
   z-index: 1;
   margin-top: 5px;
@@ -57,16 +71,19 @@
   overflow-y: auto;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
-.container-relatorio .filtro-frentista .container-input-ul .container-ul-autocomplete .autocomplete-list li {
+.container-relatorio .filtro-frentista .container-input-ul .container-ul-autocomplete .autocomplete-list li,
+.container-relatorio .filtro-posto .container-input-ul .container-ul-autocomplete .autocomplete-list li {
   cursor: pointer;
   padding: 10px;
   color: #333;
   transition: background-color 0.3s ease;
 }
-.container-relatorio .filtro-frentista .container-input-ul .container-ul-autocomplete .autocomplete-list li:hover {
+.container-relatorio .filtro-frentista .container-input-ul .container-ul-autocomplete .autocomplete-list li:hover,
+.container-relatorio .filtro-posto .container-input-ul .container-ul-autocomplete .autocomplete-list li:hover {
   background-color: #ffef9a;
 }
-.container-relatorio .filtro-frentista .container-input-ul .container-ul-autocomplete .autocomplete-list li:not(:last-child) {
+.container-relatorio .filtro-frentista .container-input-ul .container-ul-autocomplete .autocomplete-list li:not(:last-child),
+.container-relatorio .filtro-posto .container-input-ul .container-ul-autocomplete .autocomplete-list li:not(:last-child) {
   border-bottom: 1px solid #ddd;
 }
 .container-relatorio .btn-filtrar {

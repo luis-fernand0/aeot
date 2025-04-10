@@ -20,6 +20,23 @@ $shadow-hover: 0px 4px 8px rgba(0, 0, 0, 0.05);
     flex-direction: column;
     align-items: center;
 
+    .continer-btn-voltar {
+        width: 100%;
+
+        padding: 0 0 20px 20px;
+
+        .arrow-icon {
+            color: gray;
+            font-size: 24px;
+
+            transition: all 0.3s ease;
+
+            &:hover {
+                transform: scale(0.80);
+            }
+        }
+    }
+
     .title-relatorio {
         font-size: 24px;
         font-weight: bold;
@@ -71,7 +88,8 @@ $shadow-hover: 0px 4px 8px rgba(0, 0, 0, 0.05);
         }
     }
 
-    .filtro-frentista {
+    .filtro-frentista,
+    .filtro-posto {
         .container-input-ul {
             .container-ul-autocomplete {
                 position: relative;
