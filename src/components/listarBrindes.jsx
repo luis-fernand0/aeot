@@ -46,7 +46,6 @@ const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde, showBtns = true 
                 setBrindes(null)
                 return
             }
-            console.log(data)
             setBrindes(data)
         } catch (err) {
             setModalMessage(`Desculpe! Ocorreu um erro inesperado. Não foi possível listar os brinde.` + err.message)
@@ -88,7 +87,19 @@ const ListarBrindes = ({ clickBrinde, closeModal, driverBrinde, showBtns = true 
         if (brinde.expirado) {
             return { texto: 'Expirado', classe: 'status-expirado' }
         }
-        return { texto: 'Pendente de resgate', classe: 'status-pendente' }
+
+        const createdAt = new Date(brinde.created_at)
+        const expiresAt = new Date(createdAt)
+        expiresAt.setDate(createdAt.getDate() + brinde.expiracao)
+
+        const hoje = new Date()
+        const diffTime = expiresAt.getTime() - hoje.getTime()
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+
+        return {
+            texto: `Expira em ${diffDays} ${diffDays > 1 ? 'dias' : 'dia'}`,
+            classe: 'status-pendente'
+        }
     }
 
 
