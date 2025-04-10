@@ -1,4 +1,9 @@
 import { useState, useRef, useEffect } from "react"
+import { Link } from "react-router-dom"
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+
 import "../style/relatorio_component/relatorio.css"
 
 const Relatorio = () => {
@@ -9,10 +14,14 @@ const Relatorio = () => {
     dataInicial: "",
     dataFinal: "",
     frentista: "",
+    posto: ""
   })
   const [dados, setDados] = useState([])
   const [frentistas, setFrentistas] = useState([])
-  const autoCompleteRef = useRef(null)
+  const [postos, setPostos] = useState([])
+
+  const refFrentista = useRef(null)
+  const refPosto = useRef(null)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -49,14 +58,35 @@ const Relatorio = () => {
     setFrentistas(data.frentistas)
   }
 
+  async function buscarPostos(nome) {
+    if (nome === '') {
+
+    }
+    const response = await fetch(`http://localhost:3000/aeot/auth/buscar_posto?nome=${nome}`, {
+      headers: {
+        'Authorization': `Bearer ${tokenUser}`
+      }
+    })
+    const data = await response.json()
+    setPostos(data.postos)
+  }
+
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (autoCompleteRef.current && !autoCompleteRef.current.contains(event.target)) {
+      if (
+        refFrentista.current && !refFrentista.current.contains(event.target)
+      ) {
         setFrentistas([]);
       }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
 
+      if (
+        refPosto.current && !refPosto.current.contains(event.target)
+      ) {
+        setPostos([]);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -64,33 +94,64 @@ const Relatorio = () => {
 
   return (
     <div className="container-relatorio">
+      <div className="continer-btn-voltar">
+        <Link to={'/home'}>
+          <FontAwesomeIcon className='arrow-icon' icon={faChevronLeft} />
+        </Link>
+      </div>
       <h2 className="title-relatorio">Relatório de Vendas de Combustível</h2>
 
       <div className="container-filtros">
         <div className="filtro">
           <label htmlFor="dataInicial">Data Inicial:</label>
-          <input type="date" id="dataInicial" name="dataInicial" value={filtros.dataInicial} onChange={handleChange} />
+          <input type="date" id="dataInicial" name="dataInicial" value={filtros.dataInicial}
+            onChange={handleChange} />
         </div>
 
         <div className="filtro">
           <label htmlFor="dataFinal">Data Final:</label>
-          <input type="date" id="dataFinal" name="dataFinal" value={filtros.dataFinal} onChange={handleChange} />
+          <input type="date" id="dataFinal" name="dataFinal" value={filtros.dataFinal}
+            onChange={handleChange} />
         </div>
 
         {typeUser === 'administrador' && (
-          <div className="filtro">
+          <div className="filtro filtro-posto">
             <label htmlFor="posto">Posto:</label>
-            <input type="text" id="posto" name="posto" />
+            <div className="container-input-ul">
+              <input type="text" id="posto" name="posto"
+                onChange={(e) => {
+                  buscarPostos(e.target.value);
+                  handleChange(e);}} />
+
+              <div className="container-ul-autocomplete" ref={refPosto}>
+                {postos.length > 0 && (
+                  <ul className="autocomplete-list">
+                    {postos.map((posto) => (
+                      <li
+                        key={posto.posto_user_id}
+                        onClick={() => {
+                          document.getElementById('posto').value = posto.nome_posto.toUpperCase();
+                          setFiltros((prev) => ({ ...prev, posto: posto.posto_user_id }));
+                          setPostos([]);
+                        }}>
+                        Posto: {posto.nome_posto.toUpperCase()}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
           </div>
         )}
 
         <div className="filtro filtro-frentista">
           <label htmlFor="frentista">Frentista:</label>
-          <div className="container-input-ul" ref={autoCompleteRef}>
+          <div className="container-input-ul" ref={refFrentista}>
             <input className="input-frentista" id="frentista" type="text" name="frentista"
               onChange={(e) => {
-                buscarFrentista(e.target.value)
-              }}/>
+                buscarFrentista(e.target.value);
+                handleChange(e);
+              }} />
             <div className="container-ul-autocomplete">
               {frentistas.length > 0 && (
                 <ul className="autocomplete-list">
@@ -102,7 +163,9 @@ const Relatorio = () => {
                         setFiltros((prev) => ({ ...prev, frentista: frentista.user_id }));
                         setFrentistas([]);
                       }}>
-                      {frentista.nome.toUpperCase()}
+                      Nome: {frentista.nome.toUpperCase()}
+                      <br />
+                      Posto: {frentista.nome_posto.toUpperCase()}
                     </li>
                   ))}
                 </ul>
@@ -142,10 +205,10 @@ const Relatorio = () => {
                 <td>{item.hora_venda}</td>
                 <td>{item.motorista}</td>
                 <td>{item.combustivel}</td>
-                <td>{item.valor}</td>
+                <td>R$ {item.valor}</td>
                 <td>{item.litros}</td>
                 <td>R$ {item.valor_total}</td>
-                <td>{item.frentista}</td>
+                <td>{item.frentista.toUpperCase()}</td>
               </tr>
             ))}
           </tbody>
