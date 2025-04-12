@@ -17,6 +17,8 @@
     "browser-image-compression": "^2.0.2",
     "dotenv": "^16.4.5",
     "html5-qrcode": "^2.3.8",
+    "jspdf": "^3.0.1",
+    "jspdf-autotable": "^5.0.2",
     "qrcode.react": "^4.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -32,6 +34,6 @@
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.12",
     "globals": "^15.9.0",
-    "vite": "^5.4.9"
+    "vite": "^6.2.6"
   }
 }
