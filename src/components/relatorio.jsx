@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from "react"
 import { Link } from "react-router-dom"
+import { jsPDF } from "jspdf"
+import { autoTable } from "jspdf-autotable"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
@@ -71,6 +73,55 @@ const Relatorio = () => {
     setPostos(data.postos)
   }
 
+  function gerarPdf() {
+    let doc = new jsPDF()
+
+
+    doc.setFillColor(255, 242, 18);
+    doc.rect(0, 10, 210, 10, 'F');
+
+    let img = '../public/logo_AEOT.png';
+    doc.addImage(img, 'PNG', 15, 6, 35, 20);
+
+    doc.setFontSize(14);
+    doc.setTextColor(0, 0, 0);
+    doc.text("Relatório de Vendas de Combustível", 70, 17);
+
+    doc.setFontSize(10);
+    doc.setTextColor(50, 50, 50);
+    const dataAtual = new Date().toLocaleDateString();
+    doc.text(`Emitido em: ${dataAtual}`, 14, 36);
+
+    // Tabela
+    const head = [[
+      "Posto", "Data", "Hora", "Motorista",
+      "Combustível", "Valor (R$)", "Litros", "Total (R$)", "Frentista"
+    ]];
+
+    const body = dados.map(item => ([
+      item.posto,
+      item.data_venda,
+      item.hora_venda,
+      item.motorista,
+      item.combustivel,
+      item.valor,
+      item.litros,
+      item.valor_total,
+      item.frentista.toUpperCase()
+    ]));
+
+    autoTable(doc, {
+      head: head,
+      body: body,
+      startY: 45,
+      styles: { fontSize: 9 },
+      headStyles: { fillColor: [230, 194, 0], textColor: [255, 255, 255] },
+      margin: { top: 10 }
+    });
+
+    doc.save("relatorio.pdf");
+  }
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -121,7 +172,8 @@ const Relatorio = () => {
               <input type="text" id="posto" name="posto"
                 onChange={(e) => {
                   buscarPostos(e.target.value);
-                  handleChange(e);}} />
+                  handleChange(e);
+                }} />
 
               <div className="container-ul-autocomplete" ref={refPosto}>
                 {postos.length > 0 && (
@@ -177,7 +229,9 @@ const Relatorio = () => {
         <button className="btn-filtrar" onClick={filtrarDados}>
           Pesquisar
         </button>
-        <button className="btn-filtrar">
+        <button
+          onClick={() => gerarPdf()}
+          className="btn-filtrar">
           Gerar relatorio
         </button>
       </div>
