@@ -31,7 +31,6 @@ const Relatorio = () => {
   }
 
   async function filtrarDados() {
-    console.log(filtros)
     try {
       const response = await fetch('http://localhost:3000/aeot/auth/relatorio', {
         method: 'POST',
@@ -76,11 +75,10 @@ const Relatorio = () => {
   function gerarPdf() {
     let doc = new jsPDF()
 
-
     doc.setFillColor(255, 242, 18);
     doc.rect(0, 10, 210, 10, 'F');
 
-    let img = '../public/logo_AEOT.png';
+    let img = '/logo_AEOT.png';
     doc.addImage(img, 'PNG', 15, 6, 35, 20);
 
     doc.setFontSize(14);
@@ -92,7 +90,6 @@ const Relatorio = () => {
     const dataAtual = new Date().toLocaleDateString();
     doc.text(`Emitido em: ${dataAtual}`, 14, 36);
 
-    // Tabela
     const head = [[
       "Posto", "Data", "Hora", "Motorista",
       "Combustível", "Valor (R$)", "Litros", "Total (R$)", "Frentista"
@@ -108,18 +105,18 @@ const Relatorio = () => {
       item.litros,
       item.valor_total,
       item.frentista.toUpperCase()
-    ]));
+    ]))
 
     autoTable(doc, {
       head: head,
       body: body,
       startY: 45,
       styles: { fontSize: 9 },
-      headStyles: { fillColor: [230, 194, 0], textColor: [255, 255, 255] },
+      headStyles: { fillColor: [253, 216, 53], textColor: [255, 255, 255] },
       margin: { top: 10 }
     });
 
-    doc.save("relatorio.pdf");
+    doc.save("relatorio.pdf")
   }
 
   useEffect(() => {
