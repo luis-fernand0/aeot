@@ -38,28 +38,28 @@
   border-radius: 10px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
-.container-relatorio .filtro label {
+.container-relatorio .container-filtros .filtro label {
   font-weight: bold;
   color: #1a1a1a;
   margin-bottom: 5px;
 }
-.container-relatorio .filtro input {
+.container-relatorio .container-filtros .filtro input {
   width: 100%;
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 5px;
   transition: border-color 0.3s ease;
 }
-.container-relatorio .filtro input:focus {
+.container-relatorio .container-filtros .filtro input:focus {
   border-color: #E6C200;
   outline: none;
 }
-.container-relatorio .filtro-frentista .container-input-ul .container-ul-autocomplete,
-.container-relatorio .filtro-posto .container-input-ul .container-ul-autocomplete {
+.container-relatorio .container-filtros .filtro-frentista .container-input-ul .container-ul-autocomplete,
+.container-relatorio .container-filtros .filtro-posto .container-input-ul .container-ul-autocomplete {
   position: relative;
 }
-.container-relatorio .filtro-frentista .container-input-ul .container-ul-autocomplete .autocomplete-list,
-.container-relatorio .filtro-posto .container-input-ul .container-ul-autocomplete .autocomplete-list {
+.container-relatorio .container-filtros .filtro-frentista .container-input-ul .container-ul-autocomplete .autocomplete-list,
+.container-relatorio .container-filtros .filtro-posto .container-input-ul .container-ul-autocomplete .autocomplete-list {
   position: absolute;
   z-index: 1;
   margin-top: 5px;
@@ -71,22 +71,22 @@
   overflow-y: auto;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
-.container-relatorio .filtro-frentista .container-input-ul .container-ul-autocomplete .autocomplete-list li,
-.container-relatorio .filtro-posto .container-input-ul .container-ul-autocomplete .autocomplete-list li {
+.container-relatorio .container-filtros .filtro-frentista .container-input-ul .container-ul-autocomplete .autocomplete-list li,
+.container-relatorio .container-filtros .filtro-posto .container-input-ul .container-ul-autocomplete .autocomplete-list li {
   cursor: pointer;
   padding: 10px;
   color: #333;
   transition: background-color 0.3s ease;
 }
-.container-relatorio .filtro-frentista .container-input-ul .container-ul-autocomplete .autocomplete-list li:hover,
-.container-relatorio .filtro-posto .container-input-ul .container-ul-autocomplete .autocomplete-list li:hover {
+.container-relatorio .container-filtros .filtro-frentista .container-input-ul .container-ul-autocomplete .autocomplete-list li:hover,
+.container-relatorio .container-filtros .filtro-posto .container-input-ul .container-ul-autocomplete .autocomplete-list li:hover {
   background-color: #ffef9a;
 }
-.container-relatorio .filtro-frentista .container-input-ul .container-ul-autocomplete .autocomplete-list li:not(:last-child),
-.container-relatorio .filtro-posto .container-input-ul .container-ul-autocomplete .autocomplete-list li:not(:last-child) {
+.container-relatorio .container-filtros .filtro-frentista .container-input-ul .container-ul-autocomplete .autocomplete-list li:not(:last-child),
+.container-relatorio .container-filtros .filtro-posto .container-input-ul .container-ul-autocomplete .autocomplete-list li:not(:last-child) {
   border-bottom: 1px solid #ddd;
 }
-.container-relatorio .btn-filtrar {
+.container-relatorio .container-filtros .btn-filtrar {
   padding: 10px 20px;
   background-color: #E6C200;
   color: white;
@@ -96,7 +96,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
 }
-.container-relatorio .btn-filtrar:hover {
+.container-relatorio .container-filtros .btn-filtrar:hover {
   background-color: #D4AF37;
   transform: scale(1.05);
 }
@@ -108,23 +108,60 @@
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
   width: 100%;
 }
-.container-relatorio table {
+.container-relatorio .container-tabela table {
   width: 100%;
   border-collapse: collapse;
 }
-.container-relatorio table th,
-.container-relatorio table td {
+.container-relatorio .container-tabela table th,
+.container-relatorio .container-tabela table td {
   padding: 10px;
   border-bottom: 1px solid #ddd;
   text-align: left;
 }
-.container-relatorio table th {
+.container-relatorio .container-tabela table th {
   background-color: #E6C200;
   color: white;
   font-weight: bold;
 }
-.container-relatorio table tr:hover {
+.container-relatorio .container-tabela table tr:hover {
   background-color: #e8e8e8;
+}
+.container-relatorio .paginacao {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 30px;
+  padding: 10px 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+.container-relatorio .paginacao button {
+  padding: 8px 16px;
+  background-color: #E6C200;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.container-relatorio .paginacao button:hover {
+  background-color: #D4AF37;
+  transform: scale(1.05);
+}
+.container-relatorio .paginacao button:disabled {
+  background-color: #e8e8e8;
+  color: #1a1a1a;
+  cursor: not-allowed;
+  transform: none;
+}
+.container-relatorio .paginacao span {
+  font-weight: bold;
+  color: #333;
+  padding: 5px 10px;
 }
 
 @media (max-width: 768px) {
