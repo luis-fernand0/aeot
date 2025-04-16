@@ -6,6 +6,9 @@ import { autoTable } from "jspdf-autotable"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 
+import ModalResponse from './modalResponse'
+import Loading from './loading'
+
 import "../style/relatorio_component/relatorio.css"
 
 const Relatorio = () => {
@@ -22,6 +25,14 @@ const Relatorio = () => {
   const [frentistas, setFrentistas] = useState([])
   const [postos, setPostos] = useState([])
 
+  const [loading, setLoading] = useState(false)
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+
+  const [paginaAtual, setPaginaAtual] = useState(1);
+  const [limitePorPagina, setLimitePorPagina] = useState(10);
+  const [totalPaginas, setTotalPaginas] = useState(1);
+
   const refFrentista = useRef(null)
   const refPosto = useRef(null)
 
@@ -31,6 +42,7 @@ const Relatorio = () => {
   }
 
   async function filtrarDados() {
+    setLoading(true)
     try {
       const response = await fetch('http://localhost:3000/aeot/auth/relatorio', {
         method: 'POST',
@@ -38,14 +50,23 @@ const Relatorio = () => {
           'Authorization': `Bearer ${tokenUser}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(filtros)
+        body: JSON.stringify({
+          ...filtros,
+          page: paginaAtual,
+          limit: limitePorPagina
+        })
       })
 
       const data = await response.json()
 
       setDados(data.relatorio)
+      setDados(data.relatorio)
+      setTotalPaginas(data.totalPaginas || 1)
     } catch (err) {
-
+      setModalMessage(err.message)
+      setModalVisible(true)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -73,50 +94,58 @@ const Relatorio = () => {
   }
 
   function gerarPdf() {
-    let doc = new jsPDF()
+    setLoading(true)
+    try {
+      let doc = new jsPDF()
 
-    doc.setFillColor(255, 242, 18);
-    doc.rect(0, 10, 210, 10, 'F');
+      doc.setFillColor(255, 242, 18);
+      doc.rect(0, 10, 210, 10, 'F');
 
-    let img = '/logo_AEOT.png';
-    doc.addImage(img, 'PNG', 15, 6, 35, 20);
+      let img = '/logo_AEOT.png';
+      doc.addImage(img, 'PNG', 15, 6, 35, 20);
 
-    doc.setFontSize(14);
-    doc.setTextColor(0, 0, 0);
-    doc.text("Relatório de Vendas de Combustível", 70, 17);
+      doc.setFontSize(14);
+      doc.setTextColor(0, 0, 0);
+      doc.text("Relatório de Vendas de Combustível", 70, 17);
 
-    doc.setFontSize(10);
-    doc.setTextColor(50, 50, 50);
-    const dataAtual = new Date().toLocaleDateString();
-    doc.text(`Emitido em: ${dataAtual}`, 14, 36);
+      doc.setFontSize(10);
+      doc.setTextColor(50, 50, 50);
+      const dataAtual = new Date().toLocaleDateString();
+      doc.text(`Emitido em: ${dataAtual}`, 14, 36);
 
-    const head = [[
-      "Posto", "Data", "Hora", "Motorista",
-      "Combustível", "Valor (R$)", "Litros", "Total (R$)", "Frentista"
-    ]];
+      const head = [[
+        "Posto", "Data", "Hora", "Motorista",
+        "Combustível", "Valor (R$)", "Litros", "Total (R$)", "Frentista"
+      ]];
 
-    const body = dados.map(item => ([
-      item.posto,
-      item.data_venda,
-      item.hora_venda,
-      item.motorista,
-      item.combustivel,
-      item.valor,
-      item.litros,
-      item.valor_total,
-      item.frentista.toUpperCase()
-    ]))
+      const body = dados.map(item => ([
+        item.posto,
+        item.data_venda,
+        item.hora_venda,
+        item.motorista,
+        item.combustivel,
+        item.valor,
+        item.litros,
+        item.valor_total,
+        item.frentista.toUpperCase()
+      ]))
 
-    autoTable(doc, {
-      head: head,
-      body: body,
-      startY: 45,
-      styles: { fontSize: 9 },
-      headStyles: { fillColor: [253, 216, 53], textColor: [255, 255, 255] },
-      margin: { top: 10 }
-    });
+      autoTable(doc, {
+        head: head,
+        body: body,
+        startY: 45,
+        styles: { fontSize: 9 },
+        headStyles: { fillColor: [253, 216, 53], textColor: [255, 255, 255] },
+        margin: { top: 10 }
+      });
 
-    doc.save("relatorio.pdf")
+      doc.save("relatorio.pdf")
+    } catch (err) {
+      setModalMessage(err.message)
+      setModalVisible(true)
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -140,50 +169,92 @@ const Relatorio = () => {
     };
   }, []);
 
+  useEffect(() => {
+    filtrarDados();
+  }, [paginaAtual]);
+
   return (
-    <div className="container-relatorio">
-      <div className="continer-btn-voltar">
-        <Link to={'/home'}>
-          <FontAwesomeIcon className='arrow-icon' icon={faChevronLeft} />
-        </Link>
-      </div>
-      <h2 className="title-relatorio">Relatório de Vendas de Combustível</h2>
-
-      <div className="container-filtros">
-        <div className="filtro">
-          <label htmlFor="dataInicial">Data Inicial:</label>
-          <input type="date" id="dataInicial" name="dataInicial" value={filtros.dataInicial}
-            onChange={handleChange} />
+    <>
+      <Loading loading={loading} />
+      <ModalResponse
+        isVisible={isModalVisible}
+        onClose={() => setModalVisible(false)}
+        message={modalMessage}
+      />
+      <div className="container-relatorio">
+        <div className="continer-btn-voltar">
+          <Link to={'/home'}>
+            <FontAwesomeIcon className='arrow-icon' icon={faChevronLeft} />
+          </Link>
         </div>
+        <h2 className="title-relatorio">Relatório de Vendas de Combustível</h2>
 
-        <div className="filtro">
-          <label htmlFor="dataFinal">Data Final:</label>
-          <input type="date" id="dataFinal" name="dataFinal" value={filtros.dataFinal}
-            onChange={handleChange} />
-        </div>
+        <div className="container-filtros">
+          <div className="filtro">
+            <label htmlFor="dataInicial">Data Inicial:</label>
+            <input type="date" id="dataInicial" name="dataInicial" value={filtros.dataInicial}
+              onChange={handleChange} />
+          </div>
 
-        {typeUser === 'administrador' && (
-          <div className="filtro filtro-posto">
-            <label htmlFor="posto">Posto:</label>
-            <div className="container-input-ul">
-              <input type="text" id="posto" name="posto"
+          <div className="filtro">
+            <label htmlFor="dataFinal">Data Final:</label>
+            <input type="date" id="dataFinal" name="dataFinal" value={filtros.dataFinal}
+              onChange={handleChange} />
+          </div>
+
+          {typeUser === 'administrador' && (
+            <div className="filtro filtro-posto">
+              <label htmlFor="posto">Posto:</label>
+              <div className="container-input-ul">
+                <input type="text" id="posto" name="posto"
+                  onChange={(e) => {
+                    buscarPostos(e.target.value);
+                    handleChange(e);
+                  }} />
+
+                <div className="container-ul-autocomplete" ref={refPosto}>
+                  {postos.length > 0 && (
+                    <ul className="autocomplete-list">
+                      {postos.map((posto) => (
+                        <li
+                          key={posto.posto_user_id}
+                          onClick={() => {
+                            document.getElementById('posto').value = posto.nome_posto.toUpperCase();
+                            setFiltros((prev) => ({ ...prev, posto: posto.posto_user_id }));
+                            setPostos([]);
+                          }}>
+                          Posto: {posto.nome_posto.toUpperCase()}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="filtro filtro-frentista">
+            <label htmlFor="frentista">Frentista:</label>
+            <div className="container-input-ul" ref={refFrentista}>
+              <input className="input-frentista" id="frentista" type="text" name="frentista"
                 onChange={(e) => {
-                  buscarPostos(e.target.value);
+                  buscarFrentista(e.target.value);
                   handleChange(e);
                 }} />
-
-              <div className="container-ul-autocomplete" ref={refPosto}>
-                {postos.length > 0 && (
+              <div className="container-ul-autocomplete">
+                {frentistas.length > 0 && (
                   <ul className="autocomplete-list">
-                    {postos.map((posto) => (
+                    {frentistas.map((frentista) => (
                       <li
-                        key={posto.posto_user_id}
+                        key={frentista.user_id}
                         onClick={() => {
-                          document.getElementById('posto').value = posto.nome_posto.toUpperCase();
-                          setFiltros((prev) => ({ ...prev, posto: posto.posto_user_id }));
-                          setPostos([]);
+                          document.getElementById('frentista').value = frentista.nome.toUpperCase();
+                          setFiltros((prev) => ({ ...prev, frentista: frentista.user_id }));
+                          setFrentistas([]);
                         }}>
-                        Posto: {posto.nome_posto.toUpperCase()}
+                        Nome: {frentista.nome.toUpperCase()}
+                        <br />
+                        Posto: {frentista.nome_posto.toUpperCase()}
                       </li>
                     ))}
                   </ul>
@@ -191,81 +262,86 @@ const Relatorio = () => {
               </div>
             </div>
           </div>
-        )}
 
-        <div className="filtro filtro-frentista">
-          <label htmlFor="frentista">Frentista:</label>
-          <div className="container-input-ul" ref={refFrentista}>
-            <input className="input-frentista" id="frentista" type="text" name="frentista"
-              onChange={(e) => {
-                buscarFrentista(e.target.value);
-                handleChange(e);
-              }} />
-            <div className="container-ul-autocomplete">
-              {frentistas.length > 0 && (
-                <ul className="autocomplete-list">
-                  {frentistas.map((frentista) => (
-                    <li
-                      key={frentista.user_id}
-                      onClick={() => {
-                        document.getElementById('frentista').value = frentista.nome.toUpperCase();
-                        setFiltros((prev) => ({ ...prev, frentista: frentista.user_id }));
-                        setFrentistas([]);
-                      }}>
-                      Nome: {frentista.nome.toUpperCase()}
-                      <br />
-                      Posto: {frentista.nome_posto.toUpperCase()}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </div>
+          <button className="btn-filtrar" onClick={filtrarDados}>
+            Pesquisar
+          </button>
+          <button
+            onClick={() => gerarPdf()}
+            className="btn-filtrar">
+            Gerar relatorio
+          </button>
         </div>
 
-        <button className="btn-filtrar" onClick={filtrarDados}>
-          Pesquisar
-        </button>
-        <button
-          onClick={() => gerarPdf()}
-          className="btn-filtrar">
-          Gerar relatorio
-        </button>
-      </div>
-
-      <div className="container-tabela">
-        <table>
-          <thead>
-            <tr>
-              <th>Posto</th>
-              <th>Data</th>
-              <th>Hora</th>
-              <th>Motorista</th>
-              <th>Combustível</th>
-              <th>Valor</th>
-              <th>Litros</th>
-              <th>Total</th>
-              <th>Frentista</th>
-            </tr>
-          </thead>
-          <tbody>
-            {dados.map((item, index) => (
-              <tr key={index}>
-                <td>{item.posto}</td>
-                <td>{item.data_venda}</td>
-                <td>{item.hora_venda}</td>
-                <td>{item.motorista}</td>
-                <td>{item.combustivel}</td>
-                <td>R$ {item.valor}</td>
-                <td>{item.litros}</td>
-                <td>R$ {item.valor_total}</td>
-                <td>{item.frentista.toUpperCase()}</td>
+        <div className="container-tabela">
+          <table>
+            <thead>
+              <tr>
+                <th>Posto</th>
+                <th>Data</th>
+                <th>Hora</th>
+                <th>Motorista</th>
+                <th>Combustível</th>
+                <th>Valor</th>
+                <th>Litros</th>
+                <th>Total</th>
+                <th>Frentista</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {dados.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.posto}</td>
+                  <td>{item.data_venda}</td>
+                  <td>{item.hora_venda}</td>
+                  <td>{item.motorista}</td>
+                  <td>{item.combustivel}</td>
+                  <td>R$ {item.valor}</td>
+                  <td>{item.litros}</td>
+                  <td>R$ {item.valor_total}</td>
+                  <td>{item.frentista.toUpperCase()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="paginacao">
+          <button
+            disabled={paginaAtual <= 1}
+            onClick={() => {
+              setPaginaAtual(1)
+            }}>
+            Primeira
+          </button>
+          <button
+            disabled={paginaAtual <= 1}
+            onClick={() => {
+              setPaginaAtual(paginaAtual - 1)
+            }}>
+            Anterior
+          </button>
+
+          <span>Página {paginaAtual} de {totalPaginas}</span>
+
+          <button
+            disabled={paginaAtual >= totalPaginas}
+            onClick={() => {
+              setPaginaAtual(paginaAtual + 1)
+            }}>
+            Próxima
+          </button>
+
+          <button
+            disabled={paginaAtual >= totalPaginas}
+            onClick={() => {
+              setPaginaAtual(totalPaginas)
+            }}>
+            Ultima
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
