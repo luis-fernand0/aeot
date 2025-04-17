@@ -10,6 +10,10 @@ import ModalResponse from './modalResponse'
 import Loading from './loading'
 
 import "../style/relatorio_component/relatorio.css"
+const urlRelatorio = import.meta.env.VITE_URL_RELATORIO
+const urlBuscarFrentista = import.meta.env.VITE_URL_BUSCAR_FRENTISTA
+const urlBuscarPosto = import.meta.env.VITE_URL_BUSCAR_POSTO
+const urlRelatorioCompleto = import.meta.env.VITE_URL_RELATORIO_COMPLETO
 
 const Relatorio = () => {
   const tokenUser = localStorage.getItem('token');
@@ -44,7 +48,7 @@ const Relatorio = () => {
   async function filtrarDados() {
     setLoading(true)
     try {
-      const response = await fetch('http://localhost:3000/aeot/auth/relatorio', {
+      const response = await fetch(urlRelatorio, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${tokenUser}`,
@@ -71,7 +75,7 @@ const Relatorio = () => {
   }
 
   async function buscarFrentista(nome) {
-    const response = await fetch(`http://localhost:3000/aeot/auth/buscar_frentista?nome=${nome}`, {
+    const response = await fetch(`${urlBuscarFrentista}?nome=${nome}`, {
       headers: {
         'Authorization': `Bearer ${tokenUser}`
       }
@@ -84,7 +88,7 @@ const Relatorio = () => {
     if (nome === '') {
 
     }
-    const response = await fetch(`http://localhost:3000/aeot/auth/buscar_posto?nome=${nome}`, {
+    const response = await fetch(`${urlBuscarPosto}?nome=${nome}`, {
       headers: {
         'Authorization': `Bearer ${tokenUser}`
       }
@@ -93,8 +97,28 @@ const Relatorio = () => {
     setPostos(data.postos)
   }
 
-  function gerarPdf() {
+  async function relatorioCompleto() {
+    try {
+      const response = await fetch(urlRelatorioCompleto, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${tokenUser}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ filtros })
+      })
+
+      const data = await response.json()
+      return data.relatorio
+    } catch (err) {
+      setModalMessage(err.message)
+      setModalVisible(true)
+    }
+  }
+
+  async function gerarPdf() {
     setLoading(true)
+    let relatorio = await relatorioCompleto()
     try {
       let doc = new jsPDF()
 
@@ -118,7 +142,7 @@ const Relatorio = () => {
         "Combustível", "Valor (R$)", "Litros", "Total (R$)", "Frentista"
       ]];
 
-      const body = dados.map(item => ([
+      const body = relatorio.map(item => ([
         item.posto,
         item.data_venda,
         item.hora_venda,
