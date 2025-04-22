@@ -25,14 +25,9 @@
 }
 .container-cadastros .container-ul-cadastros {
   background-color: #ffffff;
-  border-radius: 10px;
   padding: 15px;
+  border-radius: 10px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-}
-.container-cadastros .new-drivers-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
 }
 .container-cadastros .new-drivers-list .new-driver {
   display: flex;
@@ -54,7 +49,6 @@
 }
 .container-cadastros .new-drivers-list .new-driver table td {
   padding: 8px;
-  vertical-align: top;
 }
 .container-cadastros .new-drivers-list .new-driver table td p:first-of-type {
   font-weight: bold;
@@ -63,7 +57,6 @@
 }
 .container-cadastros .new-drivers-list .new-driver table td p:last-of-type {
   color: #333;
-  margin: 0;
 }
 .container-cadastros .new-drivers-list .new-driver button {
   align-self: flex-end;
@@ -81,15 +74,10 @@
   background-color: #0056b3;
 }
 @media (max-width: 768px) {
-  .container-cadastros .new-driver {
-    padding: 10px;
-  }
   .container-cadastros .new-driver table,
   .container-cadastros .new-driver tr,
   .container-cadastros .new-driver td {
     display: block;
-    width: 100%;
-    text-align: left;
   }
   .container-cadastros .new-driver td {
     padding: 10px 0;
@@ -98,66 +86,66 @@
   .container-cadastros .new-driver td:last-child {
     border-bottom: none;
   }
-  .container-cadastros .new-driver td p:first-of-type {
-    font-weight: bold;
-    margin-bottom: 2px;
-  }
-  .container-cadastros .new-driver td p:last-of-type {
-    margin-left: 10px;
-    display: inline;
-  }
   .container-cadastros .new-driver button {
     width: 100%;
     padding: 10px;
-    font-size: 16px;
     margin-top: 10px;
+    font-size: 16px;
   }
 }
 
 /* Estilo para o modal de detalhes do motorista */
 .container-response-newdriver {
+  background-color: rgba(0, 0, 0, 0.6);
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 10;
 }
 .container-response-newdriver .container-info-newdriver {
   background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 400px;
   width: 90%;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
   position: relative;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
+  padding-bottom: 20px;
 }
 .container-response-newdriver .container-info-newdriver .div-close-modal-response-newdriver {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  padding: 10px 15px 0 0;
+  text-align: right;
 }
 .container-response-newdriver .container-info-newdriver .div-close-modal-response-newdriver .btn-close-modal-response-newdriver {
   background: transparent;
   border: none;
   font-size: 18px;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+.container-response-newdriver .container-info-newdriver .div-close-modal-response-newdriver .btn-close-modal-response-newdriver:hover {
+  transform: scale(0.9);
+}
+.container-response-newdriver .container-info-newdriver .container-text-newdriver .text-newdriver {
+  margin-bottom: 5px;
+}
+.container-response-newdriver .container-info-newdriver .container-text-newdriver .text-newdriver .text-span-newdriver {
+  font-weight: bold;
 }
 .container-response-newdriver .container-info-newdriver .container-text-newdriver .driver-images {
   margin-top: 20px;
 }
 .container-response-newdriver .container-info-newdriver .container-text-newdriver .driver-images .driver-image button {
   background: transparent;
+  margin-bottom: 5px;
   border: none;
   color: #007bff;
   text-decoration: underline;
   cursor: pointer;
-  margin-bottom: 5px;
 }
 .container-response-newdriver .container-info-newdriver .container-text-newdriver .div-btn-newdriver {
   display: flex;
@@ -171,9 +159,7 @@
   color: white;
   font-weight: bold;
   cursor: pointer;
-}
-.container-response-newdriver .container-info-newdriver .container-text-newdriver .div-btn-newdriver .btn-response-newdriver:hover {
-  background-color: #00ff73;
+  transition: background-color 0.3s ease;
 }
 .container-response-newdriver .container-info-newdriver .container-text-newdriver .div-btn-newdriver .btn-response-newdriver-yes {
   background-color: #00ff73;
@@ -193,9 +179,8 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 20;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -209,15 +194,24 @@
   max-width: 90%;
   max-height: 90%;
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
-.container-image-modal .image-modal-content .btn-close-image-modal {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+.container-image-modal .image-modal-content .div-close-image-modal {
+  width: 100%;
+  text-align: right;
+}
+.container-image-modal .image-modal-content .div-close-image-modal .btn-close-image-modal {
   background: transparent;
   border: none;
   font-size: 18px;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.container-image-modal .image-modal-content .div-close-image-modal .btn-close-image-modal:hover {
+  transform: scale(0.8);
 }
 .container-image-modal .image-modal-content .image-modal-view {
   max-width: 100%;
