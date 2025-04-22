@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 import '../style/new_driver_page/new_driver.css'
 
@@ -122,16 +122,25 @@ const NewDrivers = () => {
                     <div className="container-info-newdriver">
                         <div className="div-close-modal-response-newdriver">
                             <button onClick={handleCloseModal} className="btn-close-modal-response-newdriver">
-                                X
+                                <FontAwesomeIcon icon={faXmark} />
                             </button>
                         </div>
                         <div className="container-text-newdriver">
-                            <p className="response-text-newdriver">
-                                <strong>Nome:</strong> {driverDetails.nome}<br />
-                                <strong>Email:</strong> {driverDetails.email}<br />
-                                <strong>Telefone:</strong> {driverDetails.telefone}<br />
-                                <strong>Carro:</strong> {driverDetails.modelo}<br />
-                                <strong>Placa:</strong> {driverDetails.placa}
+
+                            <p className="text-newdriver">
+                                <span className="text-span-newdriver">Nome:</span> {driverDetails.nome}
+                            </p>
+                            <p className="text-newdriver">
+                                <span className="text-span-newdriver">Email:</span> {driverDetails.email}
+                            </p>
+                            <p className="text-newdriver">
+                                <span className="text-span-newdriver">Telefone:</span> {driverDetails.telefone}
+                            </p>
+                            <p className="text-newdriver">
+                                <span className="text-span-newdriver">Carro:</span> {driverDetails.modelo}
+                            </p>
+                            <p className="text-newdriver">
+                                <span className="text-span-newdriver">Placa:</span> {driverDetails.placa}
                             </p>
 
                             {/* Exibindo as imagens com clique para ampliar */}
@@ -171,7 +180,11 @@ const NewDrivers = () => {
             {showImageModal && (
                 <div className="container-image-modal">
                     <div className="image-modal-content">
-                        <button onClick={handleCloseImageModal} className="btn-close-image-modal">X</button>
+                        <div className='div-close-image-modal'>
+                            <button onClick={handleCloseImageModal} className="btn-close-image-modal">
+                                <FontAwesomeIcon icon={faXmark} />
+                            </button>
+                        </div>
                         <img src={`https://aeotnew.s3.amazonaws.com/${selectedImage}`} alt="Imagem ampliada" className="image-modal-view" />
                     </div>
                 </div>
