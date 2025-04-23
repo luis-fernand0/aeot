@@ -25,7 +25,7 @@ const AdicionarCadastros = () => {
         <div className='container-btns-cadastro'>
           {typeUser === 'administrador' && (
             <>
-              <Link>
+              <Link to={'/consultar_cadastros'}>
                 <button className='btn-add-cadastro'>
                   Cadastros
                 </button>
