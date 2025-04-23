@@ -23,6 +23,7 @@ import LerQrCode from './components/ler_qrcode.jsx'
 import GerarQrCode from './components/gerar_qrcode.jsx'
 import CadastrarFrentista from './components/add_frentista.jsx'
 import Relatorio from './components/relatorio.jsx'
+import ConsultarCadastros from './components/consultarCadastros.jsx'
 
 const router = createBrowserRouter([
   {
@@ -103,6 +104,11 @@ const router = createBrowserRouter([
   {
     path: '/relatorio',
     element: <Relatorio />
+  },
+
+  {
+    path:'/consultar_cadastros',
+    element: <ConsultarCadastros />
   }
 ])
 
