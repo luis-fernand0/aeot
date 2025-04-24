@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 
+import '../style/consultaCadastros_component/consutarCadastros.css'
+
 const ConsultarCadastros = () => {
     return (
         <>
@@ -23,21 +25,19 @@ const ConsultarCadastros = () => {
 
                     <div className='container-cadastros-list'>
                         <ul className='cadastros-list'>
-                            <li>
+                            <li className='cadastro'>
                                 <p>Motorista</p>
                                 <p>Nome: João</p>
-                                <p>Carro</p>
-                                <p>Placa: BRL-1234</p>
-                                <p>Modelo: Gol Preto</p>
+                                <p>Telefone: 99 99999-9999</p>
                             </li>
 
-                            <li>
+                            <li className='cadastro'>
                                 <p>Frentista</p>
                                 <p>Nome: Mario</p>
-                                <p>Posto: POSTO A</p>
+                                <p>Telefone: 99 99999-9999</p>
                             </li>
 
-                            <li>
+                            <li className='cadastro'>
                                 <p>Posto</p>
                                 <p>Nome: POSTO A</p>
                                 <p>CNPJ: 09.472.508.0001/67</p>
