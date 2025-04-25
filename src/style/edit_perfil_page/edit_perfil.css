@@ -82,6 +82,10 @@
   color: #333;
   font-weight: bold;
 }
+.container-modal-alert .container-img-btns-text .foto-user {
+  width: auto;
+  height: 50%;
+}
 .container-modal-alert .container-img-btns-text .container-btns-enviar-img {
   width: 100%;
   display: flex;
