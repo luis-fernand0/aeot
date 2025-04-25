@@ -1,3 +1,11 @@
+$primary-color: #E6C200;
+$background-shadow: rgba(0, 0, 0, 0.164);
+$backgorund-white: white;
+$background-green: rgb(4, 155, 4);
+$background-red: rgb(255, 0, 0);
+$text-dark: #333;
+$text-white: white;
+
 .container-datas {
     height: auto;
 
@@ -30,6 +38,7 @@
         align-items: center;
 
         .container-foto-user {
+            position: relative;
             margin: 15px 15px;
 
             .foto-user {
@@ -37,6 +46,112 @@
                 height: 200px;
 
                 border-radius: 50%;
+            }
+
+            .container-btn-edit {
+                position: absolute;
+                top: 0;
+
+                width: 100%;
+                height: 100%;
+                .btn-edit {
+                    background-color: $primary-color;
+                    
+                    height: 35px;
+                    width: 35px;
+
+                    border: none;
+                    border-radius: 100%;
+
+                    color: white;
+
+                    transform: translate(400%, 470%);
+                    transition: background 0.5s ease-in-out;
+
+                    &:hover {
+                        background-color: darken($primary-color, 10%);
+                    }
+                }
+            }
+        }
+    }
+}
+
+.container-modal-alert[hidden] {
+    display: none !important;
+}
+
+.container-modal-alert {
+    background-color: $background-shadow;
+
+    position: absolute;
+    top: 0;
+
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .container-img-btns-text {
+        background-color: $backgorund-white;
+
+        width: 90%;
+        height: 90%;
+
+        padding: 15px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+
+        border-radius: 15px;
+
+        .container-alert-text {
+            font-size: 20px;
+            text-align: center;
+            color: $text-dark;
+            font-weight: bold;
+        }
+
+        .container-btns-enviar-img {
+            width: 100%;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+
+            .btn-enviar-img {
+                padding: 15px;
+
+                width: 150px;
+
+                color: $text-white;
+                font-size: 14px;
+                font-weight: bold;
+
+                border-radius: 15px;
+                border: none;
+
+                transition: background 0.5s ease-in-out;
+            }
+
+            .btn-sim {
+                background-color: $background-green;
+
+                &:hover {
+                    background-color: darken($background-green, 10%);
+                }
+            }
+
+            .btn-nao {
+                background-color: $background-red;
+
+                &:hover {
+                    background-color: darken($background-red, 10%);
+                }
             }
         }
     }
