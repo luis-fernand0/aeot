@@ -23,6 +23,7 @@ const EditPerfil = () => {
     const navigate = useNavigate()
 
     const tokenUser = localStorage.getItem('token');
+    const typeUser = localStorage.getItem('type_user');
 
     async function callUser() {
         const response = await fetch(urlData, {
@@ -44,8 +45,11 @@ const EditPerfil = () => {
         const file = fileInput.files[0]
 
         const formData = new FormData()
-        formData.append('foto_user', file)
-
+        if (typeUser === 'driver' || typeUser === 'administrador') {
+            formData.append('foto_user', file)
+        } else {
+            formData.append('foto_posto', file)
+        }
         const response = await fetch(urlAtualizarFoto, {
             method: 'PUT',
             headers: {
@@ -59,7 +63,7 @@ const EditPerfil = () => {
         }
 
         setNewFoto(file)
-        document.querySelector('.modal-confirm').classList.add('modal-confirm-hidden')
+        document.querySelector('.container-modal-alert').setAttribute(`hidden`, true)
     }
     function anexarFoto(input) { document.getElementById(input).click() }
     function checkFoto(e) {
@@ -72,7 +76,7 @@ const EditPerfil = () => {
             }
             reader.readAsDataURL(foto)
 
-            document.querySelector('.modal-confirm').classList.remove('modal-confirm-hidden')
+            document.querySelector('.container-modal-alert').removeAttribute(`hidden`)
 
             comprimirFoto('edit_foto')
         }
@@ -82,7 +86,7 @@ const EditPerfil = () => {
     function cancelFoto() {
         const inputFoto = document.getElementById('edit_foto')
         inputFoto.value = ''
-        document.querySelector('.modal-confirm').classList.add('modal-confirm-hidden')
+        document.querySelector('.container-modal-alert').setAttribute(`hidden`, true)
     }
 
     useEffect(() => {
@@ -139,9 +143,40 @@ const EditPerfil = () => {
                         <>
                             <div className='container-foto-user'>
                                 <img src={`https://aeotnew.s3.amazonaws.com/${user.foto}`} alt="foto-user" className='foto-user' />
+
+                                <div className='container-btn-edit'>
+                                    <input
+                                        onChange={(e) => { checkFoto(e) }}
+                                        type="file"
+                                        name='foto'
+                                        accept='image/*'
+                                        className='input-edit-foto'
+                                        id='edit_foto'
+                                        hidden />
+
+                                    <button className='btn-edit' onClick={() => { anexarFoto('edit_foto') }}>
+                                        <FontAwesomeIcon className='pen-icon' icon={faPen} />
+                                    </button>
+                                </div>
                             </div>
                         </>
                     )}
+                </div>
+            </div>
+
+            {/* MODAL PARA CONFIRMAR ALTERAÇÃO DA FOTO */}
+            <div hidden className='container-modal-alert'>
+                <div className='container-img-btns-text'>
+                    <div className='container-alert-text'>
+                        <p>Tem certeza que deseja trocar sua foto de perfil?</p>
+                    </div>
+
+                    <img src="" alt="foto-user" className='foto-user' id='new-foto-user' />
+
+                    <div className='container-btns-enviar-img'>
+                        <button onClick={() => { changeFoto('edit_foto') }} className='btn-enviar-img btn-sim' type="button">Sim</button>
+                        <button onClick={() => { cancelFoto() }} className='btn-enviar-img btn-nao' type="button">Não</button>
+                    </div>
                 </div>
             </div>
         </>
