@@ -19,8 +19,9 @@
   transform: scale(0.8);
 }
 .container .container-todos-os-cadastros {
-  height: 100%;
+  height: auto;
   width: 100%;
+  padding-bottom: 20px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -70,7 +71,7 @@
 .container .container-todos-os-cadastros .container-cadastros-list {
   background-color: white;
   width: 80%;
-  height: 100%;
+  height: auto;
   border-radius: 15px;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.485);
   display: flex;
