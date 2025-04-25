@@ -1,29 +1,31 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 
-import CriarBrinde from '../components/criarBrinde';
-import AdicionarBrinde from './adicionarBrinde';
+import { comprimirFoto } from '../functions/comprimirFoto'
 
-import { comprimirFoto } from '../functions/comprimirFoto';
+import Loading from './loading'
+import ModalResponse from './modalResponse'
 
 import '../style/edit_perfil_page/edit_perfil.css'
-import adicionarBrinde from './adicionarBrinde';
 
 const urlData = import.meta.env.VITE_URL_DATAS_USER
 const urlAtualizarFoto = import.meta.env.VITE_URL_ATUALIZAR_FOTO_USER
 
 const EditPerfil = () => {
-    const [user, setUser] = useState()
-    const [newFoto, setNewFoto] = useState()
-    const [options, setOptions] = useState()
-    const [optionsBrinde, setOptionsBrinde] = useState()
-
     const navigate = useNavigate()
 
     const tokenUser = localStorage.getItem('token');
     const typeUser = localStorage.getItem('type_user');
+
+    const [user, setUser] = useState()
+    const [newFoto, setNewFoto] = useState()
+
+    const [loading, setLoading] = useState(false)
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
 
     async function callUser() {
         const response = await fetch(urlData, {
@@ -41,30 +43,41 @@ const EditPerfil = () => {
     }
 
     async function changeFoto(input) {
-        const fileInput = document.getElementById(input)
-        const file = fileInput.files[0]
+        setLoading(true)
+        try {
+            const fileInput = document.getElementById(input)
+            const file = fileInput.files[0]
 
-        const formData = new FormData()
-        if (typeUser === 'driver' || typeUser === 'administrador') {
-            formData.append('foto_user', file)
-        } else {
-            formData.append('foto_posto', file)
-        }
-        const response = await fetch(urlAtualizarFoto, {
-            method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${tokenUser}`,
-            },
-            body: formData
-        })
-        const data = await response.json()
-        if (response.status === 401) {
-            navigate('/', { replace: true })
-        }
+            const formData = new FormData()
+            if (typeUser === 'driver' || typeUser === 'administrador') {
+                formData.append('foto_user', file)
+            } else {
+                formData.append('foto_posto', file)
+            }
+            const response = await fetch(urlAtualizarFoto, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${tokenUser}`,
+                },
+                body: formData
+            })
+            const data = await response.json()
+            if (response.status === 401) {
+                navigate('/', { replace: true })
+            }
 
-        setNewFoto(file)
-        document.querySelector('.container-modal-alert').setAttribute(`hidden`, true)
+            setNewFoto(file)
+            document.querySelector('.container-modal-alert').setAttribute(`hidden`, true)
+            setModalMessage(data.message)
+            setModalVisible(true)
+        } catch (err) {
+            setModalMessage(`Desculpe! Ocorreu um erro inesperado. Não foi possível alterar a foto.` + err.message)
+            setModalVisible(true)
+        } finally {
+            setLoading(false)
+        }
     }
+
     function anexarFoto(input) { document.getElementById(input).click() }
     function checkFoto(e) {
         const foto = e.target.files[0]
@@ -94,43 +107,11 @@ const EditPerfil = () => {
     }, [newFoto])
     return (
         <>
-            {/* <div className='container-datas-user'>
-                <div className='container-icon'>
-                    <Link to={'/home'}>
-                        <FontAwesomeIcon className='arrow-icon' icon={faChevronLeft} />
-                    </Link>
-                </div>
-                <div className='modal-confirm modal-confirm-hidden'>
-                    <div className='container-imgs-btns-text'>
-                        <div className='container-text'>
-                            <p>Tem certeza que deseja trocar sua foto de perfil?</p>
-                        </div>
-                        <img src="" alt="foto-user" className='foto-user' id='new-foto-user' />
-
-                        <div className='container-btns-enviar-img'>
-                            <button onClick={() => { changeFoto('edit_foto') }} className='btn-enviar-img btn-sim' type="button">Sim</button>
-                            <button onClick={() => { cancelFoto() }} className='btn-enviar-img btn-nao' type="button">Não</button>
-                        </div>
-                    </div>
-                </div>
-                {user && (
-                    <>
-                        <div className='container-div-foto-btn'>
-                            <div className='container-foto-btn'>
-                                <img src={`https://aeotnew.s3.amazonaws.com/${user.foto}`} alt="foto-user" className='foto-user' />
-
-                                <div className='container-btn-edit-foto'>
-                                    <input onChange={(e) => { checkFoto(e) }} type="file" className='input-edit-foto' id='edit_foto' name='foto' accept='image/*' />
-                                    <button onClick={() => { anexarFoto('edit_foto') }} type="button" className='btn-edit-foto'>
-                                        <FontAwesomeIcon className='pen-icon' icon={faPen} />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </>
-                )}
-            </div> */}
-
+            <Loading loading={loading} />
+            <ModalResponse
+                isVisible={isModalVisible}
+                onClose={() => setModalVisible(false)}
+                message={modalMessage}/>
             <div className='container-datas'>
                 <div className='container-btn-voltar'>
                     <Link to={'/home'}>
