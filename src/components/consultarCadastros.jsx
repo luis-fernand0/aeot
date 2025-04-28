@@ -50,13 +50,19 @@ const ConsultarCadastros = () => {
                                     key={cadastro.user_id}
                                     className='cadastro'>
                                     <div className='container-info-cadastro'>
-                                        <p>{cadastro.tipo}</p>
+                                        <p>
+                                            {
+                                                cadastro.tipo === 'driver' ?
+                                                'MOTORISTA' :
+                                                cadastro.tipo.toUpperCase()
+                                            }
+                                        </p>
                                         <p>Nome: {cadastro.nome}</p>
                                         {
                                             cadastro.tipo === 'driver' ||
-                                            cadastro.tipo === 'frentista' ?
-                                            <p>Telefone: {cadastro.telefone}</p> :
-                                            <p>CNPJ: {cadastro.cnpj}</p>
+                                                cadastro.tipo === 'frentista' ?
+                                                <p>Telefone: {cadastro.telefone}</p> :
+                                                <p>CNPJ: {cadastro.cnpj}</p>
                                         }
                                     </div>
 
