@@ -1,0 +1,56 @@
+$primary-color: #E6C200;
+$background-white: white;
+$background-light: #f5f5f5;
+$background-shadow: rgba(0, 0, 0, 0.36);
+$text-dark: #333;
+$text-gray: gray;
+
+
+.editar-cadastro-container {
+    background-color: $background-shadow;
+    position: fixed;
+
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .editar-cadastro {
+        background-color: $background-white;
+
+        height: 90%;
+        width: 90%;
+
+        border-radius: 15px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+
+        .container-btn-close-cadastro {
+            width: 100%;
+
+            text-align: right;
+
+            padding: 20px 20px 0;
+
+            .btn-close {
+                background-color: transparent;
+
+                border: none;
+
+                font-size: 18px;
+
+                transition: all 0.3s ease;
+
+                &:hover {
+                    transform: scale(0.80);
+                }
+            }
+        }
+    }
+
+}

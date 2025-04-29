@@ -1,0 +1,33 @@
+.editar-cadastro-container {
+  background-color: rgba(0, 0, 0, 0.36);
+  position: fixed;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.editar-cadastro-container .editar-cadastro {
+  background-color: white;
+  height: 90%;
+  width: 90%;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+.editar-cadastro-container .editar-cadastro .container-btn-close-cadastro {
+  width: 100%;
+  text-align: right;
+  padding: 20px 20px 0;
+}
+.editar-cadastro-container .editar-cadastro .container-btn-close-cadastro .btn-close {
+  background-color: transparent;
+  border: none;
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+.editar-cadastro-container .editar-cadastro .container-btn-close-cadastro .btn-close:hover {
+  transform: scale(0.8);
+}/*# sourceMappingURL=editarCadastro.css.map */
