@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 
+import EditarCadastro from './editarCadastro'
+
 import '../style/consultaCadastros_component/consutarCadastros.css'
 
 const ConsultarCadastros = () => {
@@ -24,6 +26,7 @@ const ConsultarCadastros = () => {
 
     return (
         <>
+            <EditarCadastro/>
             <div className="container">
                 <div className='container-btn-voltar'>
                     <Link to={'/adicionar_cadastros'}>
