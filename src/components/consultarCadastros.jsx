@@ -13,6 +13,8 @@ const ConsultarCadastros = () => {
 
     const [cadastros, setCadastros] = useState([])
 
+    const [showModal, setShowModal] = useState({view: false, cadastro: null})
+
     async function consultarCadastro() {
         const response = await fetch('http://localhost:3000/aeot/auth/buscar_cadastros', {
             headers: {
@@ -26,7 +28,10 @@ const ConsultarCadastros = () => {
 
     return (
         <>
-            <EditarCadastro/>
+            <EditarCadastro
+                showModal={showModal}
+                close={() => setShowModal({view: false, cadastro: null})} />
+            
             <div className="container">
                 <div className='container-btn-voltar'>
                     <Link to={'/adicionar_cadastros'}>
@@ -56,8 +61,8 @@ const ConsultarCadastros = () => {
                                         <p>
                                             {
                                                 cadastro.tipo === 'driver' ?
-                                                'MOTORISTA' :
-                                                cadastro.tipo.toUpperCase()
+                                                    'MOTORISTA' :
+                                                    cadastro.tipo.toUpperCase()
                                             }
                                         </p>
                                         <p>Nome: {cadastro.nome}</p>
@@ -69,7 +74,9 @@ const ConsultarCadastros = () => {
                                         }
                                     </div>
 
-                                    <button className='btn-detalhes'>
+                                    <button
+                                        className='btn-detalhes'
+                                        onClick={() => setShowModal({view: true, cadastro: cadastro})}>
                                         <span className='linha'></span>
                                         <span className='linha'></span>
                                         <span className='linha'></span>
