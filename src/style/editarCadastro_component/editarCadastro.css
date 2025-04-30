@@ -30,4 +30,102 @@
 }
 .editar-cadastro-container .editar-cadastro .container-btn-close-cadastro .btn-close:hover {
   transform: scale(0.8);
+}
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro {
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .foto-cadastro {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .foto-cadastro img {
+  width: 50%;
+  height: 50%;
+  border-radius: 100%;
+}
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .foto-cadastro button {
+  background-color: transparent;
+  border: none;
+  margin-top: 15px;
+  text-decoration: underline;
+  color: #007bff;
+  transition: transform 0.3s ease-in-out;
+}
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .foto-cadastro button:hover {
+  transform: scale(1.05);
+}
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .datas-cadastro {
+  width: 100%;
+  padding: 15px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .datas-cadastro input {
+  margin-bottom: 15px;
+  width: 250px;
+  height: 40px;
+  padding-left: 15px;
+  border-radius: 15px;
+  border: 1px solid #E6C200;
+  font-size: 14px;
+  font-weight: 450;
+  transition: all 0.2s linear;
+}
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .datas-cadastro input:hover {
+  background-color: #fafafa;
+}
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .datas-cadastro input:focus {
+  border: none;
+  outline: 1px solid #4b39ef;
+}
+
+.image-modal {
+  background-color: rgba(0, 0, 0, 0.36);
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.image-modal .image-modal-container {
+  background-color: white;
+  width: 90%;
+  height: 90%;
+  border-radius: 15px;
+  overflow-y: scroll;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.image-modal .image-modal-container .container-close-image-modal {
+  width: 100%;
+  text-align: right;
+}
+.image-modal .image-modal-container .container-close-image-modal .btn-close-image-modal {
+  background-color: transparent;
+  border: none;
+  padding: 0 20px 0 0;
+  font-size: 18px;
+  transition: transform 0.3s ease-in-out;
+}
+.image-modal .image-modal-container .container-close-image-modal .btn-close-image-modal:hover {
+  transform: scale(0.8);
+}
+.image-modal .image-modal-container .image-cadastro {
+  max-width: 100%;
+  max-height: 100%;
 }/*# sourceMappingURL=editarCadastro.css.map */
