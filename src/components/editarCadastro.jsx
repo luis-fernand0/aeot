@@ -11,6 +11,20 @@ const EditarCadastro = ({ showModal, close }) => {
 
     const [cadastro, setCadastro] = useState(showModal.cadastro)
     const [imageModal, setImageModal] = useState({ view: false, image: null })
+    function formatDate(data) {
+        const date = new Date(data);
+
+        const dia = String(date.getDate()).padStart(2, '0');
+        const mes = String(date.getMonth() + 1).padStart(2, '0');
+        const ano = date.getFullYear();
+        let horaMinuto = new Date(data).toTimeString().split(':').slice(0, 2).join(':')
+
+        let dataCompleta = `${dia}/${mes}/${ano} - ${horaMinuto}`
+
+        return dataCompleta
+    }
+
+    formatDate(cadastro.created_at)
 
     return (
         <>
@@ -46,89 +60,166 @@ const EditarCadastro = ({ showModal, close }) => {
                             </div>
 
                             <div className='datas-cadastro'>
-                                <input
-                                    type="text"
-                                    name='nome'
-                                    placeholder='Nome'
-                                    defaultValue={cadastro.nome} />
-                                {cadastro.tipo === 'driver' && (
+                                <div className='container-input'>
+                                    <label htmlFor="nome">
+                                        Nome:
+                                    </label>
                                     <input
                                         type="text"
-                                        name="cpf"
-                                        placeholder='CPF'
-                                        defaultValue={cadastro.cpf} />
+                                        name='nome'
+                                        id='nome'
+                                        placeholder='Nome'
+                                        defaultValue={cadastro.nome} />
+                                </div>
+                                {cadastro.tipo === 'driver' && (
+                                    <div className="container-input">
+                                        <label htmlFor="cpf">
+                                            CPF:
+                                        </label>
+                                        <input
+                                            id='cpf'
+                                            type="text"
+                                            name="cpf"
+                                            placeholder='CPF'
+                                            defaultValue={cadastro.cpf} />
+                                    </div>
                                 )}
 
-                                <input
-                                    type="text"
-                                    name='email'
-                                    placeholder='Email'
-                                    defaultValue={cadastro.email} />
+                                <div className="container-input">
+                                    <label htmlFor="email">
+                                        Email:
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name='email'
+                                        id='email'
+                                        placeholder='Email'
+                                        defaultValue={cadastro.email} />
+                                </div>
 
-                                <input
-                                    type="password"
-                                    name='pass'
-                                    placeholder='Senha' />
+                                <div className="container-input">
+                                    <label htmlFor="senha">
+                                        Senha:
+                                    </label>
+                                    <input
+                                        id='senha'
+                                        type="password"
+                                        name='pass'
+                                        placeholder='Senha' />
+                                </div>
 
-                                <input
-                                    type="text"
-                                    name='telefone'
-                                    placeholder='Telefone'
-                                    defaultValue={cadastro.telefone} />
+                                <div className="container-input">
+                                    <label htmlFor="telefone">
+                                        Telefone:
+                                    </label>
+                                    <input
+                                        id='telefone'
+                                        type="text"
+                                        name='telefone'
+                                        placeholder='Telefone'
+                                        defaultValue={cadastro.telefone} />
+                                </div>
 
                                 {cadastro.tipo === 'driver' && (
                                     <>
-                                        <input
-                                            type="text"
-                                            name='modelo'
-                                            placeholder='Modelo'
-                                            defaultValue={cadastro.veiculo.modelo} />
+                                        <div className="container-input">
+                                            <label htmlFor="modelo">
+                                                Modelo:
+                                            </label>
+                                            <input
+                                                id='modelo'
+                                                type="text"
+                                                name='modelo'
+                                                placeholder='Modelo'
+                                                defaultValue={cadastro.veiculo.modelo} />
+                                        </div>
 
-                                        <input
-                                            type="text"
-                                            name='placa'
-                                            placeholder='Placa'
-                                            defaultValue={cadastro.veiculo.placa} />
+                                        <div className="container-input">
+                                            <label htmlFor="placa">
+                                                Placa:
+                                            </label>
+                                            <input
+                                                id='placa'
+                                                type="text"
+                                                name='placa'
+                                                placeholder='Placa'
+                                                defaultValue={cadastro.veiculo.placa} />
+                                        </div>
 
-                                        <input
-                                            type="text"
-                                            name="cep"
-                                            placeholder='CEP'
-                                            defaultValue={cadastro.cep} />
+                                        <div className="container-input">
+                                            <label htmlFor="cep">
+                                                CEP:
+                                            </label>
+                                            <input
+                                                type="text"
+                                                name="cep"
+                                                id='cep'
+                                                placeholder='CEP'
+                                                defaultValue={cadastro.cep} />
+                                        </div>
                                     </>
                                 )}
 
                                 {cadastro.tipo != 'frentista' && (
-                                    <input
-                                        type="text"
-                                        name='endereco'
-                                        placeholder='Endereco' defaultValue={cadastro.endereco} />
+                                    <div className="container-input">
+                                        <label htmlFor="endereco">
+                                            Endereço:
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id='endereco'
+                                            name='endereco'
+                                            placeholder='Endereco' defaultValue={cadastro.endereco} />
+                                    </div>
                                 )}
 
                                 {cadastro.tipo === 'driver' && (
-                                    <input type="text"
-                                        name="numero"
-                                        placeholder='N°'
-                                        defaultValue={cadastro.numero} />
+                                    <div className="container-input">
+                                        <label htmlFor="numero">
+                                            N°:
+                                        </label>
+                                        <input type="text"
+                                            name="numero"
+                                            placeholder='N°'
+                                            defaultValue={cadastro.numero} />
+                                    </div>
                                 )}
+                                <div className="container-input">
+                                    <label htmlFor="cidade">
+                                        Cidade:
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name='cidade'
+                                        id='cidade'
+                                        placeholder='Cidade'
+                                        defaultValue={cadastro.cidade} />
+                                </div>
 
-                                <input
-                                    type="text"
-                                    name='cidade'
-                                    placeholder='Cidade'
-                                    defaultValue={cadastro.cidade} />
+                                <div className="container-input">
+                                    <label htmlFor="uf">
+                                        UF:
+                                    </label>
+                                    <input
+                                        id='uf'
+                                        type="text"
+                                        name='uf'
+                                        placeholder='UF'
+                                        defaultValue={cadastro.uf} />
+                                </div>
 
-                                <input
-                                    type="text"
-                                    name='uf'
-                                    placeholder='UF'
-                                    defaultValue={cadastro.uf} />
-
-                                <input
-                                    type="text"
-                                    name='created_at'
-                                    placeholder='Criado em:'
-                                    defaultValue={cadastro.created_at} />
+                                <div className="container-input">
+                                    <label htmlFor="created_at">
+                                        Criado em:
+                                    </label>
+                                    <input
+                                        id='created_at'
+                                        type="text"
+                                        name='created_at'
+                                        placeholder='Criado em:'
+                                        defaultValue={formatDate(cadastro.created_at)}
+                                        disabled />
+                                </div>
                             </div>
                         </div>
                     </div>
