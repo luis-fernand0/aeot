@@ -37,18 +37,22 @@
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
+  padding-bottom: 20px;
 }
 .editar-cadastro-container .editar-cadastro .container-datas-cadastro .foto-cadastro {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  margin-bottom: 20px;
 }
 .editar-cadastro-container .editar-cadastro .container-datas-cadastro .foto-cadastro img {
-  width: 50%;
-  height: 50%;
+  width: 200px;
+  height: 200px;
+  -o-object-fit: cover;
+     object-fit: cover;
   border-radius: 100%;
 }
 .editar-cadastro-container .editar-cadastro .container-datas-cadastro .foto-cadastro button {
@@ -70,7 +74,16 @@
   justify-content: space-between;
   align-items: center;
 }
-.editar-cadastro-container .editar-cadastro .container-datas-cadastro .datas-cadastro input {
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .datas-cadastro .container-input {
+  display: flex;
+  flex-direction: column;
+}
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .datas-cadastro .container-input label {
+  padding-left: 15px;
+  margin-bottom: 5px;
+  font-weight: 450;
+}
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .datas-cadastro .container-input input {
   margin-bottom: 15px;
   width: 250px;
   height: 40px;
@@ -81,10 +94,10 @@
   font-weight: 450;
   transition: all 0.2s linear;
 }
-.editar-cadastro-container .editar-cadastro .container-datas-cadastro .datas-cadastro input:hover {
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .datas-cadastro .container-input input:hover {
   background-color: #fafafa;
 }
-.editar-cadastro-container .editar-cadastro .container-datas-cadastro .datas-cadastro input:focus {
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .datas-cadastro .container-input input:focus {
   border: none;
   outline: 1px solid #4b39ef;
 }
@@ -108,7 +121,7 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 .image-modal .image-modal-container .container-close-image-modal {
