@@ -4,34 +4,63 @@ import { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 
+import Loading from './loading'
+import ModalResponse from './modalResponse';
 import EditarCadastro from './editarCadastro'
 
-import '../style/consultaCadastros_component/consutarCadastros.css'
+import '../style/consultarCadastros_component/consultarCadastros.css'
 
 const ConsultarCadastros = () => {
     const tokenUser = localStorage.getItem('token')
 
+    const [loading, setLoading] = useState(false)
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+
     const [cadastros, setCadastros] = useState([])
+    const [showModal, setShowModal] = useState({ view: false, cadastro: null })
 
-    const [showModal, setShowModal] = useState({view: false, cadastro: null})
+    const [page, setPage] = useState(1)
+    const [total, setTotal] = useState(0)
+    const limit = 15
 
-    async function consultarCadastro() {
-        const response = await fetch('http://localhost:3000/aeot/auth/buscar_cadastros', {
-            headers: {
-                'Authorization': `Bearer ${tokenUser}`
-            }
-        })
+    async function consultarCadastro(p = page) {
+        setLoading(true)
+        try {
+            const response = await fetch(`http://localhost:3000/aeot/auth/buscar_cadastros?page=${p}&limit=${limit}`, {
+                headers: {
+                    'Authorization': `Bearer ${tokenUser}`
+                }
+            })
 
-        const data = await response.json()
-        setCadastros(data.cadastros)
+            const data = await response.json()
+            setCadastros(data.cadastros)
+            setTotal(data.total)
+        } catch (err) {
+            setModalMessage(`Desculpe! Ocorreu um erro inesperado. Não foi possivel consultar os cadastros.` + err.message)
+            setModalVisible(true)
+        } finally {
+            setLoading(false)
+        }
     }
+
+    useEffect(() => {
+        consultarCadastro()
+    }, [page])
+
+    const totalPages = Math.ceil(total / limit)
 
     return (
         <>
             <EditarCadastro
                 showModal={showModal}
-                close={() => setShowModal({view: false, cadastro: null})} />
-            
+                close={() => setShowModal({ view: false, cadastro: null })} />
+            <Loading loading={loading} />
+            <ModalResponse
+                isVisible={isModalVisible}
+                onClose={() => setModalVisible(false)}
+                message={modalMessage}/>
+
             <div className="container">
                 <div className='container-btn-voltar'>
                     <Link to={'/adicionar_cadastros'}>
@@ -55,6 +84,7 @@ const ConsultarCadastros = () => {
                         <ul className='cadastros-list'>
                             {cadastros && cadastros.map((cadastro) =>
                                 <li
+                                    onClick={() => setShowModal({ view: true, cadastro: cadastro })}
                                     key={cadastro.user_id}
                                     className='cadastro'>
                                     <div className='container-info-cadastro'>
@@ -75,8 +105,7 @@ const ConsultarCadastros = () => {
                                     </div>
 
                                     <button
-                                        className='btn-detalhes'
-                                        onClick={() => setShowModal({view: true, cadastro: cadastro})}>
+                                        className='btn-detalhes'>
                                         <span className='linha'></span>
                                         <span className='linha'></span>
                                         <span className='linha'></span>
@@ -84,6 +113,41 @@ const ConsultarCadastros = () => {
                                 </li>
                             )}
                         </ul>
+
+                        <div className="paginacao">
+                            <button
+                                disabled={page <= 1}
+                                onClick={() => {
+                                    setPage(1)
+                                }}>
+                                Primeira
+                            </button>
+                            <button
+                                disabled={page <= 1}
+                                onClick={() => {
+                                    setPage(page - 1)
+                                }}>
+                                Anterior
+                            </button>
+
+                            <span>Página {page} de {totalPages}</span>
+
+                            <button
+                                disabled={page >= totalPages}
+                                onClick={() => {
+                                    setPage(page + 1)
+                                }}>
+                                Próxima
+                            </button>
+
+                            <button
+                                disabled={page >= totalPages}
+                                onClick={() => {
+                                    setPage(totalPages)
+                                }}>
+                                Ultima
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
