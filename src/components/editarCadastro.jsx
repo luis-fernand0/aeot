@@ -1,16 +1,33 @@
+import { useState } from 'react'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
+import Loading from './loading'
+import ModalResponse from './modalResponse';
+
 import '../style/editarCadastro_component/editarCadastro.css'
-import { useState } from 'react'
 
 const EditarCadastro = ({ showModal, close }) => {
     if (!showModal.view) {
         return
     }
 
+    const tokenUser = localStorage.getItem('token')
+
     const [cadastro, setCadastro] = useState(showModal.cadastro)
     const [imageModal, setImageModal] = useState({ view: false, image: null })
+
+    const [loading, setLoading] = useState(false)
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+
+    const [editUser, setEditUser] = useState({
+        tipo: cadastro.tipo,
+        cod_cadastro: cadastro.cod_driver || cadastro.cod_posto || cadastro.cod_frentista,
+        cod_user_cadastro: cadastro.id
+    })
+
     function formatDate(data) {
         const date = new Date(data);
 
@@ -24,10 +41,35 @@ const EditarCadastro = ({ showModal, close }) => {
         return dataCompleta
     }
 
-    formatDate(cadastro.created_at)
+    async function editarCadastro() {
+        setLoading(true)
+        try {
+            const response = await fetch('http://localhost:3000/aeot/auth/editar_cadastro', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${tokenUser}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(editUser)
+            })
+            const data = await response.json()
+            setModalMessage(data.message)
+            setModalVisible(true)
+        } catch (err) {
+            setModalMessage(`Desculpe! Ocorreu um erro inesperado. Não foi possivel alterar o cadastro.` + err.message)
+            setModalVisible(true)
+        } finally {
+            setLoading(false)
+        }
+    }
 
     return (
         <>
+            <Loading loading={loading} />
+            <ModalResponse
+                isVisible={isModalVisible}
+                onClose={() => setModalVisible(false)}
+                message={modalMessage} />
             <div className="editar-cadastro-container">
                 {cadastro && (
                     <div className="editar-cadastro">
@@ -65,6 +107,7 @@ const EditarCadastro = ({ showModal, close }) => {
                                         Nome:
                                     </label>
                                     <input
+                                        onChange={(e) => setEditUser({ ...editUser, [e.target.name]: e.target.value })}
                                         type="text"
                                         name='nome'
                                         id='nome'
@@ -77,6 +120,7 @@ const EditarCadastro = ({ showModal, close }) => {
                                             CPF:
                                         </label>
                                         <input
+                                            onChange={(e) => setEditUser({ ...editUser, [e.target.name]: e.target.value })}
                                             id='cpf'
                                             type="text"
                                             name="cpf"
@@ -90,6 +134,7 @@ const EditarCadastro = ({ showModal, close }) => {
                                         Email:
                                     </label>
                                     <input
+                                        onChange={(e) => setEditUser({ ...editUser, [e.target.name]: e.target.value })}
                                         type="text"
                                         name='email'
                                         id='email'
@@ -113,6 +158,7 @@ const EditarCadastro = ({ showModal, close }) => {
                                         Telefone:
                                     </label>
                                     <input
+                                        onChange={(e) => setEditUser({ ...editUser, [e.target.name]: e.target.value })}
                                         id='telefone'
                                         type="text"
                                         name='telefone'
@@ -127,6 +173,7 @@ const EditarCadastro = ({ showModal, close }) => {
                                                 Modelo:
                                             </label>
                                             <input
+                                                onChange={(e) => setEditUser({ ...editUser, veiculo: { [e.target.name]: e.target.value } })}
                                                 id='modelo'
                                                 type="text"
                                                 name='modelo'
@@ -139,6 +186,7 @@ const EditarCadastro = ({ showModal, close }) => {
                                                 Placa:
                                             </label>
                                             <input
+                                                onChange={(e) => setEditUser({ ...editUser, veiculo: { [e.target.name]: e.target.value } })}
                                                 id='placa'
                                                 type="text"
                                                 name='placa'
@@ -151,6 +199,7 @@ const EditarCadastro = ({ showModal, close }) => {
                                                 CEP:
                                             </label>
                                             <input
+                                                onChange={(e) => setEditUser({ ...editUser, [e.target.name]: e.target.value })}
                                                 type="text"
                                                 name="cep"
                                                 id='cep'
@@ -166,6 +215,7 @@ const EditarCadastro = ({ showModal, close }) => {
                                             Endereço:
                                         </label>
                                         <input
+                                            onChange={(e) => setEditUser({ ...editUser, [e.target.name]: e.target.value })}
                                             type="text"
                                             id='endereco'
                                             name='endereco'
@@ -178,7 +228,9 @@ const EditarCadastro = ({ showModal, close }) => {
                                         <label htmlFor="numero">
                                             N°:
                                         </label>
-                                        <input type="text"
+                                        <input
+                                            onChange={(e) => setEditUser({ ...editUser, [e.target.name]: e.target.value })}
+                                            type="text"
                                             name="numero"
                                             placeholder='N°'
                                             defaultValue={cadastro.numero} />
@@ -189,6 +241,7 @@ const EditarCadastro = ({ showModal, close }) => {
                                         Cidade:
                                     </label>
                                     <input
+                                        onChange={(e) => setEditUser({ ...editUser, [e.target.name]: e.target.value })}
                                         type="text"
                                         name='cidade'
                                         id='cidade'
@@ -201,6 +254,7 @@ const EditarCadastro = ({ showModal, close }) => {
                                         UF:
                                     </label>
                                     <input
+                                        onChange={(e) => setEditUser({ ...editUser, [e.target.name]: e.target.value })}
                                         id='uf'
                                         type="text"
                                         name='uf'
@@ -221,6 +275,19 @@ const EditarCadastro = ({ showModal, close }) => {
                                         disabled />
                                 </div>
                             </div>
+
+                            <div className='container-btns'>
+                                <button
+                                    onClick={() => editarCadastro()}
+                                    className='btn btn-salvar'>
+                                    Salvar
+                                </button>
+
+                                <button className='btn btn-desativar'>
+                                    Desativar
+                                </button>
+                            </div>
+
                         </div>
                     </div>
                 )}
