@@ -1,0 +1,251 @@
+$primary-color: #E6C200;
+$background-white: white;
+$background-light: #f5f5f5;
+$box-shadow-color: rgba(0, 0, 0, 0.485);
+$text-dark: #333;
+$text-gray: gray;
+$text-light: white;
+$primary-hover: #D4AF37;
+$shadow-light: 0px 4px 8px rgba(0, 0, 0, 0.1);
+$shadow-soft: 0px 2px 4px rgba(0, 0, 0, 0.1);
+$shadow-hover: 0px 4px 8px rgba(0, 0, 0, 0.05);
+
+.container {
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    .container-btn-voltar {
+        width: 100%;
+        margin: 20px 0 20px 0;
+        padding-left: 20px;
+
+        .arrow-icon {
+            color: $text-gray;
+            font-size: 24px;
+
+            transition: all 0.3s ease-in-out;
+
+            &:hover {
+                transform: scale(0.80);
+            }
+        }
+    }
+
+    .container-todos-os-cadastros {
+        height: auto;
+        width: 100%;
+
+        padding-bottom: 20px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+
+        .title {
+            text-align: center;
+            color: $text-dark;
+        }
+
+        .container-input-buscar {
+            background-color: $background-white;
+
+            margin: 20px 0 20px 0;
+
+            width: 80%;
+
+            padding: 15px;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 15px;
+
+            box-shadow: 5px 5px 5px $box-shadow-color;
+
+            .input-buscar {
+                height: 30px;
+                width: 80%;
+
+                margin-right: 15px;
+                padding-left: 15px;
+
+                border-radius: 15px;
+                border: 1px solid $text-dark;
+
+                transition: border-color 0.3s ease-in-out;
+
+                &:focus {
+                    border-color: $primary-color;
+                    outline: none;
+                }
+            }
+
+            .btn-pesquisar {
+                background-color: $primary-color;
+
+                border: none;
+                border-radius: 15px;
+
+                color: $background-white;
+                font-weight: bold;
+
+                padding: 15px;
+
+                transition: background 0.5s ease-in-out;
+
+                &:hover {
+                    background-color: darken($primary-color, 5%);
+                }
+            }
+
+        }
+
+        .container-cadastros-list {
+            background-color: $background-white;
+
+            width: 80%;
+            height: auto;
+
+            border-radius: 15px;
+
+            box-shadow: 5px 5px 5px $box-shadow-color;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+
+            .cadastros-list {
+                height: 100%;
+                width: 80%;
+
+                margin-top: 20px;
+
+                .cadastro {
+                    background-color: $background-light;
+
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    margin-bottom: 15px;
+                    padding: 15px;
+
+                    border-radius: 15px;
+                    border: 1px solid transparent;
+
+                    box-shadow: 5px 5px 5px $box-shadow-color;
+
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+
+                    &:hover {
+                        border: 1px solid $primary-color;
+                    }
+
+                    .container-info-cadastro {
+                        width: 90%;
+
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+
+                        overflow: hidden;
+                        
+                        p {
+                            text-align: center;
+                            
+                            margin-right: 15px;
+                        }
+
+                    }
+
+                    .btn-detalhes {
+                        background-color: $primary-color;
+
+                        width: 30px;
+                        height: 30px;
+
+                        border: none;
+                        border-radius: 5px;
+
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-evenly;
+                        align-items: center;
+
+                        .linha {
+                            display: block;
+
+                            width: 50%;
+                            height: 2px;
+
+                            border-radius: 1px;
+
+                            background-color: $background-white;
+                        }
+                    }
+                }
+            }
+
+            .paginacao {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 10px;
+
+                margin-top: 30px;
+                padding: 10px 20px;
+
+                border-radius: 8px;
+
+                button {
+                    padding: 8px 16px;
+
+                    background-color: $primary-color;
+                    color: $text-light;
+
+                    font-weight: bold;
+                    border: none;
+                    border-radius: 5px;
+
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+
+                    &:hover {
+                        background-color: $primary-hover;
+                        transform: scale(1.05);
+                    }
+
+                    &:disabled {
+                        background-color: darken($background-light, 5%);
+                        color: darken($text-dark, 10%);
+                        cursor: not-allowed;
+                        transform: none;
+                    }
+                }
+
+                span {
+                    font-weight: bold;
+                    color: $text-dark;
+                    padding: 5px 10px;
+                }
+            }
+
+            @media (max-width: 730px) {
+                .paginacao {
+                    flex-direction: column;
+                }
+            }
+        }
+    }
+}
