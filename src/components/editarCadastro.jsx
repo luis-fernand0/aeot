@@ -4,7 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 
 import Loading from './loading'
-import ModalResponse from './modalResponse';
+import ModalResponse from './modalResponse'
+
+import { validarCnpj } from '../functions/validarCnpj'
+import { maskCnpj } from '../functions/maskCnpj'
+import { formatarEmail } from '../functions/formatarEmail'
+
 
 import '../style/editarCadastro_component/editarCadastro.css'
 
@@ -28,6 +33,81 @@ const EditarCadastro = ({ showModal, close }) => {
         cod_user_cadastro: cadastro.id
     })
 
+    const [cnpjValid, setCnpjValid] = useState()
+    function callValidation(e) {
+        const cnpj = e.target.value
+
+        if (!validarCnpj(cnpj)) {
+            buscarCnpj(validarCnpj(cnpj))
+            document.querySelector('.alert-cnpj').removeAttribute('hidden')
+            return
+        }
+
+        document.querySelector('.alert-cnpj').setAttribute('hidden', true)
+        setCnpjValid(true)
+        buscarCnpj(cnpj)
+    }
+    async function buscarCnpj(cnpjValid) {
+        if (!cnpjValid) {
+            addValue(false)
+            return
+        }
+
+        let cnpj = document.getElementById('cnpj')
+        const cnpjSemFormatacao = cnpj.value.replace(/[^0-9]/g, "")
+
+        const response = await fetch(`https://open.cnpja.com/office/${cnpjSemFormatacao}`)
+        const data = await response.json()
+        addValue(data.address)
+    }
+    function addValue(infoCnpj) {
+        let address = document.getElementById('endereco')
+        let city = document.getElementById('cidade')
+        let uf = document.getElementById('uf')
+
+        if (!infoCnpj) {
+            address.value = ''
+            city.value = ''
+            uf.value = ''
+            return
+        }
+
+        address.value = `${infoCnpj.street}, ${infoCnpj.number}, ${infoCnpj.district}`
+        city.value = `${infoCnpj.city}`
+        uf.value = `${infoCnpj.state}`
+    }
+
+    function limitarCaracter(e) {
+        let uf = e.target
+        let ufValue = uf.value.replace(/[^a-zA-Z]/g, '')
+
+        if (ufValue.length > 2) {
+            ufValue = ufValue.slice(0, 2)
+        }
+
+        ufValue = ufValue.toUpperCase()
+
+        return uf.value = ufValue
+    }
+
+    const [emailValid, setEmailValid] = useState()
+    function validateEmail(e) {
+        const email = e.target.value
+
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+        if (!re.test(String(email).toLowerCase())) {
+            setEmailValid(false)
+            document.querySelector('.alert-email').removeAttribute('hidden')
+            return
+        }
+
+        setEmailValid(true)
+        document.querySelector('.alert-email').setAttribute('hidden', true)
+
+        return
+    }
+
     function formatDate(data) {
         const date = new Date(data);
 
@@ -44,9 +124,6 @@ const EditarCadastro = ({ showModal, close }) => {
     async function editarCadastro() {
         setLoading(true)
         try {
-            for(let [key, value] of editUser.entries()) {
-                console.log(key, value)
-            }
             const response = await fetch('http://localhost:3000/aeot/auth/editar_cadastro', {
                 method: 'PUT',
                 headers: {
@@ -132,28 +209,48 @@ const EditarCadastro = ({ showModal, close }) => {
                                     </div>
                                 )}
 
+                                {cadastro.tipo === 'posto' && (
+                                    <div className="container-input">
+                                        <label htmlFor="cnpj">
+                                            CNPJ:
+                                        </label>
+                                        <input
+                                            onChange={(e) => {
+                                                setEditUser({ ...editUser, [e.target.name]: e.target.value })
+                                                maskCnpj(e)
+                                            }
+                                            }
+                                            onBlur={(e) => callValidation(e)}
+                                            id='cnpj'
+                                            type="text"
+                                            name="cnpj"
+                                            placeholder='CNPJ'
+                                            defaultValue={cadastro.cnpj} />
+                                        <span className='alert alert-cnpj' hidden={true}>
+                                            CNPJ informado não é valido!
+                                        </span>
+                                    </div>
+                                )}
+
                                 <div className="container-input">
                                     <label htmlFor="email">
                                         Email:
                                     </label>
                                     <input
-                                        onChange={(e) => setEditUser({ ...editUser, [e.target.name]: e.target.value })}
+                                        onChange={(e) => {
+                                            formatarEmail(e)
+                                            setEditUser({ ...editUser, [e.target.name]: e.target.value })
+                                        }
+                                        }
+                                        onBlur={(e) => validateEmail(e)}
                                         type="text"
                                         name='email'
                                         id='email'
                                         placeholder='Email'
                                         defaultValue={cadastro.email} />
-                                </div>
-
-                                <div className="container-input">
-                                    <label htmlFor="senha">
-                                        Senha:
-                                    </label>
-                                    <input
-                                        id='senha'
-                                        type="password"
-                                        name='pass'
-                                        placeholder='Senha' />
+                                    <span className='alert alert-email' hidden>
+                                        Email informado não é valido!
+                                    </span>
                                 </div>
 
                                 <div className="container-input">
@@ -257,7 +354,11 @@ const EditarCadastro = ({ showModal, close }) => {
                                         UF:
                                     </label>
                                     <input
-                                        onChange={(e) => setEditUser({ ...editUser, [e.target.name]: e.target.value })}
+                                        onChange={(e) => {
+                                            limitarCaracter(e)
+                                            setEditUser({ ...editUser, [e.target.name]: e.target.value })
+                                        }
+                                        }
                                         id='uf'
                                         type="text"
                                         name='uf'
