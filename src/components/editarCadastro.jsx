@@ -44,6 +44,9 @@ const EditarCadastro = ({ showModal, close }) => {
     async function editarCadastro() {
         setLoading(true)
         try {
+            for(let [key, value] of editUser.entries()) {
+                console.log(key, value)
+            }
             const response = await fetch('http://localhost:3000/aeot/auth/editar_cadastro', {
                 method: 'PUT',
                 headers: {
