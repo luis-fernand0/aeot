@@ -51,6 +51,12 @@ const AdicionarCadastros = () => {
 
           {typeUser === 'posto' && (
             <>
+              <Link to={'/consultar_cadastros'}>
+                <button className='btn-add-cadastro'>
+                  Cadastros
+                </button>
+              </Link>
+              
               <Link to={'/cadastrar_frentista'}>
                 <button className='btn-add-cadastro'>Cadastrar Frentista</button>
               </Link>
