@@ -85,7 +85,7 @@ const ConsultarCadastros = () => {
                             {cadastros && cadastros.map((cadastro) =>
                                 <li
                                     onClick={() => setShowModal({ view: true, cadastro: cadastro })}
-                                    key={cadastro.user_id}
+                                    key={cadastro.id}
                                     className='cadastro'>
                                     <div className='container-info-cadastro'>
                                         <p>
