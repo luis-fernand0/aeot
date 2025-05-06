@@ -9,6 +9,11 @@ import ModalResponse from './modalResponse'
 import { validarCnpj } from '../functions/validarCnpj'
 import { maskCnpj } from '../functions/maskCnpj'
 import { formatarEmail } from '../functions/formatarEmail'
+import { formatarCep } from '../functions/formatarCep'
+import { formatarPlaca } from '../functions/formatarPlaca'
+import { checkPhone } from '../functions/checkPhone'
+import { validarCpf } from '../functions/validarCpf'
+import { maskCpf } from '../functions/maskCpf'
 
 
 import '../style/editarCadastro_component/editarCadastro.css'
@@ -22,6 +27,13 @@ const EditarCadastro = ({ showModal, close }) => {
 
     const [cadastro, setCadastro] = useState(showModal.cadastro)
     const [imageModal, setImageModal] = useState({ view: false, image: null })
+    const [alerts, setAlerts] = useState({
+        cpf: true,
+        cnpj: true,
+        email: true,
+        modelo_veiculo: true,
+        placa_veiculo: true
+    })
 
     const [loading, setLoading] = useState(false)
     const [isModalVisible, setModalVisible] = useState(false);
@@ -33,19 +45,34 @@ const EditarCadastro = ({ showModal, close }) => {
         cod_user_cadastro: cadastro.id
     })
 
-    const [cnpjValid, setCnpjValid] = useState()
-    function callValidation(e) {
-        const cnpj = e.target.value
+    function callValidation(e, tipo) {
+        if (tipo === 'cnpj') {
+            const cnpj = e.target.value
 
-        if (!validarCnpj(cnpj)) {
-            buscarCnpj(validarCnpj(cnpj))
-            document.querySelector('.alert-cnpj').removeAttribute('hidden')
+            if (!validarCnpj(cnpj)) {
+                buscarCnpj(validarCnpj(cnpj))
+                document.getElementById('alert-cnpj').removeAttribute('hidden')
+                document.getElementById('btn-salvar').setAttribute('disabled', true)
+                return
+            }
+
+            document.getElementById('alert-cnpj').setAttribute('hidden', true)
+            document.getElementById('btn-salvar').removeAttribute('disabled')
+            buscarCnpj(cnpj)
+
             return
         }
 
-        document.querySelector('.alert-cnpj').setAttribute('hidden', true)
-        setCnpjValid(true)
-        buscarCnpj(cnpj)
+        const cpf = e.target.value
+        if (!validarCpf(cpf)) {
+            document.getElementById('alert-cpf').removeAttribute('hidden')
+            document.getElementById('btn-salvar').setAttribute('disabled', true)
+            return
+        }
+
+        document.getElementById('alert-cpf').setAttribute('hidden', true)
+        document.getElementById('btn-salvar').removeAttribute('disabled')
+        return
     }
     async function buscarCnpj(cnpjValid) {
         if (!cnpjValid) {
@@ -90,21 +117,75 @@ const EditarCadastro = ({ showModal, close }) => {
         return uf.value = ufValue
     }
 
-    const [emailValid, setEmailValid] = useState()
     function validateEmail(e) {
         const email = e.target.value
 
         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
         if (!re.test(String(email).toLowerCase())) {
-            setEmailValid(false)
-            document.querySelector('.alert-email').removeAttribute('hidden')
+            document.getElementById('btn-salvar').setAttribute('disabled', true)
+            document.getElementById('alert-email').removeAttribute('hidden')
             return
         }
 
-        setEmailValid(true)
-        document.querySelector('.alert-email').setAttribute('hidden', true)
+        document.getElementById('btn-salvar').removeAttribute('disabled')
+        document.getElementById('alert-email').setAttribute('hidden', true)
+        return
+    }
 
+    async function buscarCep(e) {
+        let cep = e.target
+        let cepFormat = cep.value.replace(/[^0-9]/g, '')
+
+        const response = await fetch(`https://cep.awesomeapi.com.br/json/${cepFormat}`)
+        const data = await response.json()
+
+        let inputAddress = document.getElementById('endereco')
+        let city = document.getElementById('cidade')
+        let uf = document.getElementById('uf')
+
+        if (data.code === 'not_found') {
+            inputAddress.value = ``
+            city.value = ``
+            uf.value = ``
+            return
+        }
+
+        inputAddress.value = `${data.address}, ${data.district}`
+        city.value = `${data.city}`
+        uf.value = `${data.state}`
+    }
+
+    function validarModeloCor(wordValid) {
+        if (!wordValid) {
+            document.getElementById('btn-salvar').setAttribute('disabled', true)
+            document.getElementById('alert-modelo').removeAttribute('hidden')
+            return
+        }
+
+        document.getElementById('btn-salvar').removeAttribute('disabled')
+        document.getElementById('alert-modelo').setAttribute('hidden', true)
+        return
+    }
+    function handleChangeModeloCor(e) {
+        var inputModelCor = e.target;
+        const regex = /^\w+\s+\w+/;
+        inputModelCor.value = inputModelCor.value.toUpperCase()
+
+        validarModeloCor(regex.test(inputModelCor.value));
+    }
+
+    function validarPlaca(e) {
+        var placa = e.target.value.replace(/[^A-Za-z0-9]/g, '')
+
+        if (placa.length < 7) {
+            document.getElementById('alert-placa').removeAttribute('hidden')
+            document.getElementById('btn-salvar').setAttribute('disabled', true)
+            return
+        }
+
+        document.getElementById('alert-placa').setAttribute('hidden', true)
+        document.getElementById('btn-salvar').removeAttribute('disabled')
         return
     }
 
@@ -200,12 +281,22 @@ const EditarCadastro = ({ showModal, close }) => {
                                             CPF:
                                         </label>
                                         <input
-                                            onChange={(e) => setEditUser({ ...editUser, [e.target.name]: e.target.value })}
+                                            onChange={(e) => {
+                                                maskCpf(e)
+                                                setEditUser({ ...editUser, [e.target.name]: e.target.value })
+                                            }}
+                                            onBlur={(e) => callValidation(e, 'cpf')}
                                             id='cpf'
                                             type="text"
                                             name="cpf"
                                             placeholder='CPF'
                                             defaultValue={cadastro.cpf} />
+                                        <span
+                                            id='alert-cpf'
+                                            className='alert'
+                                            hidden={true}>
+                                            CPF informado não é valido!
+                                        </span>
                                     </div>
                                 )}
 
@@ -216,17 +307,19 @@ const EditarCadastro = ({ showModal, close }) => {
                                         </label>
                                         <input
                                             onChange={(e) => {
-                                                setEditUser({ ...editUser, [e.target.name]: e.target.value })
                                                 maskCnpj(e)
-                                            }
-                                            }
-                                            onBlur={(e) => callValidation(e)}
+                                                setEditUser({ ...editUser, [e.target.name]: e.target.value })
+                                            }}
+                                            onBlur={(e) => callValidation(e, 'cnpj')}
                                             id='cnpj'
                                             type="text"
                                             name="cnpj"
                                             placeholder='CNPJ'
                                             defaultValue={cadastro.cnpj} />
-                                        <span className='alert alert-cnpj' hidden={true}>
+                                        <span
+                                            id='alert-cnpj'
+                                            className='alert'
+                                            hidden={true}>
                                             CNPJ informado não é valido!
                                         </span>
                                     </div>
@@ -240,15 +333,17 @@ const EditarCadastro = ({ showModal, close }) => {
                                         onChange={(e) => {
                                             formatarEmail(e)
                                             setEditUser({ ...editUser, [e.target.name]: e.target.value })
-                                        }
-                                        }
+                                        }}
                                         onBlur={(e) => validateEmail(e)}
                                         type="text"
                                         name='email'
                                         id='email'
                                         placeholder='Email'
                                         defaultValue={cadastro.email} />
-                                    <span className='alert alert-email' hidden>
+                                    <span
+                                        id='alert-email'
+                                        className='alert'
+                                        hidden={true}>
                                         Email informado não é valido!
                                     </span>
                                 </div>
@@ -258,7 +353,10 @@ const EditarCadastro = ({ showModal, close }) => {
                                         Telefone:
                                     </label>
                                     <input
-                                        onChange={(e) => setEditUser({ ...editUser, [e.target.name]: e.target.value })}
+                                        onChange={(e) => {
+                                            checkPhone(e)
+                                            setEditUser({ ...editUser, [e.target.name]: e.target.value })
+                                        }}
                                         id='telefone'
                                         type="text"
                                         name='telefone'
@@ -274,11 +372,18 @@ const EditarCadastro = ({ showModal, close }) => {
                                             </label>
                                             <input
                                                 onChange={(e) => setEditUser({ ...editUser, veiculo: { [e.target.name]: e.target.value } })}
+                                                onBlur={(e) => handleChangeModeloCor(e)}
                                                 id='modelo'
                                                 type="text"
                                                 name='modelo'
                                                 placeholder='Modelo'
                                                 defaultValue={cadastro.veiculo.modelo} />
+                                            <span
+                                                id='alert-modelo'
+                                                className='alert'
+                                                hidden={true}>
+                                                PORFAVOR INSIRA MODELO E COR DO VEICULO EXEMPLO: ONIX PRETO*
+                                            </span>
                                         </div>
 
                                         <div className="container-input">
@@ -286,12 +391,22 @@ const EditarCadastro = ({ showModal, close }) => {
                                                 Placa:
                                             </label>
                                             <input
-                                                onChange={(e) => setEditUser({ ...editUser, veiculo: { [e.target.name]: e.target.value } })}
+                                                onChange={(e) => {
+                                                    formatarPlaca(e)
+                                                    setEditUser({ ...editUser, veiculo: { [e.target.name]: e.target.value } })
+                                                }}
+                                                onBlur={(e) => validarPlaca(e)}
                                                 id='placa'
                                                 type="text"
                                                 name='placa'
                                                 placeholder='Placa'
                                                 defaultValue={cadastro.veiculo.placa} />
+                                            <span
+                                                id='alert-placa'
+                                                className='alert'
+                                                hidden={true}>
+                                                Informe uma placa de veiculo valida!'
+                                            </span>
                                         </div>
 
                                         <div className="container-input">
@@ -299,7 +414,11 @@ const EditarCadastro = ({ showModal, close }) => {
                                                 CEP:
                                             </label>
                                             <input
-                                                onChange={(e) => setEditUser({ ...editUser, [e.target.name]: e.target.value })}
+                                                onChange={(e) => {
+                                                    formatarCep(e)
+                                                    setEditUser({ ...editUser, [e.target.name]: e.target.value })
+                                                }}
+                                                onBlur={(e) => buscarCep(e)}
                                                 type="text"
                                                 name="cep"
                                                 id='cep'
@@ -383,11 +502,14 @@ const EditarCadastro = ({ showModal, close }) => {
                             <div className='container-btns'>
                                 <button
                                     onClick={() => editarCadastro()}
-                                    className='btn btn-salvar'>
+                                    id='btn-salvar'
+                                    className='btn'>
                                     Salvar
                                 </button>
 
-                                <button className='btn btn-desativar'>
+                                <button
+                                    id='btn-desativar'
+                                    className='btn'>
                                     Desativar
                                 </button>
                             </div>
