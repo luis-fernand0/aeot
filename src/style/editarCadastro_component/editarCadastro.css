@@ -81,11 +81,11 @@
 }
 .editar-cadastro-container .editar-cadastro .container-datas-cadastro .datas-cadastro .container-input label {
   padding-left: 15px;
-  margin-bottom: 5px;
+  margin: 15px 0 5px 0;
   font-weight: 450;
 }
 .editar-cadastro-container .editar-cadastro .container-datas-cadastro .datas-cadastro .container-input input {
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   width: 250px;
   height: 40px;
   padding-left: 15px;
@@ -101,6 +101,14 @@
 .editar-cadastro-container .editar-cadastro .container-datas-cadastro .datas-cadastro .container-input input:focus {
   border: none;
   outline: 1px solid #4b39ef;
+}
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .datas-cadastro .container-input .alert {
+  padding-left: 15px;
+  width: 250px;
+  height: auto;
+  overflow-y: hidden;
+  color: rgb(231, 84, 84);
+  font-size: 12px;
 }
 @media (max-width: 710px) {
   .editar-cadastro-container .editar-cadastro .container-datas-cadastro .datas-cadastro {
@@ -124,16 +132,22 @@
   border: none;
   transition: background 0.5s ease-in-out;
 }
-.editar-cadastro-container .editar-cadastro .container-datas-cadastro .container-btns .btn-salvar {
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .container-btns #btn-salvar {
   background-color: rgb(4, 155, 4);
 }
-.editar-cadastro-container .editar-cadastro .container-datas-cadastro .container-btns .btn-salvar:hover {
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .container-btns #btn-salvar:hover {
   background-color: #038203;
 }
-.editar-cadastro-container .editar-cadastro .container-datas-cadastro .container-btns .btn-desativar {
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .container-btns #btn-salvar:disabled {
+  background-color: #e8e8e8;
+  color: #1a1a1a;
+  cursor: not-allowed;
+  transform: none;
+}
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .container-btns #btn-desativar {
   background-color: rgb(255, 0, 0);
 }
-.editar-cadastro-container .editar-cadastro .container-datas-cadastro .container-btns .btn-desativar:hover {
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .container-btns #btn-desativar:hover {
   background-color: #cc0000;
 }
 

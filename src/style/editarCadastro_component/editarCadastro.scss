@@ -8,7 +8,7 @@ $background-red: rgb(255, 0, 0);
 $text-dark: #333;
 $text-gray: gray;
 $text-blue: #007bff;
-
+$text-alert: rgb(231, 84, 84);
 
 .editar-cadastro-container {
     background-color: $background-shadow;
@@ -118,16 +118,16 @@ $text-blue: #007bff;
                     flex-direction: column;
 
                     margin: 5px 20px 0;
-                    
+
                     label {
                         padding-left: 15px;
-                        margin-bottom: 5px;
+                        margin: 15px 0 5px 0;
 
                         font-weight: 450;
                     }
 
                     input {
-                        margin-bottom: 15px;
+                        margin-bottom: 5px;
 
                         width: 250px;
                         height: 40px;
@@ -150,6 +150,18 @@ $text-blue: #007bff;
                             border: none;
                             outline: 1px solid $color-borde-focus;
                         }
+                    }
+
+                    .alert {
+                        padding-left: 15px;
+
+                        width: 250px;
+                        height: auto;
+
+                        overflow-y: hidden;
+
+                        color: $text-alert;
+                        font-size: 12px;
                     }
                 }
             }
@@ -182,15 +194,25 @@ $text-blue: #007bff;
                     transition: background 0.5s ease-in-out;
                 }
 
-                .btn-salvar {
+                #btn-salvar {
                     background-color: $background-green;
 
                     &:hover {
                         background-color: darken($background-green, 5%);
                     }
+
+                    &:disabled {
+                        background-color: darken($background-light, 5%);
+
+                        color: darken($text-dark, 10%);
+
+                        cursor: not-allowed;
+                        
+                        transform: none;
+                    }
                 }
 
-                .btn-desativar {
+                #btn-desativar {
                     background-color: $background-red;
 
                     &:hover {
