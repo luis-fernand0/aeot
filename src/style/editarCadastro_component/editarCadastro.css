@@ -31,6 +31,26 @@
 .editar-cadastro-container .editar-cadastro .container-btn-close-cadastro .btn-close:hover {
   transform: scale(0.8);
 }
+.editar-cadastro-container .editar-cadastro .container-verificado {
+  margin-bottom: 50px;
+  height: auto;
+  width: 100%;
+  text-align: left;
+  padding-left: 20px;
+}
+.editar-cadastro-container .editar-cadastro .container-verificado span {
+  padding: 15px;
+  border-radius: 15px;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+}
+.editar-cadastro-container .editar-cadastro .container-verificado .text-verificado {
+  background-color: rgb(4, 155, 4);
+}
+.editar-cadastro-container .editar-cadastro .container-verificado .text-pendente {
+  background-color: rgb(255, 0, 0);
+}
 .editar-cadastro-container .editar-cadastro .container-datas-cadastro {
   height: 100%;
   width: 100%;
@@ -47,6 +67,7 @@
   justify-content: flex-start;
   align-items: center;
   margin-bottom: 20px;
+  position: relative;
 }
 .editar-cadastro-container .editar-cadastro .container-datas-cadastro .foto-cadastro img {
   width: 200px;
@@ -55,7 +76,27 @@
      object-fit: cover;
   border-radius: 100%;
 }
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .foto-cadastro .container-btn-edit {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .foto-cadastro .container-btn-edit .btn-edit {
+  background-color: #E6C200;
+  height: 35px;
+  width: 35px;
+  border: none;
+  border-radius: 100%;
+  color: white;
+  transform: translate(400%, 440%);
+  transition: background 0.5s ease-in-out;
+}
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .foto-cadastro .container-btn-edit .btn-edit:hover {
+  background-color: #b39700;
+}
 .editar-cadastro-container .editar-cadastro .container-datas-cadastro .foto-cadastro button {
+  z-index: 2;
   background-color: transparent;
   border: none;
   margin-top: 15px;
@@ -149,6 +190,12 @@
 }
 .editar-cadastro-container .editar-cadastro .container-datas-cadastro .container-btns #btn-desativar:hover {
   background-color: #cc0000;
+}
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .container-btns #btn-ativar {
+  background-color: rgb(4, 155, 4);
+}
+.editar-cadastro-container .editar-cadastro .container-datas-cadastro .container-btns #btn-ativar:hover {
+  background-color: #036903;
 }
 
 .image-modal {
