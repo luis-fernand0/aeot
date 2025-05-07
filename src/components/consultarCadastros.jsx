@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
@@ -17,8 +17,12 @@ const ConsultarCadastros = () => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
 
+    const [users, setUsers] = useState()
     const [cadastros, setCadastros] = useState([])
     const [showModal, setShowModal] = useState({ view: false, cadastro: null })
+    const [showAutocomplete, setShowAutocomplete] = useState(false)
+    const inputRef = useRef(null)
+    const autocompleteRef = useRef(null)
 
     const [page, setPage] = useState(1)
     const [total, setTotal] = useState(0)
@@ -34,6 +38,9 @@ const ConsultarCadastros = () => {
             })
 
             const data = await response.json()
+            if (response.status === 401) {
+                navigate('/', { replace: true })
+            }
             setCadastros(data.cadastros)
             setTotal(data.total)
         } catch (err) {
@@ -44,9 +51,38 @@ const ConsultarCadastros = () => {
         }
     }
 
+    async function buscarUsers(nome) {
+        const response = await fetch(`http://localhost:3000/aeot/auth/buscar_users?nome=${nome}`, {
+            headers: {
+                'Authorization': `Bearer ${tokenUser}`
+            }
+        })
+        const data = await response.json()
+        setUsers(data.cadastros)
+        setShowAutocomplete(true)
+    }
+
     useEffect(() => {
         consultarCadastro()
     }, [page])
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (
+                autocompleteRef.current &&
+                !autocompleteRef.current.contains(event.target) &&
+                !inputRef.current.contains(event.target)
+            ) {
+                setShowAutocomplete(false)
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [])
+
 
     const totalPages = Math.ceil(total / limit)
 
@@ -59,7 +95,7 @@ const ConsultarCadastros = () => {
             <ModalResponse
                 isVisible={isModalVisible}
                 onClose={() => setModalVisible(false)}
-                message={modalMessage}/>
+                message={modalMessage} />
 
             <div className="container">
                 <div className='container-btn-voltar'>
@@ -72,7 +108,32 @@ const ConsultarCadastros = () => {
                     <h1 className='title'>Consultar Cadastros</h1>
 
                     <div className='container-input-buscar'>
-                        <input className='input-buscar' type="text" placeholder='Pesquise: Posto, Frenstista e Motorista' />
+                        <div className='container-input-filtro'>
+                            <input
+                                ref={inputRef}
+                                onChange={(e) => { buscarUsers(e.target.value) }}
+                                className='input-buscar'
+                                type="text"
+                                placeholder='Pesquise: Posto, Frentista e Motorista' />
+                            <div
+                                ref={autocompleteRef}
+                                hidden={!showAutocomplete}
+                                id='container-autocomplete'
+                                className='container-ul-autocomplete'>
+                                <ul className='ul-autocomplete'>
+                                    {users && users.map((user) => 
+                                        <li key={user.user_id}>
+                                            <p>
+                                                {user.tipo}
+                                            </p>
+                                            <p>
+                                                {user.nome}
+                                            </p>
+                                        </li>
+                                    )}
+                                </ul>
+                            </div>
+                        </div>
                         <button
                             onClick={() => consultarCadastro()}
                             className='btn-pesquisar'>
