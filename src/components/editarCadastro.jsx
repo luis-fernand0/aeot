@@ -29,7 +29,7 @@ const EditarCadastro = ({ showModal, close }) => {
     const typeUser = localStorage.getItem('type_user');
 
     const [cadastro, setCadastro] = useState(showModal.cadastro)
-    const [imageModal, setImageModal] = useState({ view: false, image: null })
+    const [imageModal, setImageModal] = useState({ view: false, image: null, anexo: null })
     const [alerts, setAlerts] = useState({
         cpf: true,
         cnpj: true,
@@ -233,6 +233,9 @@ const EditarCadastro = ({ showModal, close }) => {
                 body: JSON.stringify(editUser)
             })
             const data = await response.json()
+            if (response.status === 401) {
+                navigate('/', { replace: true })
+            }
             setModalMessage(data.message)
             setModalVisible(true)
         } catch (err) {
@@ -255,6 +258,9 @@ const EditarCadastro = ({ showModal, close }) => {
                 body: JSON.stringify(editUser)
             })
             const data = await response.json()
+            if (response.status === 401) {
+                navigate('/', { replace: true })
+            }
             setModalMessage(data.message)
             setModalVisible(true)
             return
@@ -277,6 +283,9 @@ const EditarCadastro = ({ showModal, close }) => {
                 body: JSON.stringify(editUser)
             })
             const data = await response.json()
+            if (response.status === 401) {
+                navigate('/', { replace: true })
+            }
             setModalMessage(data.message)
             setModalVisible(true)
             return
@@ -319,11 +328,20 @@ const EditarCadastro = ({ showModal, close }) => {
             const file = fileInput.files[0]
 
             const formData = new FormData()
-            if (cadastro.tipo === 'driver') {
+            formData.append('tipo', cadastro.tipo)
+            formData.append('cod_cadastro', cadastro.cod_driver || cadastro.cod_posto)
+            formData.append('cod_user_cadastro', cadastro.id)
+            if (cadastro.tipo === 'driver' && imageModal.anexo === null) {
                 formData.append('foto_user', file)
-            } else {
+            }
+            if (cadastro.tipo === 'posto' && imageModal.anexo === null) {
                 formData.append('foto_posto', file)
             }
+            if (imageModal.anexo !== null) {
+                formData.append('foto_anexo', file)
+                formData.append('anexo', imageModal.anexo)
+            }
+            
             const response = await fetch(urlAtualizarFoto, {
                 method: 'PUT',
                 headers: {
@@ -396,12 +414,12 @@ const EditarCadastro = ({ showModal, close }) => {
                                 {cadastro.tipo === 'driver' && (
                                     <>
                                         <button
-                                            onClick={() => setImageModal({ view: true, image: cadastro.cnh })}>
+                                            onClick={() => setImageModal({ view: true, image: cadastro.cnh, anexo: 'cnh' })}>
                                             Foto CNH:
                                         </button>
 
                                         <button
-                                            onClick={() => setImageModal({ view: true, image: cadastro.print_app })}>
+                                            onClick={() => setImageModal({ view: true, image: cadastro.print_app, anexo: 'print_app' })}>
                                             Print do app de mobilidade:
                                         </button>
                                     </>
@@ -686,6 +704,12 @@ const EditarCadastro = ({ showModal, close }) => {
                         </div>
 
                         <img src={`https://aeotnew.s3.amazonaws.com/${imageModal.image}`} alt="foto-cadastro" className="image-cadastro" />
+
+                        <div className='container-btn-edit-foto'>
+                            <button className='btn-edit' onClick={() => { anexarFoto('edit_foto') }}>
+                                <FontAwesomeIcon className='pen-icon' icon={faPen} />
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
