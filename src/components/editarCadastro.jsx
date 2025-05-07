@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faXmark, faPen } from '@fortawesome/free-solid-svg-icons'
 
 import Loading from './loading'
 import ModalResponse from './modalResponse'
@@ -14,9 +14,11 @@ import { formatarPlaca } from '../functions/formatarPlaca'
 import { checkPhone } from '../functions/checkPhone'
 import { validarCpf } from '../functions/validarCpf'
 import { maskCpf } from '../functions/maskCpf'
-
+import { comprimirFoto } from '../functions/comprimirFoto'
 
 import '../style/editarCadastro_component/editarCadastro.css'
+
+const urlAtualizarFoto = import.meta.env.VITE_URL_ATUALIZAR_FOTO_USER
 
 const EditarCadastro = ({ showModal, close }) => {
     if (!showModal.view) {
@@ -24,6 +26,7 @@ const EditarCadastro = ({ showModal, close }) => {
     }
 
     const tokenUser = localStorage.getItem('token')
+    const typeUser = localStorage.getItem('type_user');
 
     const [cadastro, setCadastro] = useState(showModal.cadastro)
     const [imageModal, setImageModal] = useState({ view: false, image: null })
@@ -51,11 +54,13 @@ const EditarCadastro = ({ showModal, close }) => {
 
             if (!validarCnpj(cnpj)) {
                 buscarCnpj(validarCnpj(cnpj))
+                setAlerts({ ...alerts, [e.target.name]: false })
                 document.getElementById('alert-cnpj').removeAttribute('hidden')
                 document.getElementById('btn-salvar').setAttribute('disabled', true)
                 return
             }
 
+            setAlerts({ ...alerts, [e.target.name]: true })
             document.getElementById('alert-cnpj').setAttribute('hidden', true)
             document.getElementById('btn-salvar').removeAttribute('disabled')
             buscarCnpj(cnpj)
@@ -65,11 +70,13 @@ const EditarCadastro = ({ showModal, close }) => {
 
         const cpf = e.target.value
         if (!validarCpf(cpf)) {
+            setAlerts({ ...alerts, [e.target.name]: false })
             document.getElementById('alert-cpf').removeAttribute('hidden')
             document.getElementById('btn-salvar').setAttribute('disabled', true)
             return
         }
 
+        setAlerts({ ...alerts, [e.target.name]: true })
         document.getElementById('alert-cpf').setAttribute('hidden', true)
         document.getElementById('btn-salvar').removeAttribute('disabled')
         return
@@ -123,11 +130,13 @@ const EditarCadastro = ({ showModal, close }) => {
         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
         if (!re.test(String(email).toLowerCase())) {
+            setAlerts({ ...alerts, [e.target.name]: false })
             document.getElementById('btn-salvar').setAttribute('disabled', true)
             document.getElementById('alert-email').removeAttribute('hidden')
             return
         }
 
+        setAlerts({ ...alerts, [e.target.name]: true })
         document.getElementById('btn-salvar').removeAttribute('disabled')
         document.getElementById('alert-email').setAttribute('hidden', true)
         return
@@ -158,11 +167,13 @@ const EditarCadastro = ({ showModal, close }) => {
 
     function validarModeloCor(wordValid) {
         if (!wordValid) {
+            setAlerts({ ...alerts, modelo_veiculo: false })
             document.getElementById('btn-salvar').setAttribute('disabled', true)
             document.getElementById('alert-modelo').removeAttribute('hidden')
             return
         }
 
+        setAlerts({ ...alerts, modelo_veiculo: true })
         document.getElementById('btn-salvar').removeAttribute('disabled')
         document.getElementById('alert-modelo').setAttribute('hidden', true)
         return
@@ -179,11 +190,13 @@ const EditarCadastro = ({ showModal, close }) => {
         var placa = e.target.value.replace(/[^A-Za-z0-9]/g, '')
 
         if (placa.length < 7) {
+            setAlerts({ ...alerts, placa_veiculo: false })
             document.getElementById('alert-placa').removeAttribute('hidden')
             document.getElementById('btn-salvar').setAttribute('disabled', true)
             return
         }
 
+        setAlerts({ ...alerts, placa_veiculo: true })
         document.getElementById('alert-placa').setAttribute('hidden', true)
         document.getElementById('btn-salvar').removeAttribute('disabled')
         return
@@ -205,6 +218,12 @@ const EditarCadastro = ({ showModal, close }) => {
     async function editarCadastro() {
         setLoading(true)
         try {
+            for (let [key, value] of Object.entries(alerts)) {
+                if (!value) {
+                    document.getElementById('btn-salvar').setAttribute('disabled', true)
+                    throw new Error('Alguns dados precisam ser preenchidos');
+                }
+            }
             const response = await fetch('http://localhost:3000/aeot/auth/editar_cadastro', {
                 method: 'PUT',
                 headers: {
@@ -217,7 +236,111 @@ const EditarCadastro = ({ showModal, close }) => {
             setModalMessage(data.message)
             setModalVisible(true)
         } catch (err) {
-            setModalMessage(`Desculpe! Ocorreu um erro inesperado. Não foi possivel alterar o cadastro.` + err.message)
+            setModalMessage(`Desculpe! Ocorreu um erro inesperado. Não foi possivel alterar o cadastro. ` + err.message)
+            setModalVisible(true)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    async function desativarCadastro() {
+        setLoading(true)
+        try {
+            const response = await fetch('http://localhost:3000/aeot/auth/desativar_cadastro', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${tokenUser}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(editUser)
+            })
+            const data = await response.json()
+            setModalMessage(data.message)
+            setModalVisible(true)
+            return
+        } catch (err) {
+            setModalMessage(`Desculpe! Ocorreu um erro inesperado. Não foi possivel desativar o cadastro. ` + err.message)
+            setModalVisible(true)
+        } finally {
+            setLoading(false)
+        }
+    }
+    async function ativarCadastro() {
+        setLoading(true)
+        try {
+            const response = await fetch('http://localhost:3000/aeot/auth/ativar_cadastro', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${tokenUser}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(editUser)
+            })
+            const data = await response.json()
+            setModalMessage(data.message)
+            setModalVisible(true)
+            return
+        } catch (err) {
+            setModalMessage(`Desculpe! Ocorreu um erro inesperado. Não foi possivel ativar o cadastro. ` + err.message)
+            setModalVisible(true)
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    function anexarFoto(input) { document.getElementById(input).click() }
+    function checkFoto(e) {
+        const foto = e.target.files[0]
+        const novaFoto = document.getElementById('new-foto-user')
+        if (foto) {
+            const reader = new FileReader()
+            reader.onload = (e) => {
+                novaFoto.src = e.target.result
+            }
+            reader.readAsDataURL(foto)
+
+            document.querySelector('.container-modal-alert').removeAttribute(`hidden`)
+
+            comprimirFoto('edit_foto')
+        }
+
+        return
+    }
+    function cancelFoto() {
+        const inputFoto = document.getElementById('edit_foto')
+        inputFoto.value = ''
+        document.querySelector('.container-modal-alert').setAttribute(`hidden`, true)
+    }
+
+    async function changeFoto(input) {
+        setLoading(true)
+        try {
+            const fileInput = document.getElementById(input)
+            const file = fileInput.files[0]
+
+            const formData = new FormData()
+            if (cadastro.tipo === 'driver') {
+                formData.append('foto_user', file)
+            } else {
+                formData.append('foto_posto', file)
+            }
+            const response = await fetch(urlAtualizarFoto, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${tokenUser}`,
+                },
+                body: formData
+            })
+            const data = await response.json()
+            if (response.status === 401) {
+                navigate('/', { replace: true })
+            }
+
+            document.querySelector('.container-modal-alert').setAttribute(`hidden`, true)
+            setModalMessage(data.message)
+            setModalVisible(true)
+        } catch (err) {
+            setModalMessage(`Desculpe! Ocorreu um erro inesperado. Não foi possível alterar a foto.` + err.message)
             setModalVisible(true)
         } finally {
             setLoading(false)
@@ -242,10 +365,33 @@ const EditarCadastro = ({ showModal, close }) => {
                             </button>
                         </div>
 
+                        <div className='container-verificado'>
+                            <span className={`${cadastro.verificado ? 'text-verificado' : 'text-pendente'}`}>
+                                {cadastro.verificado ? 'VERIFICADO' : 'PENDENTE'}
+                            </span>
+                        </div>
+
                         <div className='container-datas-cadastro'>
                             <div className='foto-cadastro'>
                                 {cadastro.tipo != 'frentista' && (
-                                    <img src={`https://aeotnew.s3.amazonaws.com/${cadastro.foto}`} alt="foto-perfil-cadastro" />
+                                    <>
+                                        <img src={`https://aeotnew.s3.amazonaws.com/${cadastro.foto}`} alt="foto-perfil-cadastro" />
+
+                                        <div className='container-btn-edit'>
+                                            <input
+                                                onChange={(e) => { checkFoto(e) }}
+                                                type="file"
+                                                name='foto'
+                                                accept='image/*'
+                                                className='input-edit-foto'
+                                                id='edit_foto'
+                                                hidden />
+
+                                            <button className='btn-edit' onClick={() => { anexarFoto('edit_foto') }}>
+                                                <FontAwesomeIcon className='pen-icon' icon={faPen} />
+                                            </button>
+                                        </div>
+                                    </>
                                 )}
                                 {cadastro.tipo === 'driver' && (
                                     <>
@@ -405,7 +551,7 @@ const EditarCadastro = ({ showModal, close }) => {
                                                 id='alert-placa'
                                                 className='alert'
                                                 hidden={true}>
-                                                Informe uma placa de veiculo valida!'
+                                                Informe uma placa de veiculo valida!
                                             </span>
                                         </div>
 
@@ -506,12 +652,22 @@ const EditarCadastro = ({ showModal, close }) => {
                                     className='btn'>
                                     Salvar
                                 </button>
-
-                                <button
-                                    id='btn-desativar'
-                                    className='btn'>
-                                    Desativar
-                                </button>
+                                {cadastro.ativo && (
+                                    <button
+                                        onClick={() => desativarCadastro()}
+                                        id='btn-desativar'
+                                        className='btn'>
+                                        Desativar
+                                    </button>
+                                )}
+                                {!cadastro.ativo && (
+                                    <button
+                                        onClick={() => ativarCadastro()}
+                                        id='btn-ativar'
+                                        className='btn'>
+                                        Ativar
+                                    </button>
+                                )}
                             </div>
 
                         </div>
@@ -533,6 +689,22 @@ const EditarCadastro = ({ showModal, close }) => {
                     </div>
                 </div>
             )}
+
+            {/* MODAL PARA CONFIRMAR ALTERAÇÃO DA FOTO */}
+            <div hidden className='container-modal-alert'>
+                <div className='container-img-btns-text'>
+                    <div className='container-alert-text'>
+                        <p>Tem certeza que deseja trocar a foto?</p>
+                    </div>
+
+                    <img src="" alt="foto-user" className='foto-user' id='new-foto-user' />
+
+                    <div className='container-btns-enviar-img'>
+                        <button onClick={() => { changeFoto('edit_foto') }} className='btn-enviar-img btn-sim' type="button">Sim</button>
+                        <button onClick={() => { cancelFoto() }} className='btn-enviar-img btn-nao' type="button">Não</button>
+                    </div>
+                </div>
+            </div>
         </>
     )
 }
