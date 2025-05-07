@@ -350,3 +350,9 @@ $text-alert: rgb(231, 84, 84);
         }
     }
 }
+
+.container-modal-alert {
+    position: fixed;
+
+    z-index: 1;
+}
