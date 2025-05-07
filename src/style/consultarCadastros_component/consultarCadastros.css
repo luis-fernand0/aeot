@@ -43,18 +43,30 @@
   border-radius: 15px;
   box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.485);
 }
-.container .container-todos-os-cadastros .container-input-buscar .input-buscar {
-  height: 30px;
-  width: 80%;
+.container .container-todos-os-cadastros .container-input-buscar .container-input-filtro {
+  width: 100%;
   margin-right: 15px;
+}
+.container .container-todos-os-cadastros .container-input-buscar .container-input-filtro .input-buscar {
+  height: 30px;
+  width: 100%;
   padding-left: 15px;
-  border-radius: 15px;
+  border-radius: 5px;
   border: 1px solid #333;
   transition: border-color 0.3s ease-in-out;
 }
-.container .container-todos-os-cadastros .container-input-buscar .input-buscar:focus {
+.container .container-todos-os-cadastros .container-input-buscar .container-input-filtro .input-buscar:focus {
   border-color: #E6C200;
   outline: none;
+}
+.container .container-todos-os-cadastros .container-input-buscar .container-input-filtro .container-ul-autocomplete {
+  background-color: #D4AF37;
+  position: relative;
+}
+.container .container-todos-os-cadastros .container-input-buscar .container-input-filtro .container-ul-autocomplete .ul-autocomplete {
+  background-color: white;
+  position: absolute;
+  width: 100%;
 }
 .container .container-todos-os-cadastros .container-input-buscar .btn-pesquisar {
   background-color: #E6C200;
