@@ -64,9 +64,31 @@
   position: relative;
 }
 .container .container-todos-os-cadastros .container-input-buscar .container-input-filtro .container-ul-autocomplete .ul-autocomplete {
-  background-color: white;
+  background-color: #f5f5f5;
+  margin-top: 15px;
+  border-radius: 5px;
   position: absolute;
   width: 100%;
+  max-height: 200px;
+  overflow-y: scroll;
+}
+.container .container-todos-os-cadastros .container-input-buscar .container-input-filtro .container-ul-autocomplete .ul-autocomplete li {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  cursor: pointer;
+  padding: 10px;
+  color: #333;
+  transition: background-color 0.3s ease;
+}
+.container .container-todos-os-cadastros .container-input-buscar .container-input-filtro .container-ul-autocomplete .ul-autocomplete li:hover {
+  background-color: #ffef9a;
+}
+.container .container-todos-os-cadastros .container-input-buscar .container-input-filtro .container-ul-autocomplete .ul-autocomplete li:not(:last-child) {
+  border-bottom: 1px solid #ddd;
+}
+.container .container-todos-os-cadastros .container-input-buscar .container-input-filtro .container-ul-autocomplete .ul-autocomplete li p {
+  margin: 15px 15px 15px 0;
 }
 .container .container-todos-os-cadastros .container-input-buscar .btn-pesquisar {
   background-color: #E6C200;
