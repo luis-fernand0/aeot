@@ -10,8 +10,13 @@ import EditarCadastro from './editarCadastro'
 
 import '../style/consultarCadastros_component/consultarCadastros.css'
 
+const urlBuscarFrentista = import.meta.env.VITE_URL_BUSCAR_FRENTISTA
+const urlBuscarCadastro = import.meta.env.VITE_URL_BUSCAR_CADASTROS
+const urlBuscarUsers = import.meta.env.VITE_URL_BUSCAR_USERS
+
 const ConsultarCadastros = () => {
     const tokenUser = localStorage.getItem('token')
+    const typeUser = localStorage.getItem('type_user')
 
     const [loading, setLoading] = useState(false)
     const [isModalVisible, setModalVisible] = useState(false);
@@ -44,7 +49,7 @@ const ConsultarCadastros = () => {
                 user_id: filtro?.user_id || '',
                 tipo: filtro?.tipo || ''
             }).toString()
-            const response = await fetch(`http://localhost:3000/aeot/auth/buscar_cadastros?${query}`, {
+            const response = await fetch(`${urlBuscarCadastro}?${query}`, {
                 headers: {
                     'Authorization': `Bearer ${tokenUser}`
                 }
@@ -65,13 +70,23 @@ const ConsultarCadastros = () => {
     }
 
     async function buscarUsers(nome) {
-        const response = await fetch(`http://localhost:3000/aeot/auth/buscar_users?nome=${nome}`, {
+        const response = await fetch(`${urlBuscarUsers}?nome=${nome}`, {
             headers: {
                 'Authorization': `Bearer ${tokenUser}`
             }
         })
         const data = await response.json()
         setUsers(data.cadastros)
+        setShowAutocomplete(true)
+    }
+    async function buscarFrentista(nome) {
+        const response = await fetch(`${urlBuscarFrentista}?nome=${nome}`, {
+            headers: {
+                'Authorization': `Bearer ${tokenUser}`
+            }
+        })
+        const data = await response.json()
+        setUsers(data.frentistas)
         setShowAutocomplete(true)
     }
 
@@ -125,12 +140,13 @@ const ConsultarCadastros = () => {
                             <input
                                 ref={inputRef}
                                 onChange={(e) => {
-                                    buscarUsers(e.target.value)
+                                    {typeUser === 'posto' && (buscarFrentista(e.target.value))}
+                                    {typeUser === 'administrador' && (buscarUsers(e.target.value))}
                                     handleChange(e)
                                 }}
-                                className='input-buscar'
-                                type="text"
-                                id='input-filtro'
+                            className='input-buscar'
+                            type="text"
+                            id='input-filtro'
                                 placeholder='Pesquise: Posto, Frentista e Motorista' />
                             <div
                                 ref={autocompleteRef}
