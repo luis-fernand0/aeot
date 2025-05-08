@@ -17,6 +17,7 @@ const ConsultarCadastros = () => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
 
+    const [filtro, setFiltro] = useState({})
     const [users, setUsers] = useState()
     const [cadastros, setCadastros] = useState([])
     const [showModal, setShowModal] = useState({ view: false, cadastro: null })
@@ -28,10 +29,22 @@ const ConsultarCadastros = () => {
     const [total, setTotal] = useState(0)
     const limit = 15
 
+    const handleChange = (e) => {
+        let input = e.target.value;
+        setFiltro({ nome: input })
+    }
+
     async function consultarCadastro(p = page) {
         setLoading(true)
         try {
-            const response = await fetch(`http://localhost:3000/aeot/auth/buscar_cadastros?page=${p}&limit=${limit}`, {
+            const query = new URLSearchParams({
+                page: p,
+                limit,
+                nome: filtro?.nome || '',
+                user_id: filtro?.user_id || '',
+                tipo: filtro?.tipo || ''
+            }).toString()
+            const response = await fetch(`http://localhost:3000/aeot/auth/buscar_cadastros?${query}`, {
                 headers: {
                     'Authorization': `Bearer ${tokenUser}`
                 }
@@ -111,9 +124,13 @@ const ConsultarCadastros = () => {
                         <div className='container-input-filtro'>
                             <input
                                 ref={inputRef}
-                                onChange={(e) => { buscarUsers(e.target.value) }}
+                                onChange={(e) => {
+                                    buscarUsers(e.target.value)
+                                    handleChange(e)
+                                }}
                                 className='input-buscar'
                                 type="text"
+                                id='input-filtro'
                                 placeholder='Pesquise: Posto, Frentista e Motorista' />
                             <div
                                 ref={autocompleteRef}
@@ -121,13 +138,20 @@ const ConsultarCadastros = () => {
                                 id='container-autocomplete'
                                 className='container-ul-autocomplete'>
                                 <ul className='ul-autocomplete'>
-                                    {users && users.map((user) => 
-                                        <li key={user.user_id}>
+                                    {users && users.map((user) =>
+                                        <li
+                                            onClick={() => {
+                                                document.getElementById(`input-filtro`).value = user.nome.toUpperCase()
+                                                setFiltro({ nome: user.nome, user_id: user.user_id, tipo: user.tipo })
+                                                setUsers([])
+                                                setShowAutocomplete(false)
+                                            }}
+                                            key={user.user_id}>
                                             <p>
-                                                {user.tipo}
+                                                {user.tipo === `driver` ? `MOTORISTA` : user.tipo.toUpperCase()}
                                             </p>
                                             <p>
-                                                {user.nome}
+                                                {user.nome.toUpperCase()}
                                             </p>
                                         </li>
                                     )}
