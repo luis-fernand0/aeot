@@ -19,6 +19,9 @@ import { comprimirFoto } from '../functions/comprimirFoto'
 import '../style/editarCadastro_component/editarCadastro.css'
 
 const urlAtualizarFoto = import.meta.env.VITE_URL_ATUALIZAR_FOTO_USER
+const urlEditarCadastro = import.meta.env.VITE_URL_EDITAR_CADASTRO
+const urlDesativarCadastro = import.meta.env.VITE_URL_DESATIVAR_CADASTRO
+const urlAtivarCadastro = import.meta.env.VITE_URL_ATIVAR_CADASTRO
 
 const EditarCadastro = ({ showModal, close }) => {
     if (!showModal.view) {
@@ -224,7 +227,7 @@ const EditarCadastro = ({ showModal, close }) => {
                     throw new Error('Alguns dados precisam ser preenchidos');
                 }
             }
-            const response = await fetch('http://localhost:3000/aeot/auth/editar_cadastro', {
+            const response = await fetch(`${urlEditarCadastro}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${tokenUser}`,
@@ -249,7 +252,7 @@ const EditarCadastro = ({ showModal, close }) => {
     async function desativarCadastro() {
         setLoading(true)
         try {
-            const response = await fetch('http://localhost:3000/aeot/auth/desativar_cadastro', {
+            const response = await fetch(`${urlDesativarCadastro}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${tokenUser}`,
@@ -274,7 +277,7 @@ const EditarCadastro = ({ showModal, close }) => {
     async function ativarCadastro() {
         setLoading(true)
         try {
-            const response = await fetch('http://localhost:3000/aeot/auth/ativar_cadastro', {
+            const response = await fetch(`${urlAtivarCadastro}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${tokenUser}`,
