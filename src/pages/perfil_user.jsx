@@ -76,7 +76,8 @@ const PerfilUser = () => {
                 posto: brinde.nome_posto,
                 posto_user_id: brinde.user_id,
                 cod_brinde: brinde.cod_brinde,
-                nome_brinde: brinde.nome_brinde
+                nome_brinde: brinde.nome_brinde,
+                cod: brinde.cod
             })
 
             if (!qrCodeValue.chave) {
