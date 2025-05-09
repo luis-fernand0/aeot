@@ -239,12 +239,9 @@ const LerQrCode = () => {
             myForm.append('driver_id', result.driver_id || result.driver_user_id)
             myForm.append('posto_id', result.posto_user_id)
             myForm.append('cod_brinde', result.cod_brinde)
+            myForm.append('cod', result.cod)
 
             const myFormData = Object.fromEntries(myForm)
-
-            for (let [key, value] of myForm.entries()) {
-                console.log(key, value)
-            }
 
             const response = await fetch(urlResgatarBrinde, {
                 method: 'POST',
