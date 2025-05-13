@@ -39,6 +39,7 @@ const Relatorio = () => {
 
   const refFrentista = useRef(null)
   const refPosto = useRef(null)
+  let totalVendas = 0
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -85,9 +86,6 @@ const Relatorio = () => {
   }
 
   async function buscarPostos(nome) {
-    if (nome === '') {
-
-    }
     const response = await fetch(`${urlBuscarPosto}?nome=${nome}`, {
       headers: {
         'Authorization': `Bearer ${tokenUser}`
@@ -136,6 +134,9 @@ const Relatorio = () => {
       doc.setTextColor(50, 50, 50);
       const dataAtual = new Date().toLocaleDateString();
       doc.text(`Emitido em: ${dataAtual}`, 14, 36);
+      doc.setFontSize(10);
+      doc.setTextColor(50, 50, 50);
+      doc.text(`Total de vendas: R$ ${totalVendas}`, 14, 43);
 
       const head = [[
         "Posto", "Data", "Hora", "Motorista",
@@ -313,21 +314,33 @@ const Relatorio = () => {
               </tr>
             </thead>
             <tbody>
-              {dados.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.posto}</td>
-                  <td>{item.data_venda}</td>
-                  <td>{item.hora_venda}</td>
-                  <td>{item.motorista}</td>
-                  <td>{item.combustivel}</td>
-                  <td>R$ {item.valor}</td>
-                  <td>{item.litros}</td>
-                  <td>R$ {item.valor_total}</td>
-                  <td>{item.frentista.toUpperCase()}</td>
-                </tr>
-              ))}
+              {dados.map((item, index) => {
+                totalVendas += Number(item.valor_total)
+                return (
+                  <tr key={index}>
+                    <td>{item.posto}</td>
+                    <td>{item.data_venda}</td>
+                    <td>{item.hora_venda}</td>
+                    <td>{item.motorista}</td>
+                    <td>{item.combustivel}</td>
+                    <td>R$ {item.valor}</td>
+                    <td>{item.litros}</td>
+                    <td>R$ {item.valor_total}</td>
+                    <td>{item.frentista.toUpperCase()}</td>
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
+        </div>
+
+        <div className="container-total-vendas">
+          <p className="text-total-vendas">
+            Total de vendas da pagina atual:
+          </p>
+          <p className="text-total-vendas">
+            R$ {totalVendas}
+          </p>
         </div>
 
         <div className="paginacao">
@@ -364,7 +377,7 @@ const Relatorio = () => {
             Ultima
           </button>
         </div>
-      </div>
+      </div >
     </>
   )
 }
