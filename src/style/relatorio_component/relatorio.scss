@@ -194,6 +194,28 @@ $shadow-hover: 0px 4px 8px rgba(0, 0, 0, 0.05);
         }
     }
 
+    .container-total-vendas {
+        margin-top: 30px;
+        padding: 30px;
+
+        width: 100%;
+        height: auto;
+
+        background-color: white;
+
+        border-radius: 8px;
+        box-shadow: $shadow-soft;
+
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+        align-items: center;
+
+        color: $text-dark;
+        font-size: 15px;
+        font-weight: bold;
+    }
+
     .paginacao {
         display: flex;
         justify-content: center;
