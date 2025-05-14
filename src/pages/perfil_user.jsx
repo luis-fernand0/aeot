@@ -138,7 +138,7 @@ const PerfilUser = () => {
                             </div>
                         </div>
                         <div className="foto-user-datas">
-                            <div className="foto-user-container">
+                            {/* <div className="foto-user-container">
                                 <img className="foto-user" src={`https://aeotnew.s3.amazonaws.com/${dataUser.foto}`} alt="foto_user" />
                             </div>
 
@@ -154,7 +154,7 @@ const PerfilUser = () => {
                                 <p className="data-user">Placa:
                                     <span className="data-user-span"> {dataUser.placa}</span>
                                 </p>
-                            </div>
+                            </div> */}
 
                             <div className="container-btn-brinde">
                                 <button onClick={() => { setExibirBrindes(true) }} className="btn-brinde">
