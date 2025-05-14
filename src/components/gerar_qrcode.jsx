@@ -49,20 +49,20 @@ const GerarQrCode = () => {
         setDataUser(data)
     }
 
-    const calcularPagamento = (formaAbastecimento, num1, num2) => {
+    const calcularPagamento = (formaAbastecimento, valorCombustivel, litrosAbastecidos) => {
         if (formaAbastecimento === 'valor') {
-            return (num2).toFixed(2)
+            return (litrosAbastecidos).toFixed(2)
         }
 
-        return parseFloat(num1 * num2).toFixed(2)
+        return parseFloat(valorCombustivel * litrosAbastecidos).toFixed(2)
     }
 
-    const calcularLitros = (formaAbastecimento, num1, num2) => {
+    const calcularLitros = (formaAbastecimento, valorCombustivel, litrosAbastecidos) => {
         if (formaAbastecimento != 'valor') {
-            return num2
+            return litrosAbastecidos
         }
 
-        return parseFloat(num2 / num1).toFixed(2)
+        return parseFloat(litrosAbastecidos / valorCombustivel).toFixed(3)
     }
 
     async function generateQrCode() {
