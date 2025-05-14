@@ -8,6 +8,8 @@ import { checkValor } from '../functions/checkValor'
 import { formatLitro } from "../functions/formatLitro";
 import { formasPagamento } from '../functions/contants';
 
+import ModalResponse from './modalResponse';
+
 import '../style/abastecimento_component/abastecimento.css'
 
 const Abastecimento = () => {
@@ -19,6 +21,8 @@ const Abastecimento = () => {
     const [formaAbastecimento, setFormaAbastecimento] = useState()
     const [combustivelAtual, setCombustivelAtual] = useState()
     const [btnChecked, setBtnChecked] = useState()
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
 
     let combustiveis = Object.keys(posto.combustivel)
     let pagamentos = []
@@ -43,6 +47,16 @@ const Abastecimento = () => {
     function enviarDados() {
         const Typecombustivel = document.getElementById('combustivel').value
         const payMethod = document.getElementById('pagamento').value
+        if (Typecombustivel === '') {
+            setModalMessage(`Porfavor escolha um combustivel para dar continuidade.`)
+            setModalVisible(true)
+            return
+        }
+        if (payMethod === '') {
+            setModalMessage(`Porfavor marque um metodo de pagamento para dar continuidade.`)
+            setModalVisible(true)
+            return
+        }
 
         let valor = null
         let abastecimento = null
@@ -56,6 +70,11 @@ const Abastecimento = () => {
         } else {
             abastecimento = 'encher-tanque'
             valor = undefined
+        }
+        if (valor === '') {
+            setModalMessage(`Porfavor informe a litragem/preço que vai abastecer para dar continuidade.`)
+            setModalVisible(true)
+            return
         }
 
         let metodoAbastecimento = {
@@ -81,6 +100,10 @@ const Abastecimento = () => {
 
     return (
         <>
+            <ModalResponse
+                isVisible={isModalVisible}
+                onClose={() => setModalVisible(false)}
+                message={modalMessage} />
             <div className="container-abastecimento-title">
                 <div className='container-icon-title'>
                     <Link to={'/home'}>
