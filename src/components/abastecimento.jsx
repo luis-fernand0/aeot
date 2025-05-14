@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faGasPump } from '@fortawesome/free-solid-svg-icons'
 
 import { checkValor } from '../functions/checkValor'
+import { formatLitro } from "../functions/formatLitro";
 import { formasPagamento } from '../functions/contants';
 
 import '../style/abastecimento_component/abastecimento.css'
@@ -37,24 +38,6 @@ const Abastecimento = () => {
                 setFormaAbastecimento(posto.combustivel[combustivelAtual].formas[pagamento.value].forma_abastecimento)
             }
         })
-    }
-    function formatLitro(e) {
-        let input = e.target
-        let inputValue = input.value.replace(/[^0-9]/g, '')
-
-        if (inputValue.length > 2) {
-            inputValue = inputValue.slice(0, 2) + '.' + inputValue.slice(2);
-        }
-        if (inputValue.length > 5) {
-            inputValue = input.value.replace(/[^0-9]/g, '')
-            inputValue = inputValue.slice(0, 3) + '.' + inputValue.slice(3);
-        }
-
-        if (inputValue.length > 6) {
-            inputValue = inputValue.slice(0, 6)
-        }
-
-        input.value = inputValue
     }
 
     function enviarDados() {

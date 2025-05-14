@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faKey } from '@fortawesome/free-solid-svg-icons'
 
 import { formasPagamento, combustiveis } from "../functions/contants";
+import { formatLitro } from "../functions/formatLitro";
 
 import Loading from '../components/loading'
 import ModalResponse from '../components/modalResponse'
@@ -30,25 +31,6 @@ const LerQrCode = () => {
     const [loading, setLoading] = useState(false)
     const [isModalVisible, setModalVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
-
-    function formatLitro(e) {
-        let input = e.target
-        let inputValue = input.value.replace(/[^0-9]/g, '')
-
-        if (inputValue.length > 2) {
-            inputValue = inputValue.slice(0, 2) + '.' + inputValue.slice(2);
-        }
-        if (inputValue.length > 5) {
-            inputValue = input.value.replace(/[^0-9]/g, '')
-            inputValue = inputValue.slice(0, 3) + '.' + inputValue.slice(3);
-        }
-
-        if (inputValue.length > 6) {
-            inputValue = inputValue.slice(0, 6)
-        }
-
-        input.value = inputValue
-    }
 
     const startScanning = async () => {
         const html5QrCode = new Html5Qrcode("reader")
