@@ -339,7 +339,7 @@ const Relatorio = () => {
             Total de vendas da pagina atual:
           </p>
           <p className="text-total-vendas">
-            R$ {totalVendas}
+            R$ {totalVendas.toFixed(2)}
           </p>
         </div>
 
