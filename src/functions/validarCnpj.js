@@ -15,8 +15,6 @@ export function validarCnpj(cnpj) {
 
     let digitos_iguais = true;
     for(let i = 0; i < formattedCNPJ.length - 1; i++) {
-        console.log(`caracter ${i} do cnpj é: ${formattedCNPJ.charAt(i)}`)
-        console.log(`caracter ${i + 1} do cnpj é: ${formattedCNPJ.charAt(i + 1 )}`)
         if (formattedCNPJ.charAt(i) != formattedCNPJ.charAt(i + 1)) {
             digitos_iguais = false
             break;
