@@ -13,5 +13,16 @@ export function validarCnpj(cnpj) {
     if (formattedCNPJ[12] != calculateDigit(formattedCNPJ, digitWeights) ||
         formattedCNPJ[13] != calculateDigit(formattedCNPJ, [6, ...digitWeights])) return false;
 
+    let digitos_iguais = true;
+    for(let i = 0; i < formattedCNPJ.length - 1; i++) {
+        console.log(`caracter ${i} do cnpj é: ${formattedCNPJ.charAt(i)}`)
+        console.log(`caracter ${i + 1} do cnpj é: ${formattedCNPJ.charAt(i + 1 )}`)
+        if (formattedCNPJ.charAt(i) != formattedCNPJ.charAt(i + 1)) {
+            digitos_iguais = false
+            break;
+        }
+    }
+    if (digitos_iguais === true) return false
+
     return true;
 }
