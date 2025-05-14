@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft, faUser, faLock, faPlus, faQrcode } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faLock, faPlus, faQrcode, faGift } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
 
 import '../style/header_component/header.css'
@@ -20,8 +20,8 @@ const Header = ({ redirectTo }) => {
                 {(typeUser === 'driver' || typeUser === 'administrador') && (
                     <Link to={'/perfil'}>
                         <button className='header-btn header-btn-perfil' type="button">
-                            <FontAwesomeIcon className='icon-header-btn' icon={faUser} />
-                            Perfil
+                            <FontAwesomeIcon className='icon-header-btn' icon={faGift} />
+                            Brindes
                         </button>
                     </Link>
 
