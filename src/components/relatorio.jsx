@@ -149,9 +149,9 @@ const Relatorio = () => {
         item.hora_venda,
         item.motorista,
         item.combustivel,
-        item.valor,
-        item.litros,
-        item.valor_total,
+        `R$ ${item.valor}`,
+        `Lt ${item.litros}`,
+        `R$ ${item.valor_total}`,
         item.frentista.toUpperCase()
       ]))
 
@@ -324,7 +324,7 @@ const Relatorio = () => {
                     <td>{item.motorista}</td>
                     <td>{item.combustivel}</td>
                     <td>R$ {item.valor}</td>
-                    <td>{item.litros}</td>
+                    <td>Lt {item.litros}</td>
                     <td>R$ {item.valor_total}</td>
                     <td>{item.frentista.toUpperCase()}</td>
                   </tr>
