@@ -7,6 +7,7 @@ import { faChevronLeft, faGasPump } from '@fortawesome/free-solid-svg-icons'
 import { checkValor } from '../functions/checkValor'
 import { formatLitro } from "../functions/formatLitro";
 import { formasPagamento } from '../functions/contants';
+import { validarLitro } from '../functions/validarLitro';
 
 import ModalResponse from './modalResponse';
 
@@ -23,6 +24,7 @@ const Abastecimento = () => {
     const [btnChecked, setBtnChecked] = useState()
     const [isModalVisible, setModalVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
+    const [litroValid, setLitroValid] = useState(false);
 
     let combustiveis = Object.keys(posto.combustivel)
     let pagamentos = []
@@ -58,20 +60,25 @@ const Abastecimento = () => {
             return
         }
 
+        let litro = null
         let valor = null
         let abastecimento = null
 
         if (document.getElementById('input-litro')) {
             abastecimento = 'litro'
-            valor = document.getElementById('input-litro').value
+            litro = document.getElementById('input-litro').value.replace(/[^0-9]/g, '.')
+            litro = Number(litro).toFixed(3)
         } else if (document.getElementById('input-valor')) {
             abastecimento = 'valor'
             valor = document.getElementById('input-valor').value
+            valor = Number(valor).toFixed(2)
         } else {
             abastecimento = 'encher-tanque'
+            litro = undefined
             valor = undefined
         }
-        if (valor === '') {
+
+        if (litro == 0.000 || valor == 0.00) {
             setModalMessage(`Porfavor informe a litragem/preço que vai abastecer para dar continuidade.`)
             setModalVisible(true)
             return
@@ -81,7 +88,8 @@ const Abastecimento = () => {
             tipo_combustivel: Typecombustivel,
             metodo_pagamento: payMethod,
             forma_abastecimento: abastecimento,
-            litros: valor,
+            litros: litro,
+            preco: valor,
             posto
         }
         localStorage.setItem('dadosAbastecimento', JSON.stringify(metodoAbastecimento))
@@ -180,7 +188,7 @@ const Abastecimento = () => {
                                         </button>
 
                                         <button
-                                            onClick={() => { setBtnChecked('btn-valor') }}
+                                            onClick={() => { setBtnChecked('btn-valor'), setLitroValid(false) }}
                                             className={`btn-valor btn-option ${btnChecked != 'btn-valor' ? '' : 'checked'}`}
                                             type="button">
                                             Preço
@@ -189,7 +197,7 @@ const Abastecimento = () => {
                                 )}
 
                                 <button
-                                    onClick={() => { setBtnChecked('btn-tanque') }}
+                                    onClick={() => { setBtnChecked('btn-tanque'), setLitroValid(false) }}
                                     className={`btn-tanque btn-option ${btnChecked != 'btn-tanque' ? '' : 'checked'}`}
                                     type="button">
                                     Tanque
@@ -205,7 +213,10 @@ const Abastecimento = () => {
                                                     Quantos litros deseja abastecer?
                                                 </p>
                                                 <input
-                                                    onChange={(e) => formatLitro(e)}
+                                                    onChange={(e) => {
+                                                        formatLitro(e);
+                                                        setLitroValid(!validarLitro(e));
+                                                    }}
                                                     id='input-litro'
                                                     className='input-option'
                                                     type="text"
@@ -245,7 +256,8 @@ const Abastecimento = () => {
                         <button
                             onClick={() => enviarDados()}
                             className='btn-abastecer btn-enche-o-tanque'
-                            type="button">
+                            type="button"
+                            disabled={litroValid}>
                             Abastecer!
                             <FontAwesomeIcon className='gas-pump-icon' icon={faGasPump} />
                         </button>
