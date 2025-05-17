@@ -163,6 +163,12 @@
   background-color: #14181b;
   color: #fff;
 }
+.container-abastecimento-title .container-abastecimento .btn-abastecer:disabled {
+  background-color: #e8e8e8;
+  color: #1a1a1a;
+  cursor: not-allowed;
+  transform: none;
+}
 .container-abastecimento-title .container-abastecimento .btn-abastecer .gas-pump-icon {
   margin-left: 5px;
 }/*# sourceMappingURL=abastecimento.css.map */

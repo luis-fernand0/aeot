@@ -1,3 +1,6 @@
+$background-light: #f5f5f5;
+$text-dark: #333;
+
 .container-abastecimento-title {
     height: auto;
 
@@ -221,6 +224,13 @@
                 background-color: #14181b;
 
                 color: #fff;
+            }
+
+            &:disabled {
+                background-color: darken($background-light, 5%);
+                color: darken($text-dark, 10%);
+                cursor: not-allowed;
+                transform: none;
             }
 
             .gas-pump-icon {
