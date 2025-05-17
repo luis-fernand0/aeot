@@ -49,20 +49,26 @@ const GerarQrCode = () => {
         setDataUser(data)
     }
 
-    const calcularPagamento = (formaAbastecimento, valorCombustivel, litrosAbastecidos) => {
-        if (formaAbastecimento === 'valor') {
-            return (litrosAbastecidos).toFixed(2)
+    const calcularPagamento = (valorCombustivel, litrosAbastecidos) => {
+        if (dataAbastecimento.forma_abastecimento === 'valor') {
+            return dataAbastecimento?.preco
         }
+
+        valorCombustivel = Number(valorCombustivel)
+        litrosAbastecidos = Number(litrosAbastecidos)
 
         return parseFloat(valorCombustivel * litrosAbastecidos).toFixed(2)
     }
 
-    const calcularLitros = (formaAbastecimento, valorCombustivel, litrosAbastecidos) => {
-        if (formaAbastecimento != 'valor') {
-            return litrosAbastecidos
+    const calcularLitros = (valorCombustivel, valorAbastecido) => {
+        if (dataAbastecimento.forma_abastecimento === 'litro') {
+            return dataAbastecimento?.litros
         }
 
-        return parseFloat(litrosAbastecidos / valorCombustivel).toFixed(3)
+        valorCombustivel = Number(valorCombustivel)
+        valorAbastecido = Number(valorAbastecido)
+
+        return parseFloat(valorAbastecido / valorCombustivel).toFixed(3)
     }
 
     async function generateQrCode() {
@@ -86,16 +92,8 @@ const GerarQrCode = () => {
                 valor_combustivel: dataPosto?.combustivel[dataAbastecimento?.tipo_combustivel]?.valor,
                 metodo_pagamento: dataAbastecimento?.metodo_pagamento,
                 forma_abastecimento: dataAbastecimento?.forma_abastecimento,
-                quantidade: calcularLitros(
-                    dataAbastecimento?.forma_abastecimento,
-                    Number(dataPosto?.combustivel[dataAbastecimento.tipo_combustivel]?.valor),
-                    Number(dataAbastecimento?.litros)
-                ),
-                valor_total: calcularPagamento(
-                    dataAbastecimento?.forma_abastecimento,
-                    Number(dataPosto?.combustivel[dataAbastecimento.tipo_combustivel]?.valor),
-                    Number(dataAbastecimento?.litros)
-                )
+                quantidade: calcularLitros(dataPosto?.combustivel[dataAbastecimento.tipo_combustivel]?.valor, dataAbastecimento?.preco),
+                valor_total: calcularPagamento(dataPosto?.combustivel[dataAbastecimento.tipo_combustivel]?.valor, dataAbastecimento?.litros)
             })
 
             if (!qrCodeValue.chave) {
@@ -216,22 +214,24 @@ const GerarQrCode = () => {
                                         <>
                                             <p className="text-container abastecimento-preco-ou-litro">
                                                 Quantidade que vai abastecer:
-                                                {
-                                                    dataAbastecimento.forma_abastecimento === 'valor' ?
-                                                        ` ${calcularLitros(dataAbastecimento?.forma_abastecimento,
-                                                            Number(dataPosto?.combustivel[dataAbastecimento.tipo_combustivel]?.valor),
-                                                            Number(dataAbastecimento?.litros),
-                                                        )} Litros` :
-                                                        ` ${dataAbastecimento?.litros} Litros`
-                                                }
+                                                {dataAbastecimento.forma_abastecimento === 'valor' && (
+                                                    ` ${calcularLitros(dataPosto?.combustivel[dataAbastecimento.tipo_combustivel]?.valor, dataAbastecimento?.preco)} Litros`
+                                                )}
+
+                                                {dataAbastecimento.forma_abastecimento === 'litro' && (
+                                                    ` ${dataAbastecimento?.litros} Litros`
+                                                )}
                                             </p>
 
                                             <p className="text-container abastecimento-preco-ou-litro">
                                                 Valor total:
-                                                {` R$ ${calcularPagamento(dataAbastecimento?.forma_abastecimento,
-                                                    Number(dataPosto?.combustivel[dataAbastecimento.tipo_combustivel]?.valor),
-                                                    Number(dataAbastecimento?.litros),
-                                                )}`}
+                                                {dataAbastecimento.forma_abastecimento === 'valor' && (
+                                                    ` $R$ ${dataAbastecimento?.preco}`
+                                                )}
+
+                                                {dataAbastecimento.forma_abastecimento === 'litro' && (
+                                                    ` R$ ${calcularPagamento(dataPosto?.combustivel[dataAbastecimento.tipo_combustivel]?.valor, dataAbastecimento?.litros)}`
+                                                )}
                                             </p>
                                         </>
                                     )}
