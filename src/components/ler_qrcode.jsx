@@ -12,6 +12,7 @@ import Loading from '../components/loading'
 import ModalResponse from '../components/modalResponse'
 
 import '../style/ler_qrcode_component/ler_qrcode.css'
+import { validarLitro } from "../functions/validarLitro";
 
 const urlVenda = import.meta.env.VITE_URL_VENDA
 const urlBuscarChave = import.meta.env.VITE_URL_BUSCAR_CHAVE
@@ -31,6 +32,7 @@ const LerQrCode = () => {
     const [loading, setLoading] = useState(false)
     const [isModalVisible, setModalVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
+    const [litroValid, setLitroValid] = useState(false);
 
     const startScanning = async () => {
         const html5QrCode = new Html5Qrcode("reader")
@@ -127,11 +129,23 @@ const LerQrCode = () => {
     }
 
     const changeValorTotal = (e) => {
-        setValorTotal(parseFloat(e.target.value * result.valor_combustivel).toFixed(2))
+        //se o litro não for valido, porque eu inverto o resultado quando peço para verificar o se o litro é valido ou não, true = false e false = true 
+        if (litroValid === true) {
+            setValorTotal('0.00')
+            document.getElementById('litros-abastecidos').classList.add('litros-abastecidos-alert')
+            return
+        }
+
+        let litro = e.target.value.replace(/[^0-9]/g, '.')
+        litro = Number(litro).toFixed(3)
+
+        setValorTotal(parseFloat(litro * Number(result.valor_combustivel)).toFixed(2))
+
         if (e.target.value === '') {
             document.getElementById('litros-abastecidos').classList.add('litros-abastecidos-alert')
             return
         }
+
         document.getElementById('litros-abastecidos').classList.remove('litros-abastecidos-alert')
     }
 
@@ -435,7 +449,10 @@ const LerQrCode = () => {
                                             <>
                                                 <span className="text-span-container">
                                                     <input
-                                                        onChange={(e) => formatLitro(e)}
+                                                        onChange={(e) => {
+                                                            formatLitro(e);
+                                                            setLitroValid(!validarLitro(e))
+                                                        }}
                                                         onBlur={(e) => changeValorTotal(e)}
                                                         id="litros-abastecidos"
                                                         name="litros_abastecidos"
@@ -475,7 +492,8 @@ const LerQrCode = () => {
 
                             <button
                                 onClick={() => result.tipo === 'resgate_de_brinde' ? resgatarBrinde() : confirmarVenda()}
-                                className="btn-abastecido">
+                                className="btn-abastecido"
+                                disabled={litroValid}>
                                 Confirmar!
                             </button>
                         </>
