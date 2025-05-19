@@ -178,6 +178,12 @@
 .container-scan-respose #dados-do-abastecimento .btn-abastecido:hover {
   background-color: #6ff4ab;
 }
+.container-scan-respose #dados-do-abastecimento .btn-abastecido:disabled {
+  background-color: #e8e8e8;
+  color: #1a1a1a;
+  cursor: not-allowed;
+  transform: none;
+}
 .container-scan-respose #dados-do-abastecimento[hidden] {
   display: none !important;
 }/*# sourceMappingURL=ler_qrcode.css.map */
