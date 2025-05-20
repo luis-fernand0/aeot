@@ -11,6 +11,7 @@ import ModalResponse from "./modalResponse"
 import { generateKey } from "../functions/generateKey"
 
 import '../style/gerar_qrcode_component/gerar_qrcode.css'
+import { deletandoChave } from "../functions/deletandoChave"
 
 const urlData = import.meta.env.VITE_URL_DATAS_USER
 const urlCadastrarChave = import.meta.env.VITE_URL_CADASTRAR_CHAVE
@@ -131,7 +132,8 @@ const GerarQrCode = () => {
             setQrCodeValue({ qrCode: qrData, chave: chaveID })
             setShowQRCode(true)
 
-            setTimeout(() => {
+            setTimeout(async () => {
+                await deletandoChave(tokenUser, chaveID, 'abastecimento')
                 setQrCodeValue({ qrCode: '', chave: null })
                 setShowQRCode(false)
                 navigate('/abastecimento')
