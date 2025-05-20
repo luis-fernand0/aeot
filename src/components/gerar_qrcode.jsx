@@ -34,19 +34,23 @@ const GerarQrCode = () => {
     const [modalMessage, setModalMessage] = useState('');
 
     async function callInfoUser() {
-        const response = await fetch(`${urlData}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${tokenUser}`,
-                'Content-Type': 'application/json'
+        try {
+            const response = await fetch(`${urlData}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${tokenUser}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            const data = await response.json()
+            if (response.status === 401) {
+                navigate('/', { replace: true })
             }
-        })
-        const data = await response.json()
-        if (response.status === 401) {
-            navigate('/', { replace: true })
+            setDataUser(data)
+        } catch (err) {
+            setModalMessage(`Desculpe ocorreu um erro inesperado ao consultar o motorista: ${err.message}`)
+            setModalVisible(true)
         }
-
-        setDataUser(data)
     }
 
     const calcularPagamento = (valorCombustivel, litrosAbastecidos) => {
@@ -97,24 +101,30 @@ const GerarQrCode = () => {
             })
 
             if (!qrCodeValue.chave) {
-                const response = await fetch(urlCadastrarChave, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${tokenUser}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: qrData
-                })
-                const data = await response.json()
-                if (response.status === 401) {
-                    navigate('/', { replace: true })
-                    return
-                }
+                try {
+                    const response = await fetch(urlCadastrarChave, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${tokenUser}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: qrData
+                    })
 
-                if (!response.ok) {
-                    setModalMessage(data.message)
+                    const data = await response.json()
+                    if (response.status === 401) {
+                        navigate('/', { replace: true })
+                        return
+                    }
+
+                    if (!response.ok) {
+                        setModalMessage(data.message)
+                        setModalVisible(true)
+                        return
+                    }
+                } catch (err) {
+                    setModalMessage(err.message)
                     setModalVisible(true)
-                    return
                 }
             }
 
@@ -128,7 +138,7 @@ const GerarQrCode = () => {
                 return
             }, 300000)
         } catch (err) {
-            setModalMessage(`Desculpe ocorreu um erro inesperado! ${err.message}`)
+            setModalMessage(`Desculpe ocorreu um erro inesperado ao gerar o QRCode! ${err.message}`)
             setModalVisible(true)
         } finally {
             setLoading(false)
