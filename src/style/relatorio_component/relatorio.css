@@ -126,7 +126,8 @@
 .container-relatorio .container-tabela table tr:hover {
   background-color: #e8e8e8;
 }
-.container-relatorio .container-total-vendas {
+.container-relatorio .container-total-vendas,
+.container-relatorio .container-exemplo {
   margin-top: 30px;
   padding: 30px;
   width: 100%;
@@ -141,6 +142,13 @@
   color: #333;
   font-size: 15px;
   font-weight: bold;
+}
+.container-relatorio .container-exemplo {
+  display: block;
+  width: auto;
+}
+.container-relatorio .container-exemplo p:nth-child(1), .container-relatorio .container-exemplo p:nth-child(2) {
+  margin-bottom: 15px;
 }
 .container-relatorio .paginacao {
   display: flex;
