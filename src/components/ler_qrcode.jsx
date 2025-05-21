@@ -462,7 +462,7 @@ const LerQrCode = () => {
                                             </>
                                         )}
                                         <span className="text-span-container">
-                                            {result?.quantidade} Litros
+                                            {result.forma_abastecimento === 'encher-tanque' ? 'Litros' : `${result?.quantidade} Litros`}
                                         </span>
                                     </p>
 
