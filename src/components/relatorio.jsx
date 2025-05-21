@@ -134,26 +134,30 @@ const Relatorio = () => {
       doc.setTextColor(50, 50, 50);
       const dataAtual = new Date().toLocaleDateString();
       doc.text(`Emitido em: ${dataAtual}`, 14, 36);
-      doc.setFontSize(10);
-      doc.setTextColor(50, 50, 50);
-      doc.text(`Total de vendas: R$ ${totalVendas}`, 14, 43);
 
       const head = [[
         "Posto", "Data", "Hora", "Motorista",
-        "Combustível", "Valor (R$)", "Litros", "Total (R$)", "Frentista"
+        "Combustível", 'FB', "Valor (R$)", "Litros", "Total (R$)", "Frentista"
       ]];
 
+      let totalVendas = 0
       const body = relatorio.map(item => ([
         item.posto,
         item.data_venda,
         item.hora_venda,
         item.motorista,
         item.combustivel,
+        item.forma_abastecimento === 1 ? 'LL' : 'ET',
         `R$ ${item.valor}`,
         `Lt ${item.litros}`,
         `R$ ${item.valor_total}`,
-        item.frentista.toUpperCase()
+        item.frentista.toUpperCase(),
+        totalVendas += Number(item.valor_total)
       ]))
+
+      doc.setFontSize(10);
+      doc.setTextColor(50, 50, 50);
+      doc.text(`Total de vendas: R$ ${totalVendas.toFixed(2)}`, 14, 43);
 
       autoTable(doc, {
         head: head,
@@ -307,6 +311,7 @@ const Relatorio = () => {
                 <th>Hora</th>
                 <th>Motorista</th>
                 <th>Combustível</th>
+                <th>FB</th>
                 <th>Valor</th>
                 <th>Litros</th>
                 <th>Total</th>
@@ -323,6 +328,7 @@ const Relatorio = () => {
                     <td>{item.hora_venda}</td>
                     <td>{item.motorista}</td>
                     <td>{item.combustivel}</td>
+                    <td>{item.forma_abastecimento === 1 ? 'LL' : 'ET'}</td>
                     <td>R$ {item.valor}</td>
                     <td>Lt {item.litros}</td>
                     <td>R$ {item.valor_total}</td>
@@ -340,6 +346,18 @@ const Relatorio = () => {
           </p>
           <p className="text-total-vendas">
             R$ {totalVendas.toFixed(2)}
+          </p>
+        </div>
+
+        <div className="container-exemplo">
+          <p className="text-exemplo">
+            FB = Forma de abastecimento
+          </p>
+          <p className="text-exemplo">
+            LL = Litragem Livre
+          </p>
+          <p className="text-exemplo">
+            ET = Enche Tanque
           </p>
         </div>
 
