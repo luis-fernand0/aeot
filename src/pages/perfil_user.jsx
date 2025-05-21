@@ -12,6 +12,7 @@ import ListarBrindes from "../components/listarBrindes"
 import Loading from "../components/loading"
 import ModalResponse from "../components/modalResponse"
 import '../style/perfil_user_page/perfil_user.css'
+import { deletandoChave } from "../functions/deletandoChave"
 
 const urlData = import.meta.env.VITE_URL_DATAS_USER
 const urlCadastrarChave = import.meta.env.VITE_URL_CADASTRAR_CHAVE
@@ -105,10 +106,12 @@ const PerfilUser = () => {
             setQrCodeValue({ qrCode: qrData, chave: chaveID })
             setShowQRCode(true)
 
-            setTimeout(() => {
+            setTimeout(async () => {
+                await deletandoChave(tokenUser, chaveID, 'resgate')
                 setQrCodeValue({ qrCode: '', chave: null })
                 setShowQRCode(false)
-            }, 300000)
+                setExibirBrindes(false)
+            }, 3000)
         } catch (err) {
             setModalMessage(`Desculpe ocorreu um erro inesperado! ${err.message}`)
             setModalVisible(true)
@@ -138,24 +141,6 @@ const PerfilUser = () => {
                             </div>
                         </div>
                         <div className="foto-user-datas">
-                            {/* <div className="foto-user-container">
-                                <img className="foto-user" src={`https://aeotnew.s3.amazonaws.com/${dataUser.foto}`} alt="foto_user" />
-                            </div>
-
-                            <div className="data-user-perfil">
-                                <p className="data-user">Nome:
-                                    <span className="data-user-span"> {dataUser.nome}</span>
-                                </p>
-
-                                <p className="data-user">Veiculo:
-                                    <span className="data-user-span"> {dataUser.modelo}</span>
-                                </p>
-
-                                <p className="data-user">Placa:
-                                    <span className="data-user-span"> {dataUser.placa}</span>
-                                </p>
-                            </div> */}
-
                             <div className="container-btn-brinde">
                                 <button onClick={() => { setExibirBrindes(true) }} className="btn-brinde">
                                     Resgatar brinde
