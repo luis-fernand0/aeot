@@ -1,3 +1,5 @@
+$text-dark: #333;
+
 .container-dados-abastecimento {
     height: 100%;
     width: 100%;
@@ -187,6 +189,16 @@
             flex-direction: column;
             justify-content: space-evenly;
             align-items: center;
+            
+            .tempo-expiracao {
+                span {
+                    font-size: 17px;
+
+                    color: $text-dark;
+                    font-weight: 600;
+                    
+                }
+            }
 
             .key-icon {
                 color: #d0c613;
