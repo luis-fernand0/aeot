@@ -23,6 +23,7 @@ const PerfilUser = () => {
 
     const [showQrCode, setShowQRCode] = useState(false)
     const [qrCodeValue, setQrCodeValue] = useState({ qrCode: '', chave: null })
+    const [expiracaoQrCode, setExpiracaoQrCode] = useState('')
 
     const [loading, setLoading] = useState(false)
     const [isModalVisible, setModalVisible] = useState(false);
@@ -82,36 +83,47 @@ const PerfilUser = () => {
             })
 
             if (!qrCodeValue.chave) {
-                const response = await fetch(urlCadastrarChave, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${tokenUser}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: qrData
-                })
-                const data = await response.json()
-                if (response.status === 401) {
-                    navigate('/', { replace: true })
-                    return
-                }
+                try {
+                    const response = await fetch(urlCadastrarChave, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${tokenUser}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: qrData
+                    })
+                    const data = await response.json()
+                    if (response.status === 401) {
+                        navigate('/', { replace: true })
+                        return
+                    }
 
-                if (!response.ok) {
-                    setModalMessage(data.message)
+                    if (!response.ok) {
+                        setModalMessage(data.message)
+                        setModalVisible(true)
+                        return
+                    }
+                    let hora_atual = new Date()
+                    let dezMinutosDepois = new Date(hora_atual.getTime() + 10 * 60 * 1000)
+                    let hora = String(dezMinutosDepois.getHours()).padStart(2, '0')
+                    let minuto = String(dezMinutosDepois.getMinutes()).padStart(2, '0')
+                    setExpiracaoQrCode(`${hora}:${minuto}`)
+                } catch (err) {
+                    setModalMessage(err.message)
                     setModalVisible(true)
-                    return
                 }
             }
-
+            
             setQrCodeValue({ qrCode: qrData, chave: chaveID })
             setShowQRCode(true)
 
             setTimeout(async () => {
                 await deletandoChave(tokenUser, chaveID, 'resgate')
+                setExpiracaoQrCode('')
                 setQrCodeValue({ qrCode: '', chave: null })
                 setShowQRCode(false)
                 setExibirBrindes(false)
-            }, 3000)
+            }, 600000)
         } catch (err) {
             setModalMessage(`Desculpe ocorreu um erro inesperado! ${err.message}`)
             setModalVisible(true)
@@ -177,11 +189,17 @@ const PerfilUser = () => {
                                 <span>*Mostre o QRCode para o frentista*</span>
                             </p>
 
+                            <p className="tempo-expiracao">
+                                <span>
+                                    *Valido até: {expiracaoQrCode}*
+                                </span>
+                            </p>
+
                             <p>
                                 Ou se preferir, envie a chave do QRCode:
                             </p>
                             <p>
-                                <FontAwesomeIcon className="key-icon" icon={faKey} />: {qrCodeValue.chave}
+                                <FontAwesomeIcon className="key-icon" icon={faKey} /> {qrCodeValue.chave}
                             </p>
                         </div>
                     </div>
