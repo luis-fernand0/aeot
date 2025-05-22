@@ -10,6 +10,7 @@ import ModalResponse from './modalResponse'
 import Loading from './loading'
 
 import "../style/relatorio_component/relatorio.css"
+import { formasPagamento } from "../functions/contants"
 const urlRelatorio = import.meta.env.VITE_URL_RELATORIO
 const urlBuscarFrentista = import.meta.env.VITE_URL_BUSCAR_FRENTISTA
 const urlBuscarPosto = import.meta.env.VITE_URL_BUSCAR_POSTO
@@ -19,9 +20,13 @@ const Relatorio = () => {
   const tokenUser = localStorage.getItem('token');
   const typeUser = localStorage.getItem('type_user')
 
+  let data_atual = new Date()
+  let dia = String(data_atual.getDate()).padStart(2, '0');
+  let mes = String(data_atual.getMonth() + 1).padStart(2, '0');
+  let ano = data_atual.getFullYear();
   const [filtros, setFiltros] = useState({
-    dataInicial: "",
-    dataFinal: "",
+    dataInicial: `${ano}-${mes}-${dia}`,
+    dataFinal: `${ano}-${mes}-${dia}`,
     frentista: "",
     posto: ""
   })
@@ -137,25 +142,31 @@ const Relatorio = () => {
 
       const head = [[
         "Posto", "Data", "Hora", "Motorista",
-        "Combustível", 'FA', "Valor (R$)", "Litros", "Total (R$)", "Frentista"
+        "Combustível", 'FA', 'FP', "Valor (R$)", "Litros", "Total (R$)", "Frentista"
       ]];
 
       let totalVendas = 0
-      const body = relatorio.map(item => ([
-        item.posto,
+      const body = relatorio.map((item) => (
+        Object.keys(formasPagamento).forEach((forma) => {
+          if (item.forma_pagamento == formasPagamento[forma].value) {
+            item.forma_pagamento = formasPagamento[forma].label
+            return;
+          }
+        }),
+        [item.posto,
         item.data_venda,
         item.hora_venda,
         item.motorista,
         item.combustivel,
         item.forma_abastecimento === 1 ? 'LL' : 'ET',
+        item.forma_pagamento.charAt(0).toUpperCase() + item?.forma_pagamento.slice(1),
         `R$ ${item.valor}`,
-        `Lt ${item.litros}`,
+        `${item.litros}`,
         `R$ ${item.valor_total}`,
         item.frentista.toUpperCase(),
-        totalVendas += Number(item.valor_total)
-      ]))
+        totalVendas += Number(item.valor_total)]))
 
-      doc.setFontSize(10);
+        doc.setFontSize(10);
       doc.setTextColor(50, 50, 50);
       doc.text(`Total de vendas: R$ ${totalVendas.toFixed(2)}`, 14, 43);
 
@@ -312,6 +323,7 @@ const Relatorio = () => {
                 <th>Motorista</th>
                 <th>Combustível</th>
                 <th>FA</th>
+                <th>FP</th>
                 <th>Valor</th>
                 <th>Litros</th>
                 <th>Total</th>
@@ -321,6 +333,13 @@ const Relatorio = () => {
             <tbody>
               {dados.map((item, index) => {
                 totalVendas += Number(item.valor_total)
+                Object.keys(formasPagamento).forEach((forma) => {
+                  if (item.forma_pagamento == formasPagamento[forma].value) {
+                    item.forma_pagamento = formasPagamento[forma].label
+                    return;
+                  }
+                })
+                let pagamentoCaptalize = item.forma_pagamento.charAt(0).toUpperCase() + item?.forma_pagamento.slice(1)
                 return (
                   <tr key={index}>
                     <td>{item.posto}</td>
@@ -329,8 +348,9 @@ const Relatorio = () => {
                     <td>{item.motorista}</td>
                     <td>{item.combustivel}</td>
                     <td>{item.forma_abastecimento === 1 ? 'LL' : 'ET'}</td>
+                    <td>{pagamentoCaptalize}</td>
                     <td>R$ {item.valor}</td>
-                    <td>Lt {item.litros}</td>
+                    <td>{item.litros}</td>
                     <td>R$ {item.valor_total}</td>
                     <td>{item.frentista.toUpperCase()}</td>
                   </tr>
@@ -350,6 +370,9 @@ const Relatorio = () => {
         </div>
 
         <div className="container-exemplo">
+          <p className="text-exemplo">
+            FP = Forma de pagamento
+          </p>
           <p className="text-exemplo">
             FA = Forma de abastecimento
           </p>
