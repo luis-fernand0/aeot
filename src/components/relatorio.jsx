@@ -137,7 +137,7 @@ const Relatorio = () => {
 
       const head = [[
         "Posto", "Data", "Hora", "Motorista",
-        "Combustível", 'FB', "Valor (R$)", "Litros", "Total (R$)", "Frentista"
+        "Combustível", 'FA', "Valor (R$)", "Litros", "Total (R$)", "Frentista"
       ]];
 
       let totalVendas = 0
@@ -311,7 +311,7 @@ const Relatorio = () => {
                 <th>Hora</th>
                 <th>Motorista</th>
                 <th>Combustível</th>
-                <th>FB</th>
+                <th>FA</th>
                 <th>Valor</th>
                 <th>Litros</th>
                 <th>Total</th>
@@ -351,7 +351,7 @@ const Relatorio = () => {
 
         <div className="container-exemplo">
           <p className="text-exemplo">
-            FB = Forma de abastecimento
+            FA = Forma de abastecimento
           </p>
           <p className="text-exemplo">
             LL = Litragem Livre
