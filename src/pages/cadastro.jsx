@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, redirect } from 'react-router-dom'
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash, faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
@@ -29,16 +29,16 @@ const Cadastro = () => {
 
     const [loading, setLoading] = useState(false)
 
-    const [isModalVisible, setModalVisible] = useState(false);
-    const [modalMessage, setModalMessage] = useState('');
+    const [isModalVisible, setModalVisible] = useState({view: false, suporte: false});
+    const [modalMessage, setModalMessage] = useState({});
 
     async function hundleSubmit(e) {
         e.preventDefault()
         setLoading(true)
         try {
             if (!erroModeloCor || !checkPass()) {
-                setModalMessage('É necessario preencher todos os dados!')
-                setModalVisible(true)
+                setModalMessage({message: 'É necessario preencher todos os dados!'})
+                setModalVisible({view: true, suporte: false})
 
                 setLoading(false)
 
@@ -62,9 +62,9 @@ const Cadastro = () => {
                 }
 
                 if (fotosFaltando.length > 0) {
-                    setModalMessage(`É necessario preencher todos os dados:
-                        \n ${fotosFaltando.join('\n, ')}`);
-                    setModalVisible(true);
+                    setModalMessage({message: `É necessario preencher todos os dados:
+                        \n ${fotosFaltando.join('\n, ')}`});
+                    setModalVisible({view: true, suporte: false});
                     setLoading(false);
                     return;
                 }
@@ -79,12 +79,15 @@ const Cadastro = () => {
             })
             const dataResponse = await response.json()
             if (response.status) {
-                setModalMessage(dataResponse.message)
-                setModalVisible(true)
+                setModalMessage({message: dataResponse.message})
+                setModalVisible({view: true, suporte: false})
             }
         } catch (err) {
-            setModalMessage(`Ocorreu um erro inesperado. Tente novamente mais tarde.` + err.message)
-            setModalVisible(true)
+            setModalMessage({
+                message: `Ocorreu um erro inesperado. Tente novamente mais tarde.` + err.message,
+                redirectTo: `http://wa.me/556796659181?text=Olá suporte, venho do AEOT, tive o seguinte problema: ${err}`
+            })
+            setModalVisible({view: true, suporte: true})
         } finally {
             setLoading(false)
         }
@@ -200,11 +203,11 @@ const Cadastro = () => {
         <>
             <Loading loading={loading} />
             <ModalResponse
-                isVisible={isModalVisible}
+                isVisible={isModalVisible.view}
                 onClose={() => setModalVisible(false)}
-                message={modalMessage}
-                buttonText="Retornar para a página de login"
-                redirectTo="/"
+                message={modalMessage.message}
+                buttonText={isModalVisible.suporte ? "Suporte" : "Retornar para a página de login"}
+                redirectTo={isModalVisible.suporte ? modalMessage.redirectTo : "/"}
             />
             <div className="container-cadastro">
                 <img className='logo-aeot-cadastro' src="/logo_AEOT.png" alt="logo-aeot" />
