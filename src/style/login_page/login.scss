@@ -79,11 +79,50 @@
                     }
                 }
 
+                .container-input-pass {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    background-color: #fff100;
+
+                    position: relative;
+
+                    .input-login {
+                        width: 100%;
+
+                        margin-bottom: 0;
+                    }
+
+                    button {
+                        position: absolute;
+                        right: 0;
+
+                        padding: 15px;
+
+                        background-color: #fff;
+
+                        border: none;
+
+                        color: gray;
+
+                        .hidden {
+                            display: none;
+                        }
+                    }
+
+                    &:hover {
+                        button {
+                            background-color: #f5f5f5;
+                        }
+                    }
+                }
+
                 .btn-log {
                     min-height: 60px;
                     width: 100%;
 
-                    margin-bottom: 15px;
+                    margin: 15px 0 15px 0;
 
                     border: none;
                     border-radius: 50px;
@@ -133,7 +172,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            
+
             background-color: #fff;
 
             color: black;
@@ -156,6 +195,7 @@
                 border: none;
 
                 margin-left: 20px;
+
                 .logo-whatsapp {
                     transition: 0.5s all;
 

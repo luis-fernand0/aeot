@@ -60,10 +60,36 @@
 .container-login .form-login .logo-inputs .inputs-btns .input-login:hover {
   background-color: #f5f5f5;
 }
+.container-login .form-login .logo-inputs .inputs-btns .container-input-pass {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff100;
+  position: relative;
+}
+.container-login .form-login .logo-inputs .inputs-btns .container-input-pass .input-login {
+  width: 100%;
+  margin-bottom: 0;
+}
+.container-login .form-login .logo-inputs .inputs-btns .container-input-pass button {
+  position: absolute;
+  right: 0;
+  padding: 15px;
+  background-color: #fff;
+  border: none;
+  color: gray;
+}
+.container-login .form-login .logo-inputs .inputs-btns .container-input-pass button .hidden {
+  display: none;
+}
+.container-login .form-login .logo-inputs .inputs-btns .container-input-pass:hover button {
+  background-color: #f5f5f5;
+}
 .container-login .form-login .logo-inputs .inputs-btns .btn-log {
   min-height: 60px;
   width: 100%;
-  margin-bottom: 15px;
+  margin: 15px 0 15px 0;
   border: none;
   border-radius: 50px;
   font-size: 18px;
