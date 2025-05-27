@@ -2,6 +2,9 @@ import * as React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from "react"
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+
 import { formatarEmail } from '../functions/formatarEmail'
 
 import Loading from '../components/loading'
@@ -73,8 +76,8 @@ const Login = () => {
       spanElement.classList.remove('span-login-hidden')
 
       if (err instanceof TypeError) {
-        spanElement.innerHTML = 
-        `Aconteceu um erro inesperado! Tente novamente mais tarde. ${err.message}`  
+        spanElement.innerHTML =
+          `Aconteceu um erro inesperado! Tente novamente mais tarde. ${err.message}`
         return
       }
 
@@ -82,6 +85,28 @@ const Login = () => {
     } finally {
       setLoading(false)
     }
+  }
+
+  function viewPass(inputId) {
+    let inputType = document.getElementById(inputId)
+    let eye = document.getElementById('icon-eye')
+    let eyeSlash = document.getElementById('icon-eye-slash')
+
+    if (inputType.getAttribute('type') === 'password') {
+      inputType.setAttribute('type', 'text')
+
+      eyeSlash.classList.remove('hidden')
+      eye.classList.add('hidden')
+
+      return
+    }
+
+    inputType.setAttribute('type', 'password')
+
+    eyeSlash.classList.add('hidden')
+    eye.classList.remove('hidden')
+
+    return
   }
 
   useEffect(() => {
@@ -107,7 +132,14 @@ const Login = () => {
             <div className="inputs-btns">
               <input className='input-login input-login-email' type="email" name="email_login" id="email-login" placeholder="Email" required autoComplete='off' onChange={(e) => formatarEmail(e)} />
 
-              <input className='input-login' type="password" name="password_login" id="password-login" placeholder="Senha" required />
+              <div className='container-input-pass'>
+                <input className='input-login' type="password" name="password_login" id="password-login" placeholder="Senha" required />
+                <button id='eyes-btn' className='eyes-btn' onClick={(e) => viewPass('password-login')}>
+                  <FontAwesomeIcon id='icon-eye' className='icon-eye' icon={faEye} />
+
+                  <FontAwesomeIcon id='icon-eye-slash' className='icon-eye hidden' icon={faEyeSlash} />
+                </button>
+              </div>
 
               <Link to={'/cadastro'}>
                 <button type='button' className='btn-log btn-create'>
