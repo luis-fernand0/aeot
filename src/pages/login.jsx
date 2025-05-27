@@ -134,7 +134,7 @@ const Login = () => {
 
               <div className='container-input-pass'>
                 <input className='input-login' type="password" name="password_login" id="password-login" placeholder="Senha" required />
-                <button id='eyes-btn' className='eyes-btn' onClick={(e) => viewPass('password-login')}>
+                <button type='button' id='eyes-btn' className='eyes-btn' onClick={() => viewPass('password-login')}>
                   <FontAwesomeIcon id='icon-eye' className='icon-eye' icon={faEye} />
 
                   <FontAwesomeIcon id='icon-eye-slash' className='icon-eye hidden' icon={faEyeSlash} />
