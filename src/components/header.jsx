@@ -1,12 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft, faLock, faPlus, faQrcode, faGift } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faLock, faPlus, faQrcode, faGift, faFileLines } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
 
 import '../style/header_component/header.css'
 
 const Header = ({ redirectTo }) => {
     const typeUser = localStorage.getItem('type_user')
-    
+
     return (
         <>
             <header className="header-home">
@@ -24,7 +24,14 @@ const Header = ({ redirectTo }) => {
                             Brindes
                         </button>
                     </Link>
+                )}
 
+                {typeUser === 'driver' && (
+                    <Link to={'/relatorio'}>
+                        <button className='header-btn' type="button">
+                            <FontAwesomeIcon className='icon-header-btn' icon={faFileLines} />
+                        </button>
+                    </Link>
                 )}
 
                 {(typeUser === 'administrador' || typeUser === 'posto') && (
