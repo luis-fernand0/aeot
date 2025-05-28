@@ -133,7 +133,11 @@ const Relatorio = () => {
 
       doc.setFontSize(14);
       doc.setTextColor(0, 0, 0);
-      doc.text("Relatório de Vendas de Combustível", 70, 17);
+      if (typeUser === 'driver') {
+        doc.text("Relatório de abastecimento", 70, 17);
+      } else {
+        doc.text("Relatório de Vendas de Combustível", 70, 17);
+      }
 
       doc.setFontSize(10);
       doc.setTextColor(50, 50, 50);
@@ -166,7 +170,7 @@ const Relatorio = () => {
         item.frentista.toUpperCase(),
         totalVendas += Number(item.valor_total)]))
 
-        doc.setFontSize(10);
+      doc.setFontSize(10);
       doc.setTextColor(50, 50, 50);
       doc.text(`Total de vendas: R$ ${totalVendas.toFixed(2)}`, 14, 43);
 
@@ -227,7 +231,12 @@ const Relatorio = () => {
             <FontAwesomeIcon className='arrow-icon' icon={faChevronLeft} />
           </Link>
         </div>
-        <h2 className="title-relatorio">Relatório de Vendas de Combustível</h2>
+        {typeUser != 'driver' && (
+          <h2 className="title-relatorio">Relatório de Vendas de Combustível</h2>
+        )}
+        {typeUser === 'driver' && (
+          <h2 className="title-relatorio">Relatório de abastecimento</h2>
+        )}
 
         <div className="container-filtros">
           <div className="filtro">
@@ -242,7 +251,7 @@ const Relatorio = () => {
               onChange={handleChange} />
           </div>
 
-          {typeUser === 'administrador' && (
+          {(typeUser === 'administrador' || typeUser === 'driver') && (
             <div className="filtro filtro-posto">
               <label htmlFor="posto">Posto:</label>
               <div className="container-input-ul">
@@ -273,35 +282,37 @@ const Relatorio = () => {
             </div>
           )}
 
-          <div className="filtro filtro-frentista">
-            <label htmlFor="frentista">Frentista:</label>
-            <div className="container-input-ul" ref={refFrentista}>
-              <input className="input-frentista" id="frentista" type="text" name="frentista"
-                onChange={(e) => {
-                  buscarFrentista(e.target.value);
-                  handleChange(e);
-                }} />
-              <div className="container-ul-autocomplete">
-                {frentistas.length > 0 && (
-                  <ul className="autocomplete-list">
-                    {frentistas.map((frentista) => (
-                      <li
-                        key={frentista.user_id}
-                        onClick={() => {
-                          document.getElementById('frentista').value = frentista.nome.toUpperCase();
-                          setFiltros((prev) => ({ ...prev, frentista: frentista.user_id }));
-                          setFrentistas([]);
-                        }}>
-                        Nome: {frentista.nome.toUpperCase()}
-                        <br />
-                        Posto: {frentista.nome_posto.toUpperCase()}
-                      </li>
-                    ))}
-                  </ul>
-                )}
+          {(typeUser === 'administrador' || typeUser === 'posto') && (
+            <div className="filtro filtro-frentista">
+              <label htmlFor="frentista">Frentista:</label>
+              <div className="container-input-ul" ref={refFrentista}>
+                <input className="input-frentista" id="frentista" type="text" name="frentista"
+                  onChange={(e) => {
+                    buscarFrentista(e.target.value);
+                    handleChange(e);
+                  }} />
+                <div className="container-ul-autocomplete">
+                  {frentistas.length > 0 && (
+                    <ul className="autocomplete-list">
+                      {frentistas.map((frentista) => (
+                        <li
+                          key={frentista.user_id}
+                          onClick={() => {
+                            document.getElementById('frentista').value = frentista.nome.toUpperCase();
+                            setFiltros((prev) => ({ ...prev, frentista: frentista.user_id }));
+                            setFrentistas([]);
+                          }}>
+                          Nome: {frentista.nome.toUpperCase()}
+                          <br />
+                          Posto: {frentista.nome_posto.toUpperCase()}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           <button className="btn-filtrar" onClick={filtrarDados}>
             Pesquisar
