@@ -32,13 +32,14 @@
         align-items: center;
 
         border-radius: 15px;
+
         .cadastro-full {
             width: 100%;
             height: 100%;
 
             padding: 20px;
 
-            
+
             border: 5px solid white;
             border-radius: 15px;
             box-shadow: 1px 1px 10px 5px rgba(0, 0, 0, 0.24);
@@ -46,46 +47,50 @@
             .title-arrow {
                 width: 100%;
                 height: auto;
-    
+
                 margin: 20px 0 20px 0;
-    
+
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+
                 .arrow-cadastro {
                     font-size: 38px;
                     color: black;
                     text-decoration: none;
 
                     transition: all 0.2s linear;
+
                     &:hover {
                         transform: scale(0.80);
                     }
                 }
             }
-    
+
             .datas-user {
                 width: 100%;
 
                 padding: 15px;
-    
+
                 display: flex;
                 flex-direction: column;
+
                 .input-cadastro {
                     background-color: #f5f5f5;
-    
+
                     height: 55px;
-    
+
                     padding-left: 15px;
-    
+
                     margin-bottom: 15px;
-    
+
                     border: none;
                     border-radius: 15px;
 
                     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
 
                     font-size: 18px;
+
                     &:focus {
                         outline: none;
 
@@ -95,12 +100,15 @@
 
                 .input-cadastro-nome {
                     text-transform: uppercase;
+
                     &::placeholder {
                         text-transform: capitalize;
                     }
                 }
+
                 .input-cadastro-email {
                     text-transform: lowercase;
+
                     &::placeholder {
                         text-transform: capitalize;
                     }
@@ -114,9 +122,11 @@
                     justify-content: space-between;
 
                     margin-bottom: 15px;
+
                     #placa-veiculo {
                         margin-bottom: 15px;
                     }
+
                     .input-cadastro-veiculo {
                         width: 100%;
                         height: 45px;
@@ -132,17 +142,19 @@
                         text-transform: uppercase;
 
                         box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
+
                         &:focus {
                             outline: none;
-    
+
                             border-bottom: 2px solid #4b39ef;
                         }
+
                         &::placeholder {
                             text-transform: capitalize;
                         }
                     }
                 }
-                
+
                 .span {
                     padding-left: 15px;
                     margin-bottom: 5px;
@@ -150,6 +162,7 @@
                     color: rgb(231, 84, 84);
                     font-size: 10px;
                 }
+
                 .hidden-span {
                     display: none;
                 }
@@ -162,38 +175,40 @@
                     display: flex;
                     flex-flow: row;
                     position: relative;
-                    
+
                     .input-cadastro-pass {
                         width: 100%;
-                        
+
                         border-top-right-radius: 0;
                         border-bottom-right-radius: 0;
                     }
-                    
+
                     .pass-reveal {
                         width: 55px;
                         height: 55px;
-                        
+
                         background-color: #f5f5f5;
-                        
+
                         border: none;
                         border-radius: 15px;
                         border-top-left-radius: 0;
                         border-bottom-left-radius: 0;
-    
+
                         box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
-                        
+
                         font-size: 18px;
+
                         .eye-icon {
                             color: #acaaaa;
                         }
+
                         .hidden {
                             display: none;
                         }
                     }
 
                     .alert-pass {
-                        border:1px solid red;
+                        border: 1px solid red;
                     }
                 }
             }
@@ -204,13 +219,14 @@
 
                 padding: 0 15px 0 15px;
 
-                .span-alert{
+                .span-alert {
                     color: rgb(231, 84, 84);
                     font-size: 12px;
 
                     padding-left: 15px;
                     margin-bottom: 15px;
                 }
+
                 .hidden-span-alert {
                     display: none;
                 }
@@ -221,34 +237,73 @@
 
                 .btn-cadastro {
                     height: 45px;
-                    
+
                     margin-bottom: 15px;
-                    
+
                     border: none;
                     border-radius: 10px;
 
                     background-color: #fff1a1;
 
                     transition: all 0.5s linear;
+
                     &:hover {
                         background-color: #fff100;
                     }
-                    
+
                     font-size: 16px;
-                    
+
                     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
                 }
-                
+
                 .checked-foto {
                     background-color: #00ff73;
                 }
-                
+
                 .btn-criar-cadastro {
                     background-color: #fff100;
+
                     &:hover {
                         color: #fff;
 
                         background-color: #14181b;
+                    }
+                }
+
+                .link-whatsapp {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    background-color: #fff;
+
+                    color: black;
+                    font-size: 14px;
+
+                    border-radius: 50px;
+
+                    transition: 0.5s all;
+
+                    &:hover {
+                        background-color: #e0e3e7;
+
+                        .logo-whatsapp {
+                            transform: scale(0.80);
+                        }
+                    }
+
+                    .btn-whatsapp {
+                        background-color: transparent;
+
+                        border: none;
+
+                        margin-left: 20px;
+
+                        .logo-whatsapp {
+                            transition: 0.5s all;
+
+                            width: 40px;
+                        }
                     }
                 }
             }
