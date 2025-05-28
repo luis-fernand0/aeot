@@ -29,7 +29,7 @@ const Cadastro = () => {
 
     const [loading, setLoading] = useState(false)
 
-    const [isModalVisible, setModalVisible] = useState({view: false, suporte: false});
+    const [isModalVisible, setModalVisible] = useState({ view: false, suporte: false });
     const [modalMessage, setModalMessage] = useState({});
 
     async function hundleSubmit(e) {
@@ -37,8 +37,8 @@ const Cadastro = () => {
         setLoading(true)
         try {
             if (!erroModeloCor || !checkPass()) {
-                setModalMessage({message: 'É necessario preencher todos os dados!'})
-                setModalVisible({view: true, suporte: false})
+                setModalMessage({ message: 'É necessario preencher todos os dados!' })
+                setModalVisible({ view: true, suporte: false })
 
                 setLoading(false)
 
@@ -62,9 +62,11 @@ const Cadastro = () => {
                 }
 
                 if (fotosFaltando.length > 0) {
-                    setModalMessage({message: `É necessario preencher todos os dados:
-                        \n ${fotosFaltando.join('\n, ')}`});
-                    setModalVisible({view: true, suporte: false});
+                    setModalMessage({
+                        message: `É necessario preencher todos os dados:
+                        \n ${fotosFaltando.join('\n, ')}`
+                    });
+                    setModalVisible({ view: true, suporte: false });
                     setLoading(false);
                     return;
                 }
@@ -79,15 +81,15 @@ const Cadastro = () => {
             })
             const dataResponse = await response.json()
             if (response.status) {
-                setModalMessage({message: dataResponse.message})
-                setModalVisible({view: true, suporte: false})
+                setModalMessage({ message: dataResponse.message })
+                setModalVisible({ view: true, suporte: false })
             }
         } catch (err) {
             setModalMessage({
                 message: `Ocorreu um erro inesperado. Tente novamente mais tarde.` + err.message,
                 redirectTo: `http://wa.me/556796659181?text=Olá suporte, venho do AEOT, tive o seguinte problema: ${err}`
             })
-            setModalVisible({view: true, suporte: true})
+            setModalVisible({ view: true, suporte: true })
         } finally {
             setLoading(false)
         }
@@ -383,12 +385,20 @@ const Cadastro = () => {
                                 id='btn-print-app'
                                 className='btn-cadastro print_app'
                                 type="button">
-                                Anexar print do APP de mobilidade
+                                Anexar print do APP de mobilidade/entregador
                             </button>
 
                             <button className='btn-cadastro btn-criar-cadastro' type="submit">
                                 CRIAR!
                             </button>
+                            <a className='link-whatsapp'
+                                href="http://wa.me/556796659181?text="
+                                target="_blank" rel="noopener noreferrer">
+                                Falar com o suporte
+                                <button className='btn-whatsapp' type="button">
+                                    <img className='logo-whatsapp' src="/whatsapp.png" alt="img-whatsapp" />
+                                </button>
+                            </a>
                         </div>
                     </div>
 
