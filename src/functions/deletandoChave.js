@@ -1,6 +1,8 @@
+const urlDeletarChave = import.meta.env.VITE_URL_DELETAR_CHAVE
+
 export async function deletandoChave(tokenUser, chave, tipo) {
     try {
-        const response = await fetch('http://localhost:3000/aeot/auth/deletar_chave', {
+        const response = await fetch(urlDeletarChave, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${tokenUser}`,
