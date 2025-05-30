@@ -161,7 +161,7 @@ const Login = () => {
           </button>
 
           <button onClick={() => installPwa()} id='pwa-btn' className='btn-log btn-pwa' type="button" hidden>
-            Adicionar na tela incial!
+            Baixar AEOT/Criar Atalho!
           </button>
           <Link to={'/manual_de_instalacao'}>
             <button className='btn-log btn-instrucoes' id='instrucoes-btn' hidden>
