@@ -24,9 +24,19 @@ const Relatorio = () => {
   let dia = String(data_atual.getDate()).padStart(2, '0');
   let mes = String(data_atual.getMonth() + 1).padStart(2, '0');
   let ano = data_atual.getFullYear();
+  
+  let dataFinal = `${ano}-${mes}-${dia}`
+  if (typeUser === 'driver') {
+    let milisegudos = 1000 * 60 * 60 * 24
+    data_atual = new Date(data_atual.getTime() - 10 * milisegudos)
+    dia = String(data_atual.getDate()).padStart(2, '0');
+    mes = String(data_atual.getMonth() + 1).padStart(2, '0');
+    ano = data_atual.getFullYear();
+  }
+  let dataInicial = `${ano}-${mes}-${dia}` 
   const [filtros, setFiltros] = useState({
-    dataInicial: `${ano}-${mes}-${dia}`,
-    dataFinal: `${ano}-${mes}-${dia}`,
+    dataInicial: `${dataInicial}`,
+    dataFinal: `${dataFinal}`,
     frentista: "",
     posto: ""
   })
