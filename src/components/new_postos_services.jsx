@@ -33,15 +33,46 @@ const NewPostosServices = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
 
-  const [formCombustivel, setFormCombustivel] = useState(false)
+  const [formCombustivel, setFormCombustivel] = useState(true)
   const [showOptions, setShowOptions] = useState({})
+
+  const [configCombustiveis, setConfigCombustiveis] = useState({});
+  function adicionarConfiguracao(combustivel) {
+    setConfigCombustiveis((prev) => ({
+      ...prev,
+      [combustivel]: [...(prev[combustivel] || []), {
+        forma_pagamento: '',
+        forma_abastecimento: '',
+        valor: ''
+      }]
+    }));
+  };
+
+  function removerConfiguracao(combustivel, index) {
+    setConfigCombustiveis((prev) => ({
+      ...prev,
+      [combustivel]: prev[combustivel].filter((elemento, i) => i !== index)
+    }));
+  };
+
+  function atualizarConfiguracao(combustivel, index, campo, valor) {
+    setConfigCombustiveis((prev) => {
+      const novoArray = [...prev[combustivel]];
+      novoArray[index][campo] = valor;
+      return {
+        ...prev,
+        [combustivel]: novoArray
+      };
+    });
+  };
+
   function toggleOptions(combustivel) {
     setShowOptions((prev) => ({
       ...prev,
       [combustivel]: !prev[combustivel],
     }))
   }
-  
+
   function addFoto(input) { document.getElementById(input).click() }
   const callVerificarFoto = async (inputId, span, btnId) => {
     const foto = await comprimirFoto(inputId)
@@ -159,35 +190,32 @@ const NewPostosServices = () => {
         }
 
         let combustiveis = {}
-        let lastPay = null
-        let lastCombustivel = null
+        let lastPagamento = null
+        let lastAbastecimento = null
 
-        let formCombustivel = new FormData(document.getElementById('form-combustivel'))
-        for (let [key, value] of formCombustivel.entries()) {
-          if (key === 'combustiveis') {
-            combustiveis[value] = {
-              combustivel: value,
-              valor: '',
-              formas: {}
+        let formCombustivel = Object.keys(configCombustiveis)
+        for (let i = 0; i < formCombustivel.length; i++) {
+          let infoCombustivelAtual = configCombustiveis[formCombustivel[i]]
+          combustiveis[formCombustivel[i]] = {
+            combustivel: formCombustivel[i],
+            valor_formas: []
+          }
+
+          for (let index = 0; index < infoCombustivelAtual.length; index++) {
+            const formasValorAtual = infoCombustivelAtual[index];
+
+            let pagamentoAtual = formasValorAtual['forma_pagamento']
+            let abastecimentoAtual = formasValorAtual['forma_abastecimento']
+            if (pagamentoAtual == lastPagamento && abastecimentoAtual == lastAbastecimento) {
+              throw new Error("Não pode existir o mesmo pagamento e o mesmo abastecimento para o mesmo combus tivel!");
             }
-            lastCombustivel = value
+
+            combustiveis[formCombustivel[i]].valor_formas.push(formasValorAtual)
+            lastPagamento = pagamentoAtual
+            lastAbastecimento = abastecimentoAtual
           }
-          if (key === 'valor' && lastCombustivel) {
-            combustiveis[lastCombustivel].valor = value
-          }
-          if (key === 'forma_pagamento' && lastCombustivel) {
-            if (!combustiveis[lastCombustivel].formas[value]) {
-              combustiveis[lastCombustivel].formas[value] = {
-                forma_pagamento: value,
-                forma_abastecimento: ''
-              }
-              lastPay = value
-            }
-          }
-          if (key === 'forma_abastecimento' && lastPay) {
-            combustiveis[lastCombustivel].formas[lastPay].forma_abastecimento = value
-            lastPay = null
-          }
+          lastPagamento = null
+          lastAbastecimento = null
         }
         form.append('combustiveis', JSON.stringify(combustiveis))
       }
@@ -210,7 +238,7 @@ const NewPostosServices = () => {
       setModalMessage(dataResponse.message)
       setModalVisible(true)
     } catch (err) {
-      setModalMessage(`Ocorreu um erro inesperado. Tente novamente mais tarde.` + err.message)
+      setModalMessage(`Ocorreu um erro inesperado. Tente novamente mais tarde. ` + err.message)
       setModalVisible(true)
     } finally {
       setLoading(false)
@@ -479,8 +507,8 @@ const NewPostosServices = () => {
                 <button
                   className='close-btn'
                   onClick={() => {
-                    setFormCombustivel(false),
-                      setShowOptions({})
+                    setFormCombustivel(false);
+                    setShowOptions({});
                   }}>
                   <FontAwesomeIcon className='x-icon' icon={faXmark} />
                 </button>
@@ -494,28 +522,69 @@ const NewPostosServices = () => {
                 {combustiveis.map((combustivel) => (
                   <div key={combustivel.value} className="container-combustivel">
                     <div className='conatiner-checkbox-combustivel'>
-                      <input className='checkbox-combustivel' type="checkbox" name='combustiveis' id={combustivel.label} value={combustivel.value} onChange={() => toggleOptions(combustivel.label)} />
-                      <label className='text-combustivel' htmlFor={combustivel.label}>{combustivel.label.charAt(0).toUpperCase() + combustivel.label.slice(1)}</label>
+                      <input
+                        className='checkbox-combustivel'
+                        type="checkbox"
+                        name='combustiveis'
+                        id={combustivel.label}
+                        value={combustivel.value}
+                        onChange={() => toggleOptions(combustivel.label)} />
+
+                      <label className='text-combustivel' htmlFor={combustivel.label}>
+                        {combustivel.label.charAt(0).toUpperCase() + combustivel.label.slice(1)}
+                      </label>
                     </div>
 
                     {showOptions[combustivel.label] && (
                       <div className='container-valor-formas'>
-                        <input onChange={(e) => checkValor(e)} className='combustivel-valor' type="text" name={`valor`} placeholder='Valor' />
-
-                        {formasPagamento.map((pagamento) => (
-                          <div className="container-forma">
-                            <div className='container-forma-pagamento'>
-                              <input className='checkbox-combustivel' type="checkbox" name='forma_pagamento' value={pagamento.value} id={`${pagamento.label}_${combustivel.label}`} />
-                              <label htmlFor={`${pagamento.label}_${combustivel.label}`}>{pagamento.label.charAt(0).toUpperCase() + pagamento.label.slice(1)}</label>
-                            </div>
-
-                            <select name="forma_abastecimento" id="forma_abastecimento">
-                              {formasAbastecimentos.map((abastecimento) => (
-                                <option value={abastecimento.value}>{abastecimento.label}</option>
+                        {(configCombustiveis[combustivel.value] || []).map((config, index) => (
+                          <div key={index} className='grupo-config'>
+                            <select
+                              value={config.forma_pagamento}
+                              onChange={(e) =>
+                                atualizarConfiguracao(combustivel.value, index, 'forma_pagamento', e.target.value)}>
+                              <option value="">Forma de pagamento</option>
+                              {formasPagamento.map((pagamento) => (
+                                <option key={pagamento.value} value={pagamento.value}>
+                                  {pagamento.label}
+                                </option>
                               ))}
                             </select>
+
+                            <select
+                              value={config.forma_abastecimento}
+                              onChange={(e) =>
+                                atualizarConfiguracao(combustivel.value, index, 'forma_abastecimento', e.target.value)}>
+                              <option value="">Forma de abastecimento</option>
+                              {formasAbastecimentos.map((abastecimento) => (
+                                <option key={abastecimento.value} value={abastecimento.value}>
+                                  {abastecimento.label}
+                                </option>
+                              ))}
+                            </select>
+
+                            <input
+                              type="text"
+                              placeholder="Valor"
+                              value={config.valor}
+                              onChange={(e) => {
+                                checkValor(e)
+                                atualizarConfiguracao(combustivel.value, index, 'valor', e.target.value);
+                              }} />
+
+                            <button
+                              type="button"
+                              onClick={() => removerConfiguracao(combustivel.value, index)}>
+                              Remover
+                            </button>
                           </div>
                         ))}
+
+                        <button
+                          type="button"
+                          onClick={() => adicionarConfiguracao(combustivel.value)}>
+                          + Adicionar configuração
+                        </button>
                       </div>
                     )}
                   </div>
