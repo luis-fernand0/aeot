@@ -12,7 +12,6 @@ export const formasPagamento = [
 ];
 
 export const formasAbastecimentos = [
-    { value: '', label: 'Escolha a forma de abastecimento' },
     { value: '1', label: 'Litragem Livre' },
     { value: '2', label: 'Encher Tanque' },
 ];
