@@ -33,7 +33,7 @@ const NewPostosServices = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
 
-  const [formCombustivel, setFormCombustivel] = useState(true)
+  const [formCombustivel, setFormCombustivel] = useState(false)
   const [showOptions, setShowOptions] = useState({})
 
   const [configCombustiveis, setConfigCombustiveis] = useState({});
