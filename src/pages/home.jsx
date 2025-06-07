@@ -14,7 +14,7 @@ const Home = () => {
   const tokenUser = localStorage.getItem('token')
   const typerUser = localStorage.getItem('type_user')
 
-  const [postos, setPostos] = useState({})
+  const [postos, setPostos] = useState([])
   const [categoria, setCategoria] = useState({ categoria: 'postos' })
 
   const [local, setLocal] = useState(null)
@@ -49,7 +49,7 @@ const Home = () => {
         navigate('/', { replace: true })
       }
       await obterLocation()
-      setPostos(data)
+      setPostos(data.itens)
     } catch (err) {
       setModalMessage(err.message)
       setModalVisible(true)
@@ -109,22 +109,22 @@ const Home = () => {
   useEffect(() => {
     if (postos) {
 
-      Object.keys(postos).forEach(async (posto) => {
-        if (!postos[posto].cod_posto) {
-          const distance = await obterDistancia(postos[posto].endereco, postos[posto].cod_anuncio);
+      postos.forEach(async (posto) => {
+        if (!posto.cod_posto) {
+          const distance = await obterDistancia(posto.endereco, posto.cod_anuncio);
           if (distance) {
             setDistancia((prev) => ({
               ...prev,
-              [postos[posto].cod_anuncio]: distance,
+              [posto.cod_anuncio]: distance,
             }))
           }
           return
         }
-        const distance = await obterDistancia(postos[posto].endereco, postos[posto].cod_posto);
+        const distance = await obterDistancia(posto.endereco, posto.cod_posto);
         if (distance) {
           setDistancia((prev) => ({
             ...prev,
-            [postos[posto].cod_posto]: distance,
+            [posto.cod_posto]: distance,
           }))
         }
 

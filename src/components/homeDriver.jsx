@@ -20,53 +20,53 @@ const HomeDriver = ({ categoria, setCategoria, postos, detalhes, distancia, loca
                     </button>
                 </div>
                 <ul className='ul-gas-services'>
-                    {categoria.categoria === 'postos' && Object.keys(postos).map((posto) =>
-                        <li onClick={() => { detalhes(postos[posto], distancia[posto.cod_posto], local, categoria) }}
+                    {categoria.categoria === 'postos' && postos && postos.map((posto) =>
+                        <li onClick={() => { detalhes(posto, distancia[posto.cod_posto], local, categoria) }}
                             className='gas-services'
-                            key={postos[posto].cod_posto}>
+                            key={posto.cod_posto}>
 
                             <div className='container-img-title'>
                                 <div className='container-img'>
-                                    <img className='img-gas-services' src={`https://aeotnew.s3.amazonaws.com/${postos[posto].foto}`} alt="imagem-do-posto-de-gasolina" />
+                                    <img className='img-gas-services' src={`https://aeotnew.s3.amazonaws.com/${posto.foto}`} alt="imagem-do-posto-de-gasolina" />
                                 </div>
 
                                 <div className='container-title-endereco'>
                                     <h3 className='title-gas-services'>
-                                        {postos[posto].nome}
+                                        {posto.nome}
                                     </h3>
 
                                     <p className='endereco-gas-services'>
-                                        {postos[posto].endereco}
+                                        {posto.endereco}
                                     </p>
                                 </div>
                             </div>
                             <div className='info-gas-services'>
-                                {postos[posto].combustiveis?.etanol && (
+                                {posto.combustiveis?.etanol && (
                                     <p className='combustiveis-gas-station'>
-                                        ETANOL: R$ {postos[posto].combustiveis?.etanol.melhor_opcao.valor}
+                                        ETANOL: R$ {posto.combustiveis?.etanol.melhor_opcao.valor}
                                     </p>
                                 )}
 
-                                {postos[posto].combustiveis?.gasolina && (
+                                {posto.combustiveis?.gasolina && (
                                     <p className='combustiveis-gas-station'>
-                                        GASOLINA: R$ {postos[posto].combustiveis?.gasolina.melhor_opcao.valor}
+                                        GASOLINA: R$ {posto.combustiveis?.gasolina.melhor_opcao.valor}
                                     </p>
                                 )}
 
-                                {postos[posto].combustiveis?.diesel && (
+                                {posto.combustiveis?.diesel && (
                                     <p className='combustiveis-gas-station'>
-                                        DIESEL: R$ {postos[posto].combustiveis?.diesel.melhor_opcao.valor}
+                                        DIESEL: R$ {posto.combustiveis?.diesel.melhor_opcao.valor}
                                     </p>
                                 )}
 
-                                {distancia[postos[posto].cod_posto] && (
+                                {distancia[posto.cod_posto] && (
                                     <div className='container-km-time'>
                                         <p className='km km-time'>
-                                            <FontAwesomeIcon icon={faFlagCheckered} style={{ color: "#4caf50", }} /> {distancia[postos[posto].cod_posto].distancia}
+                                            <FontAwesomeIcon icon={faFlagCheckered} style={{ color: "#4caf50", }} /> {distancia[posto.cod_posto].distancia}
                                         </p>
 
                                         <p className='time km-time'>
-                                            <FontAwesomeIcon icon={faClock} style={{ color: "#4caf50", }} /> {distancia[postos[posto].cod_posto].tempo}
+                                            <FontAwesomeIcon icon={faClock} style={{ color: "#4caf50", }} /> {distancia[posto.cod_posto].tempo}
                                         </p>
                                     </div>
                                 )}
