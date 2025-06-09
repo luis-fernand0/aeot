@@ -1,65 +1,92 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGasPump, faPen, faFlagCheckered, faClock } from '@fortawesome/free-solid-svg-icons'
-import { formasPagamento } from "../functions/contants";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGasPump, faPen, faFlagCheckered, faClock } from '@fortawesome/free-solid-svg-icons';
 
 import Header from "./header";
-import Loading from "./loading"
+import Loading from "./loading";
 import ModalResponse from "./modalResponse";
 import EditItem from "./modal_edit_item";
 
-import '../style/detalhes_page/detalhes.css'
+import '../style/detalhes_page/detalhes.css';
 
-const urlCallItem = import.meta.env.VITE_URL_CALL_ITEM
+const urlCallItem = import.meta.env.VITE_URL_CALL_ITEM;
+
+const CombustivelCard = ({ tipo, data, formaAbastecimento, onChange }) => {
+  const formas = data.formas_valor || [];
+
+  return (
+    <div className="container-combustivel-formas">
+      <p className="combustivel-posto">
+        {tipo.charAt(0).toUpperCase() + tipo.slice(1)}: R$ {formaAbastecimento?.valor || data.melhor_opcao?.valor}
+      </p>
+
+      <select
+        className="metodo-pagamento"
+        onChange={(e) => onChange(tipo, e.target.value)}>
+        {formas.map((forma, index) => (
+          <option key={index} value={index}>
+            {forma.forma_pagamento.charAt(0).toUpperCase() + forma.forma_pagamento.slice(1)} - {forma.forma_abastecimento}
+          </option>
+        ))}
+      </select>
+
+      {formaAbastecimento?.brinde?.nome_brinde && (
+        <div className="container-brinde">
+          <h4 className="title-brindes">Brindes:</h4>
+          <p className="container-text-brindes">
+            <span className="text-brinde">Nome: {formaAbastecimento.brinde.nome_brinde}</span><br />
+            <span className="text-brinde">Descrição: {formaAbastecimento.brinde.descricao_brinde}</span><br />
+            <span className="text-brinde">Válido por: {formaAbastecimento.brinde.expiracao_brinde} dia(s)</span><br />
+            <span className="text-brinde">Mínimo: {formaAbastecimento.brinde.abastecimento_minimo} vez(es)</span>
+          </p>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Detalhes = () => {
-  const item = JSON.parse(localStorage.getItem('dadosItem')) || {}
-  const itemCategoria = JSON.parse(localStorage.getItem('categoria')) || {}
-  const location = JSON.parse(localStorage.getItem('location')) || {}
+  const item = JSON.parse(localStorage.getItem('dadosItem')) || {};
+  const itemCategoria = JSON.parse(localStorage.getItem('categoria')) || {};
+  const location = JSON.parse(localStorage.getItem('location')) || [];
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const tokenUser = localStorage.getItem('token');
-  const typeUser = localStorage.getItem('type_user')
+  const typeUser = localStorage.getItem('type_user');
 
-  const [detalhe, setDetalhe] = useState(item || {})
-  console.log(detalhe)
-  let formasEtanol = Object.keys(detalhe.combustivel?.etanol?.formas || {})
-  let formasGasolina = Object.keys(detalhe.combustivel?.gasolina?.formas || {})
-  let formasDiesel = Object.keys(detalhe.combustivel?.diesel?.formas || {})
-  const [formasDePagamento, setFormasDePagamento] = useState([])
+  const [detalhe, setDetalhe] = useState(item);
+  const [distancia, setDistancia] = useState(location[0] || {});
+  const [local, setLocal] = useState(location[1] || {});
+  const [categoria, setCategoria] = useState(itemCategoria);
 
-  const [distancia, setDistancia] = useState(location[0] || {})
-  const [local, setLocal] = useState(location[1] || {})
-  const [categoria, setCategoria] = useState(itemCategoria || {})
-
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
-  const [showEditPosto, setShowEditPosto] = useState(false)
+  const [showEditPosto, setShowEditPosto] = useState(false);
 
-  const [formaAbastecimento, setFormaAbastecimento] = useState({
-    etanol: null,
-    gasolina: null,
-    diesel: null
-  })
-  function hundleChange(combustivel, pagamento) {
-    setFormaAbastecimento((prevState) => ({
-      ...prevState,
+  const [formaAbastecimento, setFormaAbastecimento] = useState({});
+
+  const hundleChange = (combustivel, index) => {
+    const formaSelecionada = detalhe.combustiveis[combustivel].formas_valor[index];
+    setFormaAbastecimento((prev) => ({
+      ...prev,
       [combustivel]: {
-        forma_abastecimento: detalhe.combustivel[combustivel].formas[pagamento].forma_abastecimento,
+        valor: formaSelecionada.valor,
+        forma_pagamento: formaSelecionada.forma_pagamento,
+        forma_abastecimento: formaSelecionada.forma_abastecimento,
         brinde: {
-          nome_brinde: detalhe?.combustivel[combustivel]?.formas[pagamento]?.brindes?.nome_brinde,
-          descricao_brinde: detalhe.combustivel[combustivel].formas[pagamento].brindes?.descricao_brinde,
-          expiracao_brinde: detalhe.combustivel[combustivel].formas[pagamento].brindes?.expiracao_brinde,
-          abastecimento_minimo: detalhe.combustivel[combustivel].formas[pagamento].brindes?.abastecimentos_minimos
+          nome_brinde: formaSelecionada.nome_brinde,
+          descricao_brinde: formaSelecionada.descricao_brinde,
+          expiracao_brinde: formaSelecionada.expiracao,
+          abastecimento_minimo: formaSelecionada.abastecimentos_minimos
         }
       }
-    }))
-  }
+    }));
+  };
 
-  function abrirMaps(endereco) {
+  const abrirMaps = (endereco) => {
     if (!local) {
       alert('Localização atual não disponível');
       return;
@@ -67,333 +94,172 @@ const Detalhes = () => {
 
     const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${local.latitude},${local.longitude}&destination=${encodeURIComponent(endereco)}&travelmode=driving`;
     window.open(mapsUrl, '_blank');
-  }
+  };
 
-  async function callItem() {
-    setShowEditPosto(false)
-    setLoading(true)
+  const callItem = async () => {
+    setShowEditPosto(false);
+    setLoading(true);
 
     try {
       const response = await fetch(urlCallItem, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${tokenUser}`,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          categoria: categoria,
-          item_id: detalhe.cod_posto || detalhe.cod_anuncio
-        })
-      })
-      const data = await response.json()
+          categoria,
+          item_id: detalhe.cod_posto || detalhe.cod_anuncio,
+        }),
+      });
+
+      const data = await response.json();
+
       if (response.status === 401) {
-        navigate('/', { replace: true })
-        return
+        navigate('/', { replace: true });
+        return;
       }
+
       if (!response.ok) {
-        setModalMessage(data.message)
-        setModalVisible(true)
-        return
+        setModalMessage(data.message);
+        setModalVisible(true);
+        return;
       }
 
-      setDetalhe(data.query)
-      localStorage.setItem('dadosItem', JSON.stringify(data.query))
+      setDetalhe(data.query);
+      localStorage.setItem('dadosItem', JSON.stringify(data.query));
     } catch (err) {
-      setModalMessage(`Desculpe ocorreu um erro inesperado! ${err.message}`)
-      setModalVisible(true)
+      setModalMessage(`Desculpe ocorreu um erro inesperado! ${err.message}`);
+      setModalVisible(true);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  // useEffect(() => {
-  //   callItem()
-  //   if (categoria === 'postos') {
-  //     let todasAsFormas = [...formasEtanol, ...formasGasolina, ...formasDiesel]
-  //     todasAsFormas.forEach((keyForma) => {
-  //       formasPagamento.forEach((key) => {
-  //         if (key.value == keyForma) {
-  //           setFormasDePagamento((prevState) => {
-  //             if (!prevState.includes(key.label)) {
-  //               return [...prevState, key.label]
-  //             }
-  //             return prevState
-  //           })
-  //         }
-  //       })
-  //     })
-
-  //     let combustiveis = Object.keys(detalhe.combustiveis)
-  //     combustiveis.forEach((key) => {
-  //       let formas = Object.keys(detalhe.combustiveis[key].formas)
-  //       hundleChange(key, formas[0])
-  //     })
-  //   }
-  // }, [])
-
-  // useEffect(() => {
-  //   if (Object.keys(detalhe).length > 0 && categoria === 'postos') {
-  //     let todasAsFormas = [...formasEtanol, ...formasGasolina, ...formasDiesel];
-
-  //     todasAsFormas.forEach((keyForma) => {
-  //       formasPagamento.forEach((key) => {
-  //         if (key.value === keyForma) {
-  //           setFormasDePagamento((prevState) => {
-  //             if (!prevState.includes(key.label)) {
-  //               return [...prevState, key.label];
-  //             }
-  //             return prevState;
-  //           })
-  //         }
-  //       })
-  //     })
-
-  //     let combustiveis = Object.keys(detalhe.combustiveis || {});
-  //     combustiveis.forEach((key) => {
-  //       let formas = Object.keys(detalhe.combustiveis[key]?.formas || {});
-  //       if (formas.length > 0) {
-  //         hundleChange(key, formas[0]);
-  //       }
-  //     })
-  //   }
-  // }, [detalhe])
-
+  useEffect(() => {
+    if (categoria === 'postos' && detalhe.combustiveis) {
+      const novoEstado = {};
+      for (let tipo in detalhe.combustiveis) {
+        const melhor = detalhe.combustiveis[tipo].melhor_opcao;
+        if (melhor) {
+          novoEstado[tipo] = {
+            valor: melhor.valor,
+            forma_pagamento: melhor.forma_pagamento,
+            forma_abastecimento: melhor.forma_abastecimento,
+            brinde: {
+              nome_brinde: melhor.nome_brinde,
+              descricao_brinde: melhor.descricao_brinde,
+              expiracao_brinde: melhor.expiracao,
+              abastecimento_minimo: melhor.abastecimentos_minimos
+            }
+          };
+        }
+      }
+      setFormaAbastecimento(novoEstado);
+    }
+  }, [detalhe]);
 
   return (
     <>
-      <Header redirectTo={'/home'} />
+      <Header redirectTo="/home" />
       <Loading loading={loading} />
       <ModalResponse
         isVisible={isModalVisible}
-        onClose={() => setModalVisible(false)}
-        message={modalMessage}
-      />
+        onClose={() => setModalVisible(false)} message={modalMessage} />
       <EditItem
         show={showEditPosto}
-        close={() => callItem()}
-        item={detalhe}
-        categoria={categoria} />
+        close={() => callItem()} item={detalhe} categoria={categoria} />
 
-      <div className='container-item'>
+      <div className="container-item">
         {categoria && (
           <>
             <div className="container-title-foto">
-              <h1 className='title-item'>{detalhe.nome || detalhe.titulo_anuncio}</h1>
-
-              <img src={`https://aeotnew.s3.amazonaws.com/${detalhe.foto}`} alt="foto-item" className='foto-item' />
+              <h1 className="title-item">{detalhe.nome || detalhe.titulo_anuncio}</h1>
+              <img src={`https://aeotnew.s3.amazonaws.com/${detalhe.foto}`} alt="foto-item" className="foto-item" />
             </div>
 
             <div className="container-sobre-item">
-
               <div className="container-info-item">
-                <p className='info-item item-descricao'>{detalhe.descricao}</p>
+                <p className="info-item item-descricao">{detalhe.descricao}</p>
               </div>
 
               <div className="container-info-item">
-                <p className='info-item item-endereco'>{detalhe.endereco}</p>
+                <p className="info-item item-endereco">{detalhe.endereco}</p>
               </div>
 
               {categoria === 'postos' && (
-                <>
-                  <div className='container-combustivel'>
-                    {detalhe.combustiveis?.etanol && (
-                      <div className="container-combustivel-formas">
-                        <p className="combustivel-posto">
-                          Etanol: R$ {detalhe.combustiveis?.etanol.melhor_opcao.valor}
-                        </p>
+                <div className="container-combustivel">
+                  {detalhe.combustiveis?.etanol && (
+                    <CombustivelCard
+                      tipo="etanol"
+                      data={detalhe.combustiveis.etanol}
+                      formaAbastecimento={formaAbastecimento.etanol}
+                      onChange={hundleChange}
+                    />
+                  )}
 
-                        <select
-                          name="formas_pagamento"
-                          className="metodo-pagamento"
-                          id="forma_pagamento_etanol"
-                          onChange={(e) => hundleChange('etanol', e.target.value)}>
-                          <option value="">
-                            {detalhe.combustiveis?.etanol.melhor_opcao.forma_pagamento}
-                          </option>
-                          {formasEtanol.map((key, index) => (
-                            <option key={key} value={key}>
-                              {detalhe.combustivel?.etanol.formas[formasEtanol[index]]?.forma_pagamento}
-                            </option>
-                          ))}
-                        </select>
+                  {detalhe.combustiveis?.gasolina && (
+                    <CombustivelCard
+                      tipo="gasolina"
+                      data={detalhe.combustiveis.gasolina}
+                      formaAbastecimento={formaAbastecimento.gasolina}
+                      onChange={hundleChange}
+                    />
+                  )}
 
-                        <p>
-                          {formaAbastecimento?.etanol?.forma_abastecimento}
-                        </p>
-                        {formaAbastecimento?.etanol?.brinde?.nome_brinde && (
-                          <div className="container-brinde">
-                            <h4 className="title-brindes">Brindes:</h4>
-                            <p className="container-text-brindes">
-                              <span className="text-brinde">
-                                Nome do brinde: {formaAbastecimento?.etanol?.brinde?.nome_brinde}
-                              </span>
-                              <br />
-                              <span className="text-brinde">
-                                Descrição: {formaAbastecimento?.etanol?.brinde?.descricao_brinde}
-                              </span>
-                              <br />
-                              <span className="text-brinde">
-                                Valido por: {formaAbastecimento?.etanol?.brinde?.expiracao_brinde} {formaAbastecimento?.etanol?.brinde?.expiracao_brinde > 1 ? 'Dias' : 'Dia'}
-                              </span>
-                              <br />
-                              <span className="text-brinde">
-                                Abastecer no minimo: {formaAbastecimento?.etanol?.brinde?.abastecimento_minimo} {formaAbastecimento?.etanol?.brinde?.abastecimento_minimo > 1 ? 'Vezes' : 'Vez'}
-                              </span>
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {detalhe.combustivel?.gasolina && (
-                      <div className="container-combustivel-formas">
-                        <p className="combustivel-posto">
-                          Gasolina: R$ {detalhe.combustivel?.gasolina.valor}
-                        </p>
-
-                        <select
-                          className="metodo-pagamento"
-                          name="formas_pagamento"
-                          id="forma_pagamento_gasolina"
-                          onChange={(e) => hundleChange('gasolina', e.target.value)}>
-                          {formasGasolina.map((key, index) => (
-                            <option key={key} value={key}>
-                              {detalhe.combustivel?.gasolina.formas[formasGasolina[index]]?.forma_pagamento}
-                            </option>
-                          ))}
-                        </select>
-
-                        <p>
-                          {formaAbastecimento?.gasolina?.forma_abastecimento}
-                        </p>
-                        {formaAbastecimento?.gasolina?.brinde?.nome_brinde && (
-                          <div className="container-brinde">
-                            <h4 className="title-brindes">Brindes:</h4>
-                            <p className="container-text-brindes">
-                              <span className="text-brinde">
-                                Nome do brinde: {formaAbastecimento?.gasolina?.brinde?.nome_brinde}
-                              </span>
-                              <br />
-                              <span className="text-brinde">
-                                Descrição: {formaAbastecimento?.gasolina?.brinde?.descricao_brinde}
-                              </span>
-                              <br />
-                              <span className="text-brinde">
-                                Valido por: {formaAbastecimento?.gasolina?.brinde?.expiracao_brinde} {formaAbastecimento?.gasolina?.brinde?.expiracao_brinde > 1 ? 'Dias' : 'Dia'}
-                              </span>
-                              <br />
-                              <span className="text-brinde">
-                                Abatecimento minimo: {formaAbastecimento?.gasolina?.brinde?.abastecimento_minimo}
-                              </span>
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {detalhe.combustivel?.diesel && (
-                      <div className="container-combustivel-formas">
-                        <p className="combustivel-posto">
-                          Diesel: R$ {detalhe.combustivel?.diesel.valor}
-                        </p>
-
-                        <select
-                          className="metodo-pagamento"
-                          name="formas_pagamento"
-                          id="forma_pagamento_diesel"
-                          onChange={(e) => hundleChange('diesel', e.target.value)}>
-                          {formasDiesel.map((key, index) => (
-                            <option key={key} value={key}>
-                              {detalhe.combustivel?.diesel.formas[formasDiesel[index]]?.forma_pagamento}
-                            </option>
-                          ))}
-                        </select>
-
-                        <p>
-                          {formaAbastecimento?.diesel?.forma_abastecimento}
-                        </p>
-                        {formaAbastecimento?.diesel?.brinde?.nome_brinde && (
-                          <div className="container-brinde">
-                            <h4 className="title-brindes">Brindes:</h4>
-                            <p className="container-text-brindes">
-                              <span className="text-brinde">
-                                Nome do brinde: {formaAbastecimento?.diesel?.brinde?.nome_brinde}
-                              </span>
-                              <br />
-                              <span className="text-brinde">
-                                Descrição: {formaAbastecimento?.diesel?.brinde?.descricao_brinde}
-                              </span>
-                              <br />
-                              <span className="text-brinde">
-                                Valido por: {formaAbastecimento?.diesel?.brinde?.expiracao_brinde} {formaAbastecimento?.diesel?.brinde?.expiracao_brinde > 1 ? 'Dias' : 'Dia'}
-                              </span>
-                              <br />
-                              <span className="text-brinde">
-                                Abatecimento minimo: {formaAbastecimento?.diesel?.brinde?.abastecimento_minimo}
-                              </span>
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="container-formas-de-pagamento">
-                    <p className="title-formas-de-pagamento">Formas de pagamento</p>
-
-                    <div className="formas-de-pagamento">
-                      {formasDePagamento.map((formaPagamento) => (
-                        <p key={formaPagamento} className="text-forma-de-pagamento">
-                          {formaPagamento.slice(0, 1).toUpperCase() + formaPagamento.slice(1)}
-                        </p>
-                      ))}
-                    </div>
-                  </div>
-                </>
+                  {detalhe.combustiveis?.diesel && (
+                    <CombustivelCard
+                      tipo="diesel"
+                      data={detalhe.combustiveis.diesel}
+                      formaAbastecimento={formaAbastecimento.diesel}
+                      onChange={hundleChange}
+                    />
+                  )}
+                </div>
               )}
             </div>
 
-            <div className='container-km-time-btn'>
+            <div className="container-km-time-btn">
               {distancia.id && (
-                <div className='container-km-time'>
-                  <p className='km km-time'>
-                    <FontAwesomeIcon className="icon-km" icon={faFlagCheckered} style={{ color: "#4caf50", }} /> {distancia.distancia}
+                <div className="container-km-time">
+                  <p className="km km-time">
+                    <FontAwesomeIcon icon={faFlagCheckered} style={{ color: "#4caf50" }} /> {distancia.distancia}
                   </p>
-
-                  <p className='time km-time'>
-                    <FontAwesomeIcon className="icon-time" icon={faClock} style={{ color: "#4caf50", }} /> {distancia.tempo}
+                  <p className="time km-time">
+                    <FontAwesomeIcon icon={faClock} style={{ color: "#4caf50" }} /> {distancia.tempo}
                   </p>
                 </div>
               )}
-              <div className='container-btn-abrir-maps'>
-                <button className='btn-abrir-maps' onClick={() => { abrirMaps(detalhe.endereco) }} type="button">Abrir no Maps?</button>
+              <div className="container-btn-abrir-maps">
+                <button className="btn-abrir-maps"
+                  onClick={() => abrirMaps(detalhe.endereco)}>
+                  Abrir no Maps?
+                </button>
               </div>
 
-              {categoria === 'postos' && (
+              {(categoria === 'postos') && (typeUser === 'driver' || typeUser === 'administrador') && (
                 <div className="container-gas-pump-btn">
-                  {(typeUser === 'driver' || typeUser === 'administrador') && (
-                    <Link to={'/abastecimento'}>
-                      <button className="gas-pump-btn" type="button">
-                        Abastecer <FontAwesomeIcon className='icon-gas-pump' icon={faGasPump} />
-                      </button>
-                    </Link>
-                  )}
+                  <Link to="/abastecimento">
+                    <button className="gas-pump-btn" type="button">
+                      Abastecer <FontAwesomeIcon icon={faGasPump} />
+                    </button>
+                  </Link>
                 </div>
               )}
             </div>
 
             {(typeUser === 'administrador' || typeUser === 'posto') && (
               <button
-                onClick={() => setShowEditPosto(true)} type="button"
-                className='btn-edit-item'>
-                <FontAwesomeIcon className='pen-icon' icon={faPen} />
+                className="btn-edit-item"
+                onClick={() => setShowEditPosto(true)}>
+                <FontAwesomeIcon icon={faPen} />
               </button>
             )}
           </>
         )}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Detalhes
+export default Detalhes;
