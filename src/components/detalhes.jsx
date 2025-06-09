@@ -24,6 +24,7 @@ const Detalhes = () => {
   const typeUser = localStorage.getItem('type_user')
 
   const [detalhe, setDetalhe] = useState(item || {})
+  console.log(detalhe)
   let formasEtanol = Object.keys(detalhe.combustivel?.etanol?.formas || {})
   let formasGasolina = Object.keys(detalhe.combustivel?.gasolina?.formas || {})
   let formasDiesel = Object.keys(detalhe.combustivel?.diesel?.formas || {})
@@ -105,57 +106,57 @@ const Detalhes = () => {
     }
   }
 
-  useEffect(() => {
-    callItem()
-    if (categoria === 'postos') {
-      let todasAsFormas = [...formasEtanol, ...formasGasolina, ...formasDiesel]
-      todasAsFormas.forEach((keyForma) => {
-        formasPagamento.forEach((key) => {
-          if (key.value == keyForma) {
-            setFormasDePagamento((prevState) => {
-              if (!prevState.includes(key.label)) {
-                return [...prevState, key.label]
-              }
-              return prevState
-            })
-          }
-        })
-      })
+  // useEffect(() => {
+  //   callItem()
+  //   if (categoria === 'postos') {
+  //     let todasAsFormas = [...formasEtanol, ...formasGasolina, ...formasDiesel]
+  //     todasAsFormas.forEach((keyForma) => {
+  //       formasPagamento.forEach((key) => {
+  //         if (key.value == keyForma) {
+  //           setFormasDePagamento((prevState) => {
+  //             if (!prevState.includes(key.label)) {
+  //               return [...prevState, key.label]
+  //             }
+  //             return prevState
+  //           })
+  //         }
+  //       })
+  //     })
 
-      let combustiveis = Object.keys(detalhe.combustivel)
-      combustiveis.forEach((key) => {
-        let formas = Object.keys(detalhe.combustivel[key].formas)
-        hundleChange(key, formas[0])
-      })
-    }
-  }, [])
+  //     let combustiveis = Object.keys(detalhe.combustiveis)
+  //     combustiveis.forEach((key) => {
+  //       let formas = Object.keys(detalhe.combustiveis[key].formas)
+  //       hundleChange(key, formas[0])
+  //     })
+  //   }
+  // }, [])
 
-  useEffect(() => {
-    if (Object.keys(detalhe).length > 0 && categoria === 'postos') {
-      let todasAsFormas = [...formasEtanol, ...formasGasolina, ...formasDiesel];
+  // useEffect(() => {
+  //   if (Object.keys(detalhe).length > 0 && categoria === 'postos') {
+  //     let todasAsFormas = [...formasEtanol, ...formasGasolina, ...formasDiesel];
 
-      todasAsFormas.forEach((keyForma) => {
-        formasPagamento.forEach((key) => {
-          if (key.value === keyForma) {
-            setFormasDePagamento((prevState) => {
-              if (!prevState.includes(key.label)) {
-                return [...prevState, key.label];
-              }
-              return prevState;
-            })
-          }
-        })
-      })
+  //     todasAsFormas.forEach((keyForma) => {
+  //       formasPagamento.forEach((key) => {
+  //         if (key.value === keyForma) {
+  //           setFormasDePagamento((prevState) => {
+  //             if (!prevState.includes(key.label)) {
+  //               return [...prevState, key.label];
+  //             }
+  //             return prevState;
+  //           })
+  //         }
+  //       })
+  //     })
 
-      let combustiveis = Object.keys(detalhe.combustivel || {});
-      combustiveis.forEach((key) => {
-        let formas = Object.keys(detalhe.combustivel[key]?.formas || {});
-        if (formas.length > 0) {
-          hundleChange(key, formas[0]);
-        }
-      })
-    }
-  }, [detalhe])
+  //     let combustiveis = Object.keys(detalhe.combustiveis || {});
+  //     combustiveis.forEach((key) => {
+  //       let formas = Object.keys(detalhe.combustiveis[key]?.formas || {});
+  //       if (formas.length > 0) {
+  //         hundleChange(key, formas[0]);
+  //       }
+  //     })
+  //   }
+  // }, [detalhe])
 
 
   return (
@@ -195,10 +196,10 @@ const Detalhes = () => {
               {categoria === 'postos' && (
                 <>
                   <div className='container-combustivel'>
-                    {detalhe.combustivel?.etanol && (
+                    {detalhe.combustiveis?.etanol && (
                       <div className="container-combustivel-formas">
                         <p className="combustivel-posto">
-                          Etanol: R$ {detalhe.combustivel?.etanol.valor}
+                          Etanol: R$ {detalhe.combustiveis?.etanol.melhor_opcao.valor}
                         </p>
 
                         <select
@@ -206,6 +207,9 @@ const Detalhes = () => {
                           className="metodo-pagamento"
                           id="forma_pagamento_etanol"
                           onChange={(e) => hundleChange('etanol', e.target.value)}>
+                          <option value="">
+                            {detalhe.combustiveis?.etanol.melhor_opcao.forma_pagamento}
+                          </option>
                           {formasEtanol.map((key, index) => (
                             <option key={key} value={key}>
                               {detalhe.combustivel?.etanol.formas[formasEtanol[index]]?.forma_pagamento}
