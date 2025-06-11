@@ -31,7 +31,6 @@ const EditItem = ({ show, close, categoria, item }) => {
             [combustivel]: !prev[combustivel],
         }))
     }
-
     function adicionarConfiguracao(combustivel) {
         setConfigCombustiveis((prev) => ({
             ...prev,
@@ -42,14 +41,12 @@ const EditItem = ({ show, close, categoria, item }) => {
             }]
         }));
     };
-
     function removerConfiguracao(combustivel, index) {
         setConfigCombustiveis((prev) => ({
             ...prev,
             [combustivel]: prev[combustivel].filter((elemento, i) => i !== index)
         }));
     };
-
     function atualizarConfiguracao(combustivel, index, campo, valor) {
         setConfigCombustiveis((prev) => {
             const novoArray = [...prev[combustivel]];
@@ -61,29 +58,6 @@ const EditItem = ({ show, close, categoria, item }) => {
         });
     };
 
-    function toggleOptions(combustivel) {
-        setShowOptions((prev) => ({
-            ...prev,
-            [combustivel]: !prev[combustivel],
-        }))
-    }
-
-    // if (categoria === 'postos') {
-    //     //ITERANDO SOBRE CADA COMBUSTIVEL E CADA FORMA DE PAGAMENTO PARA DAR O VALOR 1 OU 2 NA FORMA DE ABASTECIMENTO DE CADA FORMA DE PAGAMENTO 
-    //     combustiveis.forEach((keyCombustivel) => {
-    //         let formasArray = Object.keys(itemFormatado.combustivel[keyCombustivel.label]?.formas || {})
-    //         formasArray.forEach((keyFormas) => {
-    //             formasAbastecimentos.map((keyAbastecimento) => {
-    //                 let formaAbastecimento = itemFormatado.combustivel[keyCombustivel.label].formas[keyFormas].forma_abastecimento
-    //                 if (formaAbastecimento === keyAbastecimento.label) {
-    //                     itemFormatado.combustivel[keyCombustivel.label].formas[keyFormas].forma_abastecimento = keyAbastecimento.value
-    //                 }
-
-    //             })
-    //         })
-    //     })
-    // }
-
     async function editarItem(e) {
         e.preventDefault()
         setLoading(true)
@@ -91,7 +65,7 @@ const EditItem = ({ show, close, categoria, item }) => {
             const formData = new FormData(document.getElementById('form-editar-item'))
 
             if (categoria === 'postos') {
-                let inputCheckeds = document.querySelectorAll("input[name='combustivel']:checked")
+                let inputCheckeds = document.querySelectorAll("input[name='combustiveis']:checked")
 
                 if (inputCheckeds.length === 0) {
                     setModalMessage('Selecione pelos menos um combustivel para trabalhar!')
@@ -100,40 +74,38 @@ const EditItem = ({ show, close, categoria, item }) => {
                 }
 
                 let combustiveis = {}
-                let lastPay = null
-                let lastCombustivel = null
+                let lastPagamento = null
+                let lastAbastecimento = null
 
-                for (let [key, value] of formData.entries()) {
-                    if (key === 'combustivel') {
-                        combustiveis[value] = {
-                            combustivel: value,
-                            valor: '',
-                            formas: {}
+                let formCombustivel = Object.keys(configCombustiveis)
+
+                for (let i = 0; i < formCombustivel.length; i++) {
+                    //apenas tirando o combustivel desmarcado da req que vai ser enviada para o back-end, fazendo assim eu preservo as opções que o user adicionou mesmo se ele desmarcar o combustivel sem querer
+                    if (inputCheckeds.item(i)?.value) {//ou seja se o input tiver desmarcado ele não vai ter um value e não vai ser adicionado na req
+                        let infoCombustivelAtual = configCombustiveis[formCombustivel[i]]
+                        combustiveis[formCombustivel[i]] = {
+                            combustivel: formCombustivel[i],
+                            valor_formas: []
                         }
-                        lastCombustivel = value
-                    }
-                    if (key === 'valor' && lastCombustivel) {
-                        combustiveis[lastCombustivel].valor = value
-                    }
-                    if (key === 'forma_pagamento' && lastCombustivel) {
-                        if (!combustiveis[lastCombustivel].formas[value]) {
-                            combustiveis[lastCombustivel].formas[value] = {
-                                forma_pagamento: value,
-                                forma_abastecimento: ''
+
+                        for (let index = 0; index < infoCombustivelAtual.length; index++) {
+                            const formasValorAtual = infoCombustivelAtual[index];
+
+                            let pagamentoAtual = formasValorAtual['forma_pagamento']
+                            let abastecimentoAtual = formasValorAtual['forma_abastecimento']
+                            if (pagamentoAtual == lastPagamento && abastecimentoAtual == lastAbastecimento) {
+                                throw new Error("Não pode existir o mesmo pagamento e o mesmo abastecimento para o mesmo combustivel!");
                             }
-                            lastPay = value
+
+                            combustiveis[formCombustivel[i]].valor_formas.push(formasValorAtual)
+                            lastPagamento = pagamentoAtual
+                            lastAbastecimento = abastecimentoAtual
                         }
-                    }
-                    if (key === 'forma_abastecimento' && lastPay) {
-                        combustiveis[lastCombustivel].formas[lastPay].forma_abastecimento = value
-                        lastPay = null
+                        lastPagamento = null
+                        lastAbastecimento = null
                     }
                 }
                 formData.append('combustiveis', JSON.stringify(combustiveis))
-                formData.delete('combustivel')
-                formData.delete('valor')
-                formData.delete('forma_pagamento')
-                formData.delete('forma_abastecimento')
             }
             formData.append('item_id', item.cod_posto || item.cod_anuncio)
             formData.append('categoria', categoria)
@@ -172,19 +144,49 @@ const EditItem = ({ show, close, categoria, item }) => {
         }
     }
 
-    // useEffect(() => {
-    //     if (categoria === 'postos') {
-    //         let optionsInitial = {}
+    function mudaParaValue(tipo, string) {
+        let nome = ''
+        if (tipo === 'forma_pagamento') {
+            Object.keys(formasPagamento).forEach((elemento, index) => {
+                if (formasPagamento[index].label == string) { nome = formasPagamento[index].value }
+            })
+        }
 
-    //         combustiveis.forEach((combustivel) => {
-    //             if (itemFormatado.combustivel[combustivel.label]) {
-    //                 optionsInitial[combustivel.label] = true
-    //             }
+        if (tipo === 'forma_abastecimento') {
+            Object.keys(formasAbastecimentos).forEach((elemento, index) => {
+                if (formasAbastecimentos[index].label == string) { nome = formasAbastecimentos[index].value }
+            })
+        }
 
-    //             setShowOptions(optionsInitial)
-    //         })
-    //     }
-    // }, [])
+        return nome
+    }
+
+    useEffect(() => {
+        if (categoria === 'postos') {
+            const optionsInitial = {};
+            const configuracoesIniciais = {};
+
+            combustiveis.forEach((combustivel) => {
+                const dadosCombustivel = itemFormatado.combustiveis?.[combustivel.label];
+                if (dadosCombustivel) {
+                    optionsInitial[combustivel.label] = true;
+                    document.getElementById(combustivel.label).checked = true
+
+                    const formas = dadosCombustivel.formas_valor || {};
+
+                    const configs = Object.keys(formas).map((forma) => ({
+                        forma_pagamento: mudaParaValue('forma_pagamento', formas[forma].forma_pagamento),
+                        forma_abastecimento: mudaParaValue('forma_abastecimento', formas[forma].forma_abastecimento),
+                        valor: formas[forma].valor || ''
+                    }));
+
+                    configuracoesIniciais[combustivel.value] = configs;
+                }
+            });
+            setShowOptions(optionsInitial);
+            setConfigCombustiveis(configuracoesIniciais);
+        }
+    }, []);
 
     return (
         <>
