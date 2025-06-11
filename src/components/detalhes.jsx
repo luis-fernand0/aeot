@@ -125,8 +125,7 @@ const Detalhes = () => {
         setModalVisible(true);
         return;
       }
-
-      setDetalhe(data.query);
+      setDetalhe(data.query[0]);
       localStorage.setItem('dadosItem', JSON.stringify(data.query));
     } catch (err) {
       setModalMessage(`Desculpe ocorreu um erro inesperado! ${err.message}`);
