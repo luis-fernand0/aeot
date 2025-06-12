@@ -19,13 +19,14 @@ const urlCadastrarChave = import.meta.env.VITE_URL_CADASTRAR_CHAVE
 const GerarQrCode = () => {
     const navigate = useNavigate()
 
-    const abastecimento = JSON.parse(localStorage.getItem('dadosAbastecimento'))
+    const dadosAbastecimento = JSON.parse(localStorage.getItem('dadosAbastecimento'))
     const tokenUser = localStorage.getItem('token');
 
     const [dataUser, setDataUser] = useState()
 
-    const [dataPosto, setDataPosto] = useState(abastecimento?.posto || null)
-    const [dataAbastecimento, setDataAbastecimento] = useState(abastecimento || null)
+    const [dataPosto, setDataPosto] = useState(dadosAbastecimento?.posto || null)
+    const [dataAbastecimento, setDataAbastecimento] = useState(dadosAbastecimento || null)
+    const [abastecimento, setAbastecimento] = useState()
 
     const [showQRCode, setShowQRCode] = useState(false)
     const [qrCodeValue, setQrCodeValue] = useState({ qrCode: '', chave: null })
@@ -56,7 +57,7 @@ const GerarQrCode = () => {
     }
 
     const calcularPagamento = (valorCombustivel, litrosAbastecidos) => {
-        if (dataAbastecimento.forma_abastecimento === 'valor') {
+        if (dataAbastecimento?.preco) {
             return dataAbastecimento?.preco
         }
 
@@ -67,7 +68,7 @@ const GerarQrCode = () => {
     }
 
     const calcularLitros = (valorCombustivel, valorAbastecido) => {
-        if (dataAbastecimento.forma_abastecimento === 'litro') {
+        if (dataAbastecimento?.litros) {
             return dataAbastecimento?.litros
         }
 
@@ -94,12 +95,12 @@ const GerarQrCode = () => {
                 },
                 posto_user_id: dataPosto?.user_id,
                 posto: dataPosto?.nome,
-                tipo_combustivel: dataAbastecimento?.tipo_combustivel,
-                valor_combustivel: dataPosto?.combustivel[dataAbastecimento?.tipo_combustivel]?.valor,
-                metodo_pagamento: dataAbastecimento?.metodo_pagamento,
-                forma_abastecimento: dataAbastecimento?.forma_abastecimento,
-                quantidade: calcularLitros(dataPosto?.combustivel[dataAbastecimento.tipo_combustivel]?.valor, dataAbastecimento?.preco),
-                valor_total: calcularPagamento(dataPosto?.combustivel[dataAbastecimento.tipo_combustivel]?.valor, dataAbastecimento?.litros)
+                tipo_combustivel: abastecimento?.combustivel,
+                valor_combustivel: abastecimento?.valor,
+                metodo_pagamento: abastecimento?.forma_pagamento,
+                forma_abastecimento: abastecimento?.forma_abastecimento,
+                quantidade: calcularLitros(abastecimento?.valor, dataAbastecimento?.preco),
+                valor_total: calcularPagamento(abastecimento?.valor, dataAbastecimento?.litros)
             })
 
             if (!qrCodeValue.chave) {
@@ -156,11 +157,21 @@ const GerarQrCode = () => {
     }
 
     useEffect(() => {
-        if (abastecimento === null) {
+        if (dadosAbastecimento === null) {
             navigate('/home', { replace: true })
             return
         }
         callInfoUser()
+        let combustivel = dadosAbastecimento.tipo_combustivel
+        let forma_pagamento = dadosAbastecimento.metodo_pagamento
+        let forma_abastecimento = dadosAbastecimento.forma_abastecimento
+        let keysFormasValor = Object.keys(dataPosto?.combustiveis?.[combustivel].formas_valor)
+        keysFormasValor.forEach((elemento, index) => {
+            let linhaAtual = dataPosto?.combustiveis?.[combustivel].formas_valor[elemento]
+            if (linhaAtual.forma_pagamento == forma_pagamento && linhaAtual.forma_abastecimento == forma_abastecimento) {
+                setAbastecimento({ combustivel, forma_pagamento, forma_abastecimento, valor: linhaAtual.valor })
+            }
+        })
     }, [])
     return (
         <>
@@ -207,8 +218,8 @@ const GerarQrCode = () => {
                                 </p>
 
                                 <p className="text-container dado-posto-combustivel">
-                                    {dataAbastecimento.tipo_combustivel}:
-                                    R$ {dataPosto?.combustivel[dataAbastecimento.tipo_combustivel]?.valor}
+                                    {abastecimento?.combustivel}:
+                                    R$ {abastecimento?.valor}
                                 </p>
                             </div>
 
@@ -219,38 +230,38 @@ const GerarQrCode = () => {
 
                                 <div className="container-sobre-abastecimento">
                                     <p className="text-container abastecimento-tipo-combustivel">
-                                        Tipo de combustivel: {dataAbastecimento?.tipo_combustivel}
+                                        Tipo de combustivel: {abastecimento?.combustivel}
                                     </p>
 
                                     <p className="text-container abastecimento-forma-abastecimento">
-                                        Vai abastecer por: {dataAbastecimento?.forma_abastecimento}
+                                        Vai abastecer por: {abastecimento?.forma_abastecimento}
                                     </p>
 
                                     <p className="text-container abastecimento-metodo-pagamento">
-                                        Metodo de Pagamento: {dataAbastecimento?.metodo_pagamento}
+                                        Metodo de Pagamento: {abastecimento?.forma_pagamento}
                                     </p>
 
-                                    {dataAbastecimento?.forma_abastecimento != 'encher-tanque' && (
+                                    {abastecimento?.forma_abastecimento != 'Encher Tanque' && (
                                         <>
                                             <p className="text-container abastecimento-preco-ou-litro">
                                                 Quantidade que vai abastecer:
-                                                {dataAbastecimento.forma_abastecimento === 'valor' && (
-                                                    ` ${calcularLitros(dataPosto?.combustivel[dataAbastecimento.tipo_combustivel]?.valor, dataAbastecimento?.preco)} Litros`
+                                                {dataAbastecimento?.preco && (
+                                                    ` ${calcularLitros(abastecimento?.valor, dataAbastecimento?.preco)} Litros`
                                                 )}
 
-                                                {dataAbastecimento.forma_abastecimento === 'litro' && (
+                                                {dataAbastecimento.litros && (
                                                     ` ${dataAbastecimento?.litros} Litros`
                                                 )}
                                             </p>
 
                                             <p className="text-container abastecimento-preco-ou-litro">
                                                 Valor total:
-                                                {dataAbastecimento.forma_abastecimento === 'valor' && (
+                                                {dataAbastecimento.preco && (
                                                     ` $R$ ${dataAbastecimento?.preco}`
                                                 )}
 
-                                                {dataAbastecimento.forma_abastecimento === 'litro' && (
-                                                    ` R$ ${calcularPagamento(dataPosto?.combustivel[dataAbastecimento.tipo_combustivel]?.valor, dataAbastecimento?.litros)}`
+                                                {dataAbastecimento.litros && (
+                                                    ` R$ ${calcularPagamento(abastecimento?.valor, dataAbastecimento?.litros)}`
                                                 )}
                                             </p>
                                         </>
@@ -266,6 +277,7 @@ const GerarQrCode = () => {
                     </div>
                 </>
             )}
+
 
             {showQRCode && (
                 <div className="qrcode-container">
