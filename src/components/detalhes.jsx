@@ -57,7 +57,6 @@ const Detalhes = () => {
   const typeUser = localStorage.getItem('type_user');
 
   const [detalhe, setDetalhe] = useState(item);
-  console.log(detalhe)
   const [distancia, setDistancia] = useState(location[0] || {});
   const [local, setLocal] = useState(location[1] || {});
   const [categoria, setCategoria] = useState(itemCategoria);
@@ -126,9 +125,8 @@ const Detalhes = () => {
         setModalVisible(true);
         return;
       }
-      console.log(data.query[0])
       setDetalhe(data.query[0]);
-      localStorage.setItem('dadosItem', JSON.stringify(data.query));
+      localStorage.setItem('dadosItem', JSON.stringify(data.query[0]));
     } catch (err) {
       setModalMessage(`Desculpe ocorreu um erro inesperado! ${err.message}`);
       setModalVisible(true);
