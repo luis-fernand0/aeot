@@ -29,7 +29,6 @@ const Abastecimento = () => {
     const [melhorOpcao, setMelhorOpcao] = useState({})
 
     let combustiveis = Object.keys(posto.combustiveis)
-    let pagamentos = []
     function changePagamento(combustivel) {
         setBtnChecked()
         setCombustivelAtual(combustivel)
@@ -37,31 +36,33 @@ const Abastecimento = () => {
         let pagamento = posto.combustiveis[combustivel].melhor_opcao.forma_pagamento
         setMelhorOpcao({ combustivel, forma_pagamento: [pagamento] })
 
+        let pagamentos = []
         let keysPagamento = Object.keys(posto.combustiveis[combustivel].formas_valor)
         keysPagamento.forEach((key, index) => {
             let linhaAtual = posto.combustiveis[combustivel].formas_valor[key]
-            if(!pagamentos.includes(linhaAtual.forma_pagamento)) {
+            if (!pagamentos.includes(linhaAtual.forma_pagamento)) {
                 pagamentos[index] = linhaAtual.forma_pagamento
             }
         })
 
         setFormasPagamento(pagamentos)
+        changeAbastecimento(combustivel, pagamento)
     }
-    function changeAbastecimento(formaPagamento) {
-        setMelhorOpcao((prev) => ({...prev, forma_pagamento: formaPagamento}))
+    function changeAbastecimento(combustivel, formaPagamento) {
+        setMelhorOpcao((prev) => ({ ...prev, forma_pagamento: formaPagamento }))
         setBtnChecked()
 
-        let keysPagamento = Object.keys(posto.combustiveis?.[combustivelAtual].formas_valor)
-        keysPagamento.forEach((key, index) => {
-            let linhaAtual = posto.combustiveis?.[combustivelAtual].formas_valor[key]
+        let keysPagamento = Object.keys(posto.combustiveis?.[combustivel].formas_valor)
+        for (let key of keysPagamento) {
+            let linhaAtual = posto.combustiveis?.[combustivel].formas_valor[key]
             if (linhaAtual.forma_pagamento == formaPagamento) {
+                setFormaAbastecimento(linhaAtual.forma_abastecimento)
                 if (linhaAtual.forma_abastecimento == 'Litragem Livre') {
                     setFormaAbastecimento(linhaAtual.forma_abastecimento)
-                    return
+                    break
                 }
-                setFormaAbastecimento(linhaAtual.forma_abastecimento)
             }
-        })
+        }
     }
 
     function enviarDados() {
@@ -83,15 +84,15 @@ const Abastecimento = () => {
         let abastecimento = null
 
         if (document.getElementById('input-litro')) {
-            abastecimento = 'litro'
+            abastecimento = 'Litragem Livre'
             litro = document.getElementById('input-litro').value.replace(/[^0-9]/g, '.')
             litro = Number(litro).toFixed(3)
         } else if (document.getElementById('input-valor')) {
-            abastecimento = 'valor'
+            abastecimento = 'Litragem Livre'
             valor = document.getElementById('input-valor').value
             valor = Number(valor).toFixed(2)
         } else {
-            abastecimento = 'encher-tanque'
+            abastecimento = 'Encher Tanque'
             litro = undefined
             valor = undefined
         }
@@ -171,11 +172,10 @@ const Abastecimento = () => {
                                     Qual será a forma de pagamento?
                                 </label>
                                 <select
-                                    onChange={(e) => changeAbastecimento(e.target.value)}
+                                    onChange={(e) => changeAbastecimento(combustivelAtual, e.target.value)}
                                     name="pagamento"
                                     id="pagamento"
                                     value={melhorOpcao.forma_pagamento}>
-                                    <option value=''>Escolha o metodo de pagamento</option>
                                     {formasPagamentos &&
                                         formasPagamentos.map((pagamento) => (
                                             <option value={pagamento} key={pagamento}>
