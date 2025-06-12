@@ -16,7 +16,7 @@ import '../style/abastecimento_component/abastecimento.css'
 const Abastecimento = () => {
     const navigate = useNavigate()
 
-    const posto = JSON.parse(localStorage.getItem('dadosItem'))
+    const posto = JSON.parse(localStorage.getItem('dadosPosto')) || {}
 
     const [formasPagamentos, setFormasPagamento] = useState([])
     const [formaAbastecimento, setFormaAbastecimento] = useState()
@@ -26,22 +26,40 @@ const Abastecimento = () => {
     const [modalMessage, setModalMessage] = useState('');
     const [litroValid, setLitroValid] = useState(false);
 
-    let combustiveis = Object.keys(posto.combustivel)
+    const [melhorOpcao, setMelhorOpcao] = useState({})
+
+    let combustiveis = Object.keys(posto.combustiveis)
     let pagamentos = []
     function changePagamento(combustivel) {
         setBtnChecked()
         setCombustivelAtual(combustivel)
-        let keyPagamento = Object.keys(posto.combustivel[combustivel].formas)
-        keyPagamento.forEach((key, index) => {
-            pagamentos[index] = posto.combustivel[combustivel].formas[key].forma_pagamento
+
+        let pagamento = posto.combustiveis[combustivel].melhor_opcao.forma_pagamento
+        setMelhorOpcao({ combustivel, forma_pagamento: [pagamento] })
+
+        let keysPagamento = Object.keys(posto.combustiveis[combustivel].formas_valor)
+        keysPagamento.forEach((key, index) => {
+            let linhaAtual = posto.combustiveis[combustivel].formas_valor[key]
+            if(!pagamentos.includes(linhaAtual.forma_pagamento)) {
+                pagamentos[index] = linhaAtual.forma_pagamento
+            }
         })
+
         setFormasPagamento(pagamentos)
     }
-    function changeAbastecimento(formaAbastecimento) {
+    function changeAbastecimento(formaPagamento) {
+        setMelhorOpcao((prev) => ({...prev, forma_pagamento: formaPagamento}))
         setBtnChecked()
-        formasPagamento.forEach((pagamento) => {
-            if (pagamento.label === formaAbastecimento) {
-                setFormaAbastecimento(posto.combustivel[combustivelAtual].formas[pagamento.value].forma_abastecimento)
+
+        let keysPagamento = Object.keys(posto.combustiveis?.[combustivelAtual].formas_valor)
+        keysPagamento.forEach((key, index) => {
+            let linhaAtual = posto.combustiveis?.[combustivelAtual].formas_valor[key]
+            if (linhaAtual.forma_pagamento == formaPagamento) {
+                if (linhaAtual.forma_abastecimento == 'Litragem Livre') {
+                    setFormaAbastecimento(linhaAtual.forma_abastecimento)
+                    return
+                }
+                setFormaAbastecimento(linhaAtual.forma_abastecimento)
             }
         })
     }
@@ -101,9 +119,12 @@ const Abastecimento = () => {
             navigate('/home', { replace: true })
             return
         }
-        combustiveis.forEach((combustivel) => {
-            changePagamento(combustivel)
-        })
+        const combustiveisKeys = Object.keys(posto.combustiveis)
+        let combustivel = combustiveisKeys[0]
+        let pagamento = posto.combustiveis[combustivel].melhor_opcao.forma_pagamento
+
+        setMelhorOpcao({ combustivel, forma_pagamento: [pagamento] })
+        changePagamento(combustivel)
     }, [])
 
     return (
@@ -126,14 +147,13 @@ const Abastecimento = () => {
                         <div className='container-combustivel-pagamento'>
                             <div className='container-combustivel'>
                                 <label htmlFor='combustivel' className="text-label">
-                                    Qual tipo de combustivel deseja abasetcer ?
+                                    Qual tipo de combustivel deseja abastecer ?
                                 </label>
                                 <select
                                     onChange={(e) => changePagamento(e.target.value)}
                                     name="combustivel"
                                     id="combustivel"
-                                    defaultValue={''}>
-                                    <option value=''>Combustivel que deseja abastecer</option>
+                                    value={melhorOpcao.combustivel}>
                                     {combustiveis.map((keyCombustivel) => (
                                         <option key={keyCombustivel} value={keyCombustivel}>
                                             {keyCombustivel.charAt(0).toUpperCase() + keyCombustivel.slice(1)}
@@ -154,14 +174,12 @@ const Abastecimento = () => {
                                     onChange={(e) => changeAbastecimento(e.target.value)}
                                     name="pagamento"
                                     id="pagamento"
-                                    defaultValue={''}>
+                                    value={melhorOpcao.forma_pagamento}>
                                     <option value=''>Escolha o metodo de pagamento</option>
                                     {formasPagamentos &&
                                         formasPagamentos.map((pagamento) => (
-                                            <option
-                                                value={pagamento.charAt(0).toLowerCase() + pagamento.slice(1)}
-                                                key={pagamento}>
-                                                {pagamento}
+                                            <option value={pagamento} key={pagamento}>
+                                                {pagamento.charAt(0).toUpperCase() + pagamento.slice(1)}
                                             </option>
                                         ))}
                                 </select>
