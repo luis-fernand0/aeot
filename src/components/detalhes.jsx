@@ -57,6 +57,7 @@ const Detalhes = () => {
   const typeUser = localStorage.getItem('type_user');
 
   const [detalhe, setDetalhe] = useState(item);
+  console.log(detalhe)
   const [distancia, setDistancia] = useState(location[0] || {});
   const [local, setLocal] = useState(location[1] || {});
   const [categoria, setCategoria] = useState(itemCategoria);
@@ -125,6 +126,7 @@ const Detalhes = () => {
         setModalVisible(true);
         return;
       }
+      console.log(data.query[0])
       setDetalhe(data.query[0]);
       localStorage.setItem('dadosItem', JSON.stringify(data.query));
     } catch (err) {
@@ -134,6 +136,12 @@ const Detalhes = () => {
       setLoading(false);
     }
   };
+
+  function redirectAbastecimento(posto) {
+    localStorage.setItem('dadosPosto', JSON.stringify(posto))
+    navigate('/abastecimento');
+    return;
+  }
 
   useEffect(() => {
     if (categoria === 'postos' && detalhe.combustiveis) {
@@ -238,11 +246,9 @@ const Detalhes = () => {
 
               {(categoria === 'postos') && (typeUser === 'driver' || typeUser === 'administrador') && (
                 <div className="container-gas-pump-btn">
-                  <Link to="/abastecimento">
-                    <button className="gas-pump-btn" type="button">
-                      Abastecer <FontAwesomeIcon icon={faGasPump} />
-                    </button>
-                  </Link>
+                  <button className="gas-pump-btn" type="button" onClick={() => redirectAbastecimento(detalhe)}>
+                    Abastecer <FontAwesomeIcon icon={faGasPump} />
+                  </button>
                 </div>
               )}
             </div>
