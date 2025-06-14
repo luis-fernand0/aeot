@@ -152,7 +152,7 @@ const LerQrCode = () => {
     async function confirmarVenda() {
         setLoading(true)
         try {
-            if (result.forma_abastecimento === 'encher-tanque') {
+            if (result.forma_abastecimento === 'Encher Tanque') {
                 if (!valorTotal || valorTotal == 0.00) {
                     setLoading(false)
                     setModalMessage('*Por favor informe a quantidade abastecida antes de finalizar a venda!')
@@ -174,7 +174,7 @@ const LerQrCode = () => {
             })
             myForm.append('combustivel', result.tipo_combustivel)
 
-            if (result.forma_abastecimento === 'valor' || result.forma_abastecimento === 'litro') {
+            if (result.forma_abastecimento === 'Litragem Livre') {
                 result.forma_abastecimento = 1
             } else {
                 result.forma_abastecimento = 2
@@ -445,7 +445,7 @@ const LerQrCode = () => {
 
                                     <p className="text-container">
                                         Quatidade abastecida:
-                                        {result.forma_abastecimento === 'encher-tanque' && (
+                                        {result.forma_abastecimento === 'Encher Tanque' && (
                                             <>
                                                 <span className="text-span-container">
                                                     <input
@@ -462,19 +462,19 @@ const LerQrCode = () => {
                                             </>
                                         )}
                                         <span className="text-span-container">
-                                            {result.forma_abastecimento === 'encher-tanque' ? 'Litros' : `${result?.quantidade} Litros`}
+                                            {result.forma_abastecimento === 'Encher Tanque' ? 'Litros' : `${result?.quantidade} Litros`}
                                         </span>
                                     </p>
 
                                     <p className="text-container">
                                         Valor total:
-                                        {result.forma_abastecimento === 'encher-tanque' && (
+                                        {result.forma_abastecimento === 'Encher Tanque' && (
                                             <span className="text-span-container">
                                                 R$ {valorTotal}
                                             </span>
                                         )}
 
-                                        {result.forma_abastecimento != 'encher-tanque' && (
+                                        {result.forma_abastecimento != 'Encher Tanque' && (
                                             <span className="text-span-container">
                                                 R$ {result.valor_total}
                                             </span>
