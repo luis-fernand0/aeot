@@ -196,8 +196,8 @@ const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
         }
 
         return (
-            <div>
-                <select name="forma_abastecimento">
+            <div className='container-forma-abastecimento'>
+                <select className='select-forma-abastecimento' name="forma_abastecimento">
                     <option value={formaAbastecimento}>
                         {formaAbastecimento}
                     </option>
@@ -226,7 +226,7 @@ const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
 
                 <form onSubmit={verDados} id='form-combustivel' className='form-combustivel'>
                     {Object.keys(propCombustiveis).map((keyCombustivel) => (
-                        <div>
+                        <div className='container-combustiveis'>
                             <input
                                 className='combustivel'
                                 type='checkbox'
