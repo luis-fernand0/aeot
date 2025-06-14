@@ -25,7 +25,10 @@ const EditItem = ({ show, close, categoria, item }) => {
 
     const [configCombustiveis, setConfigCombustiveis] = useState({});
     const [showOptions, setShowOptions] = useState({})
-    function toggleOptions(combustivel) {
+    function toggleOptions(combustivel, propriedade) {
+        if (configCombustiveis[propriedade]) {
+            delete configCombustiveis[propriedade]
+        }
         setShowOptions((prev) => ({
             ...prev,
             [combustivel]: !prev[combustivel],
@@ -233,14 +236,14 @@ const EditItem = ({ show, close, categoria, item }) => {
 
                                     {combustiveis.map((combustivel) => (
                                         <div key={combustivel.value} className="container-combustivel">
-                                            <div className='conatiner-checkbox-combustivel'>
+                                            <div className='container-checkbox-combustivel'>
                                                 <input
                                                     className='checkbox-combustivel'
                                                     type="checkbox"
                                                     name='combustiveis'
                                                     id={combustivel.label}
                                                     value={combustivel.value}
-                                                    onChange={() => toggleOptions(combustivel.label)} />
+                                                    onChange={() => toggleOptions(combustivel.label, combustivel.value)} />
 
                                                 <label className='text-combustivel' htmlFor={combustivel.label}>
                                                     {combustivel.label.charAt(0).toUpperCase() + combustivel.label.slice(1)}
@@ -252,18 +255,20 @@ const EditItem = ({ show, close, categoria, item }) => {
                                                     {(configCombustiveis[combustivel.value] || []).map((config, index) => (
                                                         <div key={index} className='grupo-config'>
                                                             <select
+                                                                className='select-forma-pagamento'
                                                                 value={config.forma_pagamento}
                                                                 onChange={(e) =>
                                                                     atualizarConfiguracao(combustivel.value, index, 'forma_pagamento', e.target.value)}>
                                                                 <option value="">Forma de pagamento</option>
                                                                 {formasPagamento.map((pagamento) => (
                                                                     <option key={pagamento.value} value={pagamento.value}>
-                                                                        {pagamento.label}
+                                                                        {pagamento.label.charAt(0).toUpperCase() + pagamento.label.slice(1)}
                                                                     </option>
                                                                 ))}
                                                             </select>
 
                                                             <select
+                                                                className='select-forma-abastecimento'
                                                                 value={config.forma_abastecimento}
                                                                 onChange={(e) =>
                                                                     atualizarConfiguracao(combustivel.value, index, 'forma_abastecimento', e.target.value)}>
@@ -276,6 +281,7 @@ const EditItem = ({ show, close, categoria, item }) => {
                                                             </select>
 
                                                             <input
+                                                                className='combustivel-valor'
                                                                 type="text"
                                                                 placeholder="Valor"
                                                                 value={config.valor}
@@ -285,17 +291,19 @@ const EditItem = ({ show, close, categoria, item }) => {
                                                                 }} />
 
                                                             <button
+                                                                className='btn-remover-config'
                                                                 type="button"
                                                                 onClick={() => removerConfiguracao(combustivel.value, index)}>
-                                                                Remover
+                                                                -
                                                             </button>
                                                         </div>
                                                     ))}
 
                                                     <button
+                                                        className='btn-add-config'
                                                         type="button"
                                                         onClick={() => adicionarConfiguracao(combustivel.value)}>
-                                                        + Adicionar configuração
+                                                        +
                                                     </button>
                                                 </div>
                                             )}
