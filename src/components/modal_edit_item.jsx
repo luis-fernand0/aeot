@@ -25,10 +25,7 @@ const EditItem = ({ show, close, categoria, item }) => {
 
     const [configCombustiveis, setConfigCombustiveis] = useState({});
     const [showOptions, setShowOptions] = useState({})
-    function toggleOptions(combustivel, propriedade) {
-        if (configCombustiveis[propriedade]) {
-            delete configCombustiveis[propriedade]
-        }
+    function toggleOptions(combustivel) {
         setShowOptions((prev) => ({
             ...prev,
             [combustivel]: !prev[combustivel],
@@ -77,15 +74,15 @@ const EditItem = ({ show, close, categoria, item }) => {
                 }
 
                 let combustiveis = {}
-                let lastPagamento = null
-                let lastAbastecimento = null
 
                 let formCombustivel = Object.keys(configCombustiveis)
-
                 for (let i = 0; i < formCombustivel.length; i++) {
                     //apenas tirando o combustivel desmarcado da req que vai ser enviada para o back-end, fazendo assim eu preservo as opções que o user adicionou mesmo se ele desmarcar o combustivel sem querer
                     if (inputCheckeds.item(i)?.value) {//ou seja se o input tiver desmarcado ele não vai ter um value e não vai ser adicionado na req
                         let infoCombustivelAtual = configCombustiveis[formCombustivel[i]]
+                        if (infoCombustivelAtual.length == 0) {
+                            throw new Error("Adicione pelo menos uma configuração para o combustivel selecionado!");
+                        }
                         combustiveis[formCombustivel[i]] = {
                             combustivel: formCombustivel[i],
                             valor_formas: []
@@ -96,16 +93,27 @@ const EditItem = ({ show, close, categoria, item }) => {
 
                             let pagamentoAtual = formasValorAtual['forma_pagamento']
                             let abastecimentoAtual = formasValorAtual['forma_abastecimento']
-                            if (pagamentoAtual == lastPagamento && abastecimentoAtual == lastAbastecimento) {
-                                throw new Error("Não pode existir o mesmo pagamento e o mesmo abastecimento para o mesmo combustivel!");
+                            let valor = formasValorAtual['valor']
+
+                            if (pagamentoAtual == '') {
+                                throw new Error("Selecione uma forma de pagamento para o combustivel marcado!");
+                            }
+                            if (abastecimentoAtual == '') {
+                                throw new Error("Selecione uma forma de abastecimento para o combustivel marcado!");
+                            }
+                            if (valor == '' || valor == '0.00' || valor == '0' || valor == '0.0') {
+                                throw new Error("Digite um valor para o combustivel marcado(deve ser maior que 0.00)");
                             }
 
+                            let quantidadeFormas = combustiveis[formCombustivel[i]].valor_formas.length
+                            for (let indice = 0; indice < quantidadeFormas; indice++) {
+                                let linhaAtual = combustiveis[formCombustivel[i]].valor_formas[indice]
+                                if (linhaAtual.forma_pagamento == pagamentoAtual && linhaAtual.forma_abastecimento == abastecimentoAtual) {
+                                    throw new Error("Não pode existir o mesmo pagamento e o mesmo abastecimento para o mesmo combustivel!");
+                                }
+                            }
                             combustiveis[formCombustivel[i]].valor_formas.push(formasValorAtual)
-                            lastPagamento = pagamentoAtual
-                            lastAbastecimento = abastecimentoAtual
                         }
-                        lastPagamento = null
-                        lastAbastecimento = null
                     }
                 }
                 formData.append('combustiveis', JSON.stringify(combustiveis))
@@ -243,7 +251,7 @@ const EditItem = ({ show, close, categoria, item }) => {
                                                     name='combustiveis'
                                                     id={combustivel.label}
                                                     value={combustivel.value}
-                                                    onChange={() => toggleOptions(combustivel.label, combustivel.value)} />
+                                                    onChange={() => toggleOptions(combustivel.label)} />
 
                                                 <label className='text-combustivel' htmlFor={combustivel.label}>
                                                     {combustivel.label.charAt(0).toUpperCase() + combustivel.label.slice(1)}
