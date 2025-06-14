@@ -219,7 +219,7 @@ const NewPostosServices = () => {
             if (abastecimentoAtual == '') {
               throw new Error("Selecione uma forma de abastecimento para o combustivel marcado!");
             }
-            if (valor == '' || valor == '0.00') {
+            if (valor == '' || valor == '0.00' || valor == '0.0' || valor == '0') {
               throw new Error("Digite um valor para o combustivel marcado(deve ser maior que 0.00)");
             }
 
