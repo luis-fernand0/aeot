@@ -21,38 +21,35 @@
         flex-direction: column;
         align-items: center;
 
-        .combustiveis {
+        .container-combustiveis {
             width: 100%;
 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            margin-bottom: 15px;
 
-            .combustivel-container {
-                background-color: aliceblue;
+            text-align: center;
 
-                margin-bottom: 20px;
-
-                .combustivel {
-                    margin-right: 15px;
-                }
+            .combustivel {
+                margin-right: 5px;
             }
 
-            .formas-pagamento {
-                width: 100%;
+            .forma-pagamento-container {
+                margin-top: 10px;
 
-                margin-bottom: 10px;
+                text-transform: capitalize;
 
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
+                .forma_pagamento {
+                    margin-right: 5px;
+                }
 
-                .forma-pagamento-container {
-                    margin-bottom: 10px;
+                .container-forma-abastecimento {
+                    .select-forma-abastecimento {
+                        background-color: white;
 
-                    .forma_pagamento {
-                        margin-right: 10px;
+                        margin-top: 5px;
+                        padding-left: 8px;
+                        height: 40px;
+                        border-radius: 15px;
+                        border: none;
                     }
                 }
             }
@@ -88,7 +85,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        
+
         // ESSAS CLASSES VEM DO COMPONENT listarBrindes.jsx
         .container-brindes {
             background-color: #ffffff;
@@ -104,15 +101,16 @@
                 text-align: right;
 
                 padding: 25px 25px 15px 0;
+
                 .btn-close-listar-brindes {
                     background-color: transparent;
 
                     border: none;
 
                     font-size: 20px;
-                    
+
                     .x-icon {
-                        transition: all 0.3s linear;    
+                        transition: all 0.3s linear;
 
                         &:hover {
                             transform: scale(1.1);
@@ -120,7 +118,7 @@
                     }
                 }
             }
-            
+
             .lista-brindes {
                 overflow: auto;
 

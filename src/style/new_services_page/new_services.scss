@@ -289,7 +289,7 @@
                     justify-content: center;
                     align-items: center;
 
-                    .conatiner-checkbox-combustivel {
+                    .container-checkbox-combustivel {
                         margin-bottom: 15px;
                     }
 
@@ -308,41 +308,75 @@
                         align-items: center;
                         justify-content: center;
 
-                        .combustivel-valor {
-                            background-color: #f5f5f5;
+                        .grupo-config {
+                            margin-bottom: 10px;
 
-                            height: 40px;
-                            width: 150px;
+                            .select-forma-pagamento,
+                            .select-forma-abastecimento {
+                                background-color: #f5f5f5;
 
-                            padding-left: 15px;
+                                width: 100px;
+                                height: 40px;
 
-                            margin-bottom: 15px;
+                                margin-right: 5px;
+                                padding-left: 5px;
 
+                                border-radius: 15px;
+                                border: none;
+                                box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
+                            }
+
+                            .combustivel-valor {
+                                background-color: #f5f5f5;
+
+                                height: 40px;
+                                width: 100px;
+
+                                padding-left: 15px;
+
+                                margin: 0 15px 15px 0;
+
+                                border: none;
+                                border-radius: 15px;
+
+                                box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
+
+                                font-size: 15px;
+
+                                &:focus {
+                                    outline: none;
+
+                                    border: 2px solid #4b39ef;
+                                }
+                            }
+
+                            .btn-remover-config {
+                                background-color: rgb(231, 84, 84);
+
+                                color: white;
+                                font-weight: bold;
+
+                                height: 30px;
+                                width: 30px;
+
+                                border-radius: 100%;
+                                border: none;
+                            }
+                        }
+
+                        .btn-add-config {
+                            background-color: #1aac5b;
+
+                            color: white;
+                            font-weight: bold;
+
+                            height: 30px;
+                            width: 30px;
+
+                            border-radius: 100%;
                             border: none;
-                            border-radius: 15px;
-
-                            box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.281);
-
-                            font-size: 15px;
-
-                            &:focus {
-                                outline: none;
-
-                                border: 2px solid #4b39ef;
-                            }
                         }
 
-                        .container-forma {
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            justify-content: center;
-
-                            #forma_abastecimento {
-                                margin-top: 5px;
-                                margin-bottom: 15px;
-                            }
-                        }
                     }
 
                 }
