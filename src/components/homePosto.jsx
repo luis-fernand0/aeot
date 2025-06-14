@@ -63,21 +63,21 @@ const HomePosto = ({ posto, categoria }) => {
                                     </div>
 
                                     <div className='info-gas-services'>
-                                        {posto.combustivel?.etanol && (
+                                        {posto.combustiveis?.etanol && (
                                             <p className='combustiveis-gas-station'>
-                                                ETANOL: R$ {posto.combustivel?.etanol.valor}
+                                                ETANOL: R$ {posto.combustiveis?.etanol?.melhor_opcao?.valor}
                                             </p>
                                         )}
 
-                                        {posto.combustivel?.gasolina && (
+                                        {posto.combustiveis?.gasolina && (
                                             <p className='combustiveis-gas-station'>
-                                                GASOLINA: R$ {posto.combustivel?.gasolina.valor}
+                                                GASOLINA: R$ {posto.combustiveis?.gasolina?.melhor_opcao?.valor}
                                             </p>
                                         )}
 
-                                        {posto.combustivel?.diesel && (
+                                        {posto.combustiveis?.diesel && (
                                             <p className='combustiveis-gas-station'>
-                                                DIESEL: R$ {posto.combustivel?.diesel.valor}
+                                                DIESEL: R$ {posto.combustiveis?.diesel?.melhor_opcao?.valor}
                                             </p>
                                         )}
                                     </div>
