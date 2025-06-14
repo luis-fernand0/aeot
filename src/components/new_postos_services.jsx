@@ -66,7 +66,10 @@ const NewPostosServices = () => {
     });
   };
 
-  function toggleOptions(combustivel) {
+  function toggleOptions(combustivel, propriedade) {
+    if (configCombustiveis[propriedade]) {
+      delete configCombustiveis[propriedade]
+    }
     setShowOptions((prev) => ({
       ...prev,
       [combustivel]: !prev[combustivel],
@@ -179,7 +182,7 @@ const NewPostosServices = () => {
 
     try {
       let form = new FormData(document.getElementById('form-cadastro'))
-      
+
       if (categoria === 'postos') {
         let inputCheckeds = document.querySelectorAll("input[name='combustiveis']:checked")
 
@@ -190,12 +193,14 @@ const NewPostosServices = () => {
         }
 
         let combustiveis = {}
-        let lastPagamento = null
-        let lastAbastecimento = null
 
         let formCombustivel = Object.keys(configCombustiveis)
         for (let i = 0; i < formCombustivel.length; i++) {
           let infoCombustivelAtual = configCombustiveis[formCombustivel[i]]
+          if(infoCombustivelAtual.length == 0) {
+            throw new Error("Adicione pelo menos uma configuração para o combustivel selecionado!");
+          }
+
           combustiveis[formCombustivel[i]] = {
             combustivel: formCombustivel[i],
             valor_formas: []
@@ -206,16 +211,27 @@ const NewPostosServices = () => {
 
             let pagamentoAtual = formasValorAtual['forma_pagamento']
             let abastecimentoAtual = formasValorAtual['forma_abastecimento']
-            if (pagamentoAtual == lastPagamento && abastecimentoAtual == lastAbastecimento) {
-              throw new Error("Não pode existir o mesmo pagamento e o mesmo abastecimento para o mesmo combus tivel!");
+            let valor = formasValorAtual['valor']
+
+            if (pagamentoAtual == '') {
+              throw new Error("Selecione uma forma de pagamento para o combustivel marcado!");
+            }
+            if (abastecimentoAtual == '') {
+              throw new Error("Selecione uma forma de abastecimento para o combustivel marcado!");
+            }
+            if (valor == '' || valor == '0.00') {
+              throw new Error("Digite um valor para o combustivel marcado(deve ser maior que 0.00)");
             }
 
+            let quantidadeFormas = combustiveis[formCombustivel[i]].valor_formas.length
+            for (let indice = 0; indice < quantidadeFormas; indice++) {
+              let linhaAtual = combustiveis[formCombustivel[i]].valor_formas[indice]
+              if (linhaAtual.forma_pagamento == pagamentoAtual && linhaAtual.forma_abastecimento == abastecimentoAtual) {
+                throw new Error("Não pode existir o mesmo pagamento e o mesmo abastecimento para o mesmo combustivel!");
+              }
+            }
             combustiveis[formCombustivel[i]].valor_formas.push(formasValorAtual)
-            lastPagamento = pagamentoAtual
-            lastAbastecimento = abastecimentoAtual
           }
-          lastPagamento = null
-          lastAbastecimento = null
         }
         form.append('combustiveis', JSON.stringify(combustiveis))
       }
@@ -521,14 +537,14 @@ const NewPostosServices = () => {
 
                 {combustiveis.map((combustivel) => (
                   <div key={combustivel.value} className="container-combustivel">
-                    <div className='conatiner-checkbox-combustivel'>
+                    <div className='container-checkbox-combustivel'>
                       <input
                         className='checkbox-combustivel'
                         type="checkbox"
                         name='combustiveis'
                         id={combustivel.label}
                         value={combustivel.value}
-                        onChange={() => toggleOptions(combustivel.label)} />
+                        onChange={() => toggleOptions(combustivel.label, combustivel.value)} />
 
                       <label className='text-combustivel' htmlFor={combustivel.label}>
                         {combustivel.label.charAt(0).toUpperCase() + combustivel.label.slice(1)}
@@ -540,18 +556,20 @@ const NewPostosServices = () => {
                         {(configCombustiveis[combustivel.value] || []).map((config, index) => (
                           <div key={index} className='grupo-config'>
                             <select
+                              className='select-forma-pagamento'
                               value={config.forma_pagamento}
                               onChange={(e) =>
                                 atualizarConfiguracao(combustivel.value, index, 'forma_pagamento', e.target.value)}>
                               <option value="">Forma de pagamento</option>
                               {formasPagamento.map((pagamento) => (
                                 <option key={pagamento.value} value={pagamento.value}>
-                                  {pagamento.label}
+                                  {pagamento.label.charAt(0).toUpperCase() + pagamento.label.slice(1)}
                                 </option>
                               ))}
                             </select>
 
                             <select
+                              className='select-forma-abastecimento'
                               value={config.forma_abastecimento}
                               onChange={(e) =>
                                 atualizarConfiguracao(combustivel.value, index, 'forma_abastecimento', e.target.value)}>
@@ -565,6 +583,7 @@ const NewPostosServices = () => {
 
                             <input
                               type="text"
+                              className='combustivel-valor'
                               placeholder="Valor"
                               value={config.valor}
                               onChange={(e) => {
@@ -573,17 +592,19 @@ const NewPostosServices = () => {
                               }} />
 
                             <button
+                              className='btn-remover-config'
                               type="button"
                               onClick={() => removerConfiguracao(combustivel.value, index)}>
-                              Remover
+                              -
                             </button>
                           </div>
                         ))}
 
                         <button
+                          className='btn-add-config'
                           type="button"
                           onClick={() => adicionarConfiguracao(combustivel.value)}>
-                          + Adicionar configuração
+                          +
                         </button>
                       </div>
                     )}
