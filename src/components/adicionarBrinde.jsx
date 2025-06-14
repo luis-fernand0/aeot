@@ -14,36 +14,21 @@ const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
     const tokenUser = localStorage.getItem('token');
     const navigate = useNavigate()
 
-    const [combustiveisSelecionados, setCombustiveisSelecionados] = useState([])
-    const [formasSelecionadas, setFormasSelecionadas] = useState({})
     const [selecionarBrinde, setSelecionarBrinde] = useState(false)
+    const [combustiveisSelecionados, setCombustiveisSelecionados] = useState([]);
+    const [formasSelecionadas, setFormasSelecionadas] = useState({});
+    const [showOptions, setShowOptions] = useState({})
+    const [showFormaAbastecimento, setShowFormaAbastecimento] = useState({})
 
     const [loading, setLoading] = useState(false)
     const [isModalVisible, setModalVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
 
-    const handleCombustivelChange = (combustivelLabel) => {
-        setCombustiveisSelecionados((prev) =>
-            prev.includes(combustivelLabel)
-                ? prev.filter((item) => item !== combustivelLabel)
-                : [...prev, combustivelLabel]
-        )
-    }
-
-    const handleFormaPagamentoChange = (combustivel, formaLabel) => {
-        setFormasSelecionadas((prev) => {
-            const novasFormas = { ...prev }
-
-            if (!novasFormas[combustivel]) {
-                novasFormas[combustivel] = []
-            }
-
-            novasFormas[combustivel] = novasFormas[combustivel].includes(formaLabel)
-                ? novasFormas[combustivel].filter((item) => item !== formaLabel)
-                : [...novasFormas[combustivel], formaLabel]
-
-            return novasFormas
-        })
+    function toggleOptions(combustivel) {
+        setShowOptions((prev) => ({
+            ...prev,
+            [combustivel]: !prev[combustivel],
+        }))
     }
 
     const verDados = (e) => {
@@ -65,14 +50,19 @@ const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
     async function cadastrarBrinde(brinde) {
         setLoading(true)
         try {
-            let combustiveis = {}
+            let combustiveisSelecionados = {}
             let lastPay = null
             let lastCombustivel = null
 
             let formCombustivel = new FormData(document.getElementById('form-combustivel'))
             for (let [key, value] of formCombustivel.entries()) {
                 if (key === 'combustivel') {
-                    combustiveis[value] = {
+                    combustiveis.forEach((combustivel) => {
+                        if(combustivel.label == value) {
+                            value = combustivel.value
+                        }
+                    })
+                    combustiveisSelecionados[value] = {
                         combustivel: value,
                         brinde: brinde.cod_brinde,
                         formas: {}
@@ -80,8 +70,13 @@ const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
                     lastCombustivel = value
                 }
                 if (key === 'forma_pagamento' && lastCombustivel) {
-                    if (!combustiveis[lastCombustivel].formas[value]) {
-                        combustiveis[lastCombustivel].formas[value] = {
+                    formasPagamento.forEach((pagamento) => {
+                        if(pagamento.label == value) {
+                            value = pagamento.value
+                        }
+                    })
+                    if (!combustiveisSelecionados[lastCombustivel].formas[value]) {
+                        combustiveisSelecionados[lastCombustivel].formas[value] = {
                             forma_pagamento: value,
                             forma_abastecimento: ''
                         }
@@ -89,10 +84,15 @@ const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
                     }
                 }
                 if (key === 'forma_abastecimento' && lastPay) {
-                    combustiveis[lastCombustivel].formas[lastPay].forma_abastecimento = value
+                    formasAbastecimentos.forEach((abastecimento) => {
+                        if(abastecimento.label == value) {
+                            value = abastecimento.value
+                        }
+                    })
+                    combustiveisSelecionados[lastCombustivel].formas[lastPay].forma_abastecimento = value
                     lastPay = null
                 }
-            }
+            }            
 
             const response = await fetch(urlAddBrinde, {
                 method: 'POST',
@@ -100,7 +100,7 @@ const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
                     'Authorization': `Bearer ${tokenUser}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ combustiveis: combustiveis, cod_posto: propCodPosto })
+                body: JSON.stringify({ combustiveis: combustiveisSelecionados, cod_posto: propCodPosto })
             })
             const data = await response.json()
 
@@ -123,6 +123,94 @@ const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
         }
     }
 
+    const CardFormasPagamento = ({ combustivel, showFormaAbastecimento, setShowFormaAbastecimento }) => {
+        function toggleOptions(combustivel, forma_pagamento) {
+            setShowFormaAbastecimento((prev) => ({
+                ...prev,
+                [`${combustivel}_${forma_pagamento}`]: !prev[`${combustivel}_${forma_pagamento}`],
+            }))
+        }
+
+        let pagamentos = []
+        let keysFormas = Object.keys(propCombustiveis[combustivel].formas_valor)
+        keysFormas.forEach((elemento) => {
+            let linhaAtual = propCombustiveis[combustivel].formas_valor[elemento]
+            if (!pagamentos.includes(linhaAtual.forma_pagamento)) {
+                pagamentos.push(linhaAtual.forma_pagamento)
+            }
+        })
+        return (
+            <div>
+                {pagamentos.map((pagamento) => (
+                    <div className='forma-pagamento-container'>
+                        <input
+                            className='forma_pagamento'
+                            type='checkbox'
+                            value={pagamento}
+                            id={`${combustivel}-${pagamento}`}
+                            name='forma_pagamento'
+                            checked={formasSelecionadas[combustivel]?.includes(pagamento) || false}
+                            onChange={(e) => {
+                                const atual = formasSelecionadas[combustivel] || []
+                                let novo
+                                if (e.target.checked) {
+                                    novo = [...atual, pagamento]
+                                } else {
+                                    novo = atual.filter(p => p !== pagamento)
+                                }
+                                setFormasSelecionadas(prev => ({
+                                    ...prev,
+                                    [combustivel]: novo
+                                }))
+                                toggleOptions(combustivel, pagamento)
+                            }}
+                        />
+                        <label htmlFor={`${combustivel}-${pagamento}`}>
+                            {pagamento}
+                        </label>
+
+                        {showFormaAbastecimento[`${combustivel}_${pagamento}`] && (
+                            <CardFormaAbastecimento
+                                combustivel={combustivel}
+                                formaPagamento={pagamento} />
+                        )}
+                    </div>
+                ))}
+            </div>
+        )
+    }
+
+    const CardFormaAbastecimento = ({ combustivel, formaPagamento }) => {
+        let formaAbastecimento = []
+        let keysFormas = Object.keys(propCombustiveis[combustivel].formas_valor)
+        for (let key of keysFormas) {
+            let linhaAtual = propCombustiveis[combustivel].formas_valor[key]
+            if (linhaAtual.forma_pagamento == formaPagamento) {
+                if (linhaAtual.forma_abastecimento == 'Litragem Livre') {
+                    formaAbastecimento.pop()
+                    formaAbastecimento.push(linhaAtual.forma_abastecimento)
+                    break
+                }
+                formaAbastecimento.push(linhaAtual.forma_abastecimento)
+            }
+        }
+
+        return (
+            <div>
+                <select name="forma_abastecimento">
+                    <option value={formaAbastecimento}>
+                        {formaAbastecimento}
+                    </option>
+                    {formaAbastecimento == 'Litragem Livre' && (
+                        <option value='Encher Tanque'>
+                            Encher Tanque
+                        </option>
+                    )}
+                </select>
+            </div>
+        )
+    }
+
     return (
         <>
             <Loading loading={loading} />
@@ -137,76 +225,40 @@ const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
                 </h3>
 
                 <form onSubmit={verDados} id='form-combustivel' className='form-combustivel'>
-                    {Object.keys(propCombustiveis).map((keyCombustivel) => {
-                        const combustivel = combustiveis.find(c => c.label === keyCombustivel);
-                        if (!combustivel) return null;
+                    {Object.keys(propCombustiveis).map((keyCombustivel) => (
+                        <div>
+                            <input
+                                className='combustivel'
+                                type='checkbox'
+                                id={keyCombustivel}
+                                value={keyCombustivel}
+                                name='combustivel'
+                                checked={combustiveisSelecionados.includes(keyCombustivel)}
+                                onChange={(e) => {
+                                    const selected = [...combustiveisSelecionados]
+                                    if (e.target.checked) {
+                                        selected.push(keyCombustivel)
+                                    } else {
+                                        const index = selected.indexOf(keyCombustivel)
+                                        if (index > -1) selected.splice(index, 1)
+                                    }
+                                    setCombustiveisSelecionados(selected)
+                                    toggleOptions(keyCombustivel)
+                                }}
+                            />
+                            <label className='text-combustivel' htmlFor={keyCombustivel}>
+                                {keyCombustivel.charAt(0).toUpperCase() + keyCombustivel.slice(1)}
+                            </label>
 
-                        return (
-                            <div key={combustivel.value} className='combustiveis'>
-                                <div className='combustivel-container'>
-                                    <input
-                                        className='combustivel'
-                                        type='checkbox'
-                                        id={combustivel.label}
-                                        value={combustivel.value}
-                                        name='combustivel'
-                                        checked={combustiveisSelecionados.includes(combustivel.label)}
-                                        onChange={() => handleCombustivelChange(combustivel.label)}
-                                    />
-                                    <label className='text-combustivel' htmlFor={combustivel.label}>
-                                        {combustivel.label.toUpperCase()}
-                                    </label>
-                                </div>
 
-                                {combustiveisSelecionados.includes(combustivel.label) &&
-                                    Object.keys(propCombustiveis[keyCombustivel].formas).map((keyForma) => {
-                                        const forma = formasPagamento.find(f =>
-                                            f.label === propCombustiveis[keyCombustivel].formas[keyForma].forma_pagamento.toLowerCase()
-                                        )
-                                        if (!forma) return null;
-
-                                        return (
-                                            <div key={forma.value} className='formas-pagamento'>
-                                                <div className='forma-pagamento-container'>
-                                                    <input
-                                                        className='forma_pagamento'
-                                                        type='checkbox'
-                                                        id={`${combustivel.label}-${forma.label}`}
-                                                        value={forma.value}
-                                                        name='forma_pagamento'
-                                                        checked={formasSelecionadas[combustivel.label]?.includes(forma.label)}
-                                                        onChange={() => handleFormaPagamentoChange(combustivel.label, forma.label)}
-                                                    />
-                                                    <label htmlFor={`${combustivel.label}-${forma.label}`}>
-                                                        {forma.label.toUpperCase()}
-                                                    </label>
-                                                </div>
-
-                                                {formasSelecionadas[combustivel.label]?.includes(forma.label) &&
-                                                    formasAbastecimentos.map((abastecimento) => {
-                                                        if (propCombustiveis[keyCombustivel].formas[keyForma].forma_abastecimento !== abastecimento.label) {
-                                                            return null;
-                                                        }
-
-                                                        return (
-                                                            <select key={abastecimento.value} name="forma_abastecimento">
-                                                                <option value={abastecimento.value}>
-                                                                    {abastecimento.label}
-                                                                </option>
-                                                                {abastecimento.label === 'Litragem Livre' && (
-                                                                    <option value='2'>
-                                                                        Encher Tanque
-                                                                    </option>
-                                                                )}
-                                                            </select>
-                                                        )
-                                                    })}
-                                            </div>
-                                        )
-                                    })}
-                            </div>
-                        )
-                    })}
+                            {showOptions[keyCombustivel] && (
+                                <CardFormasPagamento
+                                    combustivel={keyCombustivel}
+                                    showFormaAbastecimento={showFormaAbastecimento}
+                                    setShowFormaAbastecimento={setShowFormaAbastecimento} />
+                            )}
+                        </div>
+                    ))}
 
                     <button className='btn-selecionar-brinde' type='submit'>
                         Selecionar brinde
@@ -214,14 +266,12 @@ const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
                 </form>
 
                 {selecionarBrinde && (
-                    <>
-                        <div className='container-component-brindes'>
-                            <ListarBrindes
-                                showBtns={false}
-                                clickBrinde={cadastrarBrinde}
-                                closeModal={setSelecionarBrinde} />
-                        </div>
-                    </>
+                    <div className='container-component-brindes'>
+                        <ListarBrindes
+                            showBtns={false}
+                            clickBrinde={cadastrarBrinde}
+                            closeModal={setSelecionarBrinde} />
+                    </div>
                 )}
             </div>
         </>
