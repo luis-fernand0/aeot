@@ -166,12 +166,16 @@ const GerarQrCode = () => {
         let forma_pagamento = dadosAbastecimento.metodo_pagamento
         let forma_abastecimento = dadosAbastecimento.forma_abastecimento
         let keysFormasValor = Object.keys(dataPosto?.combustiveis?.[combustivel].formas_valor)
-        keysFormasValor.forEach((elemento, index) => {
+        for (let elemento of keysFormasValor) {
             let linhaAtual = dataPosto?.combustiveis?.[combustivel].formas_valor[elemento]
-            if (linhaAtual.forma_pagamento == forma_pagamento && linhaAtual.forma_abastecimento == forma_abastecimento) {
+            if (linhaAtual.forma_pagamento == forma_pagamento) {
+                if (linhaAtual.forma_abastecimento == forma_abastecimento) {
+                    setAbastecimento({ combustivel, forma_pagamento, forma_abastecimento, valor: linhaAtual.valor })
+                    break
+                }
                 setAbastecimento({ combustivel, forma_pagamento, forma_abastecimento, valor: linhaAtual.valor })
             }
-        })
+        }
     }, [])
     return (
         <>
