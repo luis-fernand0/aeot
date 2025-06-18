@@ -17,6 +17,7 @@ const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
     const [selecionarBrinde, setSelecionarBrinde] = useState(false)
     const [combustiveisSelecionados, setCombustiveisSelecionados] = useState([]);
     const [formasSelecionadas, setFormasSelecionadas] = useState({});
+    const [formasAbastecimentoSelecionadas, setFormasAbastecimentoSelecionadas] = useState({});
     const [showOptions, setShowOptions] = useState({})
     const [showFormaAbastecimento, setShowFormaAbastecimento] = useState({})
 
@@ -58,7 +59,7 @@ const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
             for (let [key, value] of formCombustivel.entries()) {
                 if (key === 'combustivel') {
                     combustiveis.forEach((combustivel) => {
-                        if(combustivel.label == value) {
+                        if (combustivel.label == value) {
                             value = combustivel.value
                         }
                     })
@@ -71,7 +72,7 @@ const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
                 }
                 if (key === 'forma_pagamento' && lastCombustivel) {
                     formasPagamento.forEach((pagamento) => {
-                        if(pagamento.label == value) {
+                        if (pagamento.label == value) {
                             value = pagamento.value
                         }
                     })
@@ -85,14 +86,14 @@ const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
                 }
                 if (key === 'forma_abastecimento' && lastPay) {
                     formasAbastecimentos.forEach((abastecimento) => {
-                        if(abastecimento.label == value) {
+                        if (abastecimento.label == value) {
                             value = abastecimento.value
                         }
                     })
                     combustiveisSelecionados[lastCombustivel].formas[lastPay].forma_abastecimento = value
                     lastPay = null
                 }
-            }            
+            }
 
             const response = await fetch(urlAddBrinde, {
                 method: 'POST',
@@ -197,7 +198,14 @@ const AdicionarBrinde = ({ propCodPosto, propCombustiveis }) => {
 
         return (
             <div className='container-forma-abastecimento'>
-                <select className='select-forma-abastecimento' name="forma_abastecimento">
+                <select id='teste' className='select-forma-abastecimento' name="forma_abastecimento" value={formasAbastecimentoSelecionadas[`${combustivel}_${formaPagamento}`] || ''}
+                    onChange={(e) => {
+                        const value = e.target.value;
+                        setFormasAbastecimentoSelecionadas(prev => ({
+                            ...prev,
+                            [`${combustivel}_${formaPagamento}`]: value
+                        }));
+                    }}>
                     <option value={formaAbastecimento}>
                         {formaAbastecimento}
                     </option>
