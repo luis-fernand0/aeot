@@ -91,7 +91,8 @@ const GerarQrCode = () => {
                 foto_user: dataUser?.foto,
                 veiculo: {
                     modelo: dataUser?.modelo,
-                    placa: dataUser?.placa
+                    placa: dataUser?.placa,
+                    kmAtual: dataAbastecimento?.km
                 },
                 posto_user_id: dataPosto?.user_id,
                 posto: dataPosto?.nome,
