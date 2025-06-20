@@ -83,6 +83,11 @@ const Abastecimento = () => {
         let valor = null
         let abastecimento = null
 
+        let kmAtual = null
+        if (document.getElementById('input-km')) {
+            kmAtual = document.getElementById('input-km').value
+        }
+
         if (document.getElementById('input-litro')) {
             abastecimento = 'Litragem Livre'
             litro = document.getElementById('input-litro').value.replace(/[^0-9]/g, '.')
@@ -109,6 +114,7 @@ const Abastecimento = () => {
             forma_abastecimento: abastecimento,
             litros: litro,
             preco: valor,
+            km: kmAtual,
             posto
         }
         localStorage.setItem('dadosAbastecimento', JSON.stringify(metodoAbastecimento))
@@ -263,6 +269,20 @@ const Abastecimento = () => {
                                         <p className='text-option'>
                                             Enche o tanque!
                                         </p>
+
+                                        <label className='text-option text-km' htmlFor="input-km">
+                                            Km atual do veiculo
+                                        </label>
+                                        <input
+                                            className='input-option'
+                                            id='input-km'
+                                            type="text"
+                                            placeholder='Opcional'
+                                            onChange={(e) => {
+                                                let input = e.target
+                                                let inputValue = input.value.replace(/[^0-9]/g, '') 
+                                                return input.value = inputValue
+                                            }} />
                                     </div>
                                 )}
                             </div>
