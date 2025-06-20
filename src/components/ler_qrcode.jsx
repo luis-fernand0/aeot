@@ -173,6 +173,7 @@ const LerQrCode = () => {
                 }
             })
             myForm.append('combustivel', result.tipo_combustivel)
+            myForm.append('km', result.km)
 
             if (result.forma_abastecimento === 'Litragem Livre') {
                 result.forma_abastecimento = 1
