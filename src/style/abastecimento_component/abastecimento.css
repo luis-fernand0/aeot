@@ -134,6 +134,12 @@
   font-weight: 500;
   margin-bottom: 45px;
 }
+.container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-btns-input .container-text-input .container-option .text-km {
+  margin-bottom: 15px;
+}
+.container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-btns-input .container-text-input .container-option #input-km {
+  margin-bottom: 15px;
+}
 .container-abastecimento-title .container-abastecimento .container-forma-de-abastecimento .container-btns-input .container-text-input .container-option .input-option {
   width: 280px;
   height: 50px;
