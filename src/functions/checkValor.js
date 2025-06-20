@@ -1,10 +1,10 @@
 export function checkValor(e) {
-    var input = e.target
+    let input = e.target
 
     if (input.getAttribute('name') === 'descricao' || input.getAttribute('name') === 'endereco') {
         return
     }
-    var inputValue = input.value.replace(/[^0-9]/g, '')
+    let inputValue = input.value.replace(/[^0-9]/g, '')
 
     if (inputValue.length > 1) {
         inputValue = inputValue.slice(0, 1) + '.' + inputValue.slice(1);
