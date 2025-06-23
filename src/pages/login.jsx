@@ -47,11 +47,18 @@ const Login = () => {
     e.preventDefault()
     setLoading(true)
 
-    const myForm = document.getElementById('myFormLogin')
-    const formData = new FormData(myForm)
+    const formData = new FormData(document.getElementById('myFormLogin'))
     const data = Object.fromEntries(formData)
 
     try {
+      for(let [key, value] of formData.entries()) {
+        if(key == 'email_login') {
+          if(value.length < 8) {
+            throw new Error('Digite um Email/Placa valida! Pelo menos 8 caracteres!');
+          }
+        }
+      }
+
       const response = await fetch(urlLogin, {
         method: 'POST',
         headers: {
@@ -130,7 +137,7 @@ const Login = () => {
 
             <span className='span-login span-login-hidden'></span>
             <div className="inputs-btns">
-              <input className='input-login input-login-email' type="email" name="email_login" id="email-login" placeholder="Email" required autoComplete='off' onChange={(e) => formatarEmail(e)} />
+              <input className='input-login input-login-email' type="text" name="email_login" id="email-login" placeholder="Email/Placa veiculo" required autoComplete='off' onChange={(e) => formatarEmail(e)} />
 
               <div className='container-input-pass'>
                 <input className='input-login' type="password" name="password_login" id="password-login" placeholder="Senha" required />
