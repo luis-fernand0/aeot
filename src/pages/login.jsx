@@ -53,8 +53,8 @@ const Login = () => {
     try {
       for(let [key, value] of formData.entries()) {
         if(key == 'email_login') {
-          if(value.length < 8) {
-            throw new Error('Digite um Email/Placa valida! Pelo menos 8 caracteres!');
+          if(value.length < 7) {
+            throw new Error('Digite um Email/Placa valida! Pelo menos 7 caracteres!');
           }
         }
       }
