@@ -11,6 +11,7 @@ import Loading from './loading'
 
 import "../style/relatorio_component/relatorio.css"
 import { formasPagamento } from "../functions/contants"
+import { EditarVenda } from "./editar_venda"
 const urlRelatorio = import.meta.env.VITE_URL_RELATORIO
 const urlBuscarFrentista = import.meta.env.VITE_URL_BUSCAR_FRENTISTA
 const urlBuscarPosto = import.meta.env.VITE_URL_BUSCAR_POSTO
@@ -24,7 +25,7 @@ const Relatorio = () => {
   let dia = String(data_atual.getDate()).padStart(2, '0');
   let mes = String(data_atual.getMonth() + 1).padStart(2, '0');
   let ano = data_atual.getFullYear();
-  
+
   let dataFinal = `${ano}-${mes}-${dia}`
   if (typeUser === 'driver') {
     let milisegudos = 1000 * 60 * 60 * 24
@@ -33,7 +34,7 @@ const Relatorio = () => {
     mes = String(data_atual.getMonth() + 1).padStart(2, '0');
     ano = data_atual.getFullYear();
   }
-  let dataInicial = `${ano}-${mes}-${dia}` 
+  let dataInicial = `${ano}-${mes}-${dia}`
   const [filtros, setFiltros] = useState({
     dataInicial: `${dataInicial}`,
     dataFinal: `${dataFinal}`,
@@ -47,6 +48,7 @@ const Relatorio = () => {
   const [loading, setLoading] = useState(false)
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+  const [view, setView] = useState({ view: true, item: {} })
 
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [limitePorPagina, setLimitePorPagina] = useState(10);
@@ -233,8 +235,11 @@ const Relatorio = () => {
       <ModalResponse
         isVisible={isModalVisible}
         onClose={() => setModalVisible(false)}
-        message={modalMessage}
-      />
+        message={modalMessage} />
+      <EditarVenda
+        view={view.view}
+        item={view.item} />
+
       <div className="container-relatorio">
         <div className="continer-btn-voltar">
           <Link to={'/home'}>
@@ -362,7 +367,7 @@ const Relatorio = () => {
                 })
                 let pagamentoCaptalize = item.forma_pagamento.charAt(0).toUpperCase() + item?.forma_pagamento.slice(1)
                 return (
-                  <tr key={index}>
+                  <tr key={index} onClick={() => setView({ view: true, item })}>
                     <td>{item.posto}</td>
                     <td>{item.data_venda}</td>
                     <td>{item.hora_venda}</td>
