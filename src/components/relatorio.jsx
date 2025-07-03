@@ -48,7 +48,7 @@ const Relatorio = () => {
   const [loading, setLoading] = useState(false)
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
-  const [view, setView] = useState({ view: true, item: {} })
+  const [view, setView] = useState({ view: false, item: {} })
 
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [limitePorPagina, setLimitePorPagina] = useState(10);
@@ -238,7 +238,8 @@ const Relatorio = () => {
         message={modalMessage} />
       <EditarVenda
         view={view.view}
-        item={view.item} />
+        item={view.item}
+        close={() => setView({view: false, item: {}})} />
 
       <div className="container-relatorio">
         <div className="continer-btn-voltar">
