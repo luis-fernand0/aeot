@@ -1,3 +1,8 @@
+import { useState } from 'react';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faXmark } from '@fortawesome/free-solid-svg-icons'
+
 import { checkValor } from '../functions/checkValor';
 import { formatLitro } from '../functions/formatLitro';
 
@@ -6,14 +11,37 @@ import '../style/editar_venda/editar_venda.css'
 export const EditarVenda = ({ view, item, close }) => {
     if (!view) return null;
 
+    const [valorTotal, setValorTotal] = useState(item.valor_total)
+
+    function changeTotal(inputValor, inputLitro) {
+        let valorCombustivel = document.getElementById(inputValor).value
+        let litro = document.getElementById(inputLitro).value
+
+        let litroValid = () => {
+            let testeRegex = /^(\d{1,3}(\,\d{1,3}|))$/
+
+            return testeRegex.test(litro)
+        }
+        if (!(litroValid())) {
+            return
+        }
+
+        litro = litro.replace(/[^0-9]/g, '.')
+        let total = Number(valorCombustivel).toFixed(2) * Number(litro).toFixed(3)
+
+        return setValorTotal(total.toFixed(2))
+    }
+
     return (
         <div className='container-shadow-bg'>
             <div className='container-edit-venda'>
                 <div className='container-btn'>
-                    <button onClick={close}>fechar</button>
+                    <button onClick={close}>
+                        <FontAwesomeIcon icon={faXmark} />
+                    </button>
                 </div>
 
-                <table>
+                <table className='table-venda'>
                     <thead>
                         <tr>
                             <th>Posto</th>
@@ -38,25 +66,15 @@ export const EditarVenda = ({ view, item, close }) => {
                                 <td>{item.motorista}</td>
                                 <td>
                                     <select name="combustivel" id="select-combustivel" defaultValue={item.combustivel}>
-                                        <option value="Etanol">
-                                            Etanol
-                                        </option>
-                                        <option value="Gasolina">
-                                            Gasolina
-                                        </option>
-                                        <option value="Diesel">
-                                            Diesel
-                                        </option>
+                                        <option value="Etanol">Etanol</option>
+                                        <option value="Gasolina">Gasolina</option>
+                                        <option value="Diesel">Diesel</option>
                                     </select>
                                 </td>
                                 <td>
                                     <select name="forma_abastecimento" id="select-abastecimento" defaultValue={item.forma_abastecimento}>
-                                        <option value="1">
-                                            LL
-                                        </option>
-                                        <option value="2">
-                                            ET
-                                        </option>
+                                        <option value="1">LL</option>
+                                        <option value="2">ET</option>
                                     </select>
                                 </td>
                                 <td>
@@ -67,28 +85,34 @@ export const EditarVenda = ({ view, item, close }) => {
                                         <option value="credito">Credito</option>
                                     </select>
                                 </td>
-                                <td>R$
+                                <td>
                                     <input
                                         type="text"
+                                        id='input-valor'
                                         defaultValue={item.valor}
-                                        onChange={(e) => checkValor(e)} />
+                                        onChange={(e) => checkValor(e)}
+                                        onBlur={() => { changeTotal('input-valor', 'input-litro') }} />
                                 </td>
                                 <td>
                                     <input
                                         type="text"
+                                        id='input-litro'
                                         defaultValue={item.litros}
-                                        onChange={(e) => formatLitro(e)} />
+                                        onChange={(e) => formatLitro(e)}
+                                        onBlur={() => changeTotal('input-valor', 'input-litro')} />
                                 </td>
-                                <td>R$ {item.valor_total}</td>
+                                <td>R$ {valorTotal}</td>
                                 <td>{item.frentista}</td>
                             </tr>
                         )}
                     </tbody>
                 </table>
 
-                <button>
-                    Salvar
-                </button>
+                <div className='container-btn-salvar'>
+                    <button>
+                        Salvar
+                    </button>
+                </div>
             </div>
         </div>
     )
