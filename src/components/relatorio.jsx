@@ -239,6 +239,10 @@ const Relatorio = () => {
       <EditarVenda
         view={view.view}
         item={view.item}
+        pesquisar={() => {
+          setView({view: false, item: {}});
+          document.getElementById('btn-pesquisar').click()
+        }}
         close={() => setView({view: false, item: {}})} />
 
       <div className="container-relatorio">
@@ -330,7 +334,7 @@ const Relatorio = () => {
             </div>
           )}
 
-          <button className="btn-filtrar" onClick={filtrarDados}>
+          <button id="btn-pesquisar" className="btn-filtrar" onClick={filtrarDados}>
             Pesquisar
           </button>
           <button
