@@ -11,7 +11,6 @@
 .container-shadow-bg .container-edit-venda {
   width: 90%;
   max-height: 90%;
-  overflow-y: scroll;
   background-color: #fff;
   display: flex;
   flex-direction: column;
@@ -30,22 +29,32 @@
   background-color: transparent;
   border: none;
 }
-.container-shadow-bg .container-edit-venda .table-venda {
-  max-width: 90%;
+.container-shadow-bg .container-edit-venda .container-table-venda {
   max-height: 90%;
+  width: 100%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.container-shadow-bg .container-edit-venda .container-table-venda .table-venda {
+  max-width: 100%;
+  max-height: 100%;
   border-collapse: collapse;
   margin-bottom: 15px;
 }
-.container-shadow-bg .container-edit-venda .table-venda th,
-.container-shadow-bg .container-edit-venda .table-venda td {
+.container-shadow-bg .container-edit-venda .container-table-venda .table-venda th,
+.container-shadow-bg .container-edit-venda .container-table-venda .table-venda td {
   padding: 5px;
   border-bottom: 1px solid #ddd;
   text-align: left;
 }
-.container-shadow-bg .container-edit-venda .table-venda th input,
-.container-shadow-bg .container-edit-venda .table-venda th select,
-.container-shadow-bg .container-edit-venda .table-venda td input,
-.container-shadow-bg .container-edit-venda .table-venda td select {
+.container-shadow-bg .container-edit-venda .container-table-venda .table-venda th input,
+.container-shadow-bg .container-edit-venda .container-table-venda .table-venda th select,
+.container-shadow-bg .container-edit-venda .container-table-venda .table-venda td input,
+.container-shadow-bg .container-edit-venda .container-table-venda .table-venda td select {
   width: 80px;
   height: 30px;
   padding-left: 5px;
@@ -53,25 +62,29 @@
   border: none;
   outline: none;
 }
-.container-shadow-bg .container-edit-venda .table-venda th input:focus,
-.container-shadow-bg .container-edit-venda .table-venda th select:focus,
-.container-shadow-bg .container-edit-venda .table-venda td input:focus,
-.container-shadow-bg .container-edit-venda .table-venda td select:focus {
+.container-shadow-bg .container-edit-venda .container-table-venda .table-venda th input:focus,
+.container-shadow-bg .container-edit-venda .container-table-venda .table-venda th select:focus,
+.container-shadow-bg .container-edit-venda .container-table-venda .table-venda td input:focus,
+.container-shadow-bg .container-edit-venda .container-table-venda .table-venda td select:focus {
   border: 2px solid #4b39ef;
 }
-.container-shadow-bg .container-edit-venda .table-venda th {
+.container-shadow-bg .container-edit-venda .container-table-venda .table-venda th .danied,
+.container-shadow-bg .container-edit-venda .container-table-venda .table-venda td .danied {
+  border: 2px solid #ef3939;
+}
+.container-shadow-bg .container-edit-venda .container-table-venda .table-venda th {
   background-color: #E6C200;
   color: white;
   font-weight: bold;
 }
-.container-shadow-bg .container-edit-venda .table-venda tr:hover {
+.container-shadow-bg .container-edit-venda .container-table-venda .table-venda tr:hover {
   background-color: #e8e8e8;
 }
 .container-shadow-bg .container-edit-venda .container-btn-salvar {
   width: 100%;
   text-align: center;
 }
-.container-shadow-bg .container-edit-venda .container-btn-salvar button {
+.container-shadow-bg .container-edit-venda .container-btn-salvar .btn-salvar {
   width: 70px;
   height: 35px;
   border-radius: 5px;
@@ -79,5 +92,15 @@
   font-size: 14px;
   font-weight: bold;
   color: #fff;
-  background-color: #4CAF50;
+  background-color: rgb(4, 155, 4);
+  transition: all ease 0.5s;
+}
+.container-shadow-bg .container-edit-venda .container-btn-salvar .btn-salvar:hover {
+  background-color: #038203;
+}
+.container-shadow-bg .container-edit-venda .container-btn-salvar .btn-salvar:disabled {
+  background-color: #e8e8e8;
+  color: #1a1a1a;
+  cursor: not-allowed;
+  transform: none;
 }/*# sourceMappingURL=editar_venda.css.map */
